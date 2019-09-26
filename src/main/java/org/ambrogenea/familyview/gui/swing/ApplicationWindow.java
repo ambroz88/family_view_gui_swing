@@ -1,6 +1,9 @@
 package org.ambrogenea.familyview.gui.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +34,9 @@ public class ApplicationWindow extends JFrame {
     public ApplicationWindow() {
         initComponents();
         dataModel = new DataModel();
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        this.setSize(new Dimension(gd.getDisplayMode().getWidth() - 50, gd.getDisplayMode().getHeight() - 50));
+        this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - 50, gd.getDisplayMode().getHeight() - 50));
     }
 
     /**
@@ -49,6 +55,7 @@ public class ApplicationWindow extends JFrame {
         generateViewButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Family Viewer");
         setName("rootFrame"); // NOI18N
 
         settingsTab.setName(""); // NOI18N
@@ -128,7 +135,7 @@ public class ApplicationWindow extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadInputButtonActionPerformed
-        JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
         int returnVal = fc.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -160,6 +167,9 @@ public class ApplicationWindow extends JFrame {
 
             JFrame drawing = new JFrame("Ancestors of " + personWithAncestors.getName());
             drawing.setLayout(new BorderLayout());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.setMinimumSize(new Dimension(800, 600));
             drawing.add(new AncestorPanel(personWithAncestors));
             drawing.setVisible(true);
 

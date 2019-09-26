@@ -1,5 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -13,11 +14,10 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class AncestorPanel extends JPanel {
 
-    private static final int FONT_WIDTH = 5;
     private static final int BORDER_WIDTH = 50;
+    private static final int CIRCLE_SIZE = 7;
 
     private final Person model;
-    private int horizontalShift;
     private int verticalShift;
     private Graphics2D g2;
 
@@ -30,8 +30,8 @@ public class AncestorPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         g2 = (Graphics2D) g;
         verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
-        g2.fillOval(getWidth() / 2, getHeight() - verticalShift, 5, 5);
-        g2.drawString(model.getName(), getWidth() / 2 - (model.getName().length() * FONT_WIDTH) / 2, getHeight() - verticalShift - 2 * FONT_WIDTH);
+
+        drawPerson(getWidth() / 2, getHeight() - verticalShift, model);
 
         drawGeneration(1, model.getFather());
         drawGeneration(1, model.getMother());
@@ -50,12 +50,26 @@ public class AncestorPanel extends JPanel {
                 x = x + shift * (shiftWidth);
             }
 
-            g2.fillOval(x + BORDER_WIDTH, y, 5, 5);
-            g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * FONT_WIDTH) / 2, y - 2 * FONT_WIDTH);
+            drawPerson(x, y, person);
+
             drawGeneration(generationIndex + 1, person.getFather());
             drawGeneration(generationIndex + 1, person.getMother());
+        }
+    }
+
+    private void drawPerson(int x, int y, Person person) {
+        g2.fillOval(x + BORDER_WIDTH, y, CIRCLE_SIZE, CIRCLE_SIZE);
+        int fontSize = 14;
+        int fontWidth = 6;
+        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+
+        if (person.getBirthDate().isEmpty()) {
+            g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * fontWidth) / 2, y - 7);
         } else {
-            System.out.println("complete");
+            g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * fontWidth) / 2, y - (fontSize + fontSize / 2));
+            fontSize = fontSize - 2;
+            g2.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, fontSize));
+            g2.drawString("* " + person.getBirthDate(), x + BORDER_WIDTH - ((person.getBirthDate().length() + 2) * fontWidth) / 2, y - 7);
         }
     }
 

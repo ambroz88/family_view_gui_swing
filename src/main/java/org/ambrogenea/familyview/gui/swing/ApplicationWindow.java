@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.ScrollPane;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import org.ambrogenea.familyview.model.utils.FileIO;
  */
 public class ApplicationWindow extends JFrame {
 
+    private static final int BORDER_SIZE = 70;
     private final DataModel dataModel;
 
     /**
@@ -35,8 +37,8 @@ public class ApplicationWindow extends JFrame {
         initComponents();
         dataModel = new DataModel();
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        this.setSize(new Dimension(gd.getDisplayMode().getWidth() - 50, gd.getDisplayMode().getHeight() - 50));
-        this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - 50, gd.getDisplayMode().getHeight() - 50));
+        this.setSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
+        this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
     }
 
     /**
@@ -170,7 +172,13 @@ public class ApplicationWindow extends JFrame {
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
             drawing.setMinimumSize(new Dimension(800, 600));
-            drawing.add(new AncestorPanel(personWithAncestors));
+            ScrollPane scrollAncestorPane = new ScrollPane();
+
+            AncestorPanel ancestorPanel = new AncestorPanel(personWithAncestors);
+            ancestorPanel.setPreferredSize(new Dimension(AncestorPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
+
+            scrollAncestorPane.add(ancestorPanel);
+            drawing.add(scrollAncestorPane);
             drawing.setVisible(true);
 
             System.out.println("Family links done.");

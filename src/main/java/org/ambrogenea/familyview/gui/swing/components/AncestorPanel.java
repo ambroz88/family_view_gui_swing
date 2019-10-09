@@ -3,6 +3,8 @@ package org.ambrogenea.familyview.gui.swing.components;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -14,8 +16,10 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class AncestorPanel extends JPanel {
 
+    public static final int MINIMAL_WIDTH = 120;
     private static final int BORDER_WIDTH = 50;
     private static final int CIRCLE_SIZE = 7;
+    private static final int SPACE = 7;
 
     private final Person model;
     private int verticalShift;
@@ -23,15 +27,13 @@ public class AncestorPanel extends JPanel {
 
     public AncestorPanel(Person model) {
         this.model = model;
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         g2 = (Graphics2D) g;
         verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
-
-        drawPerson(getWidth() / 2, getHeight() - verticalShift, model);
+        drawPerson(MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) / 2, getHeight() - verticalShift, model);
 
         drawGeneration(1, model.getFather());
         drawGeneration(1, model.getMother());
@@ -40,7 +42,7 @@ public class AncestorPanel extends JPanel {
     private void drawGeneration(int generationIndex, Person person) {
         if (person != null && generationIndex <= model.getAncestorGenerations()) {
             int y = getHeight() - verticalShift * (generationIndex + 1);
-            int x = (getWidth() - BORDER_WIDTH) / 2;
+            int x = (MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) - BORDER_WIDTH) / 2;
             int shiftWidth = x;
             int shift;
 
@@ -64,13 +66,19 @@ public class AncestorPanel extends JPanel {
         g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
 
         if (person.getBirthDate().isEmpty()) {
-            g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * fontWidth) / 2, y - 7);
+            g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * fontWidth) / 2, y - SPACE);
         } else {
             g2.drawString(person.getName(), x + BORDER_WIDTH - (person.getName().length() * fontWidth) / 2, y - (fontSize + fontSize / 2));
             fontSize = fontSize - 2;
             g2.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, fontSize));
-            g2.drawString("* " + person.getBirthDate(), x + BORDER_WIDTH - ((person.getBirthDate().length() + 2) * fontWidth) / 2, y - 7);
+            g2.drawString("* " + person.getBirthDate(), x + BORDER_WIDTH - ((person.getBirthDate().length() + 2) * fontWidth) / 2, y - SPACE);
         }
     }
 
+    public Image getPicture() {
+        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        this.paint(g);
+        return image;
+    }
 }

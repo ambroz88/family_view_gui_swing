@@ -2,17 +2,23 @@ package org.ambrogenea.familyview.gui.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.AncestorPanel;
 import org.ambrogenea.familyview.gui.swing.model.Table;
@@ -28,7 +34,10 @@ import org.ambrogenea.familyview.model.utils.FileIO;
 public class ApplicationWindow extends JFrame {
 
     private static final int BORDER_SIZE = 70;
+
     private final DataModel dataModel;
+    private final JFileChooser openFC;
+    private final JFileChooser saverFC;
 
     /**
      * Creates new form ApplicationWindow
@@ -36,6 +45,10 @@ public class ApplicationWindow extends JFrame {
     public ApplicationWindow() {
         initComponents();
         dataModel = new DataModel();
+        openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        openFC.setDialogType(JFileChooser.OPEN_DIALOG);
+        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.setSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
         this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
@@ -137,11 +150,10 @@ public class ApplicationWindow extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadInputButtonActionPerformed
-        JFileChooser fc = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
-        int returnVal = fc.showOpenDialog(this);
+        int returnVal = openFC.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
+            File file = openFC.getSelectedFile();
             loadTable(file.getAbsolutePath());
             System.out.println("Opening: " + file.getName() + ".");
         } else {
@@ -174,16 +186,43 @@ public class ApplicationWindow extends JFrame {
             drawing.setMinimumSize(new Dimension(800, 600));
             ScrollPane scrollAncestorPane = new ScrollPane();
 
-            AncestorPanel ancestorPanel = new AncestorPanel(personWithAncestors);
+            final AncestorPanel ancestorPanel = new AncestorPanel(personWithAncestors);
             ancestorPanel.setPreferredSize(new Dimension(AncestorPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
-
             scrollAncestorPane.add(ancestorPanel);
-            drawing.add(scrollAncestorPane);
+
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            JButton saveButton = new JButton("Save tree");
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    saveButtonActionPerformed(ancestorPanel);
+                }
+            });
+            buttonPanel.add(saveButton);
+
+            drawing.add(buttonPanel, BorderLayout.NORTH);
+            drawing.add(scrollAncestorPane, BorderLayout.CENTER);
             drawing.setVisible(true);
 
             System.out.println("Family links done.");
         }
     }//GEN-LAST:event_generateViewButtonActionPerformed
+
+    private void saveButtonActionPerformed(AncestorPanel ancestorPanel) {
+        int returnVal = saverFC.showOpenDialog(ancestorPanel);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = saverFC.getSelectedFile();
+            try {
+                ImageIO.write(ancestorPanel.getPicture(), "PNG", file);
+                System.out.println("Picture was saved to " + file.getName() + ".");
+            } catch (IOException ex) {
+                System.out.println("Saving was failed due to: " + ex.getLocalizedMessage() + ".");
+            }
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }
 
     /**
      * @param args the command line arguments

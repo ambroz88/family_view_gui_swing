@@ -3,7 +3,6 @@ package org.ambrogenea.familyview.gui.swing.components;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -75,8 +74,8 @@ public class AncestorPanel extends JPanel {
         }
     }
 
-    public Image getPicture() {
-        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    public BufferedImage getPicture() {
+        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
         this.paint(g);
         return image;

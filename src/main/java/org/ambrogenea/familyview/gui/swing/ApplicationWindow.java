@@ -23,8 +23,8 @@ import javax.swing.JPanel;
 import org.ambrogenea.familyview.gui.swing.components.AncestorPanel;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.model.AncestorModel;
+import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.DataModel;
-import org.ambrogenea.familyview.model.Person;
 import org.ambrogenea.familyview.model.utils.FileIO;
 
 /**
@@ -177,7 +177,7 @@ public class ApplicationWindow extends JFrame {
             System.out.println("Column index: " + recordsTable.getSelectedColumn());
 
             AncestorModel ancestors = new AncestorModel(dataModel);
-            Person personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
+            AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
 
             JFrame drawing = new JFrame("Ancestors of " + personWithAncestors.getName());
             drawing.setLayout(new BorderLayout());

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.AncestorPerson;
 
 /**
  *
@@ -20,11 +20,11 @@ public class AncestorPanel extends JPanel {
     private static final int CIRCLE_SIZE = 7;
     private static final int SPACE = 7;
 
-    private final Person model;
+    private final AncestorPerson model;
     private int verticalShift;
     private Graphics2D g2;
 
-    public AncestorPanel(Person model) {
+    public AncestorPanel(AncestorPerson model) {
         this.model = model;
     }
 
@@ -38,7 +38,7 @@ public class AncestorPanel extends JPanel {
         drawGeneration(1, model.getMother());
     }
 
-    private void drawGeneration(int generationIndex, Person person) {
+    private void drawGeneration(int generationIndex, AncestorPerson person) {
         if (person != null && generationIndex <= model.getAncestorGenerations()) {
             int y = getHeight() - verticalShift * (generationIndex + 1);
             int x = (MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) - BORDER_WIDTH) / 2;
@@ -58,7 +58,7 @@ public class AncestorPanel extends JPanel {
         }
     }
 
-    private void drawPerson(int x, int y, Person person) {
+    private void drawPerson(int x, int y, AncestorPerson person) {
         g2.fillOval(x + BORDER_WIDTH, y, CIRCLE_SIZE, CIRCLE_SIZE);
         int fontSize = 14;
         int fontWidth = 6;

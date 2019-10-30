@@ -34,13 +34,13 @@ public class AncestorPanel extends JPanel {
         verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
         drawPerson(MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) / 2, getHeight() - verticalShift, model);
 
-        drawGeneration(1, model.getFather());
-        drawGeneration(1, model.getMother());
+        drawGeneration(model.getFather());
+        drawGeneration(model.getMother());
     }
 
-    private void drawGeneration(int generationIndex, AncestorPerson person) {
-        if (person != null && generationIndex <= model.getAncestorGenerations()) {
-            int y = getHeight() - verticalShift * (generationIndex + 1);
+    private void drawGeneration(AncestorPerson person) {
+        if (person != null) {
+            int y = getHeight() - verticalShift * (person.getAncestorLine().size());
             int x = (MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) - BORDER_WIDTH) / 2;
             int shiftWidth = x;
             int shift;
@@ -53,8 +53,8 @@ public class AncestorPanel extends JPanel {
 
             drawPerson(x, y, person);
 
-            drawGeneration(generationIndex + 1, person.getFather());
-            drawGeneration(generationIndex + 1, person.getMother());
+            drawGeneration(person.getFather());
+            drawGeneration(person.getMother());
         }
     }
 

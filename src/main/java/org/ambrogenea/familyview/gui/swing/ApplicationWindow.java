@@ -1,6 +1,7 @@
 package org.ambrogenea.familyview.gui.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
@@ -189,6 +190,7 @@ public class ApplicationWindow extends JFrame {
             final AncestorPanel ancestorPanel = new AncestorPanel(personWithAncestors);
             ancestorPanel.setPreferredSize(new Dimension(AncestorPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
             scrollAncestorPane.add(ancestorPanel);
+            scrollAncestorPane.setBackground(Color.WHITE);
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             JButton saveButton = new JButton("Save tree");
@@ -204,6 +206,7 @@ public class ApplicationWindow extends JFrame {
             drawing.add(scrollAncestorPane, BorderLayout.CENTER);
             drawing.setVisible(true);
 
+            ancestorPanel.drawAncestorPanel();
             System.out.println("Family links done.");
         }
     }//GEN-LAST:event_generateViewButtonActionPerformed

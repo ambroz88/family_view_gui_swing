@@ -25,11 +25,11 @@ public class AllParentsPanel extends RootFamilyPanel {
         verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
         drawPerson(MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) / 2, getHeight() - verticalShift, model);
 
-        drawGeneration(model.getFather());
-        drawGeneration(model.getMother());
+        drawParentsParent(model.getFather());
+        drawParentsParent(model.getMother());
     }
 
-    private void drawGeneration(AncestorPerson person) {
+    private void drawParentsParent(AncestorPerson person) {
         if (person != null) {
             int y = getHeight() - verticalShift * (person.getAncestorLine().size());
             int x = (MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) - BORDER_WIDTH) / 2;
@@ -44,8 +44,8 @@ public class AllParentsPanel extends RootFamilyPanel {
 
             drawPerson(x, y, person);
 
-            drawGeneration(person.getFather());
-            drawGeneration(person.getMother());
+            drawParentsParent(person.getFather());
+            drawParentsParent(person.getMother());
         }
     }
 

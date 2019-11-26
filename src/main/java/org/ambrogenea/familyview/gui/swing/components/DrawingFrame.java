@@ -1,8 +1,5 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,8 +16,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.ManParentsPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
-import org.ambrogenea.familyview.model.Person;
 
 /**
  *
@@ -32,11 +31,11 @@ public class DrawingFrame extends JFrame {
     private final JButton saveButton;
     private final ScrollPane scrollAncestorPane;
 
-    public DrawingFrame(Person person) {
+    public DrawingFrame(String title) {
         saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
         saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
 
-        setTitle("Ancestors of " + person.getName());
+        setTitle(title);
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(800, 600));
 
@@ -62,6 +61,20 @@ public class DrawingFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 saveButtonActionPerformed(ancestorPanel);
+            }
+        });
+    }
+
+    public void generateFathersParents(AncestorPerson personWithAncestors) {
+        final ManParentsPanel fathersParentsPanel = new ManParentsPanel(personWithAncestors);
+        fathersParentsPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
+        scrollAncestorPane.add(fathersParentsPanel);
+        fathersParentsPanel.drawAncestorPanel();
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(fathersParentsPanel);
             }
         });
     }

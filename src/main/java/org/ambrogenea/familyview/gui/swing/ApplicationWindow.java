@@ -180,7 +180,7 @@ public class ApplicationWindow extends JFrame {
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
             System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
 
-            DrawingFrame drawing = new DrawingFrame(personWithAncestors);
+            DrawingFrame drawing = new DrawingFrame("All ancestors of " + personWithAncestors.getName());
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
             drawing.generateAllAncestors(personWithAncestors);
@@ -190,7 +190,20 @@ public class ApplicationWindow extends JFrame {
     }//GEN-LAST:event_generateAncestorButtonActionPerformed
 
     private void generateManParentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateManParentsButtonActionPerformed
-        // TODO add your handling code here:
+        if (recordsTable.getSelectedRow() != -1) {
+            System.out.println("Row index selected: " + recordsTable.getSelectedRow());
+
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors = ancestors.generateManParents(recordsTable.getSelectedRow());
+            System.out.println("There will be generated father's parents of: " + personWithAncestors.getName());
+
+            DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateFathersParents(personWithAncestors);
+
+            System.out.println("Family tree was created.");
+        }
     }//GEN-LAST:event_generateManParentsButtonActionPerformed
 
     /**

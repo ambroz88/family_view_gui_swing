@@ -1,27 +1,18 @@
 package org.ambrogenea.familyview.gui.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import org.ambrogenea.familyview.gui.swing.components.AncestorPanel;
+import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
@@ -38,7 +29,6 @@ public class ApplicationWindow extends JFrame {
 
     private final DataModel dataModel;
     private final JFileChooser openFC;
-    private final JFileChooser saverFC;
 
     /**
      * Creates new form ApplicationWindow
@@ -48,8 +38,7 @@ public class ApplicationWindow extends JFrame {
         dataModel = new DataModel();
         openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
         openFC.setDialogType(JFileChooser.OPEN_DIALOG);
-        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
-        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
+
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.setSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
         this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
@@ -68,7 +57,8 @@ public class ApplicationWindow extends JFrame {
         loadInputButton = new javax.swing.JButton();
         tableScroll = new javax.swing.JScrollPane();
         recordsTable = new javax.swing.JTable();
-        generateViewButton = new javax.swing.JButton();
+        generateAncestorButton = new javax.swing.JButton();
+        generateManParentsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -93,10 +83,17 @@ public class ApplicationWindow extends JFrame {
         ));
         tableScroll.setViewportView(recordsTable);
 
-        generateViewButton.setText("Generate ancestors");
-        generateViewButton.addActionListener(new java.awt.event.ActionListener() {
+        generateAncestorButton.setText("Generate ancestors");
+        generateAncestorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateViewButtonActionPerformed(evt);
+                generateAncestorButtonActionPerformed(evt);
+            }
+        });
+
+        generateManParentsButton.setText("Generate man parents");
+        generateManParentsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateManParentsButtonActionPerformed(evt);
             }
         });
 
@@ -110,7 +107,9 @@ public class ApplicationWindow extends JFrame {
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(loadInputButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generateViewButton))
+                        .addComponent(generateManParentsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generateAncestorButton))
                     .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1150, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -120,7 +119,8 @@ public class ApplicationWindow extends JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadInputButton)
-                    .addComponent(generateViewButton))
+                    .addComponent(generateAncestorButton)
+                    .addComponent(generateManParentsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
                 .addContainerGap())
@@ -172,60 +172,26 @@ public class ApplicationWindow extends JFrame {
         }
     }
 
-    private void generateViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateViewButtonActionPerformed
+    private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            System.out.println("Row index: " + recordsTable.getSelectedRow());
-            System.out.println("Column index: " + recordsTable.getSelectedColumn());
+            System.out.println("Row index selected: " + recordsTable.getSelectedRow());
 
             AncestorModel ancestors = new AncestorModel(dataModel);
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
+            System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
 
-            JFrame drawing = new JFrame("Ancestors of " + personWithAncestors.getName());
-            drawing.setLayout(new BorderLayout());
+            DrawingFrame drawing = new DrawingFrame(personWithAncestors);
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
-            drawing.setMinimumSize(new Dimension(800, 600));
-            ScrollPane scrollAncestorPane = new ScrollPane();
+            drawing.generateAllAncestors(personWithAncestors);
 
-            final AncestorPanel ancestorPanel = new AncestorPanel(personWithAncestors);
-            ancestorPanel.setPreferredSize(new Dimension(AncestorPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
-            scrollAncestorPane.add(ancestorPanel);
-            scrollAncestorPane.setBackground(Color.WHITE);
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            JButton saveButton = new JButton("Save tree");
-            saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    saveButtonActionPerformed(ancestorPanel);
-                }
-            });
-            buttonPanel.add(saveButton);
-
-            drawing.add(buttonPanel, BorderLayout.NORTH);
-            drawing.add(scrollAncestorPane, BorderLayout.CENTER);
-            drawing.setVisible(true);
-
-            ancestorPanel.drawAncestorPanel();
-            System.out.println("Family links done.");
+            System.out.println("Family tree was created.");
         }
-    }//GEN-LAST:event_generateViewButtonActionPerformed
+    }//GEN-LAST:event_generateAncestorButtonActionPerformed
 
-    private void saveButtonActionPerformed(AncestorPanel ancestorPanel) {
-        int returnVal = saverFC.showOpenDialog(ancestorPanel);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = saverFC.getSelectedFile();
-            try {
-                ImageIO.write(ancestorPanel.getPicture(), "PNG", file);
-                System.out.println("Picture was saved to " + file.getName() + ".");
-            } catch (IOException ex) {
-                System.out.println("Saving was failed due to: " + ex.getLocalizedMessage() + ".");
-            }
-        } else {
-            System.out.println("Open command cancelled by user.");
-        }
-    }
+    private void generateManParentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateManParentsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generateManParentsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,7 +230,8 @@ public class ApplicationWindow extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton generateViewButton;
+    private javax.swing.JButton generateAncestorButton;
+    private javax.swing.JButton generateManParentsButton;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JTable recordsTable;
     private javax.swing.JPanel settingsRootPanel;

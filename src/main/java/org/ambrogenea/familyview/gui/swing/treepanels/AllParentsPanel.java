@@ -1,10 +1,6 @@
-package org.ambrogenea.familyview.gui.swing.components;
+package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.model.AncestorPerson;
 
@@ -12,19 +8,14 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class AncestorPanel extends JPanel {
+public class AllParentsPanel extends RootFamilyPanel {
 
-    public static final int MINIMAL_WIDTH = 140;
-    public static final int IMAGE_WIDTH = MINIMAL_WIDTH - 20;
-    public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
     private static final int BORDER_WIDTH = 50;
-    private static final int CIRCLE_SIZE = 7;
-    private static final int SPACE = 7;
 
     private final AncestorPerson model;
     private int verticalShift;
 
-    public AncestorPanel(AncestorPerson model) {
+    public AllParentsPanel(AncestorPerson model) {
         setBackground(Color.WHITE);
         this.setLayout(null);
         this.model = model;
@@ -58,17 +49,4 @@ public class AncestorPanel extends JPanel {
         }
     }
 
-    private void drawPerson(int x, int y, final AncestorPerson person) {
-        JPanel personPanel = new PersonPanel(person);
-        this.add(personPanel);
-        personPanel.setBounds(x - IMAGE_WIDTH / 2, y - IMAGE_HEIGHT / 2, IMAGE_WIDTH, IMAGE_HEIGHT);
-        personPanel.repaint();
-    }
-
-    public BufferedImage getPicture() {
-        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics g = image.getGraphics();
-        this.paint(g);
-        return image;
-    }
 }

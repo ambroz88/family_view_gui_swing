@@ -12,8 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import static org.ambrogenea.familyview.gui.swing.components.AncestorPanel.IMAGE_HEIGHT;
-import static org.ambrogenea.familyview.gui.swing.components.AncestorPanel.IMAGE_WIDTH;
+import static org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel.IMAGE_HEIGHT;
+import static org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel.IMAGE_WIDTH;
 import org.ambrogenea.familyview.model.Couple;
 import org.ambrogenea.familyview.model.Person;
 

@@ -6,8 +6,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_HEIGHT;
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_WIDTH;
 import org.ambrogenea.familyview.model.AncestorPerson;
 
 /**

@@ -12,8 +12,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import static org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel.IMAGE_HEIGHT;
-import static org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel.IMAGE_WIDTH;
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_HEIGHT;
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_WIDTH;
+
 import org.ambrogenea.familyview.model.Couple;
 import org.ambrogenea.familyview.model.Person;
 
@@ -39,8 +40,10 @@ public class PersonPanel extends JPanel {
         this.person = person;
 
         try {
-            String manImagePath = this.getClass().getClassLoader().getResource("man_diagram.png").getPath();
-            String womanImagePath = this.getClass().getClassLoader().getResource("woman_diagram.png").getPath();
+            String manImagePath = "C:\\Users\\Jiri\\Documents\\Family Tree Viewer\\man_diagram.png";
+            String womanImagePath = "C:\\Users\\Jiri\\Documents\\Family Tree Viewer\\woman_diagram.png";
+//            String manImagePath = this.getClass().getClassLoader().getResource("man_diagram.png").getPath();
+//            String womanImagePath = this.getClass().getClassLoader().getResource("woman_diagram.png").getPath();
             manDiagram = ImageIO.read(new File(manImagePath));
             womanDiagram = ImageIO.read(new File(womanImagePath));
         } catch (IOException e) {

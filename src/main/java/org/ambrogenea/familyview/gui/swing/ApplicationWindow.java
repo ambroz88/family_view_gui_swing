@@ -27,7 +27,7 @@ public class ApplicationWindow extends JFrame {
 
     private static final int BORDER_SIZE = 70;
 
-    private final DataModel dataModel;
+    private DataModel dataModel;
     private final JFileChooser openFC;
 
     /**
@@ -35,7 +35,7 @@ public class ApplicationWindow extends JFrame {
      */
     public ApplicationWindow() {
         initComponents();
-        dataModel = new DataModel();
+
         openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
         openFC.setDialogType(JFileChooser.OPEN_DIALOG);
 
@@ -165,6 +165,7 @@ public class ApplicationWindow extends JFrame {
     private void loadTable(String absolutePath) {
         try {
             ArrayList<String> lines = FileIO.FileToLines(absolutePath);
+            dataModel = new DataModel();
             dataModel.loadGEDCOMLines(lines);
             recordsTable.setModel(new Table(dataModel));
         } catch (IOException ex) {

@@ -67,7 +67,7 @@ public class DrawingFrame extends JFrame {
 
     public void generateFathersParents(AncestorPerson personWithAncestors) {
         final ManParentsPanel fathersParentsPanel = new ManParentsPanel(personWithAncestors);
-        fathersParentsPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
+        fathersParentsPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 2), getHeight()));
         scrollAncestorPane.add(fathersParentsPanel);
         fathersParentsPanel.drawAncestorPanel();
 

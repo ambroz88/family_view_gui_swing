@@ -8,14 +8,14 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class ManParentsPanel extends RootFamilyPanel {
+public class FathersParentsPanel extends RootFamilyPanel {
 
     private static final int BORDER_WIDTH = 50;
 
     private final AncestorPerson model;
     private int verticalShift;
 
-    public ManParentsPanel(AncestorPerson model) {
+    public FathersParentsPanel(AncestorPerson model) {
         setBackground(Color.WHITE);
         this.setLayout(null);
         this.model = model;

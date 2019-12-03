@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
-import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.model.Person;
 
 /**
  *
@@ -15,13 +15,14 @@ import org.ambrogenea.familyview.model.AncestorPerson;
 public class RootFamilyPanel extends JPanel {
 
     public static final int MINIMAL_WIDTH = 140;
+    public static final int MINIMAL_HEIGHT = 150;
     public static final int IMAGE_WIDTH = MINIMAL_WIDTH - 20;
     public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
 
     public RootFamilyPanel() {
     }
 
-    protected void drawPerson(int x, int y, final AncestorPerson person) {
+    protected void drawPerson(int x, int y, final Person person) {
         JPanel personPanel = new PersonPanel(person);
         this.add(personPanel);
         personPanel.setBounds(x - IMAGE_WIDTH / 2, y - IMAGE_HEIGHT / 2, IMAGE_WIDTH, IMAGE_HEIGHT);

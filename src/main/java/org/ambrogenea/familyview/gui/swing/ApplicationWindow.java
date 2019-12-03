@@ -58,7 +58,8 @@ public class ApplicationWindow extends JFrame {
         tableScroll = new javax.swing.JScrollPane();
         recordsTable = new javax.swing.JTable();
         generateAncestorButton = new javax.swing.JButton();
-        generateManParentsButton = new javax.swing.JButton();
+        generateFathersParentsButton = new javax.swing.JButton();
+        generateSiblingsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -90,10 +91,17 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
-        generateManParentsButton.setText("Generate man parents");
-        generateManParentsButton.addActionListener(new java.awt.event.ActionListener() {
+        generateFathersParentsButton.setText("Generate father's parents");
+        generateFathersParentsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateManParentsButtonActionPerformed(evt);
+                generateFathersParentsButtonActionPerformed(evt);
+            }
+        });
+
+        generateSiblingsButton.setText("Generate fathers with siblings");
+        generateSiblingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateSiblingsButtonActionPerformed(evt);
             }
         });
 
@@ -107,7 +115,9 @@ public class ApplicationWindow extends JFrame {
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(loadInputButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generateManParentsButton)
+                        .addComponent(generateFathersParentsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generateSiblingsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(generateAncestorButton))
                     .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1150, Short.MAX_VALUE))
@@ -120,7 +130,8 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadInputButton)
                     .addComponent(generateAncestorButton)
-                    .addComponent(generateManParentsButton))
+                    .addComponent(generateFathersParentsButton)
+                    .addComponent(generateSiblingsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
                 .addContainerGap())
@@ -175,7 +186,6 @@ public class ApplicationWindow extends JFrame {
 
     private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            System.out.println("Row index selected: " + recordsTable.getSelectedRow());
 
             AncestorModel ancestors = new AncestorModel(dataModel);
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
@@ -190,9 +200,8 @@ public class ApplicationWindow extends JFrame {
         }
     }//GEN-LAST:event_generateAncestorButtonActionPerformed
 
-    private void generateManParentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateManParentsButtonActionPerformed
+    private void generateFathersParentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateFathersParentsButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            System.out.println("Row index selected: " + recordsTable.getSelectedRow());
 
             AncestorModel ancestors = new AncestorModel(dataModel);
             AncestorPerson personWithAncestors = ancestors.generateManParents(recordsTable.getSelectedRow());
@@ -205,7 +214,23 @@ public class ApplicationWindow extends JFrame {
 
             System.out.println("Family tree was created.");
         }
-    }//GEN-LAST:event_generateManParentsButtonActionPerformed
+    }//GEN-LAST:event_generateFathersParentsButtonActionPerformed
+
+    private void generateSiblingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSiblingsButtonActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
+            System.out.println("There will be generated fathers of: " + personWithAncestors.getName() + " with their siblings");
+
+            DrawingFrame drawing = new DrawingFrame("Families of fathers of " + personWithAncestors.getName());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateFathersParentsWithSiblings(personWithAncestors);
+
+            System.out.println("Family tree was created.");
+        }
+    }//GEN-LAST:event_generateSiblingsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,7 +270,8 @@ public class ApplicationWindow extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton generateAncestorButton;
-    private javax.swing.JButton generateManParentsButton;
+    private javax.swing.JButton generateFathersParentsButton;
+    private javax.swing.JButton generateSiblingsButton;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JTable recordsTable;
     private javax.swing.JPanel settingsRootPanel;

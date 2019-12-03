@@ -17,7 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.ManParentsPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.FathersParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 
@@ -53,7 +54,8 @@ public class DrawingFrame extends JFrame {
 
     public void generateAllAncestors(AncestorPerson personWithAncestors) {
         final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors);
-        ancestorPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), getHeight()));
+        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
+        ancestorPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), pictureHeight));
         scrollAncestorPane.add(ancestorPanel);
         ancestorPanel.drawAncestorPanel();
 
@@ -66,8 +68,9 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateFathersParents(AncestorPerson personWithAncestors) {
-        final ManParentsPanel fathersParentsPanel = new ManParentsPanel(personWithAncestors);
-        fathersParentsPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 2), getHeight()));
+        final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors);
+        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
+        fathersParentsPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 2), pictureHeight));
         scrollAncestorPane.add(fathersParentsPanel);
         fathersParentsPanel.drawAncestorPanel();
 
@@ -75,6 +78,21 @@ public class DrawingFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 saveButtonActionPerformed(fathersParentsPanel);
+            }
+        });
+    }
+
+    public void generateFathersParentsWithSiblings(AncestorPerson personWithAncestors) {
+        final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors);
+        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
+        fathersFamilyPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 20), pictureHeight));
+        scrollAncestorPane.add(fathersFamilyPanel);
+        fathersFamilyPanel.drawAncestorPanel();
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(fathersFamilyPanel);
             }
         });
     }

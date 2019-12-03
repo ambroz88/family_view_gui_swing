@@ -40,10 +40,8 @@ public class PersonPanel extends JPanel {
         this.person = person;
 
         try {
-            String manImagePath = "C:\\Users\\Jiri\\Documents\\Family Tree Viewer\\man_diagram.png";
-            String womanImagePath = "C:\\Users\\Jiri\\Documents\\Family Tree Viewer\\woman_diagram.png";
-//            String manImagePath = this.getClass().getClassLoader().getResource("man_diagram.png").getPath();
-//            String womanImagePath = this.getClass().getClassLoader().getResource("woman_diagram.png").getPath();
+            String manImagePath = this.getClass().getResource("/diagrams/man_diagram.png").getPath();
+            String womanImagePath = this.getClass().getResource("/diagrams/woman_diagram.png").getPath();
             manDiagram = ImageIO.read(new File(manImagePath));
             womanDiagram = ImageIO.read(new File(womanImagePath));
         } catch (IOException e) {

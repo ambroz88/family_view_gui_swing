@@ -2,6 +2,9 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import java.awt.Color;
 
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MINIMAL_HEIGHT;
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MINIMAL_WIDTH;
+
 import org.ambrogenea.familyview.model.AncestorPerson;
 
 /**
@@ -13,7 +16,6 @@ public class FathersParentsPanel extends RootFamilyPanel {
     private static final int BORDER_WIDTH = 50;
 
     private final AncestorPerson model;
-    private int verticalShift;
 
     public FathersParentsPanel(AncestorPerson model) {
         setBackground(Color.WHITE);
@@ -22,23 +24,26 @@ public class FathersParentsPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
-        drawPerson((MINIMAL_WIDTH - BORDER_WIDTH) * model.getAncestorGenerations() + 2 * BORDER_WIDTH, getHeight() - verticalShift, model);
+        int x = (MINIMAL_WIDTH - BORDER_WIDTH) * model.getAncestorGenerations() + 2 * BORDER_WIDTH;
+        int y = getHeight() - MINIMAL_HEIGHT;
+        drawPerson(x, y, model);
 
-        drawFathersParents(model);
+        drawFathersFamily(x, y, model);
     }
 
-    private void drawFathersParents(AncestorPerson person) {
+    private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getFather() != null) {
-            int y = getHeight() - verticalShift * (person.getFather().getAncestorLine().size());
-            int x = (MINIMAL_WIDTH - BORDER_WIDTH) * person.getFather().getAncestorGenerations() + 2 * BORDER_WIDTH;
+            int y = childYPosition - MINIMAL_HEIGHT;
+
+            drawLineToParents(childXPosition, childYPosition);
+            int fatherXPosition = childXPosition - MINIMAL_WIDTH + BORDER_WIDTH;
+            drawPerson(fatherXPosition, y, person.getFather());
 
             if (person.getMother() != null) {
-                drawPerson(x + 2 * (MINIMAL_WIDTH - BORDER_WIDTH), y, person.getMother());
+                drawPerson(childXPosition + MINIMAL_WIDTH - BORDER_WIDTH, y, person.getMother());
             }
 
-            drawPerson(x, y, person.getFather());
-            drawFathersParents(person.getFather());
+            drawFathersFamily(fatherXPosition, y, person.getFather());
         }
     }
 

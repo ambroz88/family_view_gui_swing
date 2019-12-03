@@ -24,25 +24,27 @@ public class FathersFamilyPanel extends RootFamilyPanel {
 
     public void drawAncestorPanel() {
         int x = getWidth() / 2 + MINIMAL_WIDTH / 2;
-        drawPerson(x, getHeight() - MINIMAL_HEIGHT, model);
+        int y = getHeight() - MINIMAL_HEIGHT;
+        drawPerson(x, y, model);
 
-        drawFathersFamily(x, model);
+        drawFathersFamily(x, y, model);
     }
 
-    private void drawFathersFamily(int childPosition, AncestorPerson person) {
+    private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getFather() != null) {
-            int y = getHeight() - MINIMAL_HEIGHT * (person.getFather().getAncestorLine().size());
+            int y = childYPosition - MINIMAL_HEIGHT;
 
-            int fatherXPosition = childPosition - MINIMAL_WIDTH + BORDER_WIDTH;
+            drawLineToParents(childXPosition, childYPosition);
+            int fatherXPosition = childXPosition - MINIMAL_WIDTH + BORDER_WIDTH;
             drawPerson(fatherXPosition, y, person.getFather());
 
             if (person.getMother() != null) {
-                drawPerson(childPosition + MINIMAL_WIDTH - BORDER_WIDTH, y, person.getMother());
+                drawPerson(childXPosition + MINIMAL_WIDTH - BORDER_WIDTH, y, person.getMother());
             }
 
             drawSiblings(fatherXPosition, y, person.getFather());
 
-            drawFathersFamily(fatherXPosition, person.getFather());
+            drawFathersFamily(fatherXPosition, y, person.getFather());
         }
     }
 

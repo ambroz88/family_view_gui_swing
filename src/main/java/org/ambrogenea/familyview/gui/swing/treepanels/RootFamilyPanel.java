@@ -1,11 +1,16 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.model.Person;
 
 /**
@@ -19,7 +24,10 @@ public class RootFamilyPanel extends JPanel {
     public static final int IMAGE_WIDTH = MINIMAL_WIDTH - 20;
     public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
 
+    protected final ArrayList<Line> lines;
+
     public RootFamilyPanel() {
+        lines = new ArrayList<>();
     }
 
     protected void drawPerson(int x, int y, final Person person) {
@@ -27,6 +35,23 @@ public class RootFamilyPanel extends JPanel {
         this.add(personPanel);
         personPanel.setBounds(x - IMAGE_WIDTH / 2, y - IMAGE_HEIGHT / 2, IMAGE_WIDTH, IMAGE_HEIGHT);
         personPanel.repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(1));
+
+        for (Line line : lines) {
+            g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
+        }
+
+    }
+
+    protected void drawLineToParents(int childXPosition, int childYPosition) {
+        lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - MINIMAL_HEIGHT));
+        lines.add(new Line(childXPosition - MINIMAL_WIDTH, childYPosition - MINIMAL_HEIGHT, childXPosition + MINIMAL_WIDTH, childYPosition - MINIMAL_HEIGHT));
     }
 
     public BufferedImage getPicture() {

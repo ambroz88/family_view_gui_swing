@@ -12,7 +12,7 @@ import org.ambrogenea.familyview.model.Person;
 public class FathersFamilyPanel extends RootFamilyPanel {
 
     private static final int BORDER_WIDTH = 50;
-    private static final int SIBLING_SHIFT = 20;
+    private static final int SIBLING_SHIFT = 15;
 
     private final AncestorPerson model;
 
@@ -34,7 +34,7 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         if (person.getFather() != null) {
             int y = childYPosition - MINIMAL_HEIGHT;
 
-            drawLineToParents(childXPosition, childYPosition);
+            addLineToParents(childXPosition, childYPosition);
             int fatherXPosition = childXPosition - MINIMAL_WIDTH + BORDER_WIDTH;
             drawPerson(fatherXPosition, y, person.getFather());
 
@@ -48,19 +48,25 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         }
     }
 
-    private void drawSiblings(int x, int y, AncestorPerson father) {
+    private void drawSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson father) {
 
         Person sibling;
         int olderSiblingCount = father.getOlderSiblings().size();
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = father.getOlderSiblings().get(i);
-            drawPerson(x - (olderSiblingCount - i) * MINIMAL_WIDTH - BORDER_WIDTH, y + SIBLING_SHIFT, sibling);
+
+            int startX = rootSiblingX - (olderSiblingCount - i) * MINIMAL_WIDTH - BORDER_WIDTH;
+            drawPerson(startX, rootSiblingY - SIBLING_SHIFT, sibling);
+            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
 
         int youngerSiblingCount = father.getYoungerSiblings().size();
         for (int i = 0; i < youngerSiblingCount; i++) {
             sibling = father.getYoungerSiblings().get(i);
-            drawPerson(x + 2 * MINIMAL_WIDTH + i * MINIMAL_WIDTH + 2 * BORDER_WIDTH, y + SIBLING_SHIFT, sibling);
+
+            int startX = rootSiblingX + 2 * MINIMAL_WIDTH + i * MINIMAL_WIDTH + 2 * BORDER_WIDTH;
+            drawPerson(startX, rootSiblingY + SIBLING_SHIFT, sibling);
+            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
     }
 

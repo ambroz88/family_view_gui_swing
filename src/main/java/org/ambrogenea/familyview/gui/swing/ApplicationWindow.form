@@ -71,7 +71,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="loadInputButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="generateFathersParentsButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="generateLineageButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="generateSiblingsButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -90,7 +90,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="loadInputButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="generateAncestorButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="generateFathersParentsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="generateLineageButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="generateSiblingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -130,17 +130,17 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateAncestorButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="generateFathersParentsButton">
+            <Component class="javax.swing.JButton" name="generateLineageButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Generate father&apos;s parents"/>
+                <Property name="text" type="java.lang.String" value="Generate lineage"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateFathersParentsButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateLineageButtonActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="generateSiblingsButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Generate fathers with siblings"/>
+                <Property name="text" type="java.lang.String" value="Generate lineage with siblings"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateSiblingsButtonActionPerformed"/>

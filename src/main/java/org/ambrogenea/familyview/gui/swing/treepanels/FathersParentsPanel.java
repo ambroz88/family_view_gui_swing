@@ -35,7 +35,7 @@ public class FathersParentsPanel extends RootFamilyPanel {
         if (person.getFather() != null) {
             int y = childYPosition - MINIMAL_HEIGHT;
 
-            drawLineToParents(childXPosition, childYPosition);
+            addLineToParents(childXPosition, childYPosition);
             int fatherXPosition = childXPosition - MINIMAL_WIDTH + BORDER_WIDTH;
             drawPerson(fatherXPosition, y, person.getFather());
 

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -35,6 +36,8 @@ public class ApplicationWindow extends JFrame {
      */
     public ApplicationWindow() {
         initComponents();
+        ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("SW Icon.png"));
+        setIconImage(img.getImage());
 
         openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
         openFC.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -58,7 +61,7 @@ public class ApplicationWindow extends JFrame {
         tableScroll = new javax.swing.JScrollPane();
         recordsTable = new javax.swing.JTable();
         generateAncestorButton = new javax.swing.JButton();
-        generateFathersParentsButton = new javax.swing.JButton();
+        generateLineageButton = new javax.swing.JButton();
         generateSiblingsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,14 +94,14 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
-        generateFathersParentsButton.setText("Generate father's parents");
-        generateFathersParentsButton.addActionListener(new java.awt.event.ActionListener() {
+        generateLineageButton.setText("Generate lineage");
+        generateLineageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateFathersParentsButtonActionPerformed(evt);
+                generateLineageButtonActionPerformed(evt);
             }
         });
 
-        generateSiblingsButton.setText("Generate fathers with siblings");
+        generateSiblingsButton.setText("Generate lineage with siblings");
         generateSiblingsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateSiblingsButtonActionPerformed(evt);
@@ -115,7 +118,7 @@ public class ApplicationWindow extends JFrame {
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(loadInputButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generateFathersParentsButton)
+                        .addComponent(generateLineageButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(generateSiblingsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -130,7 +133,7 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadInputButton)
                     .addComponent(generateAncestorButton)
-                    .addComponent(generateFathersParentsButton)
+                    .addComponent(generateLineageButton)
                     .addComponent(generateSiblingsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
@@ -200,7 +203,7 @@ public class ApplicationWindow extends JFrame {
         }
     }//GEN-LAST:event_generateAncestorButtonActionPerformed
 
-    private void generateFathersParentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateFathersParentsButtonActionPerformed
+    private void generateLineageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineageButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
 
             AncestorModel ancestors = new AncestorModel(dataModel);
@@ -214,7 +217,7 @@ public class ApplicationWindow extends JFrame {
 
             System.out.println("Family tree was created.");
         }
-    }//GEN-LAST:event_generateFathersParentsButtonActionPerformed
+    }//GEN-LAST:event_generateLineageButtonActionPerformed
 
     private void generateSiblingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSiblingsButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
@@ -270,7 +273,7 @@ public class ApplicationWindow extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton generateAncestorButton;
-    private javax.swing.JButton generateFathersParentsButton;
+    private javax.swing.JButton generateLineageButton;
     private javax.swing.JButton generateSiblingsButton;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JTable recordsTable;

@@ -11,7 +11,6 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class FathersFamilyPanel extends RootFamilyPanel {
 
-    private static final int BORDER_WIDTH = 50;
     private static final int SIBLING_SHIFT = 15;
 
     private final AncestorPerson model;
@@ -42,6 +41,7 @@ public class FathersFamilyPanel extends RootFamilyPanel {
                 drawPerson(childXPosition + MINIMAL_WIDTH - BORDER_WIDTH, y, person.getMother());
             }
 
+            drawLabel(childXPosition, y, person.getParents().getMarriageDate());
             drawSiblings(fatherXPosition, y, person.getFather());
 
             drawFathersFamily(fatherXPosition, y, person.getFather());

@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_HEIGHT;
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_WIDTH;
 
+import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
 
@@ -22,8 +23,6 @@ import org.ambrogenea.familyview.model.Person;
  * @author Jiri Ambroz
  */
 public class PersonPanel extends JPanel {
-
-    private final static int FONT_SIZE = 11;
 
     private final Person person;
     private BufferedImage manDiagram;
@@ -60,10 +59,10 @@ public class PersonPanel extends JPanel {
         birth = new JLabel("", JLabel.CENTER);
         death = new JLabel("", JLabel.CENTER);
 
-        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, FONT_SIZE));
-        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, FONT_SIZE));
-        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, FONT_SIZE - 1));
-        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, FONT_SIZE - 1));
+        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, RootFamilyPanel.FONT_SIZE));
+        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, RootFamilyPanel.FONT_SIZE));
+        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, RootFamilyPanel.FONT_SIZE - 1));
+        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, RootFamilyPanel.FONT_SIZE - 1));
 
         firstName.setBackground(null);
         surName.setBackground(null);

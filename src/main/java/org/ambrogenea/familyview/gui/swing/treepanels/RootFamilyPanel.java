@@ -3,11 +3,13 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
@@ -24,6 +26,9 @@ public class RootFamilyPanel extends JPanel {
     public static final int IMAGE_WIDTH = MINIMAL_WIDTH - 20;
     public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
     public static final int MINIMAL_HEIGHT = IMAGE_HEIGHT * 2;
+    public static final int BORDER_WIDTH = 50;
+
+    public final static int FONT_SIZE = 11;
 
     protected final ArrayList<Line> lines;
 
@@ -39,8 +44,17 @@ public class RootFamilyPanel extends JPanel {
         personPanel.repaint();
     }
 
+    protected void drawLabel(int centerX, int centerY, String text) {
+        JLabel date = new JLabel(text, JLabel.CENTER);
+        date.setPreferredSize(new Dimension(100, 20));
+        this.add(date);
+        date.setBounds(centerX - 50, centerY - BORDER_WIDTH / 2, 100, 20);
+        date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, FONT_SIZE - 1));
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.BLACK);
 

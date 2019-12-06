@@ -10,8 +10,6 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  */
 public class AllParentsPanel extends RootFamilyPanel {
 
-    private static final int BORDER_WIDTH = 50;
-
     private final AncestorPerson model;
     private int verticalShift;
 

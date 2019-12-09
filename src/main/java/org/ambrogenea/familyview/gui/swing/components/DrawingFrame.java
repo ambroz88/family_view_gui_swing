@@ -11,10 +11,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
@@ -33,12 +35,11 @@ public class DrawingFrame extends JFrame {
     private final ScrollPane scrollAncestorPane;
 
     public DrawingFrame(String title) {
-        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
-        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
+        initComponent(title);
 
-        setTitle(title);
-        setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(800, 600));
+        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        saverFC.setFileFilter(new FileNameExtensionFilter("PNG file", "png"));
+        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
 
         scrollAncestorPane = new ScrollPane();
         scrollAncestorPane.setBackground(Color.WHITE);
@@ -49,6 +50,14 @@ public class DrawingFrame extends JFrame {
 
         add(buttonPanel, BorderLayout.NORTH);
         add(scrollAncestorPane, BorderLayout.CENTER);
+    }
+
+    private void initComponent(String title) {
+        setTitle(title);
+        ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("SW Icon.png"));
+        setIconImage(img.getImage());
+        setLayout(new BorderLayout());
+        setMinimumSize(new Dimension(800, 600));
         setVisible(true);
     }
 
@@ -103,10 +112,13 @@ public class DrawingFrame extends JFrame {
     }
 
     private void saveButtonActionPerformed(RootFamilyPanel ancestorPanel) {
-        int returnVal = saverFC.showOpenDialog(ancestorPanel);
+        int returnVal = saverFC.showSaveDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = saverFC.getSelectedFile();
+            if (!file.getAbsolutePath().contains(".")) {
+                file = new File(file.getAbsolutePath() + ".png");
+            }
             try {
                 ImageIO.write(ancestorPanel.getPicture(), "PNG", file);
                 System.out.println("Picture was saved to " + file.getName() + ".");

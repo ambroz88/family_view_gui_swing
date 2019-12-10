@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Person;
 
 /**
@@ -22,18 +24,27 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class RootFamilyPanel extends JPanel {
 
-    public static final int MINIMAL_WIDTH = 140;
-    public static final int IMAGE_WIDTH = MINIMAL_WIDTH - 20;
+    public static final int IMAGE_WIDTH = 140;
     public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
-    public static final int MINIMAL_HEIGHT = IMAGE_HEIGHT * 2;
-    public static final int BORDER_WIDTH = 50;
+    public static final int MARRIAGE_LABEL_WIDTH = 120;
 
-    public final static int FONT_SIZE = 11;
+    public static final int HORIZONTAL_GAP = 20;
+    public static final int VERTICAL_GAP = IMAGE_HEIGHT;
+
+    public final static int FONT_SIZE = 13;
 
     protected final ArrayList<Line> lines;
+    protected final AncestorPerson model;
 
-    public RootFamilyPanel() {
+    public RootFamilyPanel(AncestorPerson model) {
+        this.model = model;
         lines = new ArrayList<>();
+        initPanel();
+    }
+
+    private void initPanel() {
+        setBackground(Color.WHITE);
+        this.setLayout(null);
     }
 
     protected void drawPerson(int centerX, int centerY, final Person person) {
@@ -41,15 +52,16 @@ public class RootFamilyPanel extends JPanel {
         personPanel.setPreferredSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
         this.add(personPanel);
         personPanel.setBounds(centerX - IMAGE_WIDTH / 2, centerY - IMAGE_HEIGHT / 2, IMAGE_WIDTH, IMAGE_HEIGHT);
-        personPanel.repaint();
     }
 
     protected void drawLabel(int centerX, int centerY, String text) {
+        int labelHeight = 30;
         JLabel date = new JLabel(text, JLabel.CENTER);
-        date.setPreferredSize(new Dimension(100, 20));
-        this.add(date);
-        date.setBounds(centerX - 50, centerY - BORDER_WIDTH / 2, 100, 20);
+        date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH, labelHeight));
         date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, FONT_SIZE - 1));
+        date.setBorder(new LineBorder(Color.BLACK));
+        this.add(date);
+        date.setBounds(centerX - MARRIAGE_LABEL_WIDTH / 2, centerY - labelHeight, MARRIAGE_LABEL_WIDTH, labelHeight);
     }
 
     @Override
@@ -66,14 +78,16 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void addLineToParents(int childXPosition, int childYPosition) {
-        lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - MINIMAL_HEIGHT));
-        lines.add(new Line(childXPosition - MINIMAL_WIDTH, childYPosition - MINIMAL_HEIGHT, childXPosition + MINIMAL_WIDTH, childYPosition - MINIMAL_HEIGHT));
+        int horizontalShift = (IMAGE_WIDTH + MARRIAGE_LABEL_WIDTH) / 2;
+        lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - IMAGE_HEIGHT - VERTICAL_GAP));
+        lines.add(new Line(childXPosition - horizontalShift, childYPosition - IMAGE_HEIGHT - VERTICAL_GAP, childXPosition + horizontalShift, childYPosition - IMAGE_HEIGHT - VERTICAL_GAP));
     }
 
     protected void addSiblingsToParents(int startX, int rootSiblingY, int rootSiblingX) {
-        lines.add(new Line(startX, rootSiblingY - MINIMAL_HEIGHT / 2, rootSiblingX, rootSiblingY - MINIMAL_HEIGHT / 2));
+        int verticalShift = (IMAGE_HEIGHT + VERTICAL_GAP) / 2;
+        lines.add(new Line(startX, rootSiblingY - verticalShift, rootSiblingX, rootSiblingY - verticalShift));
         lines.get(lines.size() - 1).setType(Line.SIBLINGS);
-        lines.add(new Line(startX, rootSiblingY - MINIMAL_HEIGHT / 2, startX, rootSiblingY));
+        lines.add(new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY));
         lines.get(lines.size() - 1).setType(Line.SIBLINGS);
     }
 

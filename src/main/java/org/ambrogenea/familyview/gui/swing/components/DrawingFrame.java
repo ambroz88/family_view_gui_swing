@@ -62,10 +62,10 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateAllAncestors(AncestorPerson personWithAncestors) {
-        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
+        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
 
         final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors);
-        ancestorPanel.setPreferredSize(new Dimension(RootFamilyPanel.MINIMAL_WIDTH * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), pictureHeight));
+        ancestorPanel.setPreferredSize(new Dimension((RootFamilyPanel.IMAGE_WIDTH + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), pictureHeight));
         scrollAncestorPane.add(ancestorPanel);
         ancestorPanel.drawAncestorPanel();
 
@@ -78,8 +78,8 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateFathersParents(AncestorPerson personWithAncestors) {
-        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
-        int pictureWidth = RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 2);
+        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = RootFamilyPanel.IMAGE_WIDTH * (personWithAncestors.getAncestorGenerations() + 1);
 
         final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors);
         fathersParentsPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
@@ -95,8 +95,8 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateFathersParentsWithSiblings(AncestorPerson personWithAncestors) {
-        int pictureHeight = RootFamilyPanel.MINIMAL_HEIGHT * (personWithAncestors.getAncestorGenerations() + 2);
-        int pictureWidth = RootFamilyPanel.MINIMAL_WIDTH * (personWithAncestors.getAncestorGenerations() + 20);
+        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = (RootFamilyPanel.IMAGE_WIDTH + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
 
         final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

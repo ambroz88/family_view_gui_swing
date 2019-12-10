@@ -1,10 +1,5 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
-import java.awt.Color;
-
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MINIMAL_HEIGHT;
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MINIMAL_WIDTH;
-
 import org.ambrogenea.familyview.model.AncestorPerson;
 
 /**
@@ -13,17 +8,13 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  */
 public class FathersParentsPanel extends RootFamilyPanel {
 
-    private final AncestorPerson model;
-
     public FathersParentsPanel(AncestorPerson model) {
-        setBackground(Color.WHITE);
-        this.setLayout(null);
-        this.model = model;
+        super(model);
     }
 
     public void drawAncestorPanel() {
-        int x = (MINIMAL_WIDTH - BORDER_WIDTH) * model.getAncestorGenerations() + 2 * BORDER_WIDTH;
-        int y = getHeight() - MINIMAL_HEIGHT;
+        int x = IMAGE_WIDTH * (model.getAncestorGenerations() + 1);
+        int y = getHeight() - IMAGE_HEIGHT;
         drawPerson(x, y, model);
 
         drawFathersFamily(x, y, model);
@@ -31,14 +22,15 @@ public class FathersParentsPanel extends RootFamilyPanel {
 
     private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getFather() != null) {
-            int y = childYPosition - MINIMAL_HEIGHT;
+            int y = childYPosition - IMAGE_HEIGHT - VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
-            int fatherXPosition = childXPosition - MINIMAL_WIDTH + BORDER_WIDTH;
+            int fatherXPosition = childXPosition - (IMAGE_HEIGHT / 2 + MARRIAGE_LABEL_WIDTH / 2);
             drawPerson(fatherXPosition, y, person.getFather());
 
+            int motherXPosition = childXPosition + (IMAGE_HEIGHT / 2 + MARRIAGE_LABEL_WIDTH / 2);
             if (person.getMother() != null) {
-                drawPerson(childXPosition + MINIMAL_WIDTH - BORDER_WIDTH, y, person.getMother());
+                drawPerson(motherXPosition, y, person.getMother());
             }
 
             drawLabel(childXPosition, y, person.getParents().getMarriageDate());

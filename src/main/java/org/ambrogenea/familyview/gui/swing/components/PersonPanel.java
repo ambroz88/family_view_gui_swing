@@ -94,12 +94,7 @@ public class PersonPanel extends JPanel {
         if (!person.getDeathDate().isEmpty()) {
             death.setText("\u271D " + person.getDeathDate());
         }
-//        birth.setText("\u2605 " + getYear(person.getBirthDate()) + " - " + "\u271D " + getYear(person.getDeathDate()));
 
     }
 
-    private String getYear(String date) {
-        String[] dateParts = date.split(" ");
-        return dateParts[dateParts.length - 1];
-    }
 }

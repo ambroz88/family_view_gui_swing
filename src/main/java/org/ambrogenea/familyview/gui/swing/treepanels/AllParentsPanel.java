@@ -1,7 +1,5 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
-import java.awt.Color;
-
 import org.ambrogenea.familyview.model.AncestorPerson;
 
 /**
@@ -10,18 +8,12 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  */
 public class AllParentsPanel extends RootFamilyPanel {
 
-    private final AncestorPerson model;
-    private int verticalShift;
-
     public AllParentsPanel(AncestorPerson model) {
-        setBackground(Color.WHITE);
-        this.setLayout(null);
-        this.model = model;
+        super(model);
     }
 
     public void drawAncestorPanel() {
-        verticalShift = getHeight() / (model.getAncestorGenerations() + 2);
-        drawPerson(MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) / 2, getHeight() - verticalShift, model);
+        drawPerson(getWidth() / 2, getHeight() - IMAGE_HEIGHT, model);
 
         drawParentsParent(model.getFather());
         drawParentsParent(model.getMother());
@@ -29,8 +21,8 @@ public class AllParentsPanel extends RootFamilyPanel {
 
     private void drawParentsParent(AncestorPerson person) {
         if (person != null) {
-            int y = getHeight() - verticalShift * (person.getAncestorLine().size());
-            int x = (MINIMAL_WIDTH * (int) Math.pow(2, model.getAncestorGenerations()) - BORDER_WIDTH) / 2;
+            int x = getWidth() / 2;
+            int y = getHeight() - IMAGE_HEIGHT - (IMAGE_HEIGHT + VERTICAL_GAP) * (person.getAncestorLine().size() - 1);
             int shiftWidth = x;
             int shift;
 

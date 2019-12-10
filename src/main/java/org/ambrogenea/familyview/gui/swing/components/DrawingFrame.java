@@ -23,6 +23,7 @@ import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.FathersParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.model.Configuration;
 
 /**
  *
@@ -44,7 +45,7 @@ public class DrawingFrame extends JFrame {
         scrollAncestorPane = new ScrollPane();
         scrollAncestorPane.setBackground(Color.WHITE);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         saveButton = new JButton("Save tree");
         buttonPanel.add(saveButton);
 
@@ -61,12 +62,14 @@ public class DrawingFrame extends JFrame {
         setVisible(true);
     }
 
-    public void generateAllAncestors(AncestorPerson personWithAncestors) {
-        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+    public void generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
+        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2);
 
-        final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors);
-        ancestorPanel.setPreferredSize(new Dimension((RootFamilyPanel.IMAGE_WIDTH + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2), pictureHeight));
+        final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors, config);
+        ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(ancestorPanel);
+        scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
         ancestorPanel.drawAncestorPanel();
 
         saveButton.addActionListener(new ActionListener() {
@@ -77,13 +80,14 @@ public class DrawingFrame extends JFrame {
         });
     }
 
-    public void generateFathersParents(AncestorPerson personWithAncestors) {
-        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = RootFamilyPanel.IMAGE_WIDTH * (personWithAncestors.getAncestorGenerations() + 1);
+    public void generateFathersParents(AncestorPerson personWithAncestors, Configuration config) {
+        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 1);
 
-        final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors);
+        final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors, config);
         fathersParentsPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersParentsPanel);
+        scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
         fathersParentsPanel.drawAncestorPanel();
 
         saveButton.addActionListener(new ActionListener() {
@@ -94,13 +98,14 @@ public class DrawingFrame extends JFrame {
         });
     }
 
-    public void generateFathersParentsWithSiblings(AncestorPerson personWithAncestors) {
-        int pictureHeight = (RootFamilyPanel.IMAGE_HEIGHT + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = (RootFamilyPanel.IMAGE_WIDTH + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
+    public void generateFathersParentsWithSiblings(AncestorPerson personWithAncestors, Configuration config) {
+        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
 
-        final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors);
+        final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
+        scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
         fathersFamilyPanel.drawAncestorPanel();
 
         saveButton.addActionListener(new ActionListener() {

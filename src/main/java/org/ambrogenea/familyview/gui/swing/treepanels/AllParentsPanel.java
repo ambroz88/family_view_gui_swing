@@ -1,6 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.model.Configuration;
 
 /**
  *
@@ -8,21 +9,21 @@ import org.ambrogenea.familyview.model.AncestorPerson;
  */
 public class AllParentsPanel extends RootFamilyPanel {
 
-    public AllParentsPanel(AncestorPerson model) {
-        super(model);
+    public AllParentsPanel(AncestorPerson model, Configuration config) {
+        super(model, config);
     }
 
     public void drawAncestorPanel() {
-        drawPerson(getWidth() / 2, getHeight() - IMAGE_HEIGHT, model);
+        drawPerson(getWidth() / 2, getHeight() - getConfiguration().getAdultImageHeight(), personModel);
 
-        drawParentsParent(model.getFather());
-        drawParentsParent(model.getMother());
+        drawParentsParent(personModel.getFather());
+        drawParentsParent(personModel.getMother());
     }
 
     private void drawParentsParent(AncestorPerson person) {
         if (person != null) {
             int x = getWidth() / 2;
-            int y = getHeight() - IMAGE_HEIGHT - (IMAGE_HEIGHT + VERTICAL_GAP) * (person.getAncestorLine().size() - 1);
+            int y = getHeight() - getConfiguration().getAdultImageHeight() - (getConfiguration().getAdultImageHeight() + VERTICAL_GAP) * (person.getAncestorLine().size() - 1);
             int shiftWidth = x;
             int shift;
 

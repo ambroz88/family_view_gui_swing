@@ -1,6 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Person;
 
 /**
@@ -9,28 +10,28 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class FathersFamilyPanel extends RootFamilyPanel {
 
-    public FathersFamilyPanel(AncestorPerson model) {
-        super(model);
+    public FathersFamilyPanel(AncestorPerson model, Configuration config) {
+        super(model, config);
     }
 
     public void drawAncestorPanel() {
         int x = getWidth() / 2;
         int y = getHeight() - VERTICAL_GAP;
-        drawPerson(x, y, model);
+        drawPerson(x, y, personModel);
 
-        drawFathersFamily(x, y, model);
+        drawFathersFamily(x, y, personModel);
     }
 
     private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getFather() != null) {
-            int y = childYPosition - IMAGE_HEIGHT - VERTICAL_GAP;
+            int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
 
-            int fatherXPosition = childXPosition - (IMAGE_HEIGHT / 2 + MARRIAGE_LABEL_WIDTH / 2);
+            int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
             drawPerson(fatherXPosition, y, person.getFather());
 
-            int motherXPosition = childXPosition + (IMAGE_HEIGHT / 2 + MARRIAGE_LABEL_WIDTH / 2);
+            int motherXPosition = childXPosition + (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
             if (person.getMother() != null) {
                 drawPerson(motherXPosition, y, person.getMother());
             }
@@ -49,7 +50,7 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = father.getOlderSiblings().get(i);
 
-            int startX = rootSiblingX - (olderSiblingCount - i) * (IMAGE_WIDTH + HORIZONTAL_GAP) - 2 * HORIZONTAL_GAP;
+            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - 2 * HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -58,7 +59,7 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         for (int i = 0; i < youngerSiblingCount; i++) {
             sibling = father.getYoungerSiblings().get(i);
 
-            int startX = rootSiblingX + 2 * IMAGE_WIDTH + MARRIAGE_LABEL_WIDTH + 2 * HORIZONTAL_GAP + i * (IMAGE_WIDTH + HORIZONTAL_GAP);
+            int startX = rootSiblingX + 2 * getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH + 2 * HORIZONTAL_GAP + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }

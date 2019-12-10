@@ -21,6 +21,7 @@ import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.DataModel;
 import org.ambrogenea.familyview.model.utils.FileIO;
 
@@ -33,12 +34,14 @@ public class ApplicationWindow extends JFrame {
     private static final int BORDER_SIZE = 70;
 
     private DataModel dataModel;
+    private final Configuration configuration;
     private final JFileChooser openFC;
 
     /**
      * Creates new form ApplicationWindow
      */
     public ApplicationWindow() {
+        configuration = new Configuration();
         initComponents();
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("SW Icon.png"));
         setIconImage(img.getImage());
@@ -68,6 +71,21 @@ public class ApplicationWindow extends JFrame {
         generateAncestorButton = new javax.swing.JButton();
         generateLineageButton = new javax.swing.JButton();
         generateSiblingsButton = new javax.swing.JButton();
+        configPanel = new javax.swing.JPanel();
+        imageWidthField = new javax.swing.JTextField();
+        imageWithLabel = new javax.swing.JLabel();
+        imageHeightLabel = new javax.swing.JLabel();
+        imageHeightField = new javax.swing.JTextField();
+        imageManLoader = new javax.swing.JButton();
+        manImageLabel = new javax.swing.JLabel();
+        womanImageLabel = new javax.swing.JLabel();
+        imageWomanLoader = new javax.swing.JButton();
+        boyImageLabel = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        girlImageLabel = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        verticalOffsetLabel = new javax.swing.JLabel();
+        verticalOffsetField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -113,6 +131,130 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
+        imageWidthField.setText(String.valueOf(this.configuration.getAdultImageWidth()));
+        imageWidthField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageWidthFieldActionPerformed(evt);
+            }
+        });
+
+        imageWithLabel.setText("Image width");
+        imageWithLabel.setMaximumSize(new java.awt.Dimension(80, 16));
+        imageWithLabel.setMinimumSize(new java.awt.Dimension(80, 16));
+        imageWithLabel.setPreferredSize(new java.awt.Dimension(80, 16));
+
+        imageHeightLabel.setText("Image height");
+
+        imageHeightField.setText(String.valueOf(this.configuration.getAdultImageHeight()));
+        imageHeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageHeightFieldActionPerformed(evt);
+            }
+        });
+
+        imageManLoader.setText("...");
+        imageManLoader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageManLoaderActionPerformed(evt);
+            }
+        });
+
+        manImageLabel.setText("Man image");
+
+        womanImageLabel.setText("Woman image");
+
+        imageWomanLoader.setText("...");
+        imageWomanLoader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageWomanLoaderActionPerformed(evt);
+            }
+        });
+
+        boyImageLabel.setText("Boy image");
+
+        jButton3.setText("...");
+
+        girlImageLabel.setText("Girl image");
+
+        jButton4.setText("...");
+
+        verticalOffsetLabel.setText("Vertical offset");
+
+        verticalOffsetField.setText(String.valueOf(this.configuration.getAdultVerticalOffset()));
+        verticalOffsetField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verticalOffsetFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout configPanelLayout = new javax.swing.GroupLayout(configPanel);
+        configPanel.setLayout(configPanelLayout);
+        configPanelLayout.setHorizontalGroup(
+            configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(configPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(configPanelLayout.createSequentialGroup()
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(girlImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(boyImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(womanImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(manImageLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imageWomanLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(imageManLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(configPanelLayout.createSequentialGroup()
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(verticalOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(configPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(imageWithLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                                    .addComponent(imageHeightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imageWidthField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        configPanelLayout.setVerticalGroup(
+            configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(configPanelLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imageWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imageWithLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imageHeightLabel)
+                    .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(verticalOffsetLabel)
+                    .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imageManLoader)
+                    .addComponent(manImageLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imageWomanLoader)
+                    .addComponent(womanImageLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(boyImageLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(girlImageLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
         settingsRootPanelLayout.setHorizontalGroup(
@@ -120,15 +262,18 @@ public class ApplicationWindow extends JFrame {
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(configPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loadInputButton))
+                .addGap(18, 18, 18)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addComponent(loadInputButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(generateLineageButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(generateSiblingsButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(generateAncestorButton))
-                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1150, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(generateAncestorButton)
+                        .addGap(0, 471, Short.MAX_VALUE))
+                    .addComponent(tableScroll))
                 .addContainerGap())
         );
         settingsRootPanelLayout.setVerticalGroup(
@@ -141,7 +286,9 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(generateLineageButton)
                     .addComponent(generateSiblingsButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                    .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -202,7 +349,7 @@ public class ApplicationWindow extends JFrame {
             DrawingFrame drawing = new DrawingFrame("All ancestors of " + personWithAncestors.getName());
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateAllAncestors(personWithAncestors);
+            drawing.generateAllAncestors(personWithAncestors, configuration);
 
             System.out.println("Family tree was created.");
         }
@@ -218,7 +365,7 @@ public class ApplicationWindow extends JFrame {
             DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateFathersParents(personWithAncestors);
+            drawing.generateFathersParents(personWithAncestors, configuration);
 
             System.out.println("Family tree was created.");
         }
@@ -234,11 +381,76 @@ public class ApplicationWindow extends JFrame {
             DrawingFrame drawing = new DrawingFrame("Families of fathers of " + personWithAncestors.getName());
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateFathersParentsWithSiblings(personWithAncestors);
+            drawing.generateFathersParentsWithSiblings(personWithAncestors, configuration);
 
             System.out.println("Family tree was created.");
         }
     }//GEN-LAST:event_generateSiblingsButtonActionPerformed
+
+    private void imageWidthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWidthFieldActionPerformed
+        int imageWidth;
+        try {
+            imageWidth = Integer.valueOf(imageWidthField.getText());
+        } catch (NumberFormatException e) {
+            imageWidth = 140;
+            imageWidthField.setText(String.valueOf(imageWidth));
+        }
+        configuration.setAdultImageWidth(imageWidth);
+    }//GEN-LAST:event_imageWidthFieldActionPerformed
+
+    private void imageHeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageHeightFieldActionPerformed
+        int imageHeight;
+        try {
+            imageHeight = Integer.valueOf(imageHeightField.getText());
+        } catch (NumberFormatException e) {
+            imageHeight = 140;
+            imageHeightField.setText(String.valueOf(imageHeight));
+        }
+        configuration.setAdultImageHeight(imageHeight);
+    }//GEN-LAST:event_imageHeightFieldActionPerformed
+
+    private void verticalOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalOffsetFieldActionPerformed
+        int verticalOffset;
+        try {
+            verticalOffset = Integer.valueOf(verticalOffsetField.getText());
+        } catch (NumberFormatException e) {
+            verticalOffset = 140;
+            verticalOffsetField.setText(String.valueOf(verticalOffset));
+        }
+        configuration.setAdultVerticalOffset(verticalOffset);
+    }//GEN-LAST:event_verticalOffsetFieldActionPerformed
+
+    private void imageManLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageManLoaderActionPerformed
+        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
+        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
+        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        int returnVal = imageChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = imageChooser.getSelectedFile();
+            configuration.setAdultManImagePath(file.getAbsolutePath());
+            System.out.println("Opening: " + file.getName() + ".");
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }//GEN-LAST:event_imageManLoaderActionPerformed
+
+    private void imageWomanLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWomanLoaderActionPerformed
+        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
+        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
+        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        int returnVal = imageChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = imageChooser.getSelectedFile();
+            configuration.setAdultWomanImagePath(file.getAbsolutePath());
+            System.out.println("Opening: " + file.getName() + ".");
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }//GEN-LAST:event_imageWomanLoaderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,14 +484,29 @@ public class ApplicationWindow extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel boyImageLabel;
+    private javax.swing.JPanel configPanel;
     private javax.swing.JButton generateAncestorButton;
     private javax.swing.JButton generateLineageButton;
     private javax.swing.JButton generateSiblingsButton;
+    private javax.swing.JLabel girlImageLabel;
+    private javax.swing.JTextField imageHeightField;
+    private javax.swing.JLabel imageHeightLabel;
+    private javax.swing.JButton imageManLoader;
+    private javax.swing.JTextField imageWidthField;
+    private javax.swing.JLabel imageWithLabel;
+    private javax.swing.JButton imageWomanLoader;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton loadInputButton;
+    private javax.swing.JLabel manImageLabel;
     private javax.swing.JTable recordsTable;
     private javax.swing.JPanel settingsRootPanel;
     private javax.swing.JTabbedPane settingsTab;
     private javax.swing.JScrollPane tableScroll;
+    private javax.swing.JTextField verticalOffsetField;
+    private javax.swing.JLabel verticalOffsetLabel;
+    private javax.swing.JLabel womanImageLabel;
     // End of variables declaration//GEN-END:variables
 
 }

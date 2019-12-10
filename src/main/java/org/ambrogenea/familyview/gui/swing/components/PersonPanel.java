@@ -2,7 +2,8 @@ package org.ambrogenea.familyview.gui.swing.components;
 
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_HEIGHT;
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.IMAGE_WIDTH;
-
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
+import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
 
@@ -25,17 +24,19 @@ import org.ambrogenea.familyview.model.Person;
 public class PersonPanel extends JPanel {
 
     private final Person person;
-    private BufferedImage manDiagram;
-    private BufferedImage womanDiagram;
+    private BufferedImage personDiagram;
+    protected final Configuration configuration;
 
     private JLabel firstName = new JLabel("", JLabel.CENTER);
     private JLabel surName = new JLabel("", JLabel.CENTER);
     private JLabel birth = new JLabel("", JLabel.CENTER);
     private JLabel death = new JLabel("", JLabel.CENTER);
 
-    public PersonPanel(Person person) {
-        super(new GridLayout(6, 1, 5, 0));
+    public PersonPanel(Person person, Configuration config) {
+        super(new GridBagLayout());
+
         this.person = person;
+        this.configuration = config;
 
         loadPictures();
         initLabels();
@@ -44,10 +45,13 @@ public class PersonPanel extends JPanel {
 
     private void loadPictures() {
         try {
-            String manImagePath = this.getClass().getResource("/diagrams/man_diagram.png").getPath();
-            String womanImagePath = this.getClass().getResource("/diagrams/woman_diagram.png").getPath();
-            manDiagram = ImageIO.read(new File(manImagePath));
-            womanDiagram = ImageIO.read(new File(womanImagePath));
+            String imagePath;
+            if (person.getSex().equals(Information.VALUE_MALE)) {
+                imagePath = configuration.getAdultManImagePath();
+            } else {
+                imagePath = configuration.getAdultWomanImagePath();
+            }
+            personDiagram = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,20 +75,29 @@ public class PersonPanel extends JPanel {
     }
 
     private void addLabels() {
-        add(new JLabel());
-        add(firstName);
-        add(surName);
-        add(birth);
-        add(death);
+        GridBagConstraints c = new GridBagConstraints();
+        c.ipady = configuration.getAdultVerticalOffset();
+        c.weighty = 5;
+        add(new JLabel(), c);
+        c.gridy = 1;
+        c.ipady = 0;
+        add(firstName, c);
+        c.gridy = 2;
+        add(surName, c);
+        c.gridy = 3;
+        c.ipady = 10;
+        add(birth, c);
+        c.gridy = 4;
+        c.ipady = 0;
+        add(death, c);
+        c.gridy = 5;
+        c.ipady = configuration.getAdultVerticalOffset();
+        add(new JLabel(), c);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (person.getSex().equals(Information.VALUE_MALE)) {
-            g.drawImage(manDiagram, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, null);
-        } else {
-            g.drawImage(womanDiagram, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, null);
-        }
+        g.drawImage(personDiagram, 0, 0, configuration.getAdultImageWidth(), configuration.getAdultImageHeight(), null);
 
         firstName.setText(person.getFirstName());
         surName.setText(person.getSurname().toUpperCase());

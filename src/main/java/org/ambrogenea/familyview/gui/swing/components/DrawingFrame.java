@@ -21,6 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.FathersParentsPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.OneFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -106,6 +107,24 @@ public class DrawingFrame extends JFrame {
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
         scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
+        fathersFamilyPanel.drawAncestorPanel();
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(fathersFamilyPanel);
+            }
+        });
+    }
+
+    public void generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
+        int pictureHeight = (2 * config.getAdultImageHeight() + 3 * RootFamilyPanel.VERTICAL_GAP);
+        int pictureWidth = (2 * config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP + RootFamilyPanel.MARRIAGE_LABEL_WIDTH) * (personWithAncestors.getOlderSiblings().size() + personWithAncestors.getYoungerSiblings().size());
+
+        final OneFamilyPanel fathersFamilyPanel = new OneFamilyPanel(personWithAncestors, config);
+        fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
+        scrollAncestorPane.add(fathersFamilyPanel);
+        scrollAncestorPane.setScrollPosition((personWithAncestors.getOlderSiblings().size() + 1) * config.getAdultImageWidth() + config.getAdultImageWidth() / 2 - this.getWidth() / 2, pictureHeight);
         fathersFamilyPanel.drawAncestorPanel();
 
         saveButton.addActionListener(new ActionListener() {

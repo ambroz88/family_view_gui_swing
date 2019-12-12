@@ -86,6 +86,7 @@ public class ApplicationWindow extends JFrame {
         jButton4 = new javax.swing.JButton();
         verticalOffsetLabel = new javax.swing.JLabel();
         verticalOffsetField = new javax.swing.JTextField();
+        generateCloseFamilyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -255,6 +256,13 @@ public class ApplicationWindow extends JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        generateCloseFamilyButton.setText("Generate close family");
+        generateCloseFamilyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateCloseFamilyButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
         settingsRootPanelLayout.setHorizontalGroup(
@@ -272,7 +280,9 @@ public class ApplicationWindow extends JFrame {
                         .addComponent(generateSiblingsButton)
                         .addGap(18, 18, 18)
                         .addComponent(generateAncestorButton)
-                        .addGap(0, 471, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(generateCloseFamilyButton)
+                        .addGap(0, 300, Short.MAX_VALUE))
                     .addComponent(tableScroll))
                 .addContainerGap())
         );
@@ -284,7 +294,8 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(loadInputButton)
                     .addComponent(generateAncestorButton)
                     .addComponent(generateLineageButton)
-                    .addComponent(generateSiblingsButton))
+                    .addComponent(generateSiblingsButton)
+                    .addComponent(generateCloseFamilyButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
@@ -452,6 +463,22 @@ public class ApplicationWindow extends JFrame {
         }
     }//GEN-LAST:event_imageWomanLoaderActionPerformed
 
+    private void generateCloseFamilyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCloseFamilyButtonActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
+            System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
+
+            DrawingFrame drawing = new DrawingFrame("Close family of " + personWithAncestors.getName());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateCloseFamily(personWithAncestors, configuration);
+
+            System.out.println("Family tree was created.");
+        }
+    }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -487,6 +514,7 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JLabel boyImageLabel;
     private javax.swing.JPanel configPanel;
     private javax.swing.JButton generateAncestorButton;
+    private javax.swing.JButton generateCloseFamilyButton;
     private javax.swing.JButton generateLineageButton;
     private javax.swing.JButton generateSiblingsButton;
     private javax.swing.JLabel girlImageLabel;

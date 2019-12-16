@@ -165,6 +165,21 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="imageHeightLabel" max="32767" attributes="0"/>
+                                      <Component id="verticalOffsetLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="fontSizeLabel" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="imageWithLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="imageWidthField" pref="50" max="32767" attributes="0"/>
+                                      <Component id="imageHeightField" pref="0" max="32767" attributes="0"/>
+                                      <Component id="verticalOffsetField" alignment="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="fontSizeField" alignment="1" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="girlImageLabel" max="32767" attributes="0"/>
                                       <Component id="boyImageLabel" max="32767" attributes="0"/>
@@ -177,24 +192,6 @@
                                       <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jButton4" alignment="0" max="32767" attributes="0"/>
                                       <Component id="imageManLoader" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="verticalOffsetLabel" max="32767" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="imageWithLabel" pref="82" max="32767" attributes="0"/>
-                                              <Component id="imageHeightLabel" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="imageWidthField" pref="50" max="32767" attributes="0"/>
-                                      <Component id="imageHeightField" pref="0" max="32767" attributes="0"/>
-                                      <Component id="verticalOffsetField" alignment="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -220,7 +217,12 @@
                               <Component id="verticalOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="verticalOffsetField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="fontSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fontSizeField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="imageManLoader" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="manImageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -344,6 +346,21 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verticalOffsetFieldActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="fontSizeLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Font size"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="fontSizeField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="String.valueOf(this.configuration.getFontSize())" type="code"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fontSizeFieldActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

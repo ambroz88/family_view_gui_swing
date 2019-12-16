@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
@@ -63,10 +62,10 @@ public class PersonPanel extends JPanel {
         birth = new JLabel("", JLabel.CENTER);
         death = new JLabel("", JLabel.CENTER);
 
-        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, RootFamilyPanel.FONT_SIZE));
-        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, RootFamilyPanel.FONT_SIZE));
-        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, RootFamilyPanel.FONT_SIZE - 1));
-        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, RootFamilyPanel.FONT_SIZE - 1));
+        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
+        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
 
         firstName.setBackground(null);
         surName.setBackground(null);
@@ -77,15 +76,15 @@ public class PersonPanel extends JPanel {
     private void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
         c.ipady = configuration.getAdultVerticalOffset();
-        c.weighty = 5;
+//        c.weighty = 5;
         add(new JLabel(), c);
         c.gridy = 1;
         c.ipady = 0;
         add(firstName, c);
         c.gridy = 2;
+        c.ipady = 5;
         add(surName, c);
         c.gridy = 3;
-        c.ipady = 10;
         add(birth, c);
         c.gridy = 4;
         c.ipady = 0;

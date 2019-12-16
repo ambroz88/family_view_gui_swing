@@ -25,14 +25,10 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class RootFamilyPanel extends JPanel {
 
-//    public static final int IMAGE_WIDTH = 140;
-//    public static final int IMAGE_HEIGHT = (int) (IMAGE_WIDTH * 0.8);
     public static final int MARRIAGE_LABEL_WIDTH = 120;
 
     public static final int HORIZONTAL_GAP = 20;
     public static final int VERTICAL_GAP = 100;
-
-    public final static int FONT_SIZE = 13;
 
     protected final ArrayList<Line> lines;
     protected final AncestorPerson personModel;
@@ -62,7 +58,7 @@ public class RootFamilyPanel extends JPanel {
             int labelHeight = 30;
             JLabel date = new JLabel(text, JLabel.CENTER);
             date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH, labelHeight));
-            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, FONT_SIZE - 1));
+            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
             this.add(date);
             date.setBounds(centerX - MARRIAGE_LABEL_WIDTH / 2, centerY - labelHeight, MARRIAGE_LABEL_WIDTH, labelHeight);

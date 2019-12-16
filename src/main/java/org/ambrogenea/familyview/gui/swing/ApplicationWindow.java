@@ -86,6 +86,8 @@ public class ApplicationWindow extends JFrame {
         jButton4 = new javax.swing.JButton();
         verticalOffsetLabel = new javax.swing.JLabel();
         verticalOffsetField = new javax.swing.JTextField();
+        fontSizeLabel = new javax.swing.JLabel();
+        fontSizeField = new javax.swing.JTextField();
         generateCloseFamilyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -188,6 +190,15 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
+        fontSizeLabel.setText("Font size");
+
+        fontSizeField.setText(String.valueOf(this.configuration.getFontSize()));
+        fontSizeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontSizeFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout configPanelLayout = new javax.swing.GroupLayout(configPanel);
         configPanel.setLayout(configPanelLayout);
         configPanelLayout.setHorizontalGroup(
@@ -195,6 +206,18 @@ public class ApplicationWindow extends JFrame {
             .addGroup(configPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(configPanelLayout.createSequentialGroup()
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(imageHeightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(verticalOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fontSizeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(imageWithLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imageWidthField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(fontSizeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
                     .addGroup(configPanelLayout.createSequentialGroup()
                         .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(girlImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -206,20 +229,7 @@ public class ApplicationWindow extends JFrame {
                             .addComponent(imageWomanLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(imageManLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(configPanelLayout.createSequentialGroup()
-                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(verticalOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(configPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(imageWithLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                                    .addComponent(imageHeightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(imageWidthField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
+                            .addComponent(imageManLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         configPanelLayout.setVerticalGroup(
@@ -237,7 +247,11 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(verticalOffsetLabel)
                     .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fontSizeLabel)
+                    .addComponent(fontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(imageManLoader)
                     .addComponent(manImageLabel))
@@ -345,6 +359,7 @@ public class ApplicationWindow extends JFrame {
             dataModel = new DataModel();
             dataModel.loadGEDCOMLines(lines);
             recordsTable.setModel(new Table(dataModel));
+            recordsTable.setAutoCreateRowSorter(true);
         } catch (IOException ex) {
             Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -370,7 +385,7 @@ public class ApplicationWindow extends JFrame {
         if (recordsTable.getSelectedRow() != -1) {
 
             AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateManParents(recordsTable.getSelectedRow());
+            AncestorPerson personWithAncestors = ancestors.generateFathersParents(recordsTable.getSelectedRow());
             System.out.println("There will be generated father's parents of: " + personWithAncestors.getName());
 
             DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
@@ -467,7 +482,7 @@ public class ApplicationWindow extends JFrame {
         if (recordsTable.getSelectedRow() != -1) {
 
             AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
+            AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
             System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
 
             DrawingFrame drawing = new DrawingFrame("Close family of " + personWithAncestors.getName());
@@ -478,6 +493,17 @@ public class ApplicationWindow extends JFrame {
             System.out.println("Family tree was created.");
         }
     }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
+
+    private void fontSizeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSizeFieldActionPerformed
+        int fontSize;
+        try {
+            fontSize = Integer.valueOf(fontSizeField.getText());
+        } catch (NumberFormatException e) {
+            fontSize = 13;
+            fontSizeField.setText(String.valueOf(fontSize));
+        }
+        configuration.setFontSize(fontSize);
+    }//GEN-LAST:event_fontSizeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -513,6 +539,8 @@ public class ApplicationWindow extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel boyImageLabel;
     private javax.swing.JPanel configPanel;
+    private javax.swing.JTextField fontSizeField;
+    private javax.swing.JLabel fontSizeLabel;
     private javax.swing.JButton generateAncestorButton;
     private javax.swing.JButton generateCloseFamilyButton;
     private javax.swing.JButton generateLineageButton;

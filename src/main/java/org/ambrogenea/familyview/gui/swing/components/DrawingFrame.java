@@ -83,7 +83,7 @@ public class DrawingFrame extends JFrame {
 
     public void generateFathersParents(AncestorPerson personWithAncestors, Configuration config) {
         int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 1);
+        int pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 2);
 
         final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors, config);
         fathersParentsPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

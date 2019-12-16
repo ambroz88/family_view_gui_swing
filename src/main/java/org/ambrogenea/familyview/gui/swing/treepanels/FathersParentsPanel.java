@@ -14,7 +14,7 @@ public class FathersParentsPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        int x = getConfiguration().getAdultImageWidth() * (personModel.getAncestorGenerations() + 1);
+        int x = getConfiguration().getAdultImageWidth() * personModel.getAncestorGenerations() + MARRIAGE_LABEL_WIDTH / 2;
         int y = getHeight() - getConfiguration().getAdultImageHeight();
         drawPerson(x, y, personModel);
 

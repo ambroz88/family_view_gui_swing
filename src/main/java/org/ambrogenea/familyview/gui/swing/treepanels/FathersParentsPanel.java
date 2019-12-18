@@ -22,17 +22,19 @@ public class FathersParentsPanel extends RootFamilyPanel {
     }
 
     private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
-        if (person.getFather() != null) {
+        if (person.getMother() != null) {
             int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
-
-            int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-            drawPerson(fatherXPosition, y, person.getFather());
-
             drawMother(childXPosition, y, person);
 
-            drawFathersFamily(fatherXPosition, y, person.getFather());
+            if (person.getFather() != null) {
+
+                int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+                drawPerson(fatherXPosition, y, person.getFather());
+
+                drawFathersFamily(fatherXPosition, y, person.getFather());
+            }
         }
     }
 

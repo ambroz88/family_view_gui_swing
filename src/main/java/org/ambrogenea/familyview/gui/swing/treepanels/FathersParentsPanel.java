@@ -26,15 +26,12 @@ public class FathersParentsPanel extends RootFamilyPanel {
             int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
+
             int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
             drawPerson(fatherXPosition, y, person.getFather());
 
-            int motherXPosition = childXPosition + (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-            if (person.getMother() != null) {
-                drawPerson(motherXPosition, y, person.getMother());
-            }
+            drawMother(childXPosition, y, person);
 
-            drawLabel(childXPosition, y, person.getParents().getMarriageDate());
             drawFathersFamily(fatherXPosition, y, person.getFather());
         }
     }

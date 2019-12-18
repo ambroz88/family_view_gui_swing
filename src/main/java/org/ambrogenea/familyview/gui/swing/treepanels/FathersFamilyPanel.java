@@ -2,7 +2,6 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.Person;
 
 /**
  *
@@ -18,7 +17,8 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         int x = getWidth() / 2;
         int y = getHeight() - VERTICAL_GAP;
         drawPerson(x, y, personModel);
-//        drawSiblings(x, y, personModel);
+        drawSpouse(x, y, personModel);
+        drawSiblings(x, y, personModel);
 
         drawFathersFamily(x, y, personModel);
     }
@@ -32,42 +32,10 @@ public class FathersFamilyPanel extends RootFamilyPanel {
             int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
             drawPerson(fatherXPosition, y, person.getFather());
 
-            int motherXPosition = childXPosition + (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-            if (person.getMother() != null) {
-                drawPerson(motherXPosition, y, person.getMother());
-            }
-
-            drawLabel(childXPosition, y, person.getParents().getMarriageDate());
+            drawMother(childXPosition, y, person);
             drawSiblings(fatherXPosition, y, person.getFather());
 
             drawFathersFamily(fatherXPosition, y, person.getFather());
-        }
-    }
-
-    private void drawSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson father) {
-
-        Person sibling;
-        int olderSiblingCount = father.getOlderSiblings().size();
-        for (int i = 0; i < olderSiblingCount; i++) {
-            sibling = father.getOlderSiblings().get(i);
-
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - 2 * HORIZONTAL_GAP;
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
-        }
-
-        int youngerSiblingCount = father.getYoungerSiblings().size();
-        int startX;
-        for (int i = 0; i < youngerSiblingCount; i++) {
-            sibling = father.getYoungerSiblings().get(i);
-
-            if (father.getSpouse() != null) {
-                startX = rootSiblingX + 2 * getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH + 2 * HORIZONTAL_GAP + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            } else {
-                startX = rootSiblingX + getConfiguration().getAdultImageWidth() + 3 * HORIZONTAL_GAP + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            }
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
     }
 

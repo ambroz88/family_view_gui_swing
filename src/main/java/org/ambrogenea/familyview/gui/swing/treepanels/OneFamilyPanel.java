@@ -2,7 +2,6 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MARRIAGE_LABEL_WIDTH;
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.VERTICAL_GAP;
-
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -17,12 +16,13 @@ public class OneFamilyPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        int x = (personModel.getOlderSiblings().size() + 1) * getConfiguration().getAdultImageWidth() + getConfiguration().getAdultImageWidth() / 2;
+        int personLeftCount = Math.max(personModel.getOlderSiblings().size(), personModel.getChildrenCount(0) / 2);
+        int x = (personLeftCount + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
         int y = 2 * VERTICAL_GAP + getConfiguration().getAdultImageHeight();
         drawPerson(x, y, personModel);
 
-        drawAllSpouses(x, y, personModel);
-        drawSiblingsAroundWifes(x, y, personModel);
+        int lastSpousePosition = drawAllSpousesWithKids(x, y, personModel);
+        drawSiblingsAroundWifes(x, y, personModel, lastSpousePosition);
         drawParents(x, y, personModel);
     }
 

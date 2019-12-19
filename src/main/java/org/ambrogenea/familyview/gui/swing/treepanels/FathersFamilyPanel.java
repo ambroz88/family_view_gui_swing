@@ -17,8 +17,8 @@ public class FathersFamilyPanel extends RootFamilyPanel {
         int x = getWidth() / 2;
         int y = getHeight() - VERTICAL_GAP;
         drawPerson(x, y, personModel);
-        drawAllSpouses(x, y, personModel);
-        drawSiblingsAroundWifes(x, y, personModel);
+        int spousesShift = drawAllSpouses(x, y, personModel);
+        drawSiblingsAroundWifes(x, y, personModel, spousesShift);
 
         drawFathersFamily(x, y, personModel);
     }
@@ -32,7 +32,7 @@ public class FathersFamilyPanel extends RootFamilyPanel {
 
             if (person.getFather() != null) {
 
-                int fatherXPosition = childXPosition - (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+                int fatherXPosition = childXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawPerson(fatherXPosition, y, person.getFather());
                 drawSiblings(fatherXPosition, y, person.getFather());
 

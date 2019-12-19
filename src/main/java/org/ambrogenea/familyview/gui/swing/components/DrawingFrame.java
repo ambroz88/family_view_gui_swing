@@ -118,8 +118,11 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureHeight = (2 * config.getAdultImageHeight() + 3 * RootFamilyPanel.VERTICAL_GAP);
-        int pictureWidth = (2 * config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP + RootFamilyPanel.MARRIAGE_LABEL_WIDTH) * (personWithAncestors.getOlderSiblings().size() + personWithAncestors.getYoungerSiblings().size());
+        int pictureHeight = (4 * config.getAdultImageHeight() + 2 * RootFamilyPanel.VERTICAL_GAP);
+        int siblingsCount = personWithAncestors.getOlderSiblings().size() + personWithAncestors.getYoungerSiblings().size();
+        int childrenCount = personWithAncestors.getAllChildrenCount();
+
+        int pictureWidth = (siblingsCount + childrenCount + 1) * (config.getAdultImageWidth() + 2 * RootFamilyPanel.HORIZONTAL_GAP);
 
         final OneFamilyPanel fathersFamilyPanel = new OneFamilyPanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

@@ -69,8 +69,6 @@ public class ApplicationWindow extends JFrame {
         tableScroll = new javax.swing.JScrollPane();
         recordsTable = new javax.swing.JTable();
         generateAncestorButton = new javax.swing.JButton();
-        generateLineageButton = new javax.swing.JButton();
-        generateSiblingsButton = new javax.swing.JButton();
         configPanel = new javax.swing.JPanel();
         imageWidthField = new javax.swing.JTextField();
         imageWithLabel = new javax.swing.JLabel();
@@ -88,7 +86,22 @@ public class ApplicationWindow extends JFrame {
         verticalOffsetField = new javax.swing.JTextField();
         fontSizeLabel = new javax.swing.JLabel();
         fontSizeField = new javax.swing.JTextField();
+        LIneagePanel = new javax.swing.JPanel();
+        generateLineageButton = new javax.swing.JButton();
+        siblingsCheckbox = new javax.swing.JCheckBox();
+        spousesCheckbox = new javax.swing.JCheckBox();
+        fatherLineageCheckbox = new javax.swing.JCheckBox();
+        motherLineageCheckbox = new javax.swing.JCheckBox();
+        generationSpinner = new javax.swing.JSpinner();
+        generationsLabel = new javax.swing.JLabel();
+        closeFamilyPanel = new javax.swing.JPanel();
         generateCloseFamilyButton = new javax.swing.JButton();
+        siblingsFamilyCheckbox = new javax.swing.JCheckBox();
+        spousesFamilyCheckbox = new javax.swing.JCheckBox();
+        childrenCheckbox = new javax.swing.JCheckBox();
+        showParentsCheckbox = new javax.swing.JCheckBox();
+        fileNameLabel = new javax.swing.JLabel();
+        openFileLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -117,20 +130,6 @@ public class ApplicationWindow extends JFrame {
         generateAncestorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateAncestorButtonActionPerformed(evt);
-            }
-        });
-
-        generateLineageButton.setText("Generate lineage");
-        generateLineageButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateLineageButtonActionPerformed(evt);
-            }
-        });
-
-        generateSiblingsButton.setText("Generate lineage with siblings");
-        generateSiblingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateSiblingsButtonActionPerformed(evt);
             }
         });
 
@@ -270,12 +269,169 @@ public class ApplicationWindow extends JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        LIneagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Lineage setup"));
+
+        generateLineageButton.setText("Generate lineage");
+        generateLineageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateLineageButtonActionPerformed(evt);
+            }
+        });
+
+        siblingsCheckbox.setSelected(configuration.isShowSiblings());
+        siblingsCheckbox.setText("Show siblings");
+        siblingsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siblingsCheckboxActionPerformed(evt);
+            }
+        });
+
+        spousesCheckbox.setSelected(configuration.isShowSpouses());
+        spousesCheckbox.setText("Spouses for root");
+        spousesCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spousesCheckboxActionPerformed(evt);
+            }
+        });
+
+        fatherLineageCheckbox.setSelected(configuration.isShowFathersLineage());
+        fatherLineageCheckbox.setText("Father's lineage");
+        fatherLineageCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fatherLineageCheckboxActionPerformed(evt);
+            }
+        });
+
+        motherLineageCheckbox.setSelected(configuration.isShowMothersLineage());
+        motherLineageCheckbox.setText("Mother's lineage");
+        motherLineageCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                motherLineageCheckboxActionPerformed(evt);
+            }
+        });
+
+        generationSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getGenerationCount(), 1, 20, 1));
+        generationSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                generationSpinnerStateChanged(evt);
+            }
+        });
+
+        generationsLabel.setText("Generations");
+
+        javax.swing.GroupLayout LIneagePanelLayout = new javax.swing.GroupLayout(LIneagePanel);
+        LIneagePanel.setLayout(LIneagePanelLayout);
+        LIneagePanelLayout.setHorizontalGroup(
+            LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LIneagePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(generateLineageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spousesCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(siblingsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LIneagePanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(generationsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        LIneagePanelLayout.setVerticalGroup(
+            LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LIneagePanelLayout.createSequentialGroup()
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(siblingsCheckbox)
+                    .addComponent(fatherLineageCheckbox))
+                .addGap(4, 4, 4)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spousesCheckbox)
+                    .addComponent(motherLineageCheckbox))
+                .addGap(10, 10, 10)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generateLineageButton)
+                    .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generationsLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        closeFamilyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Close family setup"));
+
         generateCloseFamilyButton.setText("Generate close family");
         generateCloseFamilyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateCloseFamilyButtonActionPerformed(evt);
             }
         });
+
+        siblingsFamilyCheckbox.setSelected(configuration.isShowSiblingsFamily());
+        siblingsFamilyCheckbox.setText("Show siblings");
+        siblingsFamilyCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siblingsFamilyCheckboxActionPerformed(evt);
+            }
+        });
+
+        spousesFamilyCheckbox.setSelected(configuration.isShowSpousesFamily());
+        spousesFamilyCheckbox.setText("Show spouses");
+        spousesFamilyCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spousesFamilyCheckboxActionPerformed(evt);
+            }
+        });
+
+        childrenCheckbox.setSelected(configuration.isShowChildren());
+        childrenCheckbox.setText("Show children");
+        childrenCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                childrenCheckboxActionPerformed(evt);
+            }
+        });
+
+        showParentsCheckbox.setSelected(configuration.isShowParents());
+        showParentsCheckbox.setText("Show parents");
+
+        javax.swing.GroupLayout closeFamilyPanelLayout = new javax.swing.GroupLayout(closeFamilyPanel);
+        closeFamilyPanel.setLayout(closeFamilyPanelLayout);
+        closeFamilyPanelLayout.setHorizontalGroup(
+            closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeFamilyPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(closeFamilyPanelLayout.createSequentialGroup()
+                        .addComponent(generateCloseFamilyButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeFamilyPanelLayout.createSequentialGroup()
+                        .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(spousesFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                            .addComponent(showParentsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(siblingsFamilyCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(childrenCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+        closeFamilyPanelLayout.setVerticalGroup(
+            closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeFamilyPanelLayout.createSequentialGroup()
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(siblingsFamilyCheckbox)
+                    .addComponent(showParentsCheckbox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spousesFamilyCheckbox)
+                    .addComponent(childrenCheckbox, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(generateCloseFamilyButton)
+                .addContainerGap())
+        );
+
+        fileNameLabel.setText("none");
+
+        openFileLabel.setText("Opened file:");
 
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
@@ -284,36 +440,48 @@ public class ApplicationWindow extends JFrame {
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(configPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(loadInputButton))
+                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(loadInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addComponent(fileNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(openFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableScroll)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addComponent(generateLineageButton)
+                        .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(generateSiblingsButton)
+                        .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(generateAncestorButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(generateCloseFamilyButton)
-                        .addGap(0, 300, Short.MAX_VALUE))
-                    .addComponent(tableScroll))
+                        .addGap(0, 217, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         settingsRootPanelLayout.setVerticalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loadInputButton)
-                    .addComponent(generateAncestorButton)
-                    .addComponent(generateLineageButton)
-                    .addComponent(generateSiblingsButton)
-                    .addComponent(generateCloseFamilyButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-                    .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addComponent(loadInputButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(openFileLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(generateAncestorButton)
+                        .addGap(18, 18, 18)))
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -347,6 +515,7 @@ public class ApplicationWindow extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = openFC.getSelectedFile();
             loadTable(file.getAbsolutePath());
+            fileNameLabel.setText(file.getName());
             System.out.println("Opening: " + file.getName() + ".");
         } else {
             System.out.println("Open command cancelled by user.");
@@ -385,33 +554,26 @@ public class ApplicationWindow extends JFrame {
         if (recordsTable.getSelectedRow() != -1) {
 
             AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateFathersParents(recordsTable.getSelectedRow());
-            System.out.println("There will be generated father's parents of: " + personWithAncestors.getName());
-
-            DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateFathersParents(personWithAncestors, configuration);
+            AncestorPerson personWithAncestors;
+            if (configuration.isShowSiblings()) {
+                personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
+                System.out.println("There will be generated fathers of: " + personWithAncestors.getName() + " with their siblings");
+                DrawingFrame drawing = new DrawingFrame("Families of fathers of " + personWithAncestors.getName());
+                drawing.setSize(this.getSize());
+                drawing.setPreferredSize(this.getPreferredSize());
+                drawing.generateFathersParentsWithSiblings(personWithAncestors, configuration);
+            } else {
+                personWithAncestors = ancestors.generateFathersParents(recordsTable.getSelectedRow());
+                System.out.println("There will be generated father's parents of: " + personWithAncestors.getName());
+                DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
+                drawing.setSize(this.getSize());
+                drawing.setPreferredSize(this.getPreferredSize());
+                drawing.generateFathersParents(personWithAncestors, configuration);
+            }
 
             System.out.println("Family tree was created.");
         }
     }//GEN-LAST:event_generateLineageButtonActionPerformed
-
-    private void generateSiblingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSiblingsButtonActionPerformed
-        if (recordsTable.getSelectedRow() != -1) {
-
-            AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
-            System.out.println("There will be generated fathers of: " + personWithAncestors.getName() + " with their siblings");
-
-            DrawingFrame drawing = new DrawingFrame("Families of fathers of " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateFathersParentsWithSiblings(personWithAncestors, configuration);
-
-            System.out.println("Family tree was created.");
-        }
-    }//GEN-LAST:event_generateSiblingsButtonActionPerformed
 
     private void imageWidthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWidthFieldActionPerformed
         int imageWidth;
@@ -505,6 +667,38 @@ public class ApplicationWindow extends JFrame {
         configuration.setFontSize(fontSize);
     }//GEN-LAST:event_fontSizeFieldActionPerformed
 
+    private void siblingsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsCheckboxActionPerformed
+        configuration.setShowSiblings(siblingsCheckbox.isSelected());
+    }//GEN-LAST:event_siblingsCheckboxActionPerformed
+
+    private void spousesCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesCheckboxActionPerformed
+        configuration.setShowSpouses(spousesCheckbox.isSelected());
+    }//GEN-LAST:event_spousesCheckboxActionPerformed
+
+    private void siblingsFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsFamilyCheckboxActionPerformed
+        configuration.setShowSiblingsFamily(siblingsFamilyCheckbox.isSelected());
+    }//GEN-LAST:event_siblingsFamilyCheckboxActionPerformed
+
+    private void spousesFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesFamilyCheckboxActionPerformed
+        configuration.setShowSpousesFamily(spousesFamilyCheckbox.isSelected());
+    }//GEN-LAST:event_spousesFamilyCheckboxActionPerformed
+
+    private void childrenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childrenCheckboxActionPerformed
+        configuration.setShowChildren(childrenCheckbox.isSelected());
+    }//GEN-LAST:event_childrenCheckboxActionPerformed
+
+    private void fatherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fatherLineageCheckboxActionPerformed
+        configuration.setShowFathersLineage(fatherLineageCheckbox.isSelected());
+    }//GEN-LAST:event_fatherLineageCheckboxActionPerformed
+
+    private void motherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motherLineageCheckboxActionPerformed
+        configuration.setShowMothersLineage(motherLineageCheckbox.isSelected());
+    }//GEN-LAST:event_motherLineageCheckboxActionPerformed
+
+    private void generationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_generationSpinnerStateChanged
+        configuration.setGenerationCount((int) generationSpinner.getValue());
+    }//GEN-LAST:event_generationSpinnerStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -537,14 +731,20 @@ public class ApplicationWindow extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel LIneagePanel;
     private javax.swing.JLabel boyImageLabel;
+    private javax.swing.JCheckBox childrenCheckbox;
+    private javax.swing.JPanel closeFamilyPanel;
     private javax.swing.JPanel configPanel;
+    private javax.swing.JCheckBox fatherLineageCheckbox;
+    private javax.swing.JLabel fileNameLabel;
     private javax.swing.JTextField fontSizeField;
     private javax.swing.JLabel fontSizeLabel;
     private javax.swing.JButton generateAncestorButton;
     private javax.swing.JButton generateCloseFamilyButton;
     private javax.swing.JButton generateLineageButton;
-    private javax.swing.JButton generateSiblingsButton;
+    private javax.swing.JSpinner generationSpinner;
+    private javax.swing.JLabel generationsLabel;
     private javax.swing.JLabel girlImageLabel;
     private javax.swing.JTextField imageHeightField;
     private javax.swing.JLabel imageHeightLabel;
@@ -556,9 +756,16 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JLabel manImageLabel;
+    private javax.swing.JCheckBox motherLineageCheckbox;
+    private javax.swing.JLabel openFileLabel;
     private javax.swing.JTable recordsTable;
     private javax.swing.JPanel settingsRootPanel;
     private javax.swing.JTabbedPane settingsTab;
+    private javax.swing.JCheckBox showParentsCheckbox;
+    private javax.swing.JCheckBox siblingsCheckbox;
+    private javax.swing.JCheckBox siblingsFamilyCheckbox;
+    private javax.swing.JCheckBox spousesCheckbox;
+    private javax.swing.JCheckBox spousesFamilyCheckbox;
     private javax.swing.JScrollPane tableScroll;
     private javax.swing.JTextField verticalOffsetField;
     private javax.swing.JLabel verticalOffsetLabel;

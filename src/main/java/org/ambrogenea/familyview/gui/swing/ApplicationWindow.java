@@ -234,7 +234,7 @@ public class ApplicationWindow extends JFrame {
         configPanelLayout.setVerticalGroup(
             configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(configPanelLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(imageWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(imageWithLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -266,7 +266,7 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(girlImageLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(219, Short.MAX_VALUE))
         );
 
         LIneagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Lineage setup"));
@@ -473,15 +473,16 @@ public class ApplicationWindow extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(openFileLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsRootPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generateAncestorButton)
-                        .addGap(18, 18, 18)))
-                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(generateAncestorButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableScroll)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addComponent(configPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -509,6 +510,163 @@ public class ApplicationWindow extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void childrenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childrenCheckboxActionPerformed
+        configuration.setShowChildren(childrenCheckbox.isSelected());
+    }//GEN-LAST:event_childrenCheckboxActionPerformed
+
+    private void spousesFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesFamilyCheckboxActionPerformed
+        configuration.setShowSpousesFamily(spousesFamilyCheckbox.isSelected());
+    }//GEN-LAST:event_spousesFamilyCheckboxActionPerformed
+
+    private void siblingsFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsFamilyCheckboxActionPerformed
+        configuration.setShowSiblingsFamily(siblingsFamilyCheckbox.isSelected());
+    }//GEN-LAST:event_siblingsFamilyCheckboxActionPerformed
+
+    private void generateCloseFamilyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCloseFamilyButtonActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
+            System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
+
+            DrawingFrame drawing = new DrawingFrame("Close family of " + personWithAncestors.getName());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateCloseFamily(personWithAncestors, configuration);
+
+            System.out.println("Family tree was created.");
+        }
+    }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
+
+    private void generationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_generationSpinnerStateChanged
+        configuration.setGenerationCount((int) generationSpinner.getValue());
+    }//GEN-LAST:event_generationSpinnerStateChanged
+
+    private void motherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motherLineageCheckboxActionPerformed
+        configuration.setShowMothersLineage(motherLineageCheckbox.isSelected());
+    }//GEN-LAST:event_motherLineageCheckboxActionPerformed
+
+    private void fatherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fatherLineageCheckboxActionPerformed
+        configuration.setShowFathersLineage(fatherLineageCheckbox.isSelected());
+    }//GEN-LAST:event_fatherLineageCheckboxActionPerformed
+
+    private void spousesCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesCheckboxActionPerformed
+        configuration.setShowSpouses(spousesCheckbox.isSelected());
+    }//GEN-LAST:event_spousesCheckboxActionPerformed
+
+    private void siblingsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsCheckboxActionPerformed
+        configuration.setShowSiblings(siblingsCheckbox.isSelected());
+    }//GEN-LAST:event_siblingsCheckboxActionPerformed
+
+    private void generateLineageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineageButtonActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors;
+            if (configuration.isShowFathersLineage()) {
+                personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
+            } else {
+                personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
+            }
+
+            DrawingFrame drawing = new DrawingFrame("Lineage of " + personWithAncestors.getName() + " born in " + personWithAncestors.getBirthDate());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateLineage(personWithAncestors, configuration);
+        }
+    }//GEN-LAST:event_generateLineageButtonActionPerformed
+
+    private void fontSizeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSizeFieldActionPerformed
+        int fontSize;
+        try {
+            fontSize = Integer.valueOf(fontSizeField.getText());
+        } catch (NumberFormatException e) {
+            fontSize = 13;
+            fontSizeField.setText(String.valueOf(fontSize));
+        }
+        configuration.setFontSize(fontSize);
+    }//GEN-LAST:event_fontSizeFieldActionPerformed
+
+    private void verticalOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalOffsetFieldActionPerformed
+        int verticalOffset;
+        try {
+            verticalOffset = Integer.valueOf(verticalOffsetField.getText());
+        } catch (NumberFormatException e) {
+            verticalOffset = 140;
+            verticalOffsetField.setText(String.valueOf(verticalOffset));
+        }
+        configuration.setAdultVerticalOffset(verticalOffset);
+    }//GEN-LAST:event_verticalOffsetFieldActionPerformed
+
+    private void imageWomanLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWomanLoaderActionPerformed
+        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
+        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
+        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        int returnVal = imageChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = imageChooser.getSelectedFile();
+            configuration.setAdultWomanImagePath(file.getAbsolutePath());
+            System.out.println("Opening: " + file.getName() + ".");
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }//GEN-LAST:event_imageWomanLoaderActionPerformed
+
+    private void imageManLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageManLoaderActionPerformed
+        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
+        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
+        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        int returnVal = imageChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = imageChooser.getSelectedFile();
+            configuration.setAdultManImagePath(file.getAbsolutePath());
+            System.out.println("Opening: " + file.getName() + ".");
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }//GEN-LAST:event_imageManLoaderActionPerformed
+
+    private void imageHeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageHeightFieldActionPerformed
+        int imageHeight;
+        try {
+            imageHeight = Integer.valueOf(imageHeightField.getText());
+        } catch (NumberFormatException e) {
+            imageHeight = 140;
+            imageHeightField.setText(String.valueOf(imageHeight));
+        }
+        configuration.setAdultImageHeight(imageHeight);
+    }//GEN-LAST:event_imageHeightFieldActionPerformed
+
+    private void imageWidthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWidthFieldActionPerformed
+        int imageWidth;
+        try {
+            imageWidth = Integer.valueOf(imageWidthField.getText());
+        } catch (NumberFormatException e) {
+            imageWidth = 140;
+            imageWidthField.setText(String.valueOf(imageWidth));
+        }
+        configuration.setAdultImageWidth(imageWidth);
+    }//GEN-LAST:event_imageWidthFieldActionPerformed
+
+    private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
+            System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
+
+            DrawingFrame drawing = new DrawingFrame("All ancestors of " + personWithAncestors.getName());
+            drawing.setSize(this.getSize());
+            drawing.setPreferredSize(this.getPreferredSize());
+            drawing.generateAllAncestors(personWithAncestors, configuration);
+
+            System.out.println("Family tree was created.");
+        }
+    }//GEN-LAST:event_generateAncestorButtonActionPerformed
+
     private void loadInputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadInputButtonActionPerformed
         int returnVal = openFC.showOpenDialog(this);
 
@@ -533,171 +691,6 @@ public class ApplicationWindow extends JFrame {
             Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
-        if (recordsTable.getSelectedRow() != -1) {
-
-            AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
-            System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
-
-            DrawingFrame drawing = new DrawingFrame("All ancestors of " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateAllAncestors(personWithAncestors, configuration);
-
-            System.out.println("Family tree was created.");
-        }
-    }//GEN-LAST:event_generateAncestorButtonActionPerformed
-
-    private void generateLineageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineageButtonActionPerformed
-        if (recordsTable.getSelectedRow() != -1) {
-
-            AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors;
-            if (configuration.isShowSiblings()) {
-                personWithAncestors = ancestors.generateFathersFamily(recordsTable.getSelectedRow());
-                System.out.println("There will be generated fathers of: " + personWithAncestors.getName() + " with their siblings");
-                DrawingFrame drawing = new DrawingFrame("Families of fathers of " + personWithAncestors.getName());
-                drawing.setSize(this.getSize());
-                drawing.setPreferredSize(this.getPreferredSize());
-                drawing.generateFathersParentsWithSiblings(personWithAncestors, configuration);
-            } else {
-                personWithAncestors = ancestors.generateFathersParents(recordsTable.getSelectedRow());
-                System.out.println("There will be generated father's parents of: " + personWithAncestors.getName());
-                DrawingFrame drawing = new DrawingFrame("All father's parents for " + personWithAncestors.getName());
-                drawing.setSize(this.getSize());
-                drawing.setPreferredSize(this.getPreferredSize());
-                drawing.generateFathersParents(personWithAncestors, configuration);
-            }
-
-            System.out.println("Family tree was created.");
-        }
-    }//GEN-LAST:event_generateLineageButtonActionPerformed
-
-    private void imageWidthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWidthFieldActionPerformed
-        int imageWidth;
-        try {
-            imageWidth = Integer.valueOf(imageWidthField.getText());
-        } catch (NumberFormatException e) {
-            imageWidth = 140;
-            imageWidthField.setText(String.valueOf(imageWidth));
-        }
-        configuration.setAdultImageWidth(imageWidth);
-    }//GEN-LAST:event_imageWidthFieldActionPerformed
-
-    private void imageHeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageHeightFieldActionPerformed
-        int imageHeight;
-        try {
-            imageHeight = Integer.valueOf(imageHeightField.getText());
-        } catch (NumberFormatException e) {
-            imageHeight = 140;
-            imageHeightField.setText(String.valueOf(imageHeight));
-        }
-        configuration.setAdultImageHeight(imageHeight);
-    }//GEN-LAST:event_imageHeightFieldActionPerformed
-
-    private void verticalOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalOffsetFieldActionPerformed
-        int verticalOffset;
-        try {
-            verticalOffset = Integer.valueOf(verticalOffsetField.getText());
-        } catch (NumberFormatException e) {
-            verticalOffset = 140;
-            verticalOffsetField.setText(String.valueOf(verticalOffset));
-        }
-        configuration.setAdultVerticalOffset(verticalOffset);
-    }//GEN-LAST:event_verticalOffsetFieldActionPerformed
-
-    private void imageManLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageManLoaderActionPerformed
-        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
-        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
-        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-
-        int returnVal = imageChooser.showOpenDialog(this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = imageChooser.getSelectedFile();
-            configuration.setAdultManImagePath(file.getAbsolutePath());
-            System.out.println("Opening: " + file.getName() + ".");
-        } else {
-            System.out.println("Open command cancelled by user.");
-        }
-    }//GEN-LAST:event_imageManLoaderActionPerformed
-
-    private void imageWomanLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWomanLoaderActionPerformed
-        JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
-        imageChooser.setFileFilter(new FileNameExtensionFilter("Image files", "png", "jpg"));
-        imageChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-
-        int returnVal = imageChooser.showOpenDialog(this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = imageChooser.getSelectedFile();
-            configuration.setAdultWomanImagePath(file.getAbsolutePath());
-            System.out.println("Opening: " + file.getName() + ".");
-        } else {
-            System.out.println("Open command cancelled by user.");
-        }
-    }//GEN-LAST:event_imageWomanLoaderActionPerformed
-
-    private void generateCloseFamilyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCloseFamilyButtonActionPerformed
-        if (recordsTable.getSelectedRow() != -1) {
-
-            AncestorModel ancestors = new AncestorModel(dataModel);
-            AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
-            System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
-
-            DrawingFrame drawing = new DrawingFrame("Close family of " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
-            drawing.generateCloseFamily(personWithAncestors, configuration);
-
-            System.out.println("Family tree was created.");
-        }
-    }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
-
-    private void fontSizeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSizeFieldActionPerformed
-        int fontSize;
-        try {
-            fontSize = Integer.valueOf(fontSizeField.getText());
-        } catch (NumberFormatException e) {
-            fontSize = 13;
-            fontSizeField.setText(String.valueOf(fontSize));
-        }
-        configuration.setFontSize(fontSize);
-    }//GEN-LAST:event_fontSizeFieldActionPerformed
-
-    private void siblingsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsCheckboxActionPerformed
-        configuration.setShowSiblings(siblingsCheckbox.isSelected());
-    }//GEN-LAST:event_siblingsCheckboxActionPerformed
-
-    private void spousesCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesCheckboxActionPerformed
-        configuration.setShowSpouses(spousesCheckbox.isSelected());
-    }//GEN-LAST:event_spousesCheckboxActionPerformed
-
-    private void siblingsFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsFamilyCheckboxActionPerformed
-        configuration.setShowSiblingsFamily(siblingsFamilyCheckbox.isSelected());
-    }//GEN-LAST:event_siblingsFamilyCheckboxActionPerformed
-
-    private void spousesFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesFamilyCheckboxActionPerformed
-        configuration.setShowSpousesFamily(spousesFamilyCheckbox.isSelected());
-    }//GEN-LAST:event_spousesFamilyCheckboxActionPerformed
-
-    private void childrenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childrenCheckboxActionPerformed
-        configuration.setShowChildren(childrenCheckbox.isSelected());
-    }//GEN-LAST:event_childrenCheckboxActionPerformed
-
-    private void fatherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fatherLineageCheckboxActionPerformed
-        configuration.setShowFathersLineage(fatherLineageCheckbox.isSelected());
-    }//GEN-LAST:event_fatherLineageCheckboxActionPerformed
-
-    private void motherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motherLineageCheckboxActionPerformed
-        configuration.setShowMothersLineage(motherLineageCheckbox.isSelected());
-    }//GEN-LAST:event_motherLineageCheckboxActionPerformed
-
-    private void generationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_generationSpinnerStateChanged
-        configuration.setGenerationCount((int) generationSpinner.getValue());
-    }//GEN-LAST:event_generationSpinnerStateChanged
 
     /**
      * @param args the command line arguments

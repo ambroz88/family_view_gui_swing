@@ -2,6 +2,7 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MARRIAGE_LABEL_WIDTH;
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.VERTICAL_GAP;
+
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 

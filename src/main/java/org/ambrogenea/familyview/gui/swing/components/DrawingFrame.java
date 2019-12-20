@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.FathersParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.OneFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
@@ -81,27 +80,17 @@ public class DrawingFrame extends JFrame {
         });
     }
 
-    public void generateFathersParents(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 2);
+    public void generateLineage(AncestorPerson personWithAncestors, Configuration config) {
+        int pictureHeight;
+        int pictureWidth;
 
-        final FathersParentsPanel fathersParentsPanel = new FathersParentsPanel(personWithAncestors, config);
-        fathersParentsPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        scrollAncestorPane.add(fathersParentsPanel);
-        scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
-        fathersParentsPanel.drawAncestorPanel();
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(fathersParentsPanel);
-            }
-        });
-    }
-
-    public void generateFathersParentsWithSiblings(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
+        if (config.isShowSiblings()) {
+            pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+            pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
+        } else {
+            pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
+            pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 2);
+        }
 
         final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

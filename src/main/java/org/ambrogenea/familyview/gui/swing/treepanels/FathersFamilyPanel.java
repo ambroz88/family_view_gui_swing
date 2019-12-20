@@ -14,13 +14,33 @@ public class FathersFamilyPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        int x = getWidth() / 2;
+        int x;
+        if (getConfiguration().isShowSiblings()) {
+            x = getWidth() / 2;
+        } else {
+            x = getConfiguration().getAdultImageWidth() * personModel.getAncestorGenerations() + MARRIAGE_LABEL_WIDTH / 2;
+        }
         int y = getHeight() - VERTICAL_GAP;
-        drawPerson(x, y, personModel);
-        int spousesShift = drawAllSpouses(x, y, personModel);
-        drawSiblingsAroundWifes(x, y, personModel, spousesShift);
 
-        drawFathersFamily(x, y, personModel);
+        drawPerson(x, y, personModel);
+        drawSpouseAndSiblings(x, y);
+
+        if (getConfiguration().isShowFathersLineage()) {
+            drawFathersFamily(x, y, personModel);
+        } else {
+            drawMotherFamily(x, y, personModel);
+        }
+    }
+
+    private void drawSpouseAndSiblings(int x, int y) {
+        if (getConfiguration().isShowSpouses()) {
+            int spousesShift = drawAllSpouses(x, y, personModel);
+            if (getConfiguration().isShowSiblings()) {
+                drawSiblingsAroundWifes(x, y, personModel, spousesShift);
+            }
+        } else if (getConfiguration().isShowSiblings()) {
+            drawSiblings(x, y, personModel);
+        }
     }
 
     private void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
@@ -34,10 +54,32 @@ public class FathersFamilyPanel extends RootFamilyPanel {
 
                 int fatherXPosition = childXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawPerson(fatherXPosition, y, person.getFather());
-                drawSiblings(fatherXPosition, y, person.getFather());
+
+                if (getConfiguration().isShowSiblings()) {
+                    drawSiblingsAroundMother(fatherXPosition, y, person.getFather());
+                }
 
                 drawFathersFamily(fatherXPosition, y, person.getFather());
             }
+        }
+    }
+
+    private void drawMotherFamily(int childXPosition, int childYPosition, AncestorPerson person) {
+        if (person.getMother() != null) {
+            int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+
+            addLineToParents(childXPosition, childYPosition);
+            drawMother(childXPosition, y, person);
+
+            if (person.getFather() != null) {
+                int fatherXPosition = childXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+                drawPerson(fatherXPosition, y, person.getFather());
+            }
+            int motherXPosition = childXPosition + (getConfiguration().getAdultImageHeight() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+            if (getConfiguration().isShowSiblings()) {
+                drawSiblingsAroundFather(motherXPosition, y, person.getMother());
+            }
+            drawFathersFamily(motherXPosition, y, person.getMother());
         }
     }
 

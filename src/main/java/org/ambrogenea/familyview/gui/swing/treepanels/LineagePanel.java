@@ -7,9 +7,9 @@ import org.ambrogenea.familyview.model.Configuration;
  *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class FathersFamilyPanel extends RootFamilyPanel {
+public class LineagePanel extends RootFamilyPanel {
 
-    public FathersFamilyPanel(AncestorPerson model, Configuration config) {
+    public LineagePanel(AncestorPerson model, Configuration config) {
         super(model, config);
     }
 
@@ -55,11 +55,13 @@ public class FathersFamilyPanel extends RootFamilyPanel {
                 int fatherXPosition = childXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawPerson(fatherXPosition, y, person.getFather());
 
-                if (getConfiguration().isShowSiblings()) {
-                    drawSiblingsAroundMother(fatherXPosition, y, person.getFather());
-                }
+                if (person.getAncestorLine().size() < getConfiguration().getGenerationCount()) {
+                    if (getConfiguration().isShowSiblings()) {
+                        drawSiblingsAroundMother(fatherXPosition, y, person.getFather());
+                    }
 
-                drawFathersFamily(fatherXPosition, y, person.getFather());
+                    drawFathersFamily(fatherXPosition, y, person.getFather());
+                }
             }
         }
     }

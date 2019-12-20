@@ -10,9 +10,9 @@ import org.ambrogenea.familyview.model.Configuration;
  *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class OneFamilyPanel extends RootFamilyPanel {
+public class CloseFamilyPanel extends RootFamilyPanel {
 
-    public OneFamilyPanel(AncestorPerson model, Configuration config) {
+    public CloseFamilyPanel(AncestorPerson model, Configuration config) {
         super(model, config);
     }
 

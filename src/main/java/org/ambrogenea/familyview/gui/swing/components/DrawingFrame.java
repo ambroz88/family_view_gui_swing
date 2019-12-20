@@ -19,8 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.FathersFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.OneFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.LineagePanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -81,18 +81,15 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateLineage(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureHeight;
         int pictureWidth;
-
         if (config.isShowSiblings()) {
-            pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
             pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
         } else {
-            pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
             pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 2);
         }
+        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 1);
 
-        final FathersFamilyPanel fathersFamilyPanel = new FathersFamilyPanel(personWithAncestors, config);
+        final LineagePanel fathersFamilyPanel = new LineagePanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
         scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
@@ -113,7 +110,7 @@ public class DrawingFrame extends JFrame {
 
         int pictureWidth = (siblingsCount + childrenCount + 1) * (config.getAdultImageWidth() + 2 * RootFamilyPanel.HORIZONTAL_GAP);
 
-        final OneFamilyPanel fathersFamilyPanel = new OneFamilyPanel(personWithAncestors, config);
+        final CloseFamilyPanel fathersFamilyPanel = new CloseFamilyPanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
         scrollAncestorPane.setScrollPosition((personWithAncestors.getOlderSiblings().size() + 1) * config.getAdultImageWidth() + config.getAdultImageWidth() / 2 - this.getWidth() / 2, pictureHeight);

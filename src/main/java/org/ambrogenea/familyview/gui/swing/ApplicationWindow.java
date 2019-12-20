@@ -544,10 +544,18 @@ public class ApplicationWindow extends JFrame {
 
     private void motherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motherLineageCheckboxActionPerformed
         configuration.setShowMothersLineage(motherLineageCheckbox.isSelected());
+        if (!motherLineageCheckbox.isSelected() && !fatherLineageCheckbox.isSelected()) {
+            configuration.setShowFathersLineage(true);
+            fatherLineageCheckbox.setSelected(true);
+        }
     }//GEN-LAST:event_motherLineageCheckboxActionPerformed
 
     private void fatherLineageCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fatherLineageCheckboxActionPerformed
         configuration.setShowFathersLineage(fatherLineageCheckbox.isSelected());
+        if (!fatherLineageCheckbox.isSelected() && !motherLineageCheckbox.isSelected()) {
+            configuration.setShowMothersLineage(true);
+            motherLineageCheckbox.setSelected(true);
+        }
     }//GEN-LAST:event_fatherLineageCheckboxActionPerformed
 
     private void spousesCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesCheckboxActionPerformed

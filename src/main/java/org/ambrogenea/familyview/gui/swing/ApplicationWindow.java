@@ -393,6 +393,11 @@ public class ApplicationWindow extends JFrame {
 
         showParentsCheckbox.setSelected(configuration.isShowParents());
         showParentsCheckbox.setText("Show parents");
+        showParentsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showParentsCheckboxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout closeFamilyPanelLayout = new javax.swing.GroupLayout(closeFamilyPanel);
         closeFamilyPanel.setLayout(closeFamilyPanelLayout);
@@ -512,14 +517,26 @@ public class ApplicationWindow extends JFrame {
 
     private void childrenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childrenCheckboxActionPerformed
         configuration.setShowChildren(childrenCheckbox.isSelected());
+        if (childrenCheckbox.isSelected() && !spousesFamilyCheckbox.isSelected()) {
+            spousesFamilyCheckbox.setSelected(true);
+            configuration.setShowSpousesFamily(true);
+        }
     }//GEN-LAST:event_childrenCheckboxActionPerformed
 
     private void spousesFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spousesFamilyCheckboxActionPerformed
         configuration.setShowSpousesFamily(spousesFamilyCheckbox.isSelected());
+        if (!spousesFamilyCheckbox.isSelected() && childrenCheckbox.isSelected()) {
+            configuration.setShowChildren(false);
+            childrenCheckbox.setSelected(false);
+        }
     }//GEN-LAST:event_spousesFamilyCheckboxActionPerformed
 
     private void siblingsFamilyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siblingsFamilyCheckboxActionPerformed
         configuration.setShowSiblingsFamily(siblingsFamilyCheckbox.isSelected());
+        if (siblingsFamilyCheckbox.isSelected() && !showParentsCheckbox.isSelected()) {
+            showParentsCheckbox.setSelected(true);
+            configuration.setShowParents(true);
+        }
     }//GEN-LAST:event_siblingsFamilyCheckboxActionPerformed
 
     private void generateCloseFamilyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCloseFamilyButtonActionPerformed
@@ -687,6 +704,14 @@ public class ApplicationWindow extends JFrame {
             System.out.println("Open command cancelled by user.");
         }
     }//GEN-LAST:event_loadInputButtonActionPerformed
+
+    private void showParentsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showParentsCheckboxActionPerformed
+        configuration.setShowParents(showParentsCheckbox.isSelected());
+        if (!showParentsCheckbox.isSelected() && siblingsFamilyCheckbox.isSelected()) {
+            configuration.setShowSiblingsFamily(false);
+            siblingsFamilyCheckbox.setSelected(false);
+        }
+    }//GEN-LAST:event_showParentsCheckboxActionPerformed
 
     private void loadTable(String absolutePath) {
         try {

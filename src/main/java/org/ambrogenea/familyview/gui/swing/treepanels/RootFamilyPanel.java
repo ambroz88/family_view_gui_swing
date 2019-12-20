@@ -110,11 +110,8 @@ public class RootFamilyPanel extends JPanel {
                 labelXPosition = spouseXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawLabel(labelXPosition, y, person.getSpouseCouple(index).getMarriageDate());
 
-                Line toChildren = new Line(labelXPosition, y, labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2);
-                toChildren.setType(Line.SIBLINGS);
-                lines.add(toChildren);
-
                 childrenShift = drawChildren(labelXPosition, y, person.getSpouseCouple(index)) + HORIZONTAL_GAP;
+                childrenShift = Math.max((getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH), childrenShift);
             }
         }
         return spouseXPosition;
@@ -233,17 +230,25 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected int drawChildren(int labelXPosition, int y, Couple spouseCouple) {
-        int childrenY = y + getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
         int childrenCount = spouseCouple.getChildren().size();
-        int childrenWidth = childrenCount * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
-        int startXPosition = labelXPosition - childrenWidth / 2;
+        int childrenWidth = 0;
+        if (getConfiguration().isShowChildren() && childrenCount > 0) {
+            Line toChildren = new Line(labelXPosition, y, labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2);
+            toChildren.setType(Line.SIBLINGS);
+            lines.add(toChildren);
 
-        for (int i = 0; i < childrenCount; i++) {
-            int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            addSiblingsToParents(childXPosition, childrenY, labelXPosition);
-            drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
+            int childrenY = y + getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
+            childrenWidth = childrenCount * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+            int startXPosition = labelXPosition - childrenWidth / 2;
+
+            for (int i = 0; i < childrenCount; i++) {
+                int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+                addSiblingsToParents(childXPosition, childrenY, labelXPosition);
+                drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
+            }
+            childrenWidth = childrenWidth / 2;
         }
-        return childrenWidth / 2;
+        return childrenWidth;
     }
 
     @Override

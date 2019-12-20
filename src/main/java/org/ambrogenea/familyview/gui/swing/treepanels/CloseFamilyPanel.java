@@ -18,13 +18,27 @@ public class CloseFamilyPanel extends RootFamilyPanel {
 
     public void drawAncestorPanel() {
         int personLeftCount = Math.max(personModel.getOlderSiblings().size(), personModel.getChildrenCount(0) / 2);
-        int x = (personLeftCount + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+        int x = (Math.max(personLeftCount, 1) + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
         int y = 2 * VERTICAL_GAP + getConfiguration().getAdultImageHeight();
         drawPerson(x, y, personModel);
 
-        int lastSpousePosition = drawAllSpousesWithKids(x, y, personModel);
-        drawSiblingsAroundWifes(x, y, personModel, lastSpousePosition);
-        drawParents(x, y, personModel);
+        if (getConfiguration().isShowParents()) {
+            drawParents(x, y, personModel);
+        }
+
+        if (getConfiguration().isShowSpousesFamily()) {
+            if (getConfiguration().isShowSiblingsFamily()) {
+                if (getConfiguration().isShowChildren()) {
+                    int lastSpousePosition = drawAllSpousesWithKids(x, y, personModel);
+                    drawSiblingsAroundWifes(x, y, personModel, lastSpousePosition);
+                } else {
+                    drawAllSpouses(x, y, personModel);
+                    drawSiblingsAroundWifes(x, y, personModel, 0);
+                }
+            }
+        } else if (getConfiguration().isShowSiblingsFamily()) {
+            drawSiblings(x, y, personModel);
+        }
     }
 
     private void drawParents(int childXPosition, int childYPosition, AncestorPerson person) {

@@ -48,6 +48,7 @@ public class LineagePanel extends RootFamilyPanel {
             int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
+            addHeraldry(childXPosition, childYPosition, person);
             drawMother(childXPosition, y, person);
 
             if (person.getFather() != null) {

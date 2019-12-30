@@ -7,18 +7,24 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
 import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.utils.FileIO;
+import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
  *
@@ -33,6 +39,7 @@ public class RootFamilyPanel extends JPanel {
     public static final int LABEL_HEIGHT = 30;
 
     protected final ArrayList<Line> lines;
+    protected final ArrayList<ImageModel> images;
     protected final AncestorPerson personModel;
     protected final Configuration configuration;
 
@@ -40,6 +47,7 @@ public class RootFamilyPanel extends JPanel {
         this.personModel = model;
         this.configuration = config;
         lines = new ArrayList<>();
+        images = new ArrayList<>();
         initPanel();
     }
 
@@ -262,6 +270,10 @@ public class RootFamilyPanel extends JPanel {
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         }
 
+        for (ImageModel image : images) {
+            g2.drawImage(image.getImage(), image.getX() - image.getWidth() / 2, image.getY() - image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
+        }
+
     }
 
     protected void addLineToParents(int childXPosition, int childYPosition) {
@@ -276,6 +288,27 @@ public class RootFamilyPanel extends JPanel {
         lines.get(lines.size() - 1).setType(Line.SIBLINGS);
         lines.add(new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY));
         lines.get(lines.size() - 1).setType(Line.SIBLINGS);
+    }
+
+    protected void addHeraldry(int childXPosition, int childYPosition, AncestorPerson person) {
+        String birthPlace = person.getBirthPlace();
+        if (!birthPlace.isEmpty()) {
+            birthPlace = birthPlace.split(",")[0];
+            birthPlace = Tools.replaceDiacritics(birthPlace);
+            int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
+
+            File heraldry = FileIO.loadFileFromResources("/heraldry/" + birthPlace + ".png");
+            if (heraldry != null) {
+                try {
+                    BufferedImage heraldryImage = ImageIO.read(heraldry);
+                    images.add(new ImageModel(heraldryImage, childXPosition, childYPosition - verticalShift, VERTICAL_GAP / 2));
+                } catch (IOException ex) {
+                    System.out.println("Heraldry image " + heraldry.getAbsolutePath() + " cannot be open." + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public BufferedImage getPicture() {

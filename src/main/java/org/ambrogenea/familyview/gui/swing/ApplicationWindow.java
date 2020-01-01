@@ -82,10 +82,12 @@ public class ApplicationWindow extends JFrame {
         jButton3 = new javax.swing.JButton();
         girlImageLabel = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        verticalOffsetLabel = new javax.swing.JLabel();
-        verticalOffsetField = new javax.swing.JTextField();
+        TopOffsetLabel = new javax.swing.JLabel();
+        topOffsetField = new javax.swing.JTextField();
         fontSizeLabel = new javax.swing.JLabel();
         fontSizeField = new javax.swing.JTextField();
+        bottomOffsetLabel = new javax.swing.JLabel();
+        bottomOffsetField = new javax.swing.JTextField();
         LIneagePanel = new javax.swing.JPanel();
         generateLineageButton = new javax.swing.JButton();
         siblingsCheckbox = new javax.swing.JCheckBox();
@@ -102,6 +104,8 @@ public class ApplicationWindow extends JFrame {
         showParentsCheckbox = new javax.swing.JCheckBox();
         fileNameLabel = new javax.swing.JLabel();
         openFileLabel = new javax.swing.JLabel();
+        heraldryCheckBox = new javax.swing.JCheckBox();
+        templeCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -180,12 +184,12 @@ public class ApplicationWindow extends JFrame {
 
         jButton4.setText("...");
 
-        verticalOffsetLabel.setText("Vertical offset");
+        TopOffsetLabel.setText("Top offset");
 
-        verticalOffsetField.setText(String.valueOf(this.configuration.getAdultVerticalOffset()));
-        verticalOffsetField.addActionListener(new java.awt.event.ActionListener() {
+        topOffsetField.setText(String.valueOf(this.configuration.getAdultTopOffset()));
+        topOffsetField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verticalOffsetFieldActionPerformed(evt);
+                topOffsetFieldActionPerformed(evt);
             }
         });
 
@@ -198,6 +202,15 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
+        bottomOffsetLabel.setText("Bottom offset");
+
+        bottomOffsetField.setText(String.valueOf(this.configuration.getAdultBottomOffset()));
+        bottomOffsetField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomOffsetFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout configPanelLayout = new javax.swing.GroupLayout(configPanel);
         configPanel.setLayout(configPanelLayout);
         configPanelLayout.setHorizontalGroup(
@@ -205,18 +218,6 @@ public class ApplicationWindow extends JFrame {
             .addGroup(configPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(configPanelLayout.createSequentialGroup()
-                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(imageHeightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(verticalOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fontSizeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(imageWithLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(12, 12, 12)
-                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(imageWidthField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(fontSizeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
                     .addGroup(configPanelLayout.createSequentialGroup()
                         .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(girlImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,7 +229,21 @@ public class ApplicationWindow extends JFrame {
                             .addComponent(imageWomanLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(imageManLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(imageManLoader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, configPanelLayout.createSequentialGroup()
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(bottomOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(imageHeightLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TopOffsetLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fontSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(imageWithLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imageWidthField, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(topOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(fontSizeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(bottomOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         configPanelLayout.setVerticalGroup(
@@ -244,13 +259,17 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(verticalOffsetLabel)
-                    .addComponent(verticalOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(TopOffsetLabel)
+                    .addComponent(topOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bottomOffsetLabel)
+                    .addComponent(bottomOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fontSizeLabel)
                     .addComponent(fontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(50, 50, 50)
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(imageManLoader)
                     .addComponent(manImageLabel))
@@ -266,7 +285,7 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(girlImageLabel))
-                .addContainerGap(219, Short.MAX_VALUE))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
 
         LIneagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Lineage setup"));
@@ -406,17 +425,14 @@ public class ApplicationWindow extends JFrame {
             .addGroup(closeFamilyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(closeFamilyPanelLayout.createSequentialGroup()
-                        .addComponent(generateCloseFamilyButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeFamilyPanelLayout.createSequentialGroup()
-                        .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spousesFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-                            .addComponent(showParentsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(siblingsFamilyCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(childrenCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(spousesFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                        .addComponent(showParentsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(generateCloseFamilyButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(siblingsFamilyCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(childrenCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         closeFamilyPanelLayout.setVerticalGroup(
@@ -437,6 +453,22 @@ public class ApplicationWindow extends JFrame {
         fileNameLabel.setText("none");
 
         openFileLabel.setText("Opened file:");
+
+        heraldryCheckBox.setSelected(configuration.isShowHeraldry());
+        heraldryCheckBox.setText("Show heraldry");
+        heraldryCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                heraldryCheckBoxActionPerformed(evt);
+            }
+        });
+
+        templeCheckBox.setSelected(configuration.isShowTemple());
+        templeCheckBox.setText("Show temple box");
+        templeCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                templeCheckBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
@@ -460,15 +492,18 @@ public class ApplicationWindow extends JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(generateAncestorButton)
-                        .addGap(0, 217, Short.MAX_VALUE)))
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(generateAncestorButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(templeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(heraldryCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 211, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         settingsRootPanelLayout.setVerticalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, settingsRootPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -478,16 +513,21 @@ public class ApplicationWindow extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(openFileLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(generateAncestorButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(34, 34, 34)
+                        .addComponent(heraldryCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(templeCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(generateAncestorButton)
+                        .addGap(18, 18, 18)))
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableScroll)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(configPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 10, Short.MAX_VALUE)))
+                        .addGap(0, 9, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -611,16 +651,16 @@ public class ApplicationWindow extends JFrame {
         configuration.setFontSize(fontSize);
     }//GEN-LAST:event_fontSizeFieldActionPerformed
 
-    private void verticalOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalOffsetFieldActionPerformed
-        int verticalOffset;
+    private void topOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topOffsetFieldActionPerformed
+        int topOffset;
         try {
-            verticalOffset = Integer.valueOf(verticalOffsetField.getText());
+            topOffset = Integer.valueOf(topOffsetField.getText());
         } catch (NumberFormatException e) {
-            verticalOffset = 140;
-            verticalOffsetField.setText(String.valueOf(verticalOffset));
+            topOffset = 30;
+            topOffsetField.setText(String.valueOf(topOffset));
         }
-        configuration.setAdultVerticalOffset(verticalOffset);
-    }//GEN-LAST:event_verticalOffsetFieldActionPerformed
+        configuration.setAdultTopOffset(topOffset);
+    }//GEN-LAST:event_topOffsetFieldActionPerformed
 
     private void imageWomanLoaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWomanLoaderActionPerformed
         JFileChooser imageChooser = new JFileChooser(System.getProperty("user.home") + "/Documents/FamilyTreeViewer/");
@@ -713,6 +753,25 @@ public class ApplicationWindow extends JFrame {
         }
     }//GEN-LAST:event_showParentsCheckboxActionPerformed
 
+    private void bottomOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomOffsetFieldActionPerformed
+        int bottomOffset;
+        try {
+            bottomOffset = Integer.valueOf(bottomOffsetField.getText());
+        } catch (NumberFormatException e) {
+            bottomOffset = 30;
+            bottomOffsetField.setText(String.valueOf(bottomOffset));
+        }
+        configuration.setAdultBottomOffset(bottomOffset);
+    }//GEN-LAST:event_bottomOffsetFieldActionPerformed
+
+    private void heraldryCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heraldryCheckBoxActionPerformed
+        configuration.setShowHeraldry(heraldryCheckBox.isSelected());
+    }//GEN-LAST:event_heraldryCheckBoxActionPerformed
+
+    private void templeCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_templeCheckBoxActionPerformed
+        configuration.setShowTemple(templeCheckBox.isSelected());
+    }//GEN-LAST:event_templeCheckBoxActionPerformed
+
     private void loadTable(String absolutePath) {
         try {
             ArrayList<String> lines = FileIO.FileToLines(absolutePath);
@@ -758,6 +817,9 @@ public class ApplicationWindow extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LIneagePanel;
+    private javax.swing.JLabel TopOffsetLabel;
+    private javax.swing.JTextField bottomOffsetField;
+    private javax.swing.JLabel bottomOffsetLabel;
     private javax.swing.JLabel boyImageLabel;
     private javax.swing.JCheckBox childrenCheckbox;
     private javax.swing.JPanel closeFamilyPanel;
@@ -772,6 +834,7 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JSpinner generationSpinner;
     private javax.swing.JLabel generationsLabel;
     private javax.swing.JLabel girlImageLabel;
+    private javax.swing.JCheckBox heraldryCheckBox;
     private javax.swing.JTextField imageHeightField;
     private javax.swing.JLabel imageHeightLabel;
     private javax.swing.JButton imageManLoader;
@@ -793,8 +856,8 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JCheckBox spousesCheckbox;
     private javax.swing.JCheckBox spousesFamilyCheckbox;
     private javax.swing.JScrollPane tableScroll;
-    private javax.swing.JTextField verticalOffsetField;
-    private javax.swing.JLabel verticalOffsetLabel;
+    private javax.swing.JCheckBox templeCheckBox;
+    private javax.swing.JTextField topOffsetField;
     private javax.swing.JLabel womanImageLabel;
     // End of variables declaration//GEN-END:variables
 

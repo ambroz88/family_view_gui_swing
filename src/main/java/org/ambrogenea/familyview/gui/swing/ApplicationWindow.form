@@ -86,8 +86,12 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="generateAncestorButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="217" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="generateAncestorButton" max="32767" attributes="0"/>
+                                  <Component id="templeCheckBox" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="heraldryCheckBox" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="211" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -97,8 +101,8 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="LIneagePanel" alignment="0" max="32767" attributes="0"/>
@@ -111,18 +115,23 @@
                                       <Component id="fileNameLabel" min="-2" pref="25" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="heraldryCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="generateAncestorButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="tableScroll" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="configPanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -169,21 +178,6 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="imageHeightLabel" max="32767" attributes="0"/>
-                                      <Component id="verticalOffsetLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="fontSizeLabel" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="imageWithLabel" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="imageWidthField" pref="50" max="32767" attributes="0"/>
-                                      <Component id="imageHeightField" pref="0" max="32767" attributes="0"/>
-                                      <Component id="verticalOffsetField" alignment="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="fontSizeField" alignment="1" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="girlImageLabel" max="32767" attributes="0"/>
                                       <Component id="boyImageLabel" max="32767" attributes="0"/>
@@ -196,6 +190,23 @@
                                       <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jButton4" alignment="0" max="32767" attributes="0"/>
                                       <Component id="imageManLoader" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="bottomOffsetLabel" max="32767" attributes="0"/>
+                                      <Component id="imageHeightLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="TopOffsetLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="fontSizeLabel" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="imageWithLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="imageWidthField" pref="50" max="32767" attributes="0"/>
+                                      <Component id="imageHeightField" pref="0" max="32767" attributes="0"/>
+                                      <Component id="topOffsetField" alignment="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="fontSizeField" alignment="1" pref="0" max="32767" attributes="0"/>
+                                      <Component id="bottomOffsetField" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -218,15 +229,20 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="verticalOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="verticalOffsetField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="TopOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="topOffsetField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="bottomOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="bottomOffsetField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="fontSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="fontSizeField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="imageManLoader" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="manImageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -246,7 +262,7 @@
                               <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="girlImageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="219" max="32767" attributes="0"/>
+                          <EmptySpace pref="171" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -337,19 +353,19 @@
                     <Property name="text" type="java.lang.String" value="..."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="verticalOffsetLabel">
+                <Component class="javax.swing.JLabel" name="TopOffsetLabel">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Vertical offset"/>
+                    <Property name="text" type="java.lang.String" value="Top offset"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="verticalOffsetField">
+                <Component class="javax.swing.JTextField" name="topOffsetField">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="String.valueOf(this.configuration.getAdultVerticalOffset())" type="code"/>
+                      <Connection code="String.valueOf(this.configuration.getAdultTopOffset())" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verticalOffsetFieldActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topOffsetFieldActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="fontSizeLabel">
@@ -365,6 +381,21 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fontSizeFieldActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="bottomOffsetLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Bottom offset"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="bottomOffsetField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="String.valueOf(this.configuration.getAdultBottomOffset())" type="code"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bottomOffsetFieldActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -511,21 +542,16 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="generateCloseFamilyButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="spousesFamilyCheckbox" pref="126" max="32767" attributes="0"/>
+                                  <Component id="showParentsCheckbox" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="spousesFamilyCheckbox" pref="126" max="32767" attributes="0"/>
-                                      <Component id="showParentsCheckbox" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace pref="27" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="siblingsFamilyCheckbox" min="-2" pref="126" max="-2" attributes="0"/>
-                                      <Component id="childrenCheckbox" min="-2" pref="115" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="generateCloseFamilyButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="siblingsFamilyCheckbox" min="-2" pref="126" max="-2" attributes="0"/>
+                              <Component id="childrenCheckbox" min="-2" pref="115" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -614,6 +640,28 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Opened file:"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="heraldryCheckBox">
+              <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="configuration.isShowHeraldry()" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Show heraldry"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="heraldryCheckBoxActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="templeCheckBox">
+              <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="configuration.isShowTemple()" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Show temple box"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="templeCheckBoxActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

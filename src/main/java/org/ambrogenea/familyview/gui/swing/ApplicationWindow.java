@@ -19,11 +19,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.model.Table;
+import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.DataModel;
 import org.ambrogenea.familyview.model.utils.FileIO;
+import org.ambrogenea.familyview.model.word.WordGenerator;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
  *
@@ -96,6 +100,7 @@ public class ApplicationWindow extends JFrame {
         motherLineageCheckbox = new javax.swing.JCheckBox();
         generationSpinner = new javax.swing.JSpinner();
         generationsLabel = new javax.swing.JLabel();
+        generateWord = new javax.swing.JButton();
         closeFamilyPanel = new javax.swing.JPanel();
         generateCloseFamilyButton = new javax.swing.JButton();
         siblingsFamilyCheckbox = new javax.swing.JCheckBox();
@@ -338,6 +343,13 @@ public class ApplicationWindow extends JFrame {
 
         generationsLabel.setText("Generations");
 
+        generateWord.setText("Generate Word");
+        generateWord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateWordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout LIneagePanelLayout = new javax.swing.GroupLayout(LIneagePanel);
         LIneagePanel.setLayout(LIneagePanelLayout);
         LIneagePanelLayout.setHorizontalGroup(
@@ -349,15 +361,16 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(spousesCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(siblingsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LIneagePanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(generationsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                    .addGroup(LIneagePanelLayout.createSequentialGroup()
+                        .addComponent(generationsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(generateWord)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         LIneagePanelLayout.setVerticalGroup(
             LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,7 +386,8 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generateLineageButton)
                     .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(generationsLabel))
+                    .addComponent(generationsLabel)
+                    .addComponent(generateWord))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -445,7 +459,7 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spousesFamilyCheckbox)
                     .addComponent(childrenCheckbox, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(generateCloseFamilyButton)
                 .addContainerGap())
         );
@@ -486,41 +500,41 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(openFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tableScroll)
+                    .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 985, Short.MAX_VALUE)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(generateAncestorButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(templeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(heraldryCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 211, Short.MAX_VALUE)))
+                            .addComponent(heraldryCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         settingsRootPanelLayout.setVerticalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, settingsRootPanelLayout.createSequentialGroup()
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
-                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                                 .addComponent(loadInputButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(openFileLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(heraldryCheckBox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(templeCheckBox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(generateAncestorButton)
                         .addGap(18, 18, 18)))
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -772,6 +786,67 @@ public class ApplicationWindow extends JFrame {
         configuration.setShowTemple(templeCheckBox.isSelected());
     }//GEN-LAST:event_templeCheckBoxActionPerformed
 
+    private void generateWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWordActionPerformed
+        if (recordsTable.getSelectedRow() != -1) {
+            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorPerson personWithAncestors;
+            if (configuration.isShowFathersLineage()) {
+                personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
+                createFamilyDocument(personWithAncestors.getFather());
+            } else {
+                personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
+                createFamilyDocument(personWithAncestors.getMother());
+            }
+
+        }
+    }//GEN-LAST:event_generateWordActionPerformed
+
+    private void createFamilyDocument(AncestorPerson person) {
+        XWPFDocument doc = WordGenerator.createWordDocument();
+        AncestorPerson actualPerson = person;
+        CloseFamilyPanel familyPanel;
+        while (actualPerson != null) {
+            familyPanel = createOneFamily(actualPerson);
+
+            WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
+            WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getWidth(), familyPanel.getHeight());
+            actualPerson = actualPerson.getFather();
+        }
+
+        try {
+            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + person.getName() + ".docx", doc);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private CloseFamilyPanel createOneFamily(AncestorPerson personWithAncestors) {
+        int pictureHeight;
+        if (configuration.isShowParents() && configuration.isShowChildren()) {
+            pictureHeight = (3 * configuration.getAdultImageHeight() + 3 * RootFamilyPanel.VERTICAL_GAP);
+        } else {
+            pictureHeight = (2 * configuration.getAdultImageHeight() + 2 * RootFamilyPanel.VERTICAL_GAP);
+        }
+
+        int siblingsCount = 0;
+        if (configuration.isShowSiblingsFamily()) {
+            siblingsCount = personWithAncestors.getOlderSiblings().size() + personWithAncestors.getYoungerSiblings().size();
+        }
+        int childrenCount = 0;
+        if (configuration.isShowChildren()) {
+            childrenCount = personWithAncestors.getAllChildrenCount();
+        }
+        int pictureWidth = (Math.max(4, (siblingsCount + childrenCount + personWithAncestors.getSpouseCouples().size())) * (configuration.getAdultImageWidth() + 2 * RootFamilyPanel.HORIZONTAL_GAP));
+        CloseFamilyPanel familyPanel = new CloseFamilyPanel(personWithAncestors, configuration);
+//        familyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
+        familyPanel.setSize(new Dimension(pictureWidth, pictureHeight));
+        familyPanel.drawAncestorPanel();
+        familyPanel.addNotify();
+        familyPanel.validate();
+        return familyPanel;
+    }
+
     private void loadTable(String absolutePath) {
         try {
             ArrayList<String> lines = FileIO.FileToLines(absolutePath);
@@ -831,6 +906,7 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JButton generateAncestorButton;
     private javax.swing.JButton generateCloseFamilyButton;
     private javax.swing.JButton generateLineageButton;
+    private javax.swing.JButton generateWord;
     private javax.swing.JSpinner generationSpinner;
     private javax.swing.JLabel generationsLabel;
     private javax.swing.JLabel girlImageLabel;

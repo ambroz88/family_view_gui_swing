@@ -65,6 +65,19 @@ public class PersonPanel extends JPanel {
         birth = new JLabel(" ", JLabel.CENTER);
         death = new JLabel(" ", JLabel.CENTER);
 
+        if (!person.getFirstName().isEmpty()) {
+            firstName.setText(person.getFirstName());
+        }
+        if (!person.getSurname().isEmpty()) {
+            surName.setText(person.getSurname().toUpperCase());
+        }
+        if (!person.getBirthDate().isEmpty()) {
+            birth.setText("\u2605 " + person.getBirthDateCzech());
+        }
+        if (!person.getDeathDate().isEmpty()) {
+            death.setText("\u271D " + person.getDeathDateCzech());
+        }
+
         firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
         surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
         birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
@@ -113,16 +126,6 @@ public class PersonPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         g.drawImage(personDiagram, 0, 0, configuration.getAdultImageWidth(), configuration.getAdultImageHeight(), null);
-
-        firstName.setText(person.getFirstName());
-        surName.setText(person.getSurname().toUpperCase());
-        if (!person.getBirthDate().isEmpty()) {
-            birth.setText("\u2605 " + person.getBirthDateCzech());
-        }
-        if (!person.getDeathDate().isEmpty()) {
-            death.setText("\u271D " + person.getDeathDateCzech());
-        }
-
     }
 
     private JPanel creteTempleBox() {

@@ -7,8 +7,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -316,6 +319,18 @@ public class RootFamilyPanel extends JPanel {
         Graphics g = image.getGraphics();
         this.paint(g);
         return image;
+    }
+
+    public InputStream getStream() {
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(getPicture(), "png", os);
+            InputStream is = new ByteArrayInputStream(os.toByteArray());
+            os.close();
+            return is;
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
     protected Configuration getConfiguration() {

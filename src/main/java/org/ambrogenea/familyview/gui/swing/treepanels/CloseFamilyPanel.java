@@ -2,6 +2,7 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MARRIAGE_LABEL_WIDTH;
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.VERTICAL_GAP;
+
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -16,13 +17,25 @@ public class CloseFamilyPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        int personLeftCount = Math.max(personModel.getOlderSiblings().size(), personModel.getChildrenCount(0) / 2);
-        int x = (Math.max(personLeftCount, 1) + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-        int y = 2 * VERTICAL_GAP + getConfiguration().getAdultImageHeight();
+        int personLeftCount = 0;
+        int y = getHeight() - VERTICAL_GAP;
+
+        if (getConfiguration().isShowSiblingsFamily()) {
+            personLeftCount = personModel.getOlderSiblings().size();
+        }
+        if (getConfiguration().isShowChildren()) {
+            personLeftCount = Math.max(personLeftCount, personModel.getChildrenCount(0) / 2);
+            y = getHeight() - 2 * VERTICAL_GAP - getConfiguration().getAdultImageHeight();
+        }
+        int x = (Math.max(personLeftCount, 1)) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+
         drawPerson(x, y, personModel);
 
         if (getConfiguration().isShowParents()) {
             drawParents(x, y, personModel);
+            if (getConfiguration().isShowHeraldry()) {
+                addHeraldry(x, y, personModel);
+            }
         }
 
         if (getConfiguration().isShowSpousesFamily()) {

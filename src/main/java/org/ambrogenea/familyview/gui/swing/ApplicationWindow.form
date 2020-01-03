@@ -80,18 +80,18 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tableScroll" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Component id="tableScroll" pref="985" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Component id="LIneagePanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="generateAncestorButton" max="32767" attributes="0"/>
                                   <Component id="templeCheckBox" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="heraldryCheckBox" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="heraldryCheckBox" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="211" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -101,12 +101,11 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="LIneagePanel" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="closeFamilyPanel" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="LIneagePanel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="loadInputButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -114,17 +113,18 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="fileNameLabel" min="-2" pref="25" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="closeFamilyPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="heraldryCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="generateAncestorButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -420,17 +420,18 @@
                               <Component id="siblingsCheckbox" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="fatherLineageCheckbox" max="32767" attributes="0"/>
-                              <Component id="motherLineageCheckbox" max="32767" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                  <Component id="generationsLabel" max="32767" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="motherLineageCheckbox" alignment="0" pref="124" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="generationsLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="generationSpinner" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="fatherLineageCheckbox" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="generateWord" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="21" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -451,6 +452,7 @@
                               <Component id="generateLineageButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="generationSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="generationsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="generateWord" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -525,6 +527,14 @@
                     <Property name="text" type="java.lang.String" value="Generations"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JButton" name="generateWord">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Generate Word"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateWordActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="closeFamilyPanel">
@@ -569,7 +579,7 @@
                               <Component id="spousesFamilyCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="childrenCheckbox" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="8" max="32767" attributes="0"/>
                           <Component id="generateCloseFamilyButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>

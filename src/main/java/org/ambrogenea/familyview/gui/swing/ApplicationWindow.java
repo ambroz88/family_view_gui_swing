@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -822,25 +821,7 @@ public class ApplicationWindow extends JFrame {
     }
 
     private CloseFamilyPanel createOneFamily(AncestorPerson personWithAncestors) {
-        int pictureHeight;
-        if (configuration.isShowParents() && configuration.isShowChildren()) {
-            pictureHeight = (3 * configuration.getAdultImageHeight() + 3 * RootFamilyPanel.VERTICAL_GAP);
-        } else {
-            pictureHeight = (2 * configuration.getAdultImageHeight() + 2 * RootFamilyPanel.VERTICAL_GAP);
-        }
-
-        int siblingsCount = 0;
-        if (configuration.isShowSiblingsFamily()) {
-            siblingsCount = personWithAncestors.getOlderSiblings().size() + personWithAncestors.getYoungerSiblings().size();
-        }
-        int childrenCount = 0;
-        if (configuration.isShowChildren()) {
-            childrenCount = personWithAncestors.getAllChildrenCount();
-        }
-        int pictureWidth = (Math.max(4, (siblingsCount + childrenCount + personWithAncestors.getSpouseCouples().size())) * (configuration.getAdultImageWidth() + 2 * RootFamilyPanel.HORIZONTAL_GAP));
         CloseFamilyPanel familyPanel = new CloseFamilyPanel(personWithAncestors, configuration);
-//        familyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        familyPanel.setSize(new Dimension(pictureWidth, pictureHeight));
         familyPanel.drawAncestorPanel();
         familyPanel.addNotify();
         familyPanel.validate();

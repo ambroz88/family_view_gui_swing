@@ -92,40 +92,48 @@ public class PersonPanel extends JPanel {
     private void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
         c.ipady = configuration.getAdultTopOffset();
-//        c.weighty = 5;
-        add(new JLabel(), c);
+        c.weighty = 5;
+        add(new JLabel(""), c);
         c.gridy = 1;
         c.ipady = 0;
+        c.weighty = 0;
         add(firstName, c);
         c.gridy = 2;
         c.ipady = 5;
+        c.weighty = 2;
         add(surName, c);
         c.gridy = 3;
+        c.ipady = 0;
         add(birth, c);
         c.gridy = 4;
-        c.ipady = 0;
         add(death, c);
 
         if (configuration.isShowTemple() && !person.isChild()) {
             JPanel templeBox = creteTempleBox();
-            c.weighty = 10;
-            c.ipady = 8;
+            c.ipady = 5;
             c.gridy = 5;
+            c.weighty = 4;
             add(templeBox, c);
 
             c.gridy = 6;
+            c.weighty = 5;
             c.ipady = configuration.getAdultBottomOffset();
-            add(new JLabel(), c);
+            add(new JLabel(""), c);
         } else {
             c.gridy = 5;
+            c.weighty = 5;
             c.ipady = configuration.getAdultBottomOffset();
-            add(new JLabel(), c);
+            add(new JLabel(""), c);
         }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(personDiagram, 0, 0, configuration.getAdultImageWidth(), configuration.getAdultImageHeight(), null);
+        if (person.isChild() && configuration.isShowTemple()) {
+            g.drawImage(personDiagram, 0, (configuration.getAdultImageHeight() / 7) / 2, configuration.getAdultImageWidth(), (int) (configuration.getAdultImageHeight() / 7.0 * 6), null);
+        } else {
+            g.drawImage(personDiagram, 0, 0, configuration.getAdultImageWidth(), configuration.getAdultImageHeight(), null);
+        }
     }
 
     private JPanel creteTempleBox() {

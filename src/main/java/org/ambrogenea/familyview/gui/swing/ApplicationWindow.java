@@ -808,16 +808,23 @@ public class ApplicationWindow extends JFrame {
     private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
         if (person != null) {
             AncestorPerson actualPerson = person;
-
+            int generations = 0;
             while (actualPerson != null) {
-                addFamilyToDoc(actualPerson, doc);
-                actualPerson = actualPerson.getFather();
+                if (generations < configuration.getGenerationCount()) {
+                    addFamilyToDoc(actualPerson, doc);
+                    actualPerson = actualPerson.getFather();
+                    generations++;
+                } else {
+                    actualPerson = null;
+                }
             }
         }
     }
 
     private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
         CloseFamilyPanel familyPanel = createOneFamily(actualPerson);
+        int generations = familyPanel.calculateGenerations();
+        WordGenerator.setMaxHeight(generations);
         WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
         WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getWidth(), familyPanel.getHeight());
     }

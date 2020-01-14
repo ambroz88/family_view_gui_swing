@@ -26,15 +26,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
 
     private int calculateHeight() {
         int generationHeight = getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
-        int pictureHeight = generationHeight;
-
-        if (getConfiguration().isShowParents() && !personModel.getParents().isEmpty()) {
-            pictureHeight += generationHeight;
-        }
-        if (getConfiguration().isShowChildren() && personModel.getAllChildrenCount() > 0) {
-            pictureHeight += generationHeight;
-        }
-        return pictureHeight;
+        return generationHeight * calculateGenerations();
     }
 
     private int calculateWidth() {
@@ -46,7 +38,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         int siblingsLeftWidth = getConfiguration().getAdultImageWidth() / 2 + HORIZONTAL_GAP;
         int siblingsRightWidth = getConfiguration().getAdultImageWidth() / 2 + HORIZONTAL_GAP;
 
-        if (getConfiguration().isShowParents()) {
+        if (getConfiguration().isShowParents() && !personModel.getParents().isEmpty()) {
             parentsHalfWidth = MARRIAGE_LABEL_WIDTH / 2 + getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP;
         }
 
@@ -131,7 +123,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         if (getConfiguration().isShowChildren()) {
             childrenLeftSpace = (int) (personModel.getChildrenCount(0) / 2.0 * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) / 2);
         }
-        if (getConfiguration().isShowParents()) {
+        if (getConfiguration().isShowParents() && !personModel.getParents().isEmpty()) {
             minimalLeftSpace = getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP + MARRIAGE_LABEL_WIDTH / 2;
         }
 
@@ -153,6 +145,18 @@ public class CloseFamilyPanel extends RootFamilyPanel {
                 drawPerson(fatherXPosition, y, person.getFather());
             }
         }
+    }
+
+    public int calculateGenerations() {
+        int generationCount = 1;
+
+        if (getConfiguration().isShowParents() && !personModel.getParents().isEmpty()) {
+            generationCount++;
+        }
+        if (getConfiguration().isShowChildren() && personModel.getAllChildrenCount() > 0) {
+            generationCount++;
+        }
+        return generationCount;
     }
 
 }

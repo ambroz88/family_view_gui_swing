@@ -146,7 +146,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - SIBLINGS_GAP;
+            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -155,7 +155,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = rootSiblingX + SIBLINGS_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -167,7 +167,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - SIBLINGS_GAP;
+            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -181,7 +181,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = rootSiblingX + spouseGap + SIBLINGS_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            startX = rootSiblingX + spouseGap + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -199,7 +199,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            startX = rootSiblingX - spouseGap - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - SIBLINGS_GAP;
+            startX = rootSiblingX - spouseGap - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -207,7 +207,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = rootSiblingX + SIBLINGS_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -219,7 +219,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - SIBLINGS_GAP;
+            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }
@@ -235,7 +235,7 @@ public class RootFamilyPanel extends JPanel {
         for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = spouseGap + SIBLINGS_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            startX = spouseGap + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
         }

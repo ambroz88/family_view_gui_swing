@@ -20,8 +20,10 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         int pictureHeight;
         if (getConfiguration().isShowParents() && getConfiguration().isShowChildren()) {
             pictureHeight = (3 * getConfiguration().getAdultImageHeight() + 3 * VERTICAL_GAP);
-        } else {
+        } else if (getConfiguration().isShowParents() || getConfiguration().isShowChildren()) {
             pictureHeight = (2 * getConfiguration().getAdultImageHeight() + 2 * VERTICAL_GAP);
+        } else {
+            pictureHeight = getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
         }
 
         int pictureWidth = calculateWidth();
@@ -34,13 +36,18 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         int childrenLeftWidth = 0;
         int childrenRightWidth = 0;
         int childrenSpouseWidth = 0;
+        int parentsHalfWidth = 0;
 
-        int siblingsLeftWidth = getConfiguration().getAdultImageWidth() + SIBLINGS_GAP;
-        int siblingsRightWidth = SIBLINGS_GAP;
+        int siblingsLeftWidth = getConfiguration().getAdultImageWidth() / 2 + HORIZONTAL_GAP;
+        int siblingsRightWidth = getConfiguration().getAdultImageWidth() / 2 + HORIZONTAL_GAP;
+
+        if (getConfiguration().isShowParents()) {
+            parentsHalfWidth = MARRIAGE_LABEL_WIDTH / 2 + getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP;
+        }
 
         if (getConfiguration().isShowSiblingsFamily()) {
-            siblingsLeftWidth = siblingsLeftWidth + personModel.getOlderSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            siblingsRightWidth = siblingsRightWidth + personModel.getYoungerSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            siblingsLeftWidth = siblingsLeftWidth + personModel.getOlderSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
+            siblingsRightWidth = siblingsRightWidth + personModel.getYoungerSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
         }
         if (getConfiguration().isShowSpousesFamily()) {
             int spouseRightIncrease;
@@ -60,22 +67,20 @@ public class CloseFamilyPanel extends RootFamilyPanel {
                     childrenRightWidth = childrenRightWidth + SIBLINGS_GAP;
                 }
                 if (i == personModel.getSpouseCouples().size() - 1) {
-                    siblingsRightWidth = childrenSpouseWidth + Math.max(siblingsRightWidth + HORIZONTAL_GAP + spouseRightIncrease, childrenRightWidth);
+                    siblingsRightWidth = childrenSpouseWidth + Math.max(siblingsRightWidth + spouseRightIncrease, childrenRightWidth);
                 } else {
-                    childrenSpouseWidth = childrenSpouseWidth + Math.max(spouseRightIncrease, childrenRightWidth);
+                    childrenSpouseWidth = childrenSpouseWidth + Math.max(spouseRightIncrease, childrenRightWidth + HORIZONTAL_GAP);
                 }
             }
         }
 
-        int leftWidth = Math.max(siblingsLeftWidth, childrenLeftWidth);
-        int rightWidth = siblingsRightWidth;
-        int minimalWidth = 3 * getConfiguration().getAdultImageWidth();
-        int pictureWidth = Math.max(leftWidth + rightWidth, minimalWidth) + 2 * SIBLINGS_GAP;
-        return pictureWidth;
+        int leftWidth = Math.max(parentsHalfWidth, Math.max(siblingsLeftWidth, childrenLeftWidth));
+        int rightWidth = Math.max(parentsHalfWidth, siblingsRightWidth);
+        return leftWidth + rightWidth;
     }
 
     public void drawAncestorPanel() {
-        int y = getHeight() - VERTICAL_GAP;
+        int y = getHeight() - VERTICAL_GAP / 2 - getConfiguration().getAdultImageHeight() / 2;
         if (getConfiguration().isShowChildren()) {
             y = getHeight() - 2 * VERTICAL_GAP - getConfiguration().getAdultImageHeight();
         }
@@ -102,6 +107,8 @@ public class CloseFamilyPanel extends RootFamilyPanel {
                 }
             } else if (getConfiguration().isShowChildren()) {
                 drawAllSpousesWithKids(x, y, personModel);
+            } else {
+                drawAllSpouses(x, y, personModel);
             }
         } else if (getConfiguration().isShowSiblingsFamily()) {
             drawSiblings(x, y, personModel);
@@ -114,7 +121,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         int minimalLeftSpace = getConfiguration().getAdultImageWidth() / 2 + HORIZONTAL_GAP;
 
         if (getConfiguration().isShowSiblingsFamily()) {
-            siblingsLeftSpace = personModel.getOlderSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) + getConfiguration().getAdultImageWidth();
+            siblingsLeftSpace = personModel.getOlderSiblings().size() * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) + getConfiguration().getAdultImageWidth() / 2 + SIBLINGS_GAP;
         }
         if (getConfiguration().isShowChildren()) {
             childrenLeftSpace = (int) (personModel.getChildrenCount(0) / 2.0 * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) / 2);

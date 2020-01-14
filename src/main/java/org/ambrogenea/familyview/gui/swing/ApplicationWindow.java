@@ -787,37 +787,39 @@ public class ApplicationWindow extends JFrame {
 
     private void generateWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWordActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
+            XWPFDocument doc = WordGenerator.createWordDocument();
             AncestorModel ancestors = new AncestorModel(dataModel);
             AncestorPerson personWithAncestors;
+
             if (configuration.isShowFathersLineage()) {
                 personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
-                createFamilyDocument(personWithAncestors.getFather());
+                addFamilyToDoc(personWithAncestors, doc);
+                createFamilyDocument(personWithAncestors.getFather(), doc);
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
-                createFamilyDocument(personWithAncestors.getMother());
+                addFamilyToDoc(personWithAncestors, doc);
+                createFamilyDocument(personWithAncestors.getMother(), doc);
             }
 
+            saveFamilyDocument(personWithAncestors, doc);
         }
     }//GEN-LAST:event_generateWordActionPerformed
 
-    private void createFamilyDocument(AncestorPerson person) {
-        XWPFDocument doc = WordGenerator.createWordDocument();
-        AncestorPerson actualPerson = person;
-        CloseFamilyPanel familyPanel;
-        while (actualPerson != null) {
-            familyPanel = createOneFamily(actualPerson);
+    private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
+        if (person != null) {
+            AncestorPerson actualPerson = person;
 
-            WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
-            WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getWidth(), familyPanel.getHeight());
-            actualPerson = actualPerson.getFather();
+            while (actualPerson != null) {
+                addFamilyToDoc(actualPerson, doc);
+                actualPerson = actualPerson.getFather();
+            }
         }
+    }
 
-        try {
-            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + person.getName() + ".docx", doc);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
+    private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
+        CloseFamilyPanel familyPanel = createOneFamily(actualPerson);
+        WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
+        WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getWidth(), familyPanel.getHeight());
     }
 
     private CloseFamilyPanel createOneFamily(AncestorPerson personWithAncestors) {
@@ -826,6 +828,14 @@ public class ApplicationWindow extends JFrame {
         familyPanel.addNotify();
         familyPanel.validate();
         return familyPanel;
+    }
+
+    private void saveFamilyDocument(AncestorPerson personWithAncestors, XWPFDocument doc) {
+        try {
+            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personWithAncestors.getName() + ".docx", doc);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void loadTable(String absolutePath) {

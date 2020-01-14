@@ -108,12 +108,12 @@ public class RootFamilyPanel extends JPanel {
         int spouseXPosition = husbandXPosition;
         if (person.getSpouse() != null) {
             int labelXPosition;
-            int childrenShift = -(person.getChildrenCount(0) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2) + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH / 2);
+            int childrenShift = -(person.getChildrenCount(0) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2) + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) - SIBLINGS_GAP;
 
             for (int index = 0; index < person.getSpouseCouples().size(); index++) {
                 husbandXPosition = spouseXPosition;
-                int childrenWidth = person.getChildrenCount(index) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH / 2);
-                spouseXPosition = spouseXPosition + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) + childrenShift + childrenWidth;
+                int childrenWidth = person.getChildrenCount(index) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH);
+                spouseXPosition = spouseXPosition + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) + childrenShift + childrenWidth + SIBLINGS_GAP;
 
                 drawPerson(spouseXPosition, y, person.getSpouse(index));
                 lines.add(new Line(husbandXPosition, y - LABEL_HEIGHT, spouseXPosition, y - LABEL_HEIGHT));
@@ -122,8 +122,8 @@ public class RootFamilyPanel extends JPanel {
                 labelXPosition = spouseXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawLabel(labelXPosition, y, person.getSpouseCouple(index).getMarriageDate());
 
-                childrenShift = drawChildren(labelXPosition, y, person.getSpouseCouple(index)) + HORIZONTAL_GAP;
-                childrenShift = Math.max((getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH), childrenShift);
+                childrenShift = drawChildren(labelXPosition, y, person.getSpouseCouple(index));
+                childrenShift = Math.max((getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) / 2, childrenShift);
             }
         }
         return spouseXPosition;

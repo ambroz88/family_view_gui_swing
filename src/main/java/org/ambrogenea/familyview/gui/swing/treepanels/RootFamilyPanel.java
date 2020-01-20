@@ -259,6 +259,10 @@ public class RootFamilyPanel extends JPanel {
                 drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
             }
             childrenWidth = childrenWidth / 2;
+
+            if (getConfiguration().isShowHeraldry()) {
+                addChildrenHeraldry(labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2, spouseCouple);
+            }
         }
         return childrenWidth;
     }
@@ -313,6 +317,24 @@ public class RootFamilyPanel extends JPanel {
             }
         }
 
+    }
+
+    protected void addChildrenHeraldry(int heraldryXPosition, int heraldryYPosition, Couple spouseCouple) {
+        String birthPlace = spouseCouple.getChildren().get(0).getBirthPlace();
+        if (!birthPlace.isEmpty()) {
+            birthPlace = birthPlace.split(",")[0];
+            birthPlace = Tools.replaceDiacritics(birthPlace);
+            File heraldry = FileIO.loadFileFromResources("/heraldry/" + birthPlace + ".png");
+            if (heraldry != null) {
+                try {
+                    BufferedImage heraldryImage = ImageIO.read(heraldry);
+                    images.add(new ImageModel(heraldryImage, heraldryXPosition, heraldryYPosition, VERTICAL_GAP / 2));
+                } catch (IOException ex) {
+                    System.out.println("Heraldry image " + heraldry.getAbsolutePath() + " cannot be open." + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     public BufferedImage getPicture() {

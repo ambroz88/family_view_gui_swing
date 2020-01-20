@@ -79,7 +79,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
     public void drawAncestorPanel() {
         int y = getHeight() - VERTICAL_GAP / 2 - getConfiguration().getAdultImageHeight() / 2;
         if (getConfiguration().isShowChildren()) {
-            y = getHeight() - 2 * VERTICAL_GAP - getConfiguration().getAdultImageHeight();
+            y = getHeight() - (int) (1.5 * (VERTICAL_GAP + getConfiguration().getAdultImageHeight()));
         }
 
         int x = calculateXPosition();

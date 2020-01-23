@@ -85,7 +85,10 @@ public class DrawingFrame extends JFrame {
         if (config.isShowSiblings()) {
             pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
         } else {
-            pictureWidth = config.getAdultImageWidth() * (personWithAncestors.getAncestorGenerations() + 2);
+            pictureWidth = config.getAdultImageWidth() * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 2) + config.getAdultImageWidth();
+            if (config.isShowFathersLineage() && config.isShowMothersLineage()) {
+                pictureWidth = pictureWidth + (RootFamilyPanel.MARRIAGE_LABEL_WIDTH_LARGER - RootFamilyPanel.MARRIAGE_LABEL_WIDTH);
+            }
         }
         int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 1);
 

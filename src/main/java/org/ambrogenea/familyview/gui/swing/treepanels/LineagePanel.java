@@ -1,5 +1,8 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MARRIAGE_LABEL_WIDTH;
+
+import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -18,18 +21,39 @@ public class LineagePanel extends RootFamilyPanel {
         if (getConfiguration().isShowSiblings()) {
             x = getWidth() / 2;
         } else {
-            x = getConfiguration().getAdultImageWidth() * personModel.getAncestorGenerations() + MARRIAGE_LABEL_WIDTH / 2;
+            x = getConfiguration().getAdultImageWidth() * Math.min(personModel.getAncestorGenerations(), getConfiguration().getGenerationCount()) + MARRIAGE_LABEL_WIDTH / 2;
         }
         int y = getHeight() - VERTICAL_GAP;
 
-        drawPerson(x, y, personModel);
-        drawSpouseAndSiblings(x, y);
-
-        if (getConfiguration().isShowFathersLineage()) {
-            drawFathersFamily(x, y, personModel);
+        if (getConfiguration().isShowFathersLineage() && getConfiguration().isShowMothersLineage()) {
+            drawParentsLineage(x, y);
         } else {
-            drawMotherFamily(x, y, personModel);
+            drawPerson(x, y, personModel);
+            drawSpouseAndSiblings(x, y);
+            if (getConfiguration().isShowFathersLineage()) {
+                drawFathersFamily(x, y, personModel);
+            } else {
+                drawMotherFamily(x, y, personModel);
+            }
         }
+    }
+
+    private void drawParentsLineage(int x, int y) {
+        int parentsY = y - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        int fatherX = x - getConfiguration().getAdultImageWidth() / 2 - MARRIAGE_LABEL_WIDTH / 2;
+        drawPerson(fatherX, parentsY, personModel.getFather());
+        drawFathersFamily(fatherX, parentsY, personModel.getFather());
+
+        int motherX = fatherX + getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH_LARGER;
+        drawPerson(motherX, parentsY, personModel.getMother());
+        drawFathersFamily(motherX, parentsY, personModel.getMother());
+
+        int centerXPosition = (fatherX + motherX) / 2;
+        drawPerson(centerXPosition, y, personModel);
+
+        drawLongerLabel(centerXPosition, parentsY, personModel.getParents().getMarriageDate());
+        lines.add(new Line(fatherX, parentsY, motherX, parentsY));
+        lines.add(new Line(centerXPosition, y, centerXPosition, parentsY));
     }
 
     private void drawSpouseAndSiblings(int x, int y) {

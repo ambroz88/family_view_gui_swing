@@ -640,7 +640,9 @@ public class ApplicationWindow extends JFrame {
         if (recordsTable.getSelectedRow() != -1) {
             AncestorModel ancestors = new AncestorModel(dataModel);
             AncestorPerson personWithAncestors;
-            if (configuration.isShowFathersLineage()) {
+            if (configuration.isShowFathersLineage() && configuration.isShowMothersLineage()) {
+                personWithAncestors = ancestors.generateParentsLineage(recordsTable.getSelectedRow());
+            } else if (configuration.isShowFathersLineage()) {
                 personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());

@@ -36,6 +36,7 @@ import org.ambrogenea.familyview.model.utils.Tools;
 public class RootFamilyPanel extends JPanel {
 
     public static final int MARRIAGE_LABEL_WIDTH = 120;
+    public static final int MARRIAGE_LABEL_WIDTH_LARGER = 4 * MARRIAGE_LABEL_WIDTH;
 
     public static final int HORIZONTAL_GAP = 20;
     public static final int SIBLINGS_GAP = 2 * HORIZONTAL_GAP;
@@ -137,6 +138,17 @@ public class RootFamilyPanel extends JPanel {
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
             this.add(date);
             date.setBounds(centerX - MARRIAGE_LABEL_WIDTH / 2, centerY - LABEL_HEIGHT, MARRIAGE_LABEL_WIDTH, LABEL_HEIGHT);
+        }
+    }
+
+    protected void drawLongerLabel(int centerX, int centerY, String text) {
+        if (text != null && !text.isEmpty()) {
+            JLabel date = new JLabel(text, JLabel.CENTER);
+            date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH_LARGER, LABEL_HEIGHT));
+            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
+            date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+            this.add(date);
+            date.setBounds(centerX - MARRIAGE_LABEL_WIDTH_LARGER / 2, centerY - LABEL_HEIGHT, MARRIAGE_LABEL_WIDTH_LARGER, LABEL_HEIGHT);
         }
     }
 

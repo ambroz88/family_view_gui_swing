@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -22,10 +23,13 @@ import javax.swing.JPanel;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
+import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.Residence;
 import org.ambrogenea.familyview.model.utils.FileIO;
 import org.ambrogenea.familyview.model.utils.Tools;
 
@@ -35,6 +39,7 @@ import org.ambrogenea.familyview.model.utils.Tools;
  */
 public class RootFamilyPanel extends JPanel {
 
+    private static final Color[] COLORS = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.LIGHT_GRAY, Color.ORANGE, Color.CYAN, Color.PINK, Color.MAGENTA};
     public static final int MARRIAGE_LABEL_WIDTH = 120;
     public static final int MARRIAGE_LABEL_WIDTH_LARGER = 4 * MARRIAGE_LABEL_WIDTH;
 
@@ -42,17 +47,22 @@ public class RootFamilyPanel extends JPanel {
     public static final int SIBLINGS_GAP = 2 * HORIZONTAL_GAP;
     public static final int VERTICAL_GAP = 100;
     public static final int LABEL_HEIGHT = 30;
+    public static final int RESIDENCE_SIZE = 25;
 
     protected final ArrayList<Line> lines;
     protected final ArrayList<ImageModel> images;
+    protected final ArrayList<ResidenceModel> residences;
     protected final AncestorPerson personModel;
     protected final Configuration configuration;
+    private final HashMap<String, Color> cityRegister;
 
     public RootFamilyPanel(AncestorPerson model, Configuration config) {
         this.personModel = model;
         this.configuration = config;
         lines = new ArrayList<>();
         images = new ArrayList<>();
+        residences = new ArrayList<>();
+        cityRegister = new HashMap<>();
         initPanel();
     }
 
@@ -66,6 +76,35 @@ public class RootFamilyPanel extends JPanel {
         personPanel.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
         this.add(personPanel);
         personPanel.setBounds(centerX - configuration.getAdultImageWidth() / 2, centerY - configuration.getAdultImageHeight() / 2, configuration.getAdultImageWidth(), configuration.getAdultImageHeight());
+
+        if (configuration.isShowResidence()) {
+            drawResidence(person, personPanel);
+        }
+    }
+
+    private void drawResidence(final Person person, JPanel personPanel) {
+        Residence residence;
+        JLabel number;
+        int x;
+        int y;
+        for (int i = 0; i < person.getResidenceList().size(); i++) {
+            residence = person.getResidenceList().get(i);
+            if (person.getSex().equals(Information.VALUE_MALE)) {
+                x = personPanel.getX() - RESIDENCE_SIZE - HORIZONTAL_GAP / 2;
+            } else {
+                x = personPanel.getX() + configuration.getAdultImageWidth() + HORIZONTAL_GAP / 2;
+            }
+            y = personPanel.getY() + i * (RESIDENCE_SIZE + 5);
+            residences.add(new ResidenceModel(x, y, residence));
+            addCityToRegister(residence.getCity());
+            if (residence.getNumber() > 0) {
+                number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
+                number.setSize(RESIDENCE_SIZE, RESIDENCE_SIZE);
+                number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 2));
+                this.add(number);
+                number.setBounds(x, y, RESIDENCE_SIZE, RESIDENCE_SIZE);
+            }
+        }
     }
 
     protected int drawMother(int childXPosition, int y, AncestorPerson child) {
@@ -294,6 +333,12 @@ public class RootFamilyPanel extends JPanel {
             g2.drawImage(image.getImage(), image.getX() - image.getWidth() / 2, image.getY() - image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
         }
 
+        g2.setStroke(new BasicStroke(2));
+        for (ResidenceModel residence : residences) {
+            g2.setColor(cityRegister.get(residence.getCity()));
+            g2.drawRoundRect(residence.getX(), residence.getY(), RESIDENCE_SIZE, RESIDENCE_SIZE, RESIDENCE_SIZE / 2, RESIDENCE_SIZE / 2);
+        }
+
     }
 
     protected void addLineToParents(int childXPosition, int childYPosition) {
@@ -368,8 +413,21 @@ public class RootFamilyPanel extends JPanel {
         }
     }
 
+    public HashMap<String, Color> getCityRegister() {
+        return cityRegister;
+    }
+
     protected Configuration getConfiguration() {
         return configuration;
     }
 
+    private void addCityToRegister(String city) {
+        if (!cityRegister.containsKey(city)) {
+            if (cityRegister.size() >= COLORS.length) {
+                cityRegister.put(city, Color.BLACK);
+            } else {
+                cityRegister.put(city, COLORS[cityRegister.size()]);
+            }
+        }
+    }
 }

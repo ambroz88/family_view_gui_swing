@@ -1,7 +1,9 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.MARRIAGE_LABEL_WIDTH;
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.RESIDENCE_SIZE;
 
+import org.ambrogenea.familyview.gui.swing.components.ResidencePanel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -22,6 +24,9 @@ public class LineagePanel extends RootFamilyPanel {
             x = getWidth() / 2;
         } else {
             x = getConfiguration().getAdultImageWidth() * Math.min(personModel.getAncestorGenerations(), getConfiguration().getGenerationCount()) + MARRIAGE_LABEL_WIDTH / 2;
+            if (getConfiguration().isShowResidence()) {
+                x = x + RESIDENCE_SIZE;
+            }
         }
         int y = getHeight() - VERTICAL_GAP;
 
@@ -35,6 +40,10 @@ public class LineagePanel extends RootFamilyPanel {
             } else {
                 drawMotherFamily(x, y, personModel);
             }
+        }
+
+        if (getConfiguration().isShowResidence()) {
+            drawResidenceLegend();
         }
     }
 
@@ -110,6 +119,12 @@ public class LineagePanel extends RootFamilyPanel {
             }
             drawFathersFamily(motherXPosition, y, person.getMother());
         }
+    }
+
+    private void drawResidenceLegend() {
+        ResidencePanel residencePanel = new ResidencePanel(getCityRegister());
+        this.add(residencePanel);
+        residencePanel.setBounds(HORIZONTAL_GAP, this.getHeight() - residencePanel.getHeight() - HORIZONTAL_GAP, residencePanel.getWidth(), residencePanel.getHeight());
     }
 
 }

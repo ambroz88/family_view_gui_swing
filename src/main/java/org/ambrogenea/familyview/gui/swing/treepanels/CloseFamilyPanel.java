@@ -19,6 +19,9 @@ public class CloseFamilyPanel extends RootFamilyPanel {
     private void calculateSize() {
         int pictureHeight = calculateHeight();
         int pictureWidth = calculateWidth();
+        if (configuration.isShowResidence()) {
+            pictureWidth = pictureWidth + 2 * RootFamilyPanel.RESIDENCE_SIZE;
+        }
 
         setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         setSize(new Dimension(pictureWidth, pictureHeight));
@@ -127,7 +130,11 @@ public class CloseFamilyPanel extends RootFamilyPanel {
             minimalLeftSpace = getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP + MARRIAGE_LABEL_WIDTH / 2;
         }
 
-        return Math.max(minimalLeftSpace, Math.max(siblingsLeftSpace, childrenLeftSpace + HORIZONTAL_GAP));
+        int resultPosition = Math.max(minimalLeftSpace, Math.max(siblingsLeftSpace, childrenLeftSpace + HORIZONTAL_GAP));
+        if (configuration.isShowResidence()) {
+            resultPosition = resultPosition + RootFamilyPanel.RESIDENCE_SIZE;
+        }
+        return resultPosition;
     }
 
     private void drawParents(int childXPosition, int childYPosition, AncestorPerson person) {

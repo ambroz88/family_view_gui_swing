@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.VERTICAL_GAP;
+
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.LineagePanel;
@@ -94,6 +96,9 @@ public class DrawingFrame extends JFrame {
             }
         }
         int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 1);
+        if (config.isShowSpouses() && config.isShowChildren()) {
+            pictureHeight = pictureHeight + config.getAdultImageHeight() + VERTICAL_GAP;
+        }
 
         final LineagePanel fathersFamilyPanel = new LineagePanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

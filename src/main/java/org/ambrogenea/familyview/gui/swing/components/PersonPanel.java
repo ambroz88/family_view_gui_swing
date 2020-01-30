@@ -69,7 +69,11 @@ public class PersonPanel extends JPanel {
             firstName.setText(person.getFirstName());
         }
         if (!person.getSurname().isEmpty()) {
-            surName.setText(person.getSurname().toUpperCase());
+            if (configuration.isShowAge() && person.getAge() > -1) {
+                surName.setText(person.getSurname().toUpperCase() + " (" + person.getAge() + ")");
+            } else {
+                surName.setText(person.getSurname().toUpperCase());
+            }
         }
         if (!person.getBirthDate().isEmpty()) {
             birth.setText("\u2605 " + person.getBirthDateCzech());

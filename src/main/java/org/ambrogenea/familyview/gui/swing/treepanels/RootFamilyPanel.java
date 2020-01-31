@@ -41,7 +41,6 @@ public class RootFamilyPanel extends JPanel {
 
     private static final Color[] COLORS = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.LIGHT_GRAY, Color.ORANGE, Color.CYAN, Color.PINK, Color.MAGENTA};
     public static final int MARRIAGE_LABEL_WIDTH = 120;
-    public static final int MARRIAGE_LABEL_WIDTH_LARGER = 4 * MARRIAGE_LABEL_WIDTH;
 
     public static final int HORIZONTAL_GAP = 20;
     public static final int SIBLINGS_GAP = 2 * HORIZONTAL_GAP;
@@ -182,12 +181,13 @@ public class RootFamilyPanel extends JPanel {
 
     protected void drawLongerLabel(int centerX, int centerY, String text) {
         if (text != null && !text.isEmpty()) {
+            int wideMarriageLabel = getConfiguration().getWideMarriageLabel();
             JLabel date = new JLabel(text, JLabel.CENTER);
-            date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH_LARGER, LABEL_HEIGHT));
+            date.setPreferredSize(new Dimension(wideMarriageLabel, LABEL_HEIGHT));
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
             this.add(date);
-            date.setBounds(centerX - MARRIAGE_LABEL_WIDTH_LARGER / 2, centerY - LABEL_HEIGHT, MARRIAGE_LABEL_WIDTH_LARGER, LABEL_HEIGHT);
+            date.setBounds(centerX - wideMarriageLabel / 2, centerY - LABEL_HEIGHT, wideMarriageLabel, LABEL_HEIGHT);
         }
     }
 
@@ -356,9 +356,8 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void addHeraldry(int childXPosition, int childYPosition, AncestorPerson person) {
-        String birthPlace = person.getBirthPlace();
+        String birthPlace = person.getSimpleBirthPlace();
         if (!birthPlace.isEmpty()) {
-            birthPlace = birthPlace.split(",")[0];
             birthPlace = Tools.replaceDiacritics(birthPlace);
             int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
 
@@ -377,9 +376,8 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void addChildrenHeraldry(int heraldryXPosition, int heraldryYPosition, Couple spouseCouple) {
-        String birthPlace = spouseCouple.getChildren().get(0).getBirthPlace();
+        String birthPlace = spouseCouple.getChildren().get(0).getSimpleBirthPlace();
         if (!birthPlace.isEmpty()) {
-            birthPlace = birthPlace.split(",")[0];
             birthPlace = Tools.replaceDiacritics(birthPlace);
             File heraldry = FileIO.loadFileFromResources("/heraldry/" + birthPlace + ".png");
             if (heraldry != null) {

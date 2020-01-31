@@ -1,6 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -25,14 +26,20 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class PersonPanel extends JPanel {
 
+    private static final String SPACE = "    ";
+
     private final Person person;
     private BufferedImage personDiagram;
     protected final Configuration configuration;
 
     private JLabel firstName;
     private JLabel surName;
+    private JLabel blankSpace;
     private JLabel birth;
+    private JLabel birthPlace;
+    private JLabel blankSpace2;
     private JLabel death;
+    private JLabel deathPlace;
 
     public PersonPanel(Person person, Configuration config) {
         super(new GridBagLayout());
@@ -62,12 +69,17 @@ public class PersonPanel extends JPanel {
     private void initLabels() {
         firstName = new JLabel(" ", JLabel.CENTER);
         surName = new JLabel(" ", JLabel.CENTER);
-        birth = new JLabel(" ", JLabel.CENTER);
-        death = new JLabel(" ", JLabel.CENTER);
+        blankSpace = new JLabel("", JLabel.CENTER);
+        birth = new JLabel(" ", JLabel.RIGHT);
+        birthPlace = new JLabel("", JLabel.LEFT);
+        blankSpace2 = new JLabel("", JLabel.CENTER);
+        death = new JLabel(" ", JLabel.RIGHT);
+        deathPlace = new JLabel("", JLabel.LEFT);
 
         if (!person.getFirstName().isEmpty()) {
             firstName.setText(person.getFirstName());
         }
+
         if (!person.getSurname().isEmpty()) {
             if (configuration.isShowAge() && person.getAge() > -1) {
                 surName.setText(person.getSurname().toUpperCase() + " (" + person.getAge() + ")");
@@ -75,60 +87,91 @@ public class PersonPanel extends JPanel {
                 surName.setText(person.getSurname().toUpperCase());
             }
         }
+
         if (!person.getBirthDate().isEmpty()) {
             birth.setText("\u2605 " + person.getBirthDateCzech());
+            if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
+                birthPlace.setText(SPACE + person.getSimpleBirthPlace());
+            }
         }
+
         if (!person.getDeathDate().isEmpty()) {
             death.setText("\u271D " + person.getDeathDateCzech());
+            if (configuration.isShowPlaces() && !person.getDeathPlace().isEmpty()) {
+                deathPlace.setText(SPACE + person.getSimpleDeathPlace());
+            }
         }
 
         firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
         surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
-        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
-        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
+        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
+        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        deathPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
 
-        firstName.setBackground(null);
-        surName.setBackground(null);
-        birth.setBackground(null);
-        death.setBackground(null);
+        if (configuration.isShowPlaces()) {
+            if (!birthPlace.getText().isEmpty() || !deathPlace.getText().isEmpty()) {
+                int shift = 10;
+                birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
+                birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
+                death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
+                deathPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
+            }
+        }
     }
 
     private void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
         c.ipady = configuration.getAdultTopOffset();
         c.weighty = 5;
+        c.gridwidth = 2;
         add(new JLabel(""), c);
+
         c.gridy = 1;
         c.ipady = 0;
         c.weighty = 0;
         add(firstName, c);
         c.gridy = 2;
-        c.ipady = 5;
-        c.weighty = 2;
+        c.ipady = 4;
         add(surName, c);
+
         c.gridy = 3;
+        c.ipady = 4;
+        add(blankSpace, c);
+
+        c.gridwidth = 1;
+        c.gridy = 4;
         c.ipady = 0;
+        c.weighty = 0;
         add(birth, c);
         c.gridy = 4;
-        add(death, c);
+        c.gridx = 1;
+        add(birthPlace, c);
 
+        c.gridy = 7;
+        c.gridx = 0;
+        add(death, c);
+        c.gridy = 7;
+        c.weighty = 0;
+        c.gridx = 1;
+        add(deathPlace, c);
+
+        c.gridx = 0;
+        c.gridwidth = 2;
         if (configuration.isShowTemple() && !person.isChild()) {
+            c.gridy = 8;
+            c.ipady = 8;
+            add(blankSpace2, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;
-            c.gridy = 5;
-            c.weighty = 4;
+            c.gridy = 9;
             add(templeBox, c);
-
-            c.gridy = 6;
-            c.weighty = 5;
-            c.ipady = configuration.getAdultBottomOffset();
-            add(new JLabel(""), c);
-        } else {
-            c.gridy = 5;
-            c.weighty = 5;
-            c.ipady = configuration.getAdultBottomOffset();
-            add(new JLabel(""), c);
         }
+
+        c.gridy = 10;
+        c.weighty = 5;
+        c.ipady = configuration.getAdultBottomOffset();
+        add(new JLabel(""), c);
     }
 
     @Override

@@ -82,7 +82,7 @@ public class DrawingFrame extends JFrame {
         });
     }
 
-    public void generateLineage(AncestorPerson personWithAncestors, Configuration config) {
+    public JPanel generateLineage(AncestorPerson personWithAncestors, Configuration config) {
         int pictureWidth;
         if (config.isShowSiblings()) {
             pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
@@ -112,9 +112,10 @@ public class DrawingFrame extends JFrame {
                 saveButtonActionPerformed(fathersFamilyPanel);
             }
         });
+        return fathersFamilyPanel;
     }
 
-    public void generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
+    public JPanel generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
         final CloseFamilyPanel fathersFamilyPanel = new CloseFamilyPanel(personWithAncestors, config);
 
         scrollAncestorPane.add(fathersFamilyPanel);
@@ -127,6 +128,7 @@ public class DrawingFrame extends JFrame {
                 saveButtonActionPerformed(fathersFamilyPanel);
             }
         });
+        return fathersFamilyPanel;
     }
 
     private void saveButtonActionPerformed(RootFamilyPanel ancestorPanel) {

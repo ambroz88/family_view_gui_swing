@@ -40,7 +40,7 @@ import org.ambrogenea.familyview.model.utils.Tools;
 public class RootFamilyPanel extends JPanel {
 
     private static final Color[] COLORS = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.LIGHT_GRAY, Color.ORANGE, Color.CYAN, Color.PINK, Color.MAGENTA};
-    public static final int MARRIAGE_LABEL_WIDTH = 120;
+    public static final int MARRIAGE_LABEL_WIDTH = 150;
 
     public static final int HORIZONTAL_GAP = 20;
     public static final int SIBLINGS_GAP = 2 * HORIZONTAL_GAP;
@@ -174,6 +174,8 @@ public class RootFamilyPanel extends JPanel {
             date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH, LABEL_HEIGHT));
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+            date.setOpaque(true);
+            date.setBackground(new Color(250, 250, 250));
             this.add(date);
             date.setBounds(centerX - MARRIAGE_LABEL_WIDTH / 2, centerY - LABEL_HEIGHT, MARRIAGE_LABEL_WIDTH, LABEL_HEIGHT);
         }
@@ -186,6 +188,8 @@ public class RootFamilyPanel extends JPanel {
             date.setPreferredSize(new Dimension(wideMarriageLabel, LABEL_HEIGHT));
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+            date.setOpaque(true);
+            date.setBackground(new Color(250, 250, 250));
             this.add(date);
             date.setBounds(centerX - wideMarriageLabel / 2, centerY - LABEL_HEIGHT, wideMarriageLabel, LABEL_HEIGHT);
         }

@@ -669,6 +669,7 @@ public class ApplicationWindow extends JFrame {
         if (recordsTable.getSelectedRow() != -1) {
 
             AncestorModel ancestors = new AncestorModel(dataModel);
+            configuration.setAncestorModel(ancestors);
             AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
             System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
 
@@ -676,7 +677,6 @@ public class ApplicationWindow extends JFrame {
             drawing.setSize(this.getSize());
             drawing.setPreferredSize(this.getPreferredSize());
             drawing.generateCloseFamily(personWithAncestors, configuration);
-
             System.out.println("Family tree was created.");
         }
     }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
@@ -712,6 +712,8 @@ public class ApplicationWindow extends JFrame {
     private void generateLineageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineageButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
             AncestorModel ancestors = new AncestorModel(dataModel);
+            configuration.setAncestorModel(ancestors);
+
             AncestorPerson personWithAncestors;
             if (configuration.isShowFathersLineage() && configuration.isShowMothersLineage()) {
                 personWithAncestors = ancestors.generateParentsLineage(recordsTable.getSelectedRow());

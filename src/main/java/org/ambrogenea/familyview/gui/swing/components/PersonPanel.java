@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
@@ -26,7 +28,7 @@ import org.ambrogenea.familyview.model.Person;
  */
 public class PersonPanel extends JPanel {
 
-    private static final String SPACE = "    ";
+    private static final String SPACE = "  ";
 
     private final Person person;
     private BufferedImage personDiagram;
@@ -50,6 +52,8 @@ public class PersonPanel extends JPanel {
         loadPictures();
         initLabels();
         addLabels();
+        MouseAdapter m = new PersonPanelMouseController(this, config, person);
+        this.addMouseListener(m);
     }
 
     private void loadPictures() {
@@ -102,8 +106,8 @@ public class PersonPanel extends JPanel {
             }
         }
 
-        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
-        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
         birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
         death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
@@ -111,7 +115,7 @@ public class PersonPanel extends JPanel {
 
         if (configuration.isShowPlaces()) {
             if (!birthPlace.getText().isEmpty() || !deathPlace.getText().isEmpty()) {
-                int shift = 10;
+                int shift = 12;
                 birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
                 birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
                 death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));

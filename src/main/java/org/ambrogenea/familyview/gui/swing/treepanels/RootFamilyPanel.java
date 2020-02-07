@@ -107,11 +107,17 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected int drawMother(int childXPosition, int y, AncestorPerson child) {
-        int motherXPosition = childXPosition + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+        int motherXPosition;
+        if (child.getFather() != null) {
+            motherXPosition = childXPosition + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+            drawLabel(childXPosition - MARRIAGE_LABEL_WIDTH / 2, childXPosition + MARRIAGE_LABEL_WIDTH / 2, y, child.getParents().getMarriageDate());
+        } else {
+            motherXPosition = childXPosition;
+        }
+
         if (child.getMother() != null) {
             drawPerson(motherXPosition, y, child.getMother());
         }
-        drawLabel(childXPosition, y, child.getParents().getMarriageDate());
         return motherXPosition;
     }
 
@@ -119,8 +125,7 @@ public class RootFamilyPanel extends JPanel {
         if (person.getSpouse() != null) {
             int spouseXPosition = husbandX + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH);
             drawPerson(spouseXPosition, motherY, person.getSpouse());
-            lines.add(new Line(husbandX, motherY, spouseXPosition, motherY));
-            drawLabel(husbandX + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2), motherY, person.getSpouseCouple().getMarriageDate());
+            drawLabel(husbandX + getConfiguration().getAdultImageWidth() / 2, spouseXPosition - getConfiguration().getAdultImageWidth() / 2, motherY, person.getSpouseCouple().getMarriageDate());
         }
     }
 
@@ -133,11 +138,8 @@ public class RootFamilyPanel extends JPanel {
                 spouseXPosition = spouseXPosition + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH);
 
                 drawPerson(spouseXPosition, y, person.getSpouse(index));
-                lines.add(new Line(startXPosition, y - LABEL_HEIGHT, spouseXPosition, y - LABEL_HEIGHT));
-                lines.get(lines.size() - 1).setType(Line.SIBLINGS);
-                lines.add(new Line(startXPosition, y, spouseXPosition, y));
-                labelXPosition = startXPosition + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-                drawLabel(labelXPosition, y, person.getSpouseCouple(index).getMarriageDate());
+                labelXPosition = startXPosition + (getConfiguration().getAdultImageWidth() / 2);
+                drawLabel(labelXPosition, labelXPosition + MARRIAGE_LABEL_WIDTH, y, person.getSpouseCouple(index).getMarriageDate());
             }
         }
         return spouseXPosition;
@@ -151,16 +153,12 @@ public class RootFamilyPanel extends JPanel {
 
             for (int index = 0; index < person.getSpouseCouples().size(); index++) {
                 husbandXPosition = spouseXPosition;
-                int childrenWidth = person.getChildrenCount(index) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH);
+                int childrenWidth = Math.max(1, person.getChildrenCount(index)) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH);
                 spouseXPosition = spouseXPosition + (getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) + childrenShift + childrenWidth + SIBLINGS_GAP;
 
                 drawPerson(spouseXPosition, y, person.getSpouse(index));
-                lines.add(new Line(husbandXPosition, y - LABEL_HEIGHT, spouseXPosition, y - LABEL_HEIGHT));
-                lines.get(lines.size() - 1).setType(Line.SIBLINGS);
-                lines.add(new Line(husbandXPosition, y, spouseXPosition, y));
                 labelXPosition = spouseXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-                drawLabel(labelXPosition, y, person.getSpouseCouple(index).getMarriageDate());
-
+                drawLabel(husbandXPosition + getConfiguration().getAdultImageWidth() / 2, spouseXPosition - getConfiguration().getAdultImageWidth() / 2, y, person.getSpouseCouple(index).getMarriageDate());
                 childrenShift = drawChildren(labelXPosition, y, person.getSpouseCouple(index));
                 childrenShift = Math.max((getConfiguration().getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) / 2, childrenShift);
             }
@@ -168,16 +166,17 @@ public class RootFamilyPanel extends JPanel {
         return spouseXPosition;
     }
 
-    protected void drawLabel(int centerX, int centerY, String text) {
+    protected void drawLabel(int startX, int endX, int centerY, String text) {
         if (text != null && !text.isEmpty()) {
             JLabel date = new JLabel(text, JLabel.CENTER);
-            date.setPreferredSize(new Dimension(MARRIAGE_LABEL_WIDTH, LABEL_HEIGHT));
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
-            date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
             date.setOpaque(true);
             date.setBackground(new Color(250, 250, 250));
             this.add(date);
-            date.setBounds(centerX - MARRIAGE_LABEL_WIDTH / 2, centerY - LABEL_HEIGHT, MARRIAGE_LABEL_WIDTH, LABEL_HEIGHT);
+            date.setBounds(startX, centerY - LABEL_HEIGHT, endX - startX, LABEL_HEIGHT);
+        } else {
+            lines.add(new Line(startX, centerY, endX, centerY));
         }
     }
 
@@ -185,9 +184,8 @@ public class RootFamilyPanel extends JPanel {
         if (text != null && !text.isEmpty()) {
             int wideMarriageLabel = getConfiguration().getWideMarriageLabel();
             JLabel date = new JLabel(text, JLabel.CENTER);
-            date.setPreferredSize(new Dimension(wideMarriageLabel, LABEL_HEIGHT));
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
-            date.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
             date.setOpaque(true);
             date.setBackground(new Color(250, 250, 250));
             this.add(date);
@@ -297,26 +295,28 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected int drawChildren(int labelXPosition, int y, Couple spouseCouple) {
-        int childrenCount = spouseCouple.getChildren().size();
         int childrenWidth = 0;
-        if (getConfiguration().isShowChildren() && childrenCount > 0) {
-            Line toChildren = new Line(labelXPosition, y, labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2);
-            toChildren.setType(Line.SIBLINGS);
-            lines.add(toChildren);
+        if (spouseCouple != null) {
+            int childrenCount = spouseCouple.getChildren().size();
+            if (getConfiguration().isShowChildren() && childrenCount > 0) {
+                Line toChildren = new Line(labelXPosition, y, labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2);
+                toChildren.setType(Line.SIBLINGS);
+                lines.add(toChildren);
 
-            int childrenY = y + getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
-            childrenWidth = childrenCount * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
-            int startXPosition = labelXPosition - childrenWidth / 2;
+                int childrenY = y + getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
+                childrenWidth = childrenCount * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+                int startXPosition = labelXPosition - childrenWidth / 2;
 
-            for (int i = 0; i < childrenCount; i++) {
-                int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-                addSiblingsToParents(childXPosition, childrenY, labelXPosition);
-                drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
-            }
-            childrenWidth = childrenWidth / 2;
+                for (int i = 0; i < childrenCount; i++) {
+                    int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+                    addSiblingsToParents(childXPosition, childrenY, labelXPosition);
+                    drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
+                }
+                childrenWidth = childrenWidth / 2;
 
-            if (getConfiguration().isShowHeraldry()) {
-                addChildrenHeraldry(labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2, spouseCouple);
+                if (getConfiguration().isShowHeraldry()) {
+                    addChildrenHeraldry(labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2, spouseCouple);
+                }
             }
         }
         return childrenWidth;
@@ -348,7 +348,7 @@ public class RootFamilyPanel extends JPanel {
     protected void addLineToParents(int childXPosition, int childYPosition) {
         int horizontalShift = (configuration.getAdultImageWidth() + MARRIAGE_LABEL_WIDTH) / 2;
         lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
-        lines.add(new Line(childXPosition - horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP, childXPosition + horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
+//        lines.add(new Line(childXPosition - horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP, childXPosition + horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
     }
 
     protected void addSiblingsToParents(int startX, int rootSiblingY, int rootSiblingX) {

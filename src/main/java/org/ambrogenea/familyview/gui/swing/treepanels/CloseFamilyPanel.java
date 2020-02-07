@@ -141,16 +141,20 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         if (person.getMother() != null) {
             int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
 
-            int motherXPosition = childXPosition + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
-            addLineToParents(childXPosition, childYPosition);
-            drawPerson(motherXPosition, y, person.getMother());
+            int motherXPosition;
 
             if (person.getFather() != null) {
-                drawLabel(childXPosition, y, person.getParents().getMarriageDate());
-
                 int fatherXPosition = childXPosition - (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
                 drawPerson(fatherXPosition, y, person.getFather());
+
+                motherXPosition = childXPosition + (getConfiguration().getAdultImageWidth() / 2 + MARRIAGE_LABEL_WIDTH / 2);
+                drawLabel(childXPosition - MARRIAGE_LABEL_WIDTH / 2, childXPosition + MARRIAGE_LABEL_WIDTH / 2, y, person.getParents().getMarriageDate());
+            } else {
+                motherXPosition = childXPosition;
             }
+
+            addLineToParents(childXPosition, childYPosition);
+            drawPerson(motherXPosition, y, person.getMother());
         }
     }
 

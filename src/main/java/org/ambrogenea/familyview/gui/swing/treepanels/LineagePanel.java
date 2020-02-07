@@ -69,7 +69,6 @@ public class LineagePanel extends RootFamilyPanel {
         }
 
         drawLongerLabel(centerXPosition, parentsY, personModel.getParents().getMarriageDate());
-        lines.add(new Line(fatherX, parentsY, motherX, parentsY));
         lines.add(new Line(centerXPosition, y, centerXPosition, parentsY));
     }
 

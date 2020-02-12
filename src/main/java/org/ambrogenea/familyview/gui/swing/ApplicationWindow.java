@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -45,7 +44,7 @@ public class ApplicationWindow extends JFrame {
      * Creates new form ApplicationWindow
      */
     public ApplicationWindow() {
-        configuration = new Configuration(RootFamilyPanel.MARRIAGE_LABEL_WIDTH);
+        configuration = new Configuration();
         initComponents();
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("SW Icon.png"));
         setIconImage(img.getImage());
@@ -109,7 +108,7 @@ public class ApplicationWindow extends JFrame {
         showParentsCheckbox = new javax.swing.JCheckBox();
         fileNameLabel = new javax.swing.JLabel();
         openFileLabel = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        personBoxPanel = new javax.swing.JPanel();
         ageCheckBox = new javax.swing.JCheckBox();
         heraldryCheckBox = new javax.swing.JCheckBox();
         residenceCheckBox = new javax.swing.JCheckBox();
@@ -482,8 +481,8 @@ public class ApplicationWindow extends JFrame {
 
         openFileLabel.setText("Opened file:");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Person box setup"));
-        jPanel1.setPreferredSize(new java.awt.Dimension(307, 123));
+        personBoxPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person box setup"));
+        personBoxPanel.setPreferredSize(new java.awt.Dimension(307, 123));
 
         ageCheckBox.setSelected(configuration.isShowAge());
         ageCheckBox.setText("Show age");
@@ -525,35 +524,35 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout personBoxPanelLayout = new javax.swing.GroupLayout(personBoxPanel);
+        personBoxPanel.setLayout(personBoxPanelLayout);
+        personBoxPanelLayout.setHorizontalGroup(
+            personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(personBoxPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(personBoxPanelLayout.createSequentialGroup()
+                        .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(placesCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                             .addComponent(ageCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(residenceCheckBox)
                             .addComponent(heraldryCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(personBoxPanelLayout.createSequentialGroup()
                         .addComponent(templeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        personBoxPanelLayout.setVerticalGroup(
+            personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(personBoxPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ageCheckBox)
                     .addComponent(heraldryCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(residenceCheckBox)
                     .addComponent(placesCheckBox))
                 .addGap(8, 8, 8)
@@ -583,7 +582,7 @@ public class ApplicationWindow extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(generateAncestorButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -596,7 +595,7 @@ public class ApplicationWindow extends JFrame {
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, Short.MAX_VALUE)
+                            .addComponent(personBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                                 .addComponent(loadInputButton)
@@ -1007,11 +1006,11 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JButton imageWomanLoader;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JLabel manImageLabel;
     private javax.swing.JCheckBox motherLineageCheckbox;
     private javax.swing.JLabel openFileLabel;
+    private javax.swing.JPanel personBoxPanel;
     private javax.swing.JCheckBox placesCheckBox;
     private javax.swing.JTable recordsTable;
     private javax.swing.JCheckBox residenceCheckBox;

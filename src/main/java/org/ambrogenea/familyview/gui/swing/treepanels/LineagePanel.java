@@ -1,9 +1,8 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.RESIDENCE_SIZE;
-
 import org.ambrogenea.familyview.gui.swing.components.ResidencePanel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -17,22 +16,11 @@ public class LineagePanel extends RootFamilyPanel {
         super(model, config);
     }
 
-    public void drawAncestorPanel() {
-        int x;
-        if (getConfiguration().isShowSiblings()) {
-            x = getWidth() / 2;
-        } else {
-            x = getConfiguration().getAdultImageWidth() * Math.min(personModel.getAncestorGenerations(), getConfiguration().getGenerationCount()) + getConfiguration().getMarriageLabelWidth() / 2;
-            if (getConfiguration().isShowResidence()) {
-                x = x + RESIDENCE_SIZE;
-            }
-        }
-        int y = getHeight() - VERTICAL_GAP / 2 - getConfiguration().getAdultImageHeight() / 2;
-        if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
-            y = y - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
-        }
+    public void drawAncestorPanel(PageSetup setup) {
+        int x = setup.getX();
+        int y = setup.getY();
 
-        if (getConfiguration().isShowFathersLineage() && getConfiguration().isShowMothersLineage()) {
+        if (getConfiguration().isShowFathersLineage() && getConfiguration().isShowMothersLineage() && personModel.getFather() != null) {
             drawParentsLineage(x, y);
         } else {
             drawPerson(x, y, personModel);
@@ -55,7 +43,27 @@ public class LineagePanel extends RootFamilyPanel {
         drawPerson(fatherX, parentsY, personModel.getFather());
         drawFathersFamily(fatherX, parentsY, personModel.getFather());
 
-        int motherX = fatherX + getConfiguration().getAdultImageWidth() + getConfiguration().getWideMarriageLabel();
+        int motherX;
+        if (getConfiguration().isShowSiblings()) {
+            int fathersSiblings;
+            int mothersSiblings;
+            if (personModel.getFather() != null) {
+                fathersSiblings = personModel.getFather().getMaxYoungerSiblings();
+            } else {
+                fathersSiblings = 0;
+            }
+            if (personModel.getMother() != null) {
+                mothersSiblings = personModel.getMother().getMaxOlderSiblings();
+            } else {
+                mothersSiblings = 0;
+            }
+
+            int siblingsAmount = fathersSiblings + mothersSiblings;
+            motherX = fatherX + getConfiguration().getAdultImageWidth() + (siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+        } else {
+            motherX = x + (getConfiguration().getAdultImageWidth() / 2 + getConfiguration().getWideMarriageLabel() / 2);
+        }
+
         drawPerson(motherX, parentsY, personModel.getMother());
         drawFathersFamily(motherX, parentsY, personModel.getMother());
 
@@ -67,7 +75,7 @@ public class LineagePanel extends RootFamilyPanel {
             drawChildren(centerXPosition + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
         }
 
-        drawLongerLabel(centerXPosition, parentsY, personModel.getParents().getMarriageDate());
+        drawLabel(fatherX + getConfiguration().getAdultImageWidth() / 2, motherX - getConfiguration().getAdultImageWidth() / 2, parentsY, personModel.getParents().getMarriageDate());
         lines.add(new Line(centerXPosition, y, centerXPosition, parentsY));
     }
 
@@ -104,7 +112,13 @@ public class LineagePanel extends RootFamilyPanel {
 
                     drawFathersFamily(fatherXPosition, y, person.getFather());
                 }
+            } else {
+                drawFathersFamily(childXPosition, y, person.getMother());
+                if (getConfiguration().isShowSiblings()) {
+                    drawSiblingsAroundMother(childXPosition, y, person.getMother());
+                }
             }
+
         }
     }
 
@@ -115,11 +129,15 @@ public class LineagePanel extends RootFamilyPanel {
             addLineToParents(childXPosition, childYPosition);
             drawMother(childXPosition, y, person);
 
+            int motherXPosition;
             if (person.getFather() != null) {
                 int fatherXPosition = childXPosition - (getConfiguration().getHalfSpouseLabelSpace());
                 drawPerson(fatherXPosition, y, person.getFather());
+                motherXPosition = childXPosition + (getConfiguration().getHalfSpouseLabelSpace());
+            } else {
+                motherXPosition = childXPosition;
             }
-            int motherXPosition = childXPosition + (getConfiguration().getHalfSpouseLabelSpace());
+
             if (getConfiguration().isShowSiblings()) {
                 drawSiblingsAroundFather(motherXPosition, y, person.getMother());
             }

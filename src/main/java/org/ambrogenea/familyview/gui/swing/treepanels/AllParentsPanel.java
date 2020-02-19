@@ -34,9 +34,10 @@ public class AllParentsPanel extends RootFamilyPanel {
             }
 
             drawPerson(x, y, person);
-
-            drawParentsParent(person.getFather());
-            drawParentsParent(person.getMother());
+            if (person.getAncestorLine().size() <= getConfiguration().getGenerationCount()) {
+                drawParentsParent(person.getFather());
+                drawParentsParent(person.getMother());
+            }
         }
     }
 

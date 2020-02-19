@@ -162,7 +162,7 @@ public class PersonPanel extends JPanel {
 
         c.gridx = 0;
         c.gridwidth = 2;
-        if (configuration.isShowTemple() && !person.isChild()) {
+        if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
             c.gridy = 8;
             c.ipady = 8;
             add(blankSpace2, c);

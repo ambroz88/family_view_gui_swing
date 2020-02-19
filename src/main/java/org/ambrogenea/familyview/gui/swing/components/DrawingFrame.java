@@ -18,8 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.VERTICAL_GAP;
-
+import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.LineagePanel;
@@ -65,8 +64,8 @@ public class DrawingFrame extends JFrame {
     }
 
     public void generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (personWithAncestors.getAncestorGenerations() + 1);
-        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, personWithAncestors.getAncestorGenerations()) + 2);
+        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(config.getGenerationCount(), personWithAncestors.getAncestorGenerations()) + 1);
+        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, Math.min(config.getGenerationCount(), personWithAncestors.getAncestorGenerations())) + 2);
 
         final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors, config);
         ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
@@ -83,28 +82,16 @@ public class DrawingFrame extends JFrame {
     }
 
     public JPanel generateLineage(AncestorPerson personWithAncestors, Configuration config) {
-        int pictureWidth;
-        if (config.isShowSiblings()) {
-            pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (personWithAncestors.getAncestorGenerations() + 24);
-        } else {
-            pictureWidth = config.getAdultImageWidth() * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 2) + config.getAdultImageWidth();
-            if (config.isShowFathersLineage() && config.isShowMothersLineage()) {
-                pictureWidth = pictureWidth + (config.getWideMarriageLabel() - config.getMarriageLabelWidth());
-            }
-            if (config.isShowResidence()) {
-                pictureWidth = pictureWidth + RootFamilyPanel.RESIDENCE_SIZE;
-            }
-        }
-        int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(personWithAncestors.getAncestorGenerations(), config.getGenerationCount()) + 1);
-        if (config.isShowSpouses() && config.isShowChildren()) {
-            pictureHeight = pictureHeight + config.getAdultImageHeight() + VERTICAL_GAP;
-        }
+        PageSetup setup = new PageSetup(config);
+        setup.calculateLineage(personWithAncestors);
+        int pictureWidth = setup.getWidth();
+        int pictureHeight = setup.getHeight();
 
         final LineagePanel fathersFamilyPanel = new LineagePanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
         scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
-        fathersFamilyPanel.drawAncestorPanel();
+        fathersFamilyPanel.drawAncestorPanel(setup);
 
         saveButton.addActionListener(new ActionListener() {
             @Override

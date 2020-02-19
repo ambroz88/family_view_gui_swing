@@ -349,9 +349,7 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void addLineToParents(int childXPosition, int childYPosition) {
-        int horizontalShift = (configuration.getAdultImageWidth() + getConfiguration().getMarriageLabelWidth()) / 2;
         lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
-//        lines.add(new Line(childXPosition - horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP, childXPosition + horizontalShift, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
     }
 
     protected void addSiblingsToParents(int startX, int rootSiblingY, int rootSiblingX) {

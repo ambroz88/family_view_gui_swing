@@ -114,6 +114,7 @@ public class ApplicationWindow extends JFrame {
         residenceCheckBox = new javax.swing.JCheckBox();
         templeCheckBox = new javax.swing.JCheckBox();
         placesCheckBox = new javax.swing.JCheckBox();
+        shortenPlacesCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -373,10 +374,10 @@ public class ApplicationWindow extends JFrame {
                         .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(siblingsCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15)
-                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(generateLineageButton)
-                    .addComponent(generateWord, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(generateLineageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(generateWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         LIneagePanelLayout.setVerticalGroup(
@@ -384,24 +385,20 @@ public class ApplicationWindow extends JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LIneagePanelLayout.createSequentialGroup()
                 .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LIneagePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(generateLineageButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generateWord))
-                    .addGroup(LIneagePanelLayout.createSequentialGroup()
                         .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(siblingsCheckbox)
                             .addComponent(fatherLineageCheckbox))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(motherLineageCheckbox)
-                            .addComponent(spousesCheckbox))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(generationsLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(spousesCheckbox)))
+                    .addComponent(generateLineageButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generationsLabel)
+                    .addComponent(generateWord))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         closeFamilyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Close family setup"));
@@ -472,7 +469,7 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spousesFamilyCheckbox)
                     .addComponent(childrenCheckbox, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(generateCloseFamilyButton)
                 .addContainerGap())
         );
@@ -524,6 +521,14 @@ public class ApplicationWindow extends JFrame {
             }
         });
 
+        shortenPlacesCheckBox.setSelected(configuration.isShortenPlaces());
+        shortenPlacesCheckBox.setText("Shorten places");
+        shortenPlacesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shortenPlacesCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout personBoxPanelLayout = new javax.swing.GroupLayout(personBoxPanel);
         personBoxPanel.setLayout(personBoxPanelLayout);
         personBoxPanelLayout.setHorizontalGroup(
@@ -533,16 +538,16 @@ public class ApplicationWindow extends JFrame {
                 .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(personBoxPanelLayout.createSequentialGroup()
                         .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(placesCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                            .addComponent(placesCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ageCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(residenceCheckBox)
-                            .addComponent(heraldryCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(personBoxPanelLayout.createSequentialGroup()
-                        .addComponent(templeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(60, 60, 60))
+                    .addComponent(templeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(heraldryCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(shortenPlacesCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(residenceCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(101, 101, 101))
         );
         personBoxPanelLayout.setVerticalGroup(
             personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -553,11 +558,13 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(heraldryCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(residenceCheckBox)
-                    .addComponent(placesCheckBox))
-                .addGap(8, 8, 8)
-                .addComponent(templeCheckBox)
-                .addGap(28, 28, 28))
+                    .addComponent(placesCheckBox)
+                    .addComponent(shortenPlacesCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(templeCheckBox)
+                    .addComponent(residenceCheckBox))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
@@ -595,7 +602,6 @@ public class ApplicationWindow extends JFrame {
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(personBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                                 .addComponent(loadInputButton)
@@ -603,7 +609,8 @@ public class ApplicationWindow extends JFrame {
                                 .addComponent(openFileLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(generateAncestorButton)))
@@ -612,7 +619,7 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(tableScroll)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(configPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 4, Short.MAX_VALUE)))
+                        .addGap(0, 22, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -667,7 +674,7 @@ public class ApplicationWindow extends JFrame {
     private void generateCloseFamilyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCloseFamilyButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
 
-            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             configuration.setAncestorModel(ancestors);
             AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
             System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
@@ -710,7 +717,7 @@ public class ApplicationWindow extends JFrame {
 
     private void generateLineageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineageButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             configuration.setAncestorModel(ancestors);
 
             AncestorPerson personWithAncestors;
@@ -808,7 +815,8 @@ public class ApplicationWindow extends JFrame {
     private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
 
-            AncestorModel ancestors = new AncestorModel(dataModel);
+            AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
+            configuration.setAncestorModel(ancestors);
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
             System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
 
@@ -863,8 +871,8 @@ public class ApplicationWindow extends JFrame {
 
     private void generateWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWordActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            XWPFDocument doc = WordGenerator.createWordDocument();
-            AncestorModel ancestors = new AncestorModel(dataModel);
+            XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
+            AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             AncestorPerson personWithAncestors;
 
             if (configuration.isShowFathersLineage()) {
@@ -891,7 +899,19 @@ public class ApplicationWindow extends JFrame {
 
     private void placesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placesCheckBoxActionPerformed
         configuration.setShowPlaces(placesCheckBox.isSelected());
+        if (!placesCheckBox.isSelected() && shortenPlacesCheckBox.isSelected()) {
+            shortenPlacesCheckBox.setSelected(false);
+            configuration.setShortenPlaces(false);
+        }
     }//GEN-LAST:event_placesCheckBoxActionPerformed
+
+    private void shortenPlacesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shortenPlacesCheckBoxActionPerformed
+        configuration.setShortenPlaces(shortenPlacesCheckBox.isSelected());
+        if (!placesCheckBox.isSelected() && shortenPlacesCheckBox.isSelected()) {
+            placesCheckBox.setSelected(true);
+            configuration.setShowPlaces(true);
+        }
+    }//GEN-LAST:event_shortenPlacesCheckBoxActionPerformed
 
     private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
         if (person != null) {
@@ -1016,6 +1036,7 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JCheckBox residenceCheckBox;
     private javax.swing.JPanel settingsRootPanel;
     private javax.swing.JTabbedPane settingsTab;
+    private javax.swing.JCheckBox shortenPlacesCheckBox;
     private javax.swing.JCheckBox showParentsCheckbox;
     private javax.swing.JCheckBox siblingsCheckbox;
     private javax.swing.JCheckBox siblingsFamilyCheckbox;

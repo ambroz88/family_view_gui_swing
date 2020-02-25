@@ -41,17 +41,27 @@ public class PageSetup {
     }
 
     private void calculateLineageHorizontal(AncestorPerson person) {
+        int parentsWidth;
+        int siblingWidth;
         if (config.isShowSiblings()) {
             if (config.isShowFathersLineage() && config.isShowMothersLineage()) {
-                pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getFather().getMaxOlderSiblings() + person.getFather().getMaxYoungerSiblings() + Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings() + Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount()));
+                int fatherParentsWidth = config.getParentImageSpace() * Math.min(person.getAncestorGenerations(), config.getGenerationCount());
+                int motherParentsWidth = config.getParentImageSpace() * Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount());
+                int fatherSiblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getFather().getMaxOlderSiblings() + person.getFather().getMaxYoungerSiblings());
+                int motherSiblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings());
+                siblingWidth = fatherSiblingWidth + motherSiblingWidth;
+                parentsWidth = fatherParentsWidth + motherParentsWidth;
                 x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getFather().getMaxOlderSiblings() + config.getAdultImageWidth() + config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
             } else if (config.isShowFathersLineage()) {
-                pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getFather().getMaxOlderSiblings() + person.getFather().getMaxYoungerSiblings() + Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + 2);
+                siblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMaxOlderSiblings() + person.getMaxYoungerSiblings());
+                parentsWidth = config.getParentImageSpace() * Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + config.getCoupleWidth() / 2;
                 x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getFather().getMaxOlderSiblings() + config.getAdultImageWidth() + config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
             } else {
-                pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings() + Math.min(person.getMother().getAncestorGenerations() + 1, config.getGenerationCount()) + 2);
-                x = config.getParentImageSpace() * (Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount())) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMother().getMaxOlderSiblings() - config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
+                siblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings());
+                parentsWidth = config.getParentImageSpace() * Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount()) + config.getCoupleWidth() / 2;
+                x = config.getParentImageSpace() * (Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount())) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMother().getMaxOlderSiblings() - config.getCoupleWidth() / 2 + SIBLINGS_GAP;
             }
+            pictureWidth = parentsWidth + siblingWidth;
         } else {
             if (config.isShowFathersLineage() && config.isShowMothersLineage()) {
                 pictureWidth = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount())) + config.getWideMarriageLabel() + 2 * (config.getAdultImageWidth() + RootFamilyPanel.SIBLINGS_GAP);

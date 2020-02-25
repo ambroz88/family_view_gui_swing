@@ -21,6 +21,7 @@ import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
  *
@@ -95,14 +96,22 @@ public class PersonPanel extends JPanel {
         if (!person.getBirthDate().isEmpty()) {
             birth.setText("\u2605 " + person.getBirthDateCzech());
             if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
-                birthPlace.setText(SPACE + person.getSimpleBirthPlace());
+                if (configuration.isShortenPlaces()) {
+                    birthPlace.setText(SPACE + Tools.cityShortVersion(person.getSimpleBirthPlace()));
+                } else {
+                    birthPlace.setText(SPACE + person.getSimpleBirthPlace());
+                }
             }
         }
 
         if (!person.getDeathDate().isEmpty()) {
             death.setText("\u271D " + person.getDeathDateCzech());
             if (configuration.isShowPlaces() && !person.getDeathPlace().isEmpty()) {
-                deathPlace.setText(SPACE + person.getSimpleDeathPlace());
+                if (configuration.isShortenPlaces()) {
+                    deathPlace.setText(SPACE + Tools.cityShortVersion(person.getSimpleDeathPlace()));
+                } else {
+                    deathPlace.setText(SPACE + person.getSimpleDeathPlace());
+                }
             }
         }
 
@@ -143,25 +152,29 @@ public class PersonPanel extends JPanel {
         c.ipady = 4;
         add(blankSpace, c);
 
-        c.gridwidth = 1;
+        if (configuration.isShowPlaces()) {
+            c.gridwidth = 1;
+        }
         c.gridy = 4;
         c.ipady = 0;
         c.weighty = 0;
         add(birth, c);
-        c.gridy = 4;
-        c.gridx = 1;
-        add(birthPlace, c);
 
         c.gridy = 7;
-        c.gridx = 0;
         add(death, c);
-        c.gridy = 7;
-        c.weighty = 0;
-        c.gridx = 1;
-        add(deathPlace, c);
 
-        c.gridx = 0;
-        c.gridwidth = 2;
+        if (configuration.isShowPlaces()) {
+            c.gridy = 4;
+            c.gridx = 1;
+            add(birthPlace, c);
+
+            c.gridy = 7;
+            add(deathPlace, c);
+
+            c.gridx = 0;
+            c.gridwidth = 2;
+        }
+
         if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
             c.gridy = 8;
             c.ipady = 8;

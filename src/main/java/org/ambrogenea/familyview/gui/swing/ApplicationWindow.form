@@ -103,7 +103,6 @@
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="personBoxPanel" max="32767" attributes="0"/>
                                   <Component id="LIneagePanel" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="loadInputButton" min="-2" max="-2" attributes="0"/>
@@ -113,6 +112,7 @@
                                       <Component id="fileNameLabel" min="-2" pref="25" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="closeFamilyPanel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="personBoxPanel" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -125,7 +125,7 @@
                           <Component id="tableScroll" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="configPanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="22" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -426,10 +426,10 @@
                                   <Component id="siblingsCheckbox" min="-2" pref="126" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="generateLineageButton" min="-2" max="-2" attributes="0"/>
-                              <Component id="generateWord" min="-2" pref="129" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="generateLineageButton" max="32767" attributes="0"/>
+                              <Component id="generateWord" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
@@ -440,12 +440,6 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="generateLineageButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="generateWord" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="siblingsCheckbox" min="-2" max="-2" attributes="0"/>
                                       <Component id="fatherLineageCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -455,15 +449,16 @@
                                       <Component id="motherLineageCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="spousesCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="generationSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="generationsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="generateLineageButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="generationSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="generationsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="generateWord" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -588,7 +583,7 @@
                               <Component id="spousesFamilyCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="childrenCheckbox" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="8" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="generateCloseFamilyButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -680,21 +675,21 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="placesCheckBox" pref="143" max="32767" attributes="0"/>
+                                      <Component id="placesCheckBox" max="32767" attributes="0"/>
                                       <Component id="ageCheckBox" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="residenceCheckBox" min="-2" max="-2" attributes="0"/>
-                                      <Component id="heraldryCheckBox" min="-2" pref="143" max="-2" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="templeCheckBox" min="-2" pref="143" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="templeCheckBox" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="heraldryCheckBox" max="32767" attributes="0"/>
+                                  <Component id="shortenPlacesCheckBox" min="-2" pref="143" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="residenceCheckBox" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -708,12 +703,15 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="residenceCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="placesCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="shortenPlacesCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="templeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="residenceCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -772,6 +770,17 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="placesCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="shortenPlacesCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="configuration.isShortenPlaces()" type="code"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Shorten places"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="shortenPlacesCheckBoxActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

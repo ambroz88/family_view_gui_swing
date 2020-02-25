@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.SIBLINGS_GAP;
+
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
@@ -65,7 +67,7 @@ public class DrawingFrame extends JFrame {
 
     public void generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
         int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(config.getGenerationCount(), personWithAncestors.getAncestorGenerations()) + 1);
-        int pictureWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * ((int) Math.pow(2, Math.min(config.getGenerationCount(), personWithAncestors.getAncestorGenerations())) + 2);
+        int pictureWidth = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (personWithAncestors.getLastParentsCount() + 1));
 
         final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors, config);
         ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));

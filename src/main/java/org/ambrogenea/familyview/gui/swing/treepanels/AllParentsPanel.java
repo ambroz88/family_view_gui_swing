@@ -1,5 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
+import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -14,30 +15,43 @@ public class AllParentsPanel extends RootFamilyPanel {
     }
 
     public void drawAncestorPanel() {
-        drawPerson(getWidth() / 2, getHeight() - getConfiguration().getAdultImageHeight(), personModel);
-
-        drawParentsParent(personModel.getFather());
-        drawParentsParent(personModel.getMother());
+        int x = (int) ((getConfiguration().getCoupleWidth() + SIBLINGS_GAP) * (personModel.getFather().getLastParentsCount() - personModel.getFather().getInnerParentsCount() + (personModel.getFather().getInnerParentsCount() + personModel.getMother().getInnerParentsCount()) / 2));
+        int y = getHeight() - getConfiguration().getAdultImageHeight();
+        drawPerson(x, y, personModel);
+        drawParents(personModel, x, y);
     }
 
-    private void drawParentsParent(AncestorPerson person) {
-        if (person != null) {
-            int x = getWidth() / 2;
-            int y = getHeight() - getConfiguration().getAdultImageHeight() - (getConfiguration().getAdultImageHeight() + VERTICAL_GAP) * (person.getAncestorLine().size() - 1);
-            int shiftWidth = x;
-            int shift;
+    private void drawParents(AncestorPerson child, int childX, int childY) {
+        int parentsY = childY - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        if (child.getMother() != null) {
+            double motherParentsCount = Math.min(child.getMother().getInnerParentsCount(), child.getMother().getLastParentsCount());
 
-            for (int i = 1; i < person.getAncestorLine().size(); i++) {
-                shift = person.getAncestorLine().get(i);
-                shiftWidth = shiftWidth / 2;
-                x = x + shift * (shiftWidth);
+            int motherX;
+            if (child.getFather() == null) {
+                motherX = childX;
+            } else {
+                double fatherParentsCount = Math.min(child.getFather().getInnerParentsCount(), child.getFather().getLastParentsCount());
+
+                int fatherX;
+                if (motherParentsCount == 0 || fatherParentsCount == 0) {
+                    fatherX = childX - getConfiguration().getHalfSpouseLabelSpace();
+                    motherX = childX + getConfiguration().getHalfSpouseLabelSpace();
+                } else {
+                    double motherParentWidth = (getConfiguration().getCoupleWidth() + SIBLINGS_GAP) * motherParentsCount;
+                    double fatherParentWidth = (getConfiguration().getCoupleWidth() + SIBLINGS_GAP) * fatherParentsCount;
+                    int halfParentWidth = (int) (fatherParentWidth + motherParentWidth) / 2;
+                    fatherX = childX - halfParentWidth;
+                    motherX = childX + halfParentWidth;
+                }
+
+                drawPerson(fatherX, parentsY, child.getFather());
+                drawLabel(fatherX + getConfiguration().getAdultImageWidth() / 2, motherX - getConfiguration().getAdultImageWidth() / 2, parentsY, child.getParents().getMarriageDate());
+                drawParents(child.getFather(), fatherX, parentsY);
             }
 
-            drawPerson(x, y, person);
-            if (person.getAncestorLine().size() <= getConfiguration().getGenerationCount()) {
-                drawParentsParent(person.getFather());
-                drawParentsParent(person.getMother());
-            }
+            drawPerson(motherX, parentsY, child.getMother());
+            drawParents(child.getMother(), motherX, parentsY);
+            lines.add(new Line(childX, childY, childX, parentsY));
         }
     }
 

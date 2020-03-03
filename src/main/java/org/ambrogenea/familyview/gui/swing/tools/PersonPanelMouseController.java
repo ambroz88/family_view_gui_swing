@@ -30,7 +30,7 @@ import org.ambrogenea.familyview.model.Person;
 public class PersonPanelMouseController extends MouseAdapter {
 
     private final static Dimension BUTTON_DIMENSION = new Dimension(42, 36);
-    private final static Dimension WINDOW_DIMENSION = new Dimension(600, 500);
+    private final static Dimension WINDOW_DIMENSION = new Dimension(800, 600);
 
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -41,6 +41,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private final JButton closeFamily;
     private final JButton fatherLineage;
     private final JButton motherLineage;
+    private final JButton allGenerations;
 
     public PersonPanelMouseController(JPanel image, Configuration config, Person person) {
         this.personPanel = image;
@@ -52,8 +53,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         this.floatMenu.setType(Window.Type.UTILITY);
         this.floatMenu.setTitle("Generate...");
         this.floatMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
-//        this.floatMenu.setPreferredSize(new Dimension(Math.min(140, config.getAdultImageWidth() - 5), 85));
-        this.floatMenu.setSize(new Dimension(Math.min(140, config.getAdultImageWidth() - 5), 85));
+        this.floatMenu.setSize(new Dimension(4 * (BUTTON_DIMENSION.width + 10), 85));
         this.floatMenu.setResizable(false);
 
         Icon closeFamilyIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\CloseFamilyIcon.png"));
@@ -124,9 +124,29 @@ public class PersonPanelMouseController extends MouseAdapter {
             }
         });
 
+        Icon allGenerationIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\AllGenerationsIcon.png"));
+        allGenerations = new JButton(allGenerationIcon);
+        allGenerations.setToolTipText("Generate all generations");
+        allGenerations.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        allGenerations.setSize(BUTTON_DIMENSION);
+        allGenerations.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingFrame drawing = new DrawingFrame("All ancestors of " + personModel.getName());
+                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateAncestors(personModel.getPosition());
+                JPanel panel = drawing.generateAllAncestors(personWithAncestors, configuration);
+                drawing.setSize(WINDOW_DIMENSION);
+                drawing.setPreferredSize(WINDOW_DIMENSION);
+                drawing.setLocationRelativeTo(personPanel);
+
+                floatMenu.dispose();
+            }
+        });
+
         this.floatMenu.add(fatherLineage);
         this.floatMenu.add(motherLineage);
         this.floatMenu.add(closeFamily);
+        this.floatMenu.add(allGenerations);
     }
 
     @Override

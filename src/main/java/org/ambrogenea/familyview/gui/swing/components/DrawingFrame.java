@@ -65,7 +65,7 @@ public class DrawingFrame extends JFrame {
         setVisible(true);
     }
 
-    public void generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
+    public JPanel generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
         int pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(config.getGenerationCount(), personWithAncestors.getAncestorGenerations()) + 1);
         int pictureWidth = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (personWithAncestors.getLastParentsCount() + 1));
 
@@ -81,6 +81,7 @@ public class DrawingFrame extends JFrame {
                 saveButtonActionPerformed(ancestorPanel);
             }
         });
+        return ancestorPanel;
     }
 
     public JPanel generateLineage(AncestorPerson personWithAncestors, Configuration config) {

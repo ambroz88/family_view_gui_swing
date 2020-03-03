@@ -88,8 +88,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.setShowFathersLineage(true);
 
                 DrawingFrame drawing = new DrawingFrame("Father Lineage of " + personModel.getName());
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateParentsLineage(personModel.getPosition());
-                JPanel panel = drawing.generateLineage(personWithAncestors, configuration);
+                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateFatherLineage(personModel.getPosition());
+                JPanel panel = drawing.generateFatherLineage(personWithAncestors, configuration);
                 drawing.setSize(WINDOW_DIMENSION);
                 drawing.setPreferredSize(WINDOW_DIMENSION);
                 drawing.setLocationRelativeTo(personPanel);
@@ -113,8 +113,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.setShowMothersLineage(true);
                 configuration.setShowFathersLineage(false);
                 DrawingFrame drawing = new DrawingFrame("Mother Lineage of " + personModel.getName());
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateParentsLineage(personModel.getPosition());
-                JPanel panel = drawing.generateLineage(personWithAncestors, configuration);
+                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateMotherLineage(personModel.getPosition());
+                JPanel panel = drawing.generateMotherLineage(personWithAncestors, configuration);
                 drawing.setSize(WINDOW_DIMENSION);
                 drawing.setPreferredSize(WINDOW_DIMENSION);
                 drawing.setLocationRelativeTo(personPanel);

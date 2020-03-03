@@ -37,6 +37,7 @@ public class PersonPanel extends JPanel {
 
     private JLabel firstName;
     private JLabel surName;
+    private JLabel occupation;
     private JLabel blankSpace;
     private JLabel birth;
     private JLabel birthPlace;
@@ -74,6 +75,7 @@ public class PersonPanel extends JPanel {
     private void initLabels() {
         firstName = new JLabel(" ", JLabel.CENTER);
         surName = new JLabel(" ", JLabel.CENTER);
+        occupation = new JLabel("", JLabel.CENTER);
         blankSpace = new JLabel("", JLabel.CENTER);
         birth = new JLabel(" ", JLabel.RIGHT);
         birthPlace = new JLabel("", JLabel.LEFT);
@@ -92,6 +94,8 @@ public class PersonPanel extends JPanel {
                 surName.setText(person.getSurname().toUpperCase());
             }
         }
+
+        occupation.setText(person.getOccupation());
 
         if (!person.getBirthDate().isEmpty()) {
             birth.setText("\u2605 " + person.getBirthDateCzech());
@@ -117,6 +121,7 @@ public class PersonPanel extends JPanel {
 
         firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
         surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
         death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
@@ -148,14 +153,20 @@ public class PersonPanel extends JPanel {
         c.ipady = 4;
         add(surName, c);
 
-        c.gridy = 3;
+        if (configuration.isShowOccupation() && !person.getOccupation().isEmpty()) {
+            c.gridy = 3;
+            c.ipady = 0;
+            add(occupation, c);
+        }
+
+        c.gridy = 4;
         c.ipady = 4;
         add(blankSpace, c);
 
         if (configuration.isShowPlaces()) {
             c.gridwidth = 1;
         }
-        c.gridy = 4;
+        c.gridy = 5;
         c.ipady = 0;
         c.weighty = 0;
         add(birth, c);
@@ -164,7 +175,7 @@ public class PersonPanel extends JPanel {
         add(death, c);
 
         if (configuration.isShowPlaces()) {
-            c.gridy = 4;
+            c.gridy = 5;
             c.gridx = 1;
             add(birthPlace, c);
 
@@ -176,16 +187,16 @@ public class PersonPanel extends JPanel {
         }
 
         if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
-            c.gridy = 8;
+            c.gridy = 9;
             c.ipady = 8;
             add(blankSpace2, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;
-            c.gridy = 9;
+            c.gridy = 10;
             add(templeBox, c);
         }
 
-        c.gridy = 10;
+        c.gridy = 11;
         c.weighty = 5;
         c.ipady = configuration.getAdultBottomOffset();
         add(new JLabel(""), c);

@@ -107,17 +107,15 @@ public class RootFamilyPanel extends JPanel {
 
     protected int drawMother(int childXPosition, int y, AncestorPerson child) {
         int motherXPosition;
-        int halfLabelWidth = getConfiguration().getMarriageLabelWidth() / 2;
         if (child.getFather() != null) {
+            int halfLabelWidth = getConfiguration().getMarriageLabelWidth() / 2;
             motherXPosition = childXPosition + getConfiguration().getHalfSpouseLabelSpace();
             drawLabel(childXPosition - halfLabelWidth, childXPosition + halfLabelWidth, y, child.getParents().getMarriageDate());
         } else {
             motherXPosition = childXPosition;
         }
 
-        if (child.getMother() != null) {
-            drawPerson(motherXPosition, y, child.getMother());
-        }
+        drawPerson(motherXPosition, y, child.getMother());
         return motherXPosition;
     }
 

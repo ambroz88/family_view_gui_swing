@@ -23,7 +23,10 @@ import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.SIB
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.FatherLineagePanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.LineagePanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.MotherLineagePanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.ParentLineagePanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -84,13 +87,34 @@ public class DrawingFrame extends JFrame {
         return ancestorPanel;
     }
 
-    public JPanel generateLineage(AncestorPerson personWithAncestors, Configuration config) {
+    public JPanel generateFatherLineage(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
-        setup.calculateLineage(personWithAncestors);
+        setup.calculateFatherLineage(personWithAncestors);
+        final LineagePanel fathersFamilyPanel = new FatherLineagePanel(personWithAncestors, config);
+        generateLineage(setup, fathersFamilyPanel);
+        return fathersFamilyPanel;
+    }
+
+    public JPanel generateMotherLineage(AncestorPerson personWithAncestors, Configuration config) {
+        PageSetup setup = new PageSetup(config);
+        setup.calculateMotherLineage(personWithAncestors);
+        final LineagePanel fathersFamilyPanel = new MotherLineagePanel(personWithAncestors, config);
+        generateLineage(setup, fathersFamilyPanel);
+        return fathersFamilyPanel;
+    }
+
+    public JPanel generateParentsLineage(AncestorPerson personWithAncestors, Configuration config) {
+        PageSetup setup = new PageSetup(config);
+        setup.calculateParentLineage(personWithAncestors);
+        final LineagePanel fathersFamilyPanel = new ParentLineagePanel(personWithAncestors, config);
+        generateLineage(setup, fathersFamilyPanel);
+        return fathersFamilyPanel;
+    }
+
+    private void generateLineage(PageSetup setup, final LineagePanel fathersFamilyPanel) {
         int pictureWidth = setup.getWidth();
         int pictureHeight = setup.getHeight();
 
-        final LineagePanel fathersFamilyPanel = new LineagePanel(personWithAncestors, config);
         fathersFamilyPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(fathersFamilyPanel);
         scrollAncestorPane.setScrollPosition(pictureWidth / 2 - this.getWidth() / 2, pictureHeight);
@@ -102,7 +126,6 @@ public class DrawingFrame extends JFrame {
                 saveButtonActionPerformed(fathersFamilyPanel);
             }
         });
-        return fathersFamilyPanel;
     }
 
     public JPanel generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {

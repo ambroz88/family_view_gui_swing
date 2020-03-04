@@ -415,15 +415,20 @@
                               <Component id="motherLineageCheckbox" alignment="0" max="32767" attributes="0"/>
                               <Component id="fatherLineageCheckbox" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                   <Component id="generationsLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="generationSpinner" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="generateLineageButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="generateWord" alignment="1" min="-2" pref="126" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="generateLineageButton" max="32767" attributes="0"/>
+                                      <Component id="generateWord" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>

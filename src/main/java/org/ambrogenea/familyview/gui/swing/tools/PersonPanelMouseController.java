@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.IllegalComponentStateException;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -30,7 +31,6 @@ import org.ambrogenea.familyview.model.Person;
 public class PersonPanelMouseController extends MouseAdapter {
 
     private final static Dimension BUTTON_DIMENSION = new Dimension(42, 36);
-    private final static Dimension WINDOW_DIMENSION = new Dimension(800, 600);
 
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -64,13 +64,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         closeFamily.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame("Close family of " + personModel.getName());
+                DrawingFrame drawing = new DrawingFrame();
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateCloseFamily(personModel.getPosition());
-                JPanel panel = drawing.generateCloseFamily(personWithAncestors, configuration);
-                drawing.setSize(WINDOW_DIMENSION);
-                drawing.setPreferredSize(WINDOW_DIMENSION);
-                drawing.setLocationRelativeTo(personPanel);
+                drawing.generateCloseFamily(personWithAncestors, configuration);
                 floatMenu.dispose();
+                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
             }
         });
 
@@ -82,20 +80,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean mother = configuration.isShowMothersLineage();
-                boolean father = configuration.isShowFathersLineage();
-                configuration.setShowMothersLineage(false);
-                configuration.setShowFathersLineage(true);
-
-                DrawingFrame drawing = new DrawingFrame("Father Lineage of " + personModel.getName());
+                DrawingFrame drawing = new DrawingFrame();
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateFatherLineage(personModel.getPosition());
-                JPanel panel = drawing.generateFatherLineage(personWithAncestors, configuration);
-                drawing.setSize(WINDOW_DIMENSION);
-                drawing.setPreferredSize(WINDOW_DIMENSION);
-                drawing.setLocationRelativeTo(personPanel);
+                drawing.generateFatherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
-                configuration.setShowMothersLineage(mother);
-                configuration.setShowFathersLineage(father);
+                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
             }
         });
 
@@ -107,20 +96,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean mother = configuration.isShowMothersLineage();
-                boolean father = configuration.isShowFathersLineage();
-
-                configuration.setShowMothersLineage(true);
-                configuration.setShowFathersLineage(false);
-                DrawingFrame drawing = new DrawingFrame("Mother Lineage of " + personModel.getName());
+                DrawingFrame drawing = new DrawingFrame();
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateMotherLineage(personModel.getPosition());
-                JPanel panel = drawing.generateMotherLineage(personWithAncestors, configuration);
-                drawing.setSize(WINDOW_DIMENSION);
-                drawing.setPreferredSize(WINDOW_DIMENSION);
-                drawing.setLocationRelativeTo(personPanel);
-                configuration.setShowMothersLineage(mother);
-                configuration.setShowFathersLineage(father);
+                drawing.generateMotherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
+                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
             }
         });
 
@@ -132,14 +112,12 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame("All ancestors of " + personModel.getName());
+                DrawingFrame drawing = new DrawingFrame();
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateAncestors(personModel.getPosition());
-                JPanel panel = drawing.generateAllAncestors(personWithAncestors, configuration);
-                drawing.setSize(WINDOW_DIMENSION);
-                drawing.setPreferredSize(WINDOW_DIMENSION);
-                drawing.setLocationRelativeTo(personPanel);
+                drawing.generateAllAncestors(personWithAncestors, configuration);
 
                 floatMenu.dispose();
+                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
             }
         });
 
@@ -153,9 +131,13 @@ public class PersonPanelMouseController extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         super.mouseExited(e);
         personPanel.setCursor(defCursor);
-        Rectangle bounds = new Rectangle(personPanel.getLocationOnScreen(), personPanel.getSize());
-        if (floatMenu.isVisible() && !bounds.contains(e.getLocationOnScreen())) {
-            floatMenu.dispose();
+        try {
+            Rectangle bounds = new Rectangle(personPanel.getLocationOnScreen(), personPanel.getSize());
+            if (floatMenu.isVisible() && !bounds.contains(e.getLocationOnScreen())) {
+                floatMenu.dispose();
+            }
+        } catch (IllegalComponentStateException ex) {
+            System.out.println("exeption: " + ex.getLocalizedMessage());
         }
     }
 

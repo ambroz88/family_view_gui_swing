@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -32,7 +35,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
  *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class ApplicationWindow extends JFrame {
+public class ApplicationWindow extends JFrame implements PropertyChangeListener {
 
     private static final int BORDER_SIZE = 70;
 
@@ -45,6 +48,8 @@ public class ApplicationWindow extends JFrame {
      */
     public ApplicationWindow() {
         configuration = new Configuration();
+        configuration.addPropertyChangeListener(this);
+
         initComponents();
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("SW Icon.png"));
         setIconImage(img.getImage());
@@ -369,14 +374,17 @@ public class ApplicationWindow extends JFrame {
                     .addComponent(siblingsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LIneagePanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addComponent(generationsLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(generateLineageButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(generateWord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(LIneagePanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(generateLineageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(generateWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         LIneagePanelLayout.setVerticalGroup(
@@ -688,13 +696,12 @@ public class ApplicationWindow extends JFrame {
             AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             configuration.setAncestorModel(ancestors);
             AncestorPerson personWithAncestors = ancestors.generateCloseFamily(recordsTable.getSelectedRow());
-            System.out.println("There will be generated close family of: " + personWithAncestors.getName() + ".");
 
-            DrawingFrame drawing = new DrawingFrame("Close family of " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
+            DrawingFrame drawing = new DrawingFrame();
             drawing.generateCloseFamily(personWithAncestors, configuration);
-            System.out.println("Family tree was created.");
+
+            settingsTab.addTab(personWithAncestors.getName(), drawing);
+            settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
         }
     }//GEN-LAST:event_generateCloseFamilyButtonActionPerformed
 
@@ -731,25 +738,22 @@ public class ApplicationWindow extends JFrame {
             AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             configuration.setAncestorModel(ancestors);
 
-            DrawingFrame drawing;
+            DrawingFrame drawing = new DrawingFrame();
             AncestorPerson personWithAncestors;
 
             if (configuration.isShowFathersLineage() && configuration.isShowMothersLineage()) {
                 personWithAncestors = ancestors.generateParentsLineage(recordsTable.getSelectedRow());
-                drawing = new DrawingFrame("Parent lineage of " + personWithAncestors.getName() + " born in " + personWithAncestors.getBirthDate());
                 drawing.generateParentsLineage(personWithAncestors, configuration);
             } else if (configuration.isShowFathersLineage()) {
                 personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
-                drawing = new DrawingFrame("Father lineage of " + personWithAncestors.getName() + " born in " + personWithAncestors.getBirthDate());
                 drawing.generateFatherLineage(personWithAncestors, configuration);
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
-                drawing = new DrawingFrame("Mother lineage of " + personWithAncestors.getName() + " born in " + personWithAncestors.getBirthDate());
                 drawing.generateMotherLineage(personWithAncestors, configuration);
             }
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
 
+            settingsTab.addTab(personWithAncestors.getName(), drawing);
+            settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
         }
     }//GEN-LAST:event_generateLineageButtonActionPerformed
 
@@ -785,7 +789,6 @@ public class ApplicationWindow extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = imageChooser.getSelectedFile();
             configuration.setAdultWomanImagePath(file.getAbsolutePath());
-            System.out.println("Opening: " + file.getName() + ".");
         } else {
             System.out.println("Open command cancelled by user.");
         }
@@ -801,7 +804,6 @@ public class ApplicationWindow extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = imageChooser.getSelectedFile();
             configuration.setAdultManImagePath(file.getAbsolutePath());
-            System.out.println("Opening: " + file.getName() + ".");
         } else {
             System.out.println("Open command cancelled by user.");
         }
@@ -835,14 +837,12 @@ public class ApplicationWindow extends JFrame {
             AncestorModel ancestors = new AncestorModel(dataModel, configuration.getGenerationCount());
             configuration.setAncestorModel(ancestors);
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
-            System.out.println("There will be generated all ancestors of: " + personWithAncestors.getName());
 
-            DrawingFrame drawing = new DrawingFrame("All ancestors of " + personWithAncestors.getName());
-            drawing.setSize(this.getSize());
-            drawing.setPreferredSize(this.getPreferredSize());
+            DrawingFrame drawing = new DrawingFrame();
             drawing.generateAllAncestors(personWithAncestors, configuration);
 
-            System.out.println("Family tree was created.");
+            settingsTab.addTab(personWithAncestors.getName(), drawing);
+            settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
         }
     }//GEN-LAST:event_generateAncestorButtonActionPerformed
 
@@ -1069,5 +1069,12 @@ public class ApplicationWindow extends JFrame {
     private javax.swing.JTextField topOffsetField;
     private javax.swing.JLabel womanImageLabel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        JComponent panel = (JComponent) evt.getNewValue();
+        settingsTab.addTab(evt.getPropertyName(), panel);
+        settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
+    }
 
 }

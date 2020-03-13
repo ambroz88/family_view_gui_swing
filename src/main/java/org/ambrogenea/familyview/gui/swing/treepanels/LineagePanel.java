@@ -58,10 +58,10 @@ public abstract class LineagePanel extends RootFamilyPanel {
         }
     }
 
-    protected void drawResidenceLegend() {
+    protected void drawResidenceLegend(int parentPanelHeight) {
         ResidencePanel residencePanel = new ResidencePanel(getCityRegister());
         this.add(residencePanel);
-        residencePanel.setBounds(HORIZONTAL_GAP, this.getHeight() - residencePanel.getHeight() - HORIZONTAL_GAP, residencePanel.getWidth(), residencePanel.getHeight());
+        residencePanel.setBounds(HORIZONTAL_GAP, parentPanelHeight - residencePanel.getHeight() - HORIZONTAL_GAP, residencePanel.getWidth(), residencePanel.getHeight());
     }
 
 }

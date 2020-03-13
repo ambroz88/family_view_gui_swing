@@ -29,7 +29,7 @@ public class ParentLineagePanel extends LineagePanel {
         }
 
         if (getConfiguration().isShowResidence()) {
-            drawResidenceLegend();
+            drawResidenceLegend(setup.getHeight());
         }
     }
 

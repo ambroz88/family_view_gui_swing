@@ -87,20 +87,25 @@ public class RootFamilyPanel extends JPanel {
         int y;
         for (int i = 0; i < person.getResidenceList().size(); i++) {
             residence = person.getResidenceList().get(i);
-            if (person.getSex().equals(Information.VALUE_MALE)) {
-                x = personPanel.getX() - RESIDENCE_SIZE - HORIZONTAL_GAP / 2;
-            } else {
-                x = personPanel.getX() + configuration.getAdultImageWidth() + HORIZONTAL_GAP / 2;
-            }
-            y = personPanel.getY() + i * (RESIDENCE_SIZE + 5);
-            residences.add(new ResidenceModel(x, y, residence));
-            addCityToRegister(residence.getCity());
-            if (residence.getNumber() > 0) {
-                number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
-                number.setSize(RESIDENCE_SIZE, RESIDENCE_SIZE);
-                number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 2));
-                this.add(number);
-                number.setBounds(x, y, RESIDENCE_SIZE, RESIDENCE_SIZE);
+            if (!residence.getCity().isEmpty()) {
+
+                if (person.getSex().equals(Information.VALUE_MALE)) {
+                    x = personPanel.getX() - RESIDENCE_SIZE - HORIZONTAL_GAP / 2;
+                } else {
+                    x = personPanel.getX() + configuration.getAdultImageWidth() + HORIZONTAL_GAP / 2;
+                }
+
+                y = personPanel.getY() + i * (RESIDENCE_SIZE + 5);
+                residences.add(new ResidenceModel(x, y, residence));
+                addCityToRegister(residence.getCity());
+                if (residence.getNumber() > 0) {
+                    number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
+                    number.setSize(RESIDENCE_SIZE, RESIDENCE_SIZE);
+                    number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 2));
+                    this.add(number);
+                    number.setBounds(x, y, RESIDENCE_SIZE, RESIDENCE_SIZE);
+                }
+
             }
         }
     }

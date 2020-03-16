@@ -44,7 +44,7 @@ public class ParentLineagePanel extends LineagePanel {
             int fathersSiblings = personModel.getFather().getMaxYoungerSiblings();
             int mothersSiblings = personModel.getMother().getMaxOlderSiblings();
             int siblingsAmount = fathersSiblings + mothersSiblings;
-            motherX = fatherX + getConfiguration().getAdultImageWidth() + (siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            motherX = fatherX + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
         } else {
             motherX = x + (getConfiguration().getAdultImageWidth() / 2 + getConfiguration().getWideMarriageLabel() / 2);
         }

@@ -66,8 +66,8 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         personImage = new PersonPanel(samplePerson, configuration);
         personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
         personImagePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        personImagePanel.setSize(new Dimension(240, 180));
-        personImagePanel.setPreferredSize(new Dimension(240, 180));
+//        personImagePanel.setSize(new Dimension(240, 180));
+//        personImagePanel.setPreferredSize(new Dimension(240, 180));
         personImagePanel.add(personImage);
 
         openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
@@ -120,18 +120,16 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         occupationCheckBox = new javax.swing.JCheckBox();
         personBoxLookPanel = new javax.swing.JPanel();
         personImagePanel = new javax.swing.JPanel();
-        imageWithLabel = new javax.swing.JLabel();
-        imageWidthField = new javax.swing.JTextField();
         TopOffsetLabel = new javax.swing.JLabel();
-        topOffsetField = new javax.swing.JTextField();
         bottomOffsetLabel = new javax.swing.JLabel();
-        imageHeightLabel = new javax.swing.JLabel();
-        imageHeightField = new javax.swing.JTextField();
-        bottomOffsetField = new javax.swing.JTextField();
         fontSizeLabel = new javax.swing.JLabel();
-        fontSizeField = new javax.swing.JTextField();
         diagramComboBox = new javax.swing.JComboBox<>();
         diagramLabel = new javax.swing.JLabel();
+        imageWidthSlider = new javax.swing.JSlider();
+        imageHeightSlider = new javax.swing.JSlider();
+        fontSizeSpinner = new javax.swing.JSpinner();
+        bottomOffsetSpinner = new javax.swing.JSpinner();
+        topOffsetSpinner = new javax.swing.JSpinner();
         filenameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -224,40 +222,41 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             .addGroup(LIneagePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(generateLineageButton, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                    .addComponent(generateWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(LIneagePanelLayout.createSequentialGroup()
-                        .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(siblingsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(motherLineageCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(spousesCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(LIneagePanelLayout.createSequentialGroup()
-                                .addComponent(generationsLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(generationsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fatherLineageCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generateLineageButton))
+                .addGap(18, 18, 18)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(siblingsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(spousesCheckbox, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(generateWord, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         LIneagePanelLayout.setVerticalGroup(
             LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LIneagePanelLayout.createSequentialGroup()
-                .addComponent(fatherLineageCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(motherLineageCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(siblingsCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spousesCheckbox)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LIneagePanelLayout.createSequentialGroup()
+                        .addComponent(fatherLineageCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(motherLineageCheckbox))
+                    .addGroup(LIneagePanelLayout.createSequentialGroup()
+                        .addComponent(siblingsCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spousesCheckbox)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(generationsLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(generateLineageButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(generateWord)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(LIneagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generateLineageButton)
+                    .addComponent(generateWord))
                 .addContainerGap())
         );
 
@@ -310,26 +309,28 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             .addGroup(closeFamilyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(siblingsFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(showParentsCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spousesFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-                    .addComponent(childrenCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(generateCloseFamilyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(spousesFamilyCheckbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(generateCloseFamilyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(siblingsFamilyCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(childrenCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         closeFamilyPanelLayout.setVerticalGroup(
             closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(closeFamilyPanelLayout.createSequentialGroup()
-                .addComponent(showParentsCheckbox)
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(showParentsCheckbox)
+                    .addComponent(siblingsFamilyCheckbox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spousesFamilyCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(siblingsFamilyCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(childrenCheckbox)
-                .addGap(18, 18, 18)
+                .addGroup(closeFamilyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spousesFamilyCheckbox)
+                    .addComponent(childrenCheckbox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(generateCloseFamilyButton)
-                .addGap(12, 12, 12))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         generateAncestorButton.setText("All ancestors");
@@ -340,7 +341,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         });
 
         personBoxPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person box setup"));
-        personBoxPanel.setPreferredSize(new java.awt.Dimension(307, 123));
+        personBoxPanel.setPreferredSize(new java.awt.Dimension(165, 304));
 
         ageCheckBox.setSelected(configuration.isShowAge());
         ageCheckBox.setText("Show age");
@@ -428,74 +429,36 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
                 .addComponent(shortenPlacesCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(templeCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addComponent(heraldryCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(residenceCheckBox))
         );
 
         personBoxLookPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person box look"));
+        personBoxLookPanel.setPreferredSize(new java.awt.Dimension(469, 304));
 
+        personImagePanel.setBackground(new java.awt.Color(255, 255, 204));
         personImagePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        personImagePanel.setMaximumSize(new java.awt.Dimension(250, 215));
+        personImagePanel.setPreferredSize(new java.awt.Dimension(250, 215));
 
         javax.swing.GroupLayout personImagePanelLayout = new javax.swing.GroupLayout(personImagePanel);
         personImagePanel.setLayout(personImagePanelLayout);
         personImagePanelLayout.setHorizontalGroup(
             personImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 238, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         personImagePanelLayout.setVerticalGroup(
             personImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 178, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        imageWithLabel.setText("Image width");
-        imageWithLabel.setMaximumSize(new java.awt.Dimension(80, 16));
-        imageWithLabel.setMinimumSize(new java.awt.Dimension(80, 16));
-        imageWithLabel.setPreferredSize(new java.awt.Dimension(80, 16));
-
-        imageWidthField.setText(String.valueOf(this.configuration.getAdultImageWidth()));
-        imageWidthField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imageWidthFieldActionPerformed(evt);
-            }
-        });
 
         TopOffsetLabel.setText("Top offset");
 
-        topOffsetField.setText(String.valueOf(this.configuration.getAdultTopOffset()));
-        topOffsetField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                topOffsetFieldActionPerformed(evt);
-            }
-        });
-
         bottomOffsetLabel.setText("Bottom offset");
 
-        imageHeightLabel.setText("Image height");
-
-        imageHeightField.setText(String.valueOf(this.configuration.getAdultImageHeight()));
-        imageHeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imageHeightFieldActionPerformed(evt);
-            }
-        });
-
-        bottomOffsetField.setText(String.valueOf(this.configuration.getAdultBottomOffset()));
-        bottomOffsetField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bottomOffsetFieldActionPerformed(evt);
-            }
-        });
-
         fontSizeLabel.setText("Font size");
-
-        fontSizeField.setText(String.valueOf(this.configuration.getFontSize()));
-        fontSizeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fontSizeFieldActionPerformed(evt);
-            }
-        });
 
         diagramComboBox.setModel(new DefaultComboBoxModel<>(new String[] {Configuration.DIAGRAM_PERGAMEN, Configuration.DIAGRAM_HERALDRY, Configuration.DIAGRAM_WAVE, Configuration.DIAGRAM_DOUBLEWAVE}));
         diagramComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -506,78 +469,113 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
         diagramLabel.setText("Diagram");
 
+        imageWidthSlider.setMajorTickSpacing(10);
+        imageWidthSlider.setMaximum(250);
+        imageWidthSlider.setMinimum(100);
+        imageWidthSlider.setMinorTickSpacing(5);
+        imageWidthSlider.setPaintTicks(true);
+        imageWidthSlider.setSnapToTicks(true);
+        imageWidthSlider.setValue(configuration.getAdultImageWidth());
+        imageWidthSlider.setMaximumSize(new java.awt.Dimension(250, 27));
+        imageWidthSlider.setPreferredSize(new java.awt.Dimension(250, 27));
+        imageWidthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                imageWidthSliderStateChanged(evt);
+            }
+        });
+
+        imageHeightSlider.setMajorTickSpacing(10);
+        imageHeightSlider.setMaximum(215);
+        imageHeightSlider.setMinimum(140);
+        imageHeightSlider.setMinorTickSpacing(5);
+        imageHeightSlider.setOrientation(javax.swing.JSlider.VERTICAL);
+        imageHeightSlider.setPaintTicks(true);
+        imageHeightSlider.setSnapToTicks(true);
+        imageHeightSlider.setValue(configuration.getAdultImageHeight());
+        imageHeightSlider.setMaximumSize(new java.awt.Dimension(29, 215));
+        imageHeightSlider.setPreferredSize(new java.awt.Dimension(29, 215));
+        imageHeightSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                imageHeightSliderStateChanged(evt);
+            }
+        });
+
+        fontSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getFontSize(), 10, 25, 1));
+        fontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                fontSizeSpinnerStateChanged(evt);
+            }
+        });
+
+        bottomOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getAdultBottomOffset(), 0, 40, 1));
+        bottomOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bottomOffsetSpinnerStateChanged(evt);
+            }
+        });
+
+        topOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getAdultTopOffset(), 0, 40, 1));
+        topOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                topOffsetSpinnerStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout personBoxLookPanelLayout = new javax.swing.GroupLayout(personBoxLookPanel);
         personBoxLookPanel.setLayout(personBoxLookPanelLayout);
         personBoxLookPanelLayout.setHorizontalGroup(
             personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addComponent(imageHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(imageWidthSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                                .addComponent(TopOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(topOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                                .addComponent(bottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(bottomOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                                .addComponent(imageHeightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(17, 17, 17)
-                        .addComponent(personImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                                .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(diagramComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(diagramLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(imageWithLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TopOffsetLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                            .addComponent(fontSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(imageWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(topOffsetSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(fontSizeSpinner)))
+                    .addGroup(personBoxLookPanelLayout.createSequentialGroup()
+                        .addComponent(bottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(diagramLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(diagramComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         personBoxLookPanelLayout.setVerticalGroup(
             personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, personBoxLookPanelLayout.createSequentialGroup()
-                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(imageWithLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(imageWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(imageWidthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(imageHeightSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(personBoxLookPanelLayout.createSequentialGroup()
+                        .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(topOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TopOffsetLabel))
+                        .addGap(26, 26, 26)
+                        .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fontSizeLabel)
+                            .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(diagramLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(diagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
                         .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fontSizeLabel)
-                            .addComponent(fontSizeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(17, 17, 17))
-                    .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                        .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(personImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(personBoxLookPanelLayout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(TopOffsetLabel)
-                                    .addComponent(topOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(40, 40, 40)
-                                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(imageHeightLabel)
-                                    .addComponent(imageHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(47, 47, 47)
-                                .addGroup(personBoxLookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(bottomOffsetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(bottomOffsetLabel))))
-                        .addContainerGap())))
+                            .addComponent(bottomOffsetLabel)
+                            .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         filenameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -590,60 +588,55 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(loadInputButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(filenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(29, 29, 29)
-                        .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(generateAncestorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(personBoxLookPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(tableScroll)))
-                .addContainerGap())
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fileNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(filenameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loadInputButton, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(generateAncestorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(LIneagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeFamilyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(61, 61, 61)
+                .addComponent(personBoxLookPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(personBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tableScroll))
         );
         settingsRootPanelLayout.setVerticalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(19, 19, 19)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(personBoxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                                .addComponent(personBoxLookPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(generateAncestorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
                         .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(loadInputButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(filenameLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)
+                        .addComponent(generateAncestorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9))
+                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, settingsRootPanelLayout.createSequentialGroup()
+                            .addComponent(LIneagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(closeFamilyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(personBoxLookPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(personBoxPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                .addComponent(tableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -655,13 +648,14 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingsTab))
+                .addComponent(settingsTab)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingsTab, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+                .addComponent(settingsTab)
                 .addContainerGap())
         );
 
@@ -761,50 +755,6 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         }
     }//GEN-LAST:event_generateLineageButtonActionPerformed
 
-    private void fontSizeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSizeFieldActionPerformed
-        int fontSize;
-        try {
-            fontSize = Integer.valueOf(fontSizeField.getText());
-        } catch (NumberFormatException e) {
-            fontSize = 13;
-            fontSizeField.setText(String.valueOf(fontSize));
-        }
-        configuration.setFontSize(fontSize);
-    }//GEN-LAST:event_fontSizeFieldActionPerformed
-
-    private void topOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topOffsetFieldActionPerformed
-        int topOffset;
-        try {
-            topOffset = Integer.valueOf(topOffsetField.getText());
-        } catch (NumberFormatException e) {
-            topOffset = 30;
-            topOffsetField.setText(String.valueOf(topOffset));
-        }
-        configuration.setAdultTopOffset(topOffset);
-    }//GEN-LAST:event_topOffsetFieldActionPerformed
-
-    private void imageHeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageHeightFieldActionPerformed
-        int imageHeight;
-        try {
-            imageHeight = Integer.valueOf(imageHeightField.getText());
-        } catch (NumberFormatException e) {
-            imageHeight = 140;
-            imageHeightField.setText(String.valueOf(imageHeight));
-        }
-        configuration.setAdultImageHeight(imageHeight);
-    }//GEN-LAST:event_imageHeightFieldActionPerformed
-
-    private void imageWidthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageWidthFieldActionPerformed
-        int imageWidth;
-        try {
-            imageWidth = Integer.valueOf(imageWidthField.getText());
-        } catch (NumberFormatException e) {
-            imageWidth = 140;
-            imageWidthField.setText(String.valueOf(imageWidth));
-        }
-        configuration.setAdultImageWidth(imageWidth);
-    }//GEN-LAST:event_imageWidthFieldActionPerformed
-
     private void generateAncestorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateAncestorButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
 
@@ -840,17 +790,6 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             siblingsFamilyCheckbox.setSelected(false);
         }
     }//GEN-LAST:event_showParentsCheckboxActionPerformed
-
-    private void bottomOffsetFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomOffsetFieldActionPerformed
-        int bottomOffset;
-        try {
-            bottomOffset = Integer.valueOf(bottomOffsetField.getText());
-        } catch (NumberFormatException e) {
-            bottomOffset = 30;
-            bottomOffsetField.setText(String.valueOf(bottomOffset));
-        }
-        configuration.setAdultBottomOffset(bottomOffset);
-    }//GEN-LAST:event_bottomOffsetFieldActionPerformed
 
     private void heraldryCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heraldryCheckBoxActionPerformed
         configuration.setShowHeraldry(heraldryCheckBox.isSelected());
@@ -911,6 +850,31 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private void diagramComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diagramComboBoxActionPerformed
         configuration.setAdultDiagram(diagramComboBox.getSelectedItem().toString());
     }//GEN-LAST:event_diagramComboBoxActionPerformed
+
+    private void imageWidthSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_imageWidthSliderStateChanged
+        int imageWidth = imageWidthSlider.getValue();
+        configuration.setAdultImageWidth(imageWidth);
+    }//GEN-LAST:event_imageWidthSliderStateChanged
+
+    private void imageHeightSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_imageHeightSliderStateChanged
+        int imageHeight = imageHeightSlider.getValue();
+        configuration.setAdultImageHeight(imageHeight);
+    }//GEN-LAST:event_imageHeightSliderStateChanged
+
+    private void fontSizeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fontSizeSpinnerStateChanged
+        int fontSize = Integer.valueOf(fontSizeSpinner.getValue().toString());
+        configuration.setFontSize(fontSize);
+    }//GEN-LAST:event_fontSizeSpinnerStateChanged
+
+    private void topOffsetSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_topOffsetSpinnerStateChanged
+        int topOffset = Integer.valueOf(topOffsetSpinner.getValue().toString());
+        configuration.setAdultTopOffset(topOffset);
+    }//GEN-LAST:event_topOffsetSpinnerStateChanged
+
+    private void bottomOffsetSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bottomOffsetSpinnerStateChanged
+        int bottomOffset = Integer.valueOf(bottomOffsetSpinner.getValue().toString());
+        configuration.setAdultBottomOffset(bottomOffset);
+    }//GEN-LAST:event_bottomOffsetSpinnerStateChanged
 
     private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
         if (person != null) {
@@ -999,8 +963,8 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private javax.swing.JPanel LIneagePanel;
     private javax.swing.JLabel TopOffsetLabel;
     private javax.swing.JCheckBox ageCheckBox;
-    private javax.swing.JTextField bottomOffsetField;
     private javax.swing.JLabel bottomOffsetLabel;
+    private javax.swing.JSpinner bottomOffsetSpinner;
     private javax.swing.JCheckBox childrenCheckbox;
     private javax.swing.JPanel closeFamilyPanel;
     private javax.swing.JComboBox<String> diagramComboBox;
@@ -1008,8 +972,8 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private javax.swing.JCheckBox fatherLineageCheckbox;
     private javax.swing.JLabel fileNameLabel;
     private javax.swing.JLabel filenameLabel;
-    private javax.swing.JTextField fontSizeField;
     private javax.swing.JLabel fontSizeLabel;
+    private javax.swing.JSpinner fontSizeSpinner;
     private javax.swing.JButton generateAncestorButton;
     private javax.swing.JButton generateCloseFamilyButton;
     private javax.swing.JButton generateLineageButton;
@@ -1017,10 +981,8 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private javax.swing.JSpinner generationSpinner;
     private javax.swing.JLabel generationsLabel;
     private javax.swing.JCheckBox heraldryCheckBox;
-    private javax.swing.JTextField imageHeightField;
-    private javax.swing.JLabel imageHeightLabel;
-    private javax.swing.JTextField imageWidthField;
-    private javax.swing.JLabel imageWithLabel;
+    private javax.swing.JSlider imageHeightSlider;
+    private javax.swing.JSlider imageWidthSlider;
     private javax.swing.JButton loadInputButton;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JCheckBox motherLineageCheckbox;
@@ -1041,7 +1003,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private javax.swing.JCheckBox spousesFamilyCheckbox;
     private javax.swing.JScrollPane tableScroll;
     private javax.swing.JCheckBox templeCheckBox;
-    private javax.swing.JTextField topOffsetField;
+    private javax.swing.JSpinner topOffsetSpinner;
     // End of variables declaration//GEN-END:variables
 
     @Override

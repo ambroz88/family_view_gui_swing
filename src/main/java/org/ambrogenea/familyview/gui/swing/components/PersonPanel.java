@@ -31,7 +31,7 @@ public class PersonPanel extends JPanel {
 
     private static final String SPACE = "  ";
 
-    private final Person person;
+    private Person person;
     private BufferedImage personDiagram;
     protected final Configuration configuration;
 
@@ -54,8 +54,14 @@ public class PersonPanel extends JPanel {
         loadPictures();
         initLabels();
         addLabels();
-        MouseAdapter m = new PersonPanelMouseController(this, config, person);
-        this.addMouseListener(m);
+    }
+
+    public void update() {
+        this.removeAll();
+        loadPictures();
+        initLabels();
+        addLabels();
+        revalidate();
     }
 
     private void loadPictures() {
@@ -232,6 +238,11 @@ public class PersonPanel extends JPanel {
         templeBox.add(endowment);
 
         return templeBox;
+    }
+
+    public void addMouseAdapter() {
+        MouseAdapter m = new PersonPanelMouseController(this, configuration, person);
+        this.addMouseListener(m);
     }
 
 }

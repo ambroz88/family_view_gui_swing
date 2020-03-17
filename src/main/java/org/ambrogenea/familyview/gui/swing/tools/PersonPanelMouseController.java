@@ -68,7 +68,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateCloseFamily(personModel.getPosition());
                 drawing.generateCloseFamily(personWithAncestors, configuration);
                 floatMenu.dispose();
-                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
+                //ApplicationWindow is catching this propertyChange
+                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
 
@@ -84,7 +85,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateFatherLineage(personModel.getPosition());
                 drawing.generateFatherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
-                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
+                //ApplicationWindow is catching this propertyChange
+                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
 
@@ -100,7 +102,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateMotherLineage(personModel.getPosition());
                 drawing.generateMotherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
-                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
+                //ApplicationWindow is catching this propertyChange
+                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
 
@@ -117,7 +120,8 @@ public class PersonPanelMouseController extends MouseAdapter {
                 drawing.generateAllAncestors(personWithAncestors, configuration);
 
                 floatMenu.dispose();
-                configuration.firePropertyChange(personWithAncestors.getName(), null, drawing);
+                //ApplicationWindow is catching this propertyChange
+                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
 

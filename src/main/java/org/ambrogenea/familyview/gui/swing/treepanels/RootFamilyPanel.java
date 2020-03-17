@@ -70,7 +70,8 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void drawPerson(int centerX, int centerY, final Person person) {
-        JPanel personPanel = new PersonPanel(person, configuration);
+        PersonPanel personPanel = new PersonPanel(person, configuration);
+        personPanel.addMouseAdapter();
         personPanel.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
         this.add(personPanel);
         personPanel.setBounds(centerX - configuration.getAdultImageWidth() / 2, centerY - configuration.getAdultImageHeight() / 2, configuration.getAdultImageWidth(), configuration.getAdultImageHeight());

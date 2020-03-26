@@ -125,11 +125,11 @@
                                   <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="personBoxLookPanel" alignment="0" max="-2" attributes="0"/>
-                              <Component id="personBoxPanel" alignment="0" max="-2" attributes="0"/>
+                              <Component id="personBoxPanel" alignment="0" min="305" pref="305" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tableScroll" pref="525" max="32767" attributes="0"/>
+                      <Component id="tableScroll" pref="524" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -439,18 +439,16 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="shortenPlacesCheckBox" min="-2" pref="143" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="residenceCheckBox" max="32767" attributes="0"/>
-                                  <Component id="ageCheckBox" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="occupationCheckBox" alignment="0" pref="143" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="placesCheckBox" max="32767" attributes="0"/>
-                                  <Component id="templeCheckBox" min="-2" pref="143" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="heraldryCheckBox" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="shortenPlacesCheckBox" pref="143" max="32767" attributes="0"/>
+                              <Component id="residenceCheckBox" alignment="1" max="32767" attributes="0"/>
+                              <Component id="ageCheckBox" alignment="0" max="32767" attributes="0"/>
+                              <Component id="occupationCheckBox" alignment="0" pref="143" max="32767" attributes="0"/>
+                              <Component id="placesCheckBox" max="32767" attributes="0"/>
+                              <Component id="templeCheckBox" pref="143" max="32767" attributes="0"/>
+                              <Component id="heraldryCheckBox" alignment="0" pref="143" max="32767" attributes="0"/>
+                              <Component id="marriageCheckBox" alignment="0" max="32767" attributes="0"/>
+                              <Component id="resetModeCheckBox" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -468,10 +466,15 @@
                           <Component id="shortenPlacesCheckBox" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="83" max="32767" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
+                          <Component id="marriageCheckBox" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="heraldryCheckBox" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="residenceCheckBox" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="resetModeCheckBox" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -552,6 +555,25 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="occupationCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="marriageCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="configuration.isShowMarriage()" type="code"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Show marriage"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="marriageCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="resetModeCheckBox">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reset mode"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetModeCheckBoxActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -730,7 +752,7 @@
                   <Properties>
                     <Property name="majorTickSpacing" type="int" value="10"/>
                     <Property name="maximum" type="int" value="215"/>
-                    <Property name="minimum" type="int" value="140"/>
+                    <Property name="minimum" type="int" value="120"/>
                     <Property name="minorTickSpacing" type="int" value="5"/>
                     <Property name="orientation" type="int" value="1"/>
                     <Property name="paintTicks" type="boolean" value="true"/>

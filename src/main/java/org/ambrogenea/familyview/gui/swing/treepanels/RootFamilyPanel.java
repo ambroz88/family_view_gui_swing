@@ -172,7 +172,7 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void drawLabel(int startX, int endX, int centerY, String text) {
-        if (text != null && !text.isEmpty()) {
+        if (text != null && !text.isEmpty() && configuration.isShowMarriage()) {
             JLabel date = new JLabel(text, JLabel.CENTER);
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
             date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));

@@ -17,9 +17,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
+import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Person;
@@ -34,16 +34,17 @@ public class PersonPanelMouseController extends MouseAdapter {
 
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final JPanel personPanel;
+    private final PersonPanel personPanel;
     private final Person personModel;
     private final Configuration configuration;
+
     private final JDialog floatMenu;
     private final JButton closeFamily;
     private final JButton fatherLineage;
     private final JButton motherLineage;
     private final JButton allGenerations;
 
-    public PersonPanelMouseController(JPanel image, Configuration config, Person person) {
+    public PersonPanelMouseController(PersonPanel image, Configuration config, Person person) {
         this.personPanel = image;
         this.personPanel.setToolTipText("Show tree possibilities");
         this.personModel = person;
@@ -153,8 +154,10 @@ public class PersonPanelMouseController extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent evt) {
-        this.floatMenu.setVisible(true);
-        this.floatMenu.setLocationRelativeTo(personPanel);
+        if (!configuration.isResetMode() || configuration.isResetMode() && personPanel.setAnonymous()) {
+            this.floatMenu.setVisible(true);
+            this.floatMenu.setLocationRelativeTo(personPanel);
+        }
     }
 
 }

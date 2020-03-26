@@ -240,6 +240,28 @@ public class PersonPanel extends JPanel {
         return templeBox;
     }
 
+    public boolean setAnonymous() {
+        if (firstName.isVisible()) {
+            firstName.setVisible(false);
+            surName.setVisible(false);
+            birth.setVisible(false);
+            birthPlace.setVisible(false);
+            death.setVisible(false);
+            deathPlace.setVisible(false);
+            occupation.setVisible(false);
+            return false;
+        } else {
+            firstName.setVisible(true);
+            surName.setVisible(true);
+            birth.setVisible(true);
+            birthPlace.setVisible(true);
+            death.setVisible(true);
+            deathPlace.setVisible(true);
+            occupation.setVisible(true);
+            return true;
+        }
+    }
+
     public void addMouseAdapter() {
         MouseAdapter m = new PersonPanelMouseController(this, configuration, person);
         this.addMouseListener(m);

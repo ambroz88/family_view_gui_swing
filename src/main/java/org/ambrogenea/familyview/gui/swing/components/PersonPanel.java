@@ -125,8 +125,21 @@ public class PersonPanel extends JPanel {
             }
         }
 
-        firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
-        surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        if (firstName.getText().length() > 20) {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+        } else if (firstName.getText().length() > 15) {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        } else {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        }
+        if (surName.getText().length() > 20) {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+        } else if (surName.getText().length() > 15) {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        } else {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        }
+
         occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));

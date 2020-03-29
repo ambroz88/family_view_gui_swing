@@ -52,7 +52,7 @@ public class PageSetup {
 
     public void calculateAllAncestors(AncestorPerson person) {
         pictureHeight = (config.getAdultImageHeight() + RootFamilyPanel.VERTICAL_GAP) * (Math.min(config.getGenerationCount(), person.getAncestorGenerations()) + 1);
-        pictureWidth = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (person.getLastParentsCount() + 1));
+        pictureWidth = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (person.getLastParentsCount()));
         x = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (person.getFather().getLastParentsCount() - person.getFather().getInnerParentsCount() + (person.getFather().getInnerParentsCount() + person.getMother().getInnerParentsCount()) / 2));
         y = getHeight() - config.getAdultImageHeight();
     }

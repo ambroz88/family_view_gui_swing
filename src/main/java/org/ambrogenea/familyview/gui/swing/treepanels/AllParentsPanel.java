@@ -48,6 +48,9 @@ public class AllParentsPanel extends RootFamilyPanel {
                 drawPerson(fatherX, parentsY, child.getFather());
                 drawLabel(fatherX + getConfiguration().getAdultImageWidth() / 2, motherX - getConfiguration().getAdultImageWidth() / 2, parentsY, child.getParents().getMarriageDate());
                 drawParents(child.getFather(), fatherX, parentsY);
+                if (getConfiguration().isShowHeraldry()) {
+                    addHeraldry(childX, childY, child);
+                }
             }
 
             drawPerson(motherX, parentsY, child.getMother());

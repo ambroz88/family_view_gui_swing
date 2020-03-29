@@ -148,7 +148,10 @@ public class PersonPanel extends JPanel {
 
         if (configuration.isShowPlaces()) {
             if (!birthPlace.getText().isEmpty() || !deathPlace.getText().isEmpty()) {
-                int shift = 12;
+                int shift = 0;
+                if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
+                    shift = 12;
+                }
                 birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
                 birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
                 death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));

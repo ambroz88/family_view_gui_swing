@@ -31,17 +31,17 @@ public class PersonPanel extends JPanel {
 
     private static final String SPACE = "  ";
 
-    private Person person;
-    private BufferedImage personDiagram;
+    private final Person person;
     protected final Configuration configuration;
+    private BufferedImage personDiagram;
 
     private JLabel firstName;
     private JLabel surName;
     private JLabel occupation;
-    private JLabel blankSpace;
+    private JLabel belowNamesSpace;
     private JLabel birth;
     private JLabel birthPlace;
-    private JLabel blankSpace2;
+    private JLabel belowDatesSpace;
     private JLabel death;
     private JLabel deathPlace;
 
@@ -79,15 +79,24 @@ public class PersonPanel extends JPanel {
     }
 
     private void initLabels() {
+        belowNamesSpace = new JLabel("", JLabel.CENTER);
+        belowDatesSpace = new JLabel("", JLabel.CENTER);
+
+        occupation = new JLabel("", JLabel.CENTER);
+        occupation.setText(person.getOccupation());
+        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+
+        initNameLabels();
+        initDateLabels();
+
+        if (configuration.isShowPlaces() && !birthPlace.getText().isEmpty() || !deathPlace.getText().isEmpty()) {
+            showPlaces();
+        }
+    }
+
+    private void initNameLabels() {
         firstName = new JLabel(" ", JLabel.CENTER);
         surName = new JLabel(" ", JLabel.CENTER);
-        occupation = new JLabel("", JLabel.CENTER);
-        blankSpace = new JLabel("", JLabel.CENTER);
-        birth = new JLabel(" ", JLabel.RIGHT);
-        birthPlace = new JLabel("", JLabel.LEFT);
-        blankSpace2 = new JLabel("", JLabel.CENTER);
-        death = new JLabel(" ", JLabel.RIGHT);
-        deathPlace = new JLabel("", JLabel.LEFT);
 
         if (!person.getFirstName().isEmpty()) {
             firstName.setText(person.getFirstName());
@@ -101,7 +110,32 @@ public class PersonPanel extends JPanel {
             }
         }
 
-        occupation.setText(person.getOccupation());
+        initNamesLabelFont();
+    }
+
+    private void initNamesLabelFont() {
+        if (firstName.getText().length() > 20) {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+        } else if (firstName.getText().length() > 15) {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        } else {
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        }
+
+        if (surName.getText().length() > 20) {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+        } else if (surName.getText().length() > 15) {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+        } else {
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+        }
+    }
+
+    private void initDateLabels() {
+        birth = new JLabel(" ", JLabel.RIGHT);
+        birthPlace = new JLabel("", JLabel.LEFT);
+        death = new JLabel(" ", JLabel.RIGHT);
+        deathPlace = new JLabel("", JLabel.LEFT);
 
         if (!person.getBirthDate().isEmpty()) {
             birth.setText("\u2605 " + person.getBirthDateCzech());
@@ -125,39 +159,25 @@ public class PersonPanel extends JPanel {
             }
         }
 
-        if (firstName.getText().length() > 20) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
-        } else if (firstName.getText().length() > 15) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
-        } else {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
-        }
-        if (surName.getText().length() > 20) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
-        } else if (surName.getText().length() > 15) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
-        } else {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
-        }
+        initDateLabelsFont();
+    }
 
-        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+    private void initDateLabelsFont() {
         birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
         death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
         deathPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
+    }
 
-        if (configuration.isShowPlaces()) {
-            if (!birthPlace.getText().isEmpty() || !deathPlace.getText().isEmpty()) {
-                int shift = 0;
-                if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
-                    shift = 12;
-                }
-                birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
-                birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
-                death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
-                deathPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
-            }
+    private void showPlaces() {
+        int shift = 0;
+        if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
+            shift = 12;
         }
+        birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
+        birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
+        death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
+        deathPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
     }
 
     private void addLabels() {
@@ -183,7 +203,7 @@ public class PersonPanel extends JPanel {
 
         c.gridy = 4;
         c.ipady = 4;
-        add(blankSpace, c);
+        add(belowNamesSpace, c);
 
         if (configuration.isShowPlaces()) {
             c.gridwidth = 1;
@@ -211,7 +231,7 @@ public class PersonPanel extends JPanel {
         if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
             c.gridy = 9;
             c.ipady = 8;
-            add(blankSpace2, c);
+            add(belowDatesSpace, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;
             c.gridy = 10;

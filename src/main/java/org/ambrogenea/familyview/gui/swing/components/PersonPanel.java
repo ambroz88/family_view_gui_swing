@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.enums.Sex;
 import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
@@ -65,7 +65,7 @@ public class PersonPanel extends JPanel {
 
     private void loadPictures() {
         String imagePath;
-        if (person.getSex().equals(Information.VALUE_MALE)) {
+        if (person.getSex().equals(Sex.MALE)) {
             imagePath = configuration.getAdultManImagePath();
         } else {
             imagePath = configuration.getAdultWomanImagePath();

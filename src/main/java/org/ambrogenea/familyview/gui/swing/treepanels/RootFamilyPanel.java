@@ -26,9 +26,9 @@ import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
-import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
 import org.ambrogenea.familyview.model.Residence;
+import org.ambrogenea.familyview.model.enums.Sex;
 import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
@@ -88,7 +88,7 @@ public class RootFamilyPanel extends JPanel {
             residence = person.getResidenceList().get(i);
             if (!residence.getCity().isEmpty()) {
 
-                if (person.getSex().equals(Information.VALUE_MALE)) {
+                if (person.getSex().equals(Sex.MALE)) {
                     x = personPanel.getX() - RESIDENCE_SIZE - HORIZONTAL_GAP / 2;
                 } else {
                     x = personPanel.getX() + configuration.getAdultImageWidth() + HORIZONTAL_GAP / 2;

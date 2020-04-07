@@ -38,11 +38,11 @@ public class PersonPanelMouseController extends MouseAdapter {
     private final Person personModel;
     private final Configuration configuration;
 
-    private final JDialog floatMenu;
-    private final JButton closeFamily;
-    private final JButton fatherLineage;
-    private final JButton motherLineage;
-    private final JButton allGenerations;
+    private JDialog floatMenu;
+    private JButton closeFamily;
+    private JButton fatherLineage;
+    private JButton motherLineage;
+    private JButton allGenerations;
 
     public PersonPanelMouseController(PersonPanel image, Configuration config, Person person) {
         this.personPanel = image;
@@ -50,14 +50,30 @@ public class PersonPanelMouseController extends MouseAdapter {
         this.personModel = person;
         this.configuration = config;
 
+        initFloatMenu();
+
+        initCloseFamily();
+        initFatherLineage();
+        initMotherLineage();
+        initAllGenerations();
+
+        this.floatMenu.add(fatherLineage);
+        this.floatMenu.add(motherLineage);
+        this.floatMenu.add(closeFamily);
+        this.floatMenu.add(allGenerations);
+    }
+
+    private void initFloatMenu() {
         this.floatMenu = new JDialog();
         this.floatMenu.setType(Window.Type.UTILITY);
         this.floatMenu.setTitle("Generate...");
         this.floatMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
         this.floatMenu.setSize(new Dimension(4 * (BUTTON_DIMENSION.width + 10), 85));
         this.floatMenu.setResizable(false);
+    }
 
-        Icon closeFamilyIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\CloseFamilyIcon.png"));
+    private void initCloseFamily() {
+        Icon closeFamilyIcon = new ImageIcon(ClassLoader.getSystemResource("icons/CloseFamilyIcon.png"));
         closeFamily = new JButton(closeFamilyIcon);
         closeFamily.setToolTipText("Generate close family");
         closeFamily.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -73,8 +89,10 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
+    }
 
-        Icon fatherLineageIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\FatherLineageIcon.png"));
+    private void initFatherLineage() {
+        Icon fatherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/FatherLineageIcon.png"));
         fatherLineage = new JButton(fatherLineageIcon);
         fatherLineage.setToolTipText("Generate father lineage");
         fatherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -90,8 +108,10 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
+    }
 
-        Icon motherLineageIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\MotherLineageIcon.png"));
+    private void initMotherLineage() {
+        Icon motherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/MotherLineageIcon.png"));
         motherLineage = new JButton(motherLineageIcon);
         motherLineage.setToolTipText("Generate mother lineage");
         motherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -107,8 +127,10 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
+    }
 
-        Icon allGenerationIcon = new ImageIcon(getClass().getClassLoader().getResource("\\icons\\AllGenerationsIcon.png"));
+    private void initAllGenerations() {
+        Icon allGenerationIcon = new ImageIcon(ClassLoader.getSystemResource("icons/AllGenerationsIcon.png"));
         allGenerations = new JButton(allGenerationIcon);
         allGenerations.setToolTipText("Generate all generations");
         allGenerations.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -125,11 +147,6 @@ public class PersonPanelMouseController extends MouseAdapter {
                 configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
             }
         });
-
-        this.floatMenu.add(fatherLineage);
-        this.floatMenu.add(motherLineage);
-        this.floatMenu.add(closeFamily);
-        this.floatMenu.add(allGenerations);
     }
 
     @Override

@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import org.ambrogenea.familyview.model.Couple;
 import org.ambrogenea.familyview.model.Information;
 import org.ambrogenea.familyview.model.Person;
 import org.ambrogenea.familyview.model.Residence;
-import org.ambrogenea.familyview.model.utils.FileIO;
 import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
@@ -322,7 +320,7 @@ public class RootFamilyPanel extends JPanel {
                 childrenWidth = childrenWidth / 2;
 
                 if (getConfiguration().isShowHeraldry()) {
-                    addChildrenHeraldry(labelXPosition, y + getConfiguration().getAdultImageHeight() / 2 + VERTICAL_GAP / 2, spouseCouple);
+                    addChildrenHeraldry(labelXPosition, childrenY, spouseCouple);
                 }
             }
         }
@@ -364,19 +362,17 @@ public class RootFamilyPanel extends JPanel {
         lines.get(lines.size() - 1).setType(Line.SIBLINGS);
     }
 
-    protected void addHeraldry(int childXPosition, int childYPosition, AncestorPerson person) {
-        String birthPlace = person.getSimpleBirthPlace();
-        if (!birthPlace.isEmpty()) {
-            birthPlace = Tools.replaceDiacritics(birthPlace);
+    protected void addHeraldry(int childXPosition, int childYPosition, String simpleBirthPlace) {
+        if (!simpleBirthPlace.isEmpty()) {
+            String birthPlace = Tools.replaceDiacritics(simpleBirthPlace);
             int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
 
-            File heraldry = FileIO.loadFileFromResources("/heraldry/" + birthPlace + ".png");
+            InputStream heraldry = ClassLoader.getSystemResourceAsStream("heraldry/" + birthPlace + ".png");
             if (heraldry != null) {
                 try {
                     BufferedImage heraldryImage = ImageIO.read(heraldry);
                     images.add(new ImageModel(heraldryImage, childXPosition, childYPosition - verticalShift, VERTICAL_GAP / 2));
                 } catch (IOException ex) {
-                    System.out.println("Heraldry image " + heraldry.getAbsolutePath() + " cannot be open." + ex.getMessage());
                     ex.printStackTrace();
                 }
             }
@@ -386,19 +382,7 @@ public class RootFamilyPanel extends JPanel {
 
     protected void addChildrenHeraldry(int heraldryXPosition, int heraldryYPosition, Couple spouseCouple) {
         String birthPlace = spouseCouple.getChildren().get(0).getSimpleBirthPlace();
-        if (!birthPlace.isEmpty()) {
-            birthPlace = Tools.replaceDiacritics(birthPlace);
-            File heraldry = FileIO.loadFileFromResources("/heraldry/" + birthPlace + ".png");
-            if (heraldry != null) {
-                try {
-                    BufferedImage heraldryImage = ImageIO.read(heraldry);
-                    images.add(new ImageModel(heraldryImage, heraldryXPosition, heraldryYPosition, VERTICAL_GAP / 2));
-                } catch (IOException ex) {
-                    System.out.println("Heraldry image " + heraldry.getAbsolutePath() + " cannot be open." + ex.getMessage());
-                    ex.printStackTrace();
-                }
-            }
-        }
+        addHeraldry(heraldryXPosition, heraldryYPosition, birthPlace);
     }
 
     public BufferedImage getPicture() {

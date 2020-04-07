@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -65,15 +64,17 @@ public class PersonPanel extends JPanel {
     }
 
     private void loadPictures() {
+        String imagePath;
+        if (person.getSex().equals(Information.VALUE_MALE)) {
+            imagePath = configuration.getAdultManImagePath();
+        } else {
+            imagePath = configuration.getAdultWomanImagePath();
+        }
+
         try {
-            String imagePath;
-            if (person.getSex().equals(Information.VALUE_MALE)) {
-                imagePath = configuration.getAdultManImagePath();
-            } else {
-                imagePath = configuration.getAdultWomanImagePath();
-            }
-            personDiagram = ImageIO.read(new File(imagePath));
+            personDiagram = ImageIO.read(ClassLoader.getSystemResourceAsStream(imagePath));
         } catch (IOException e) {
+            System.out.println("Image " + imagePath + " can't be open.");
             e.printStackTrace();
         }
     }

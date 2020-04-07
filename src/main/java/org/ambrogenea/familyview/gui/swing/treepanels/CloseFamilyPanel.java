@@ -35,7 +35,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
         if (getConfiguration().isShowParents()) {
             drawParents(x, y, personModel);
             if (getConfiguration().isShowHeraldry() && !personModel.getParents().isEmpty()) {
-                addHeraldry(x, y, personModel);
+                addHeraldry(x, y, personModel.getSimpleBirthPlace());
             }
         }
 

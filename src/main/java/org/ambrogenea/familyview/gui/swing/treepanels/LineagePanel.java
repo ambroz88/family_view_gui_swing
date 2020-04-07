@@ -34,7 +34,7 @@ public abstract class LineagePanel extends RootFamilyPanel {
 
             addLineToParents(childXPosition, childYPosition);
             if (getConfiguration().isShowHeraldry()) {
-                addHeraldry(childXPosition, childYPosition, person);
+                addHeraldry(childXPosition, childYPosition, person.getSimpleBirthPlace());
             }
             drawMother(childXPosition, y, person);
 

@@ -45,6 +45,11 @@ public class MotherLineagePanel extends LineagePanel {
         if (getConfiguration().isShowSiblings()) {
             drawSiblingsAroundFather(motherXPosition, y, person.getMother());
         }
+
+        if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
+            drawChildren(childXPosition + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
+        }
+
         drawFathersFamily(motherXPosition, y, person.getMother());
     }
 

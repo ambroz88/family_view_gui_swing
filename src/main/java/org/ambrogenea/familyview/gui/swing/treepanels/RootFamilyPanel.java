@@ -12,7 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -45,20 +47,20 @@ public class RootFamilyPanel extends JPanel {
     public static final int LABEL_HEIGHT = 30;
     public static final int RESIDENCE_SIZE = 25;
 
-    protected final ArrayList<Line> lines;
-    protected final ArrayList<ImageModel> images;
+    protected final Set<Line> lines;
+    protected final Set<ImageModel> images;
     protected final ArrayList<ResidenceModel> residences;
     protected final AncestorPerson personModel;
     protected final Configuration configuration;
-    private final HashMap<String, Color> cityRegister;
+    private final TreeMap<String, Color> cityRegister;
 
     public RootFamilyPanel(AncestorPerson model, Configuration config) {
         this.personModel = model;
         this.configuration = config;
-        lines = new ArrayList<>();
-        images = new ArrayList<>();
+        lines = new HashSet<>();
+        images = new HashSet<>();
         residences = new ArrayList<>();
-        cityRegister = new HashMap<>();
+        cityRegister = new TreeMap<>();
         initPanel();
     }
 
@@ -356,10 +358,13 @@ public class RootFamilyPanel extends JPanel {
 
     protected void addSiblingsToParents(int startX, int rootSiblingY, int rootSiblingX) {
         int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
-        lines.add(new Line(startX, rootSiblingY - verticalShift, rootSiblingX, rootSiblingY - verticalShift));
-        lines.get(lines.size() - 1).setType(Line.SIBLINGS);
-        lines.add(new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY));
-        lines.get(lines.size() - 1).setType(Line.SIBLINGS);
+        Line vertical = new Line(startX, rootSiblingY - verticalShift, rootSiblingX, rootSiblingY - verticalShift);
+        vertical.setType(Line.SIBLINGS);
+        lines.add(vertical);
+
+        Line horizontal = new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY);
+        horizontal.setType(Line.SIBLINGS);
+        lines.add(horizontal);
     }
 
     protected void addHeraldry(int childXPosition, int childYPosition, String simpleBirthPlace) {
@@ -404,7 +409,7 @@ public class RootFamilyPanel extends JPanel {
         }
     }
 
-    public HashMap<String, Color> getCityRegister() {
+    public TreeMap<String, Color> getCityRegister() {
         return cityRegister;
     }
 

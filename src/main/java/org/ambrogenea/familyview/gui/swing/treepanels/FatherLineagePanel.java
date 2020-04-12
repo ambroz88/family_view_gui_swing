@@ -26,6 +26,10 @@ public class FatherLineagePanel extends LineagePanel {
             drawFathersFamily(x, y, personModel);
         }
 
+        if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
+            drawChildren(x + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
+        }
+
         if (getConfiguration().isShowResidence()) {
             drawResidenceLegend(setup.getHeight());
         }

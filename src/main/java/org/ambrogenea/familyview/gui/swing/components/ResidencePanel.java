@@ -7,7 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,23 +21,35 @@ import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.RES
  */
 public class ResidencePanel extends JPanel {
 
-    private final HashMap<String, Color> cityRegister;
+    private final TreeMap<String, Color> cityRegister;
 
-    public ResidencePanel(HashMap<String, Color> cityRegister) {
+    public ResidencePanel(TreeMap<String, Color> cityRegister) {
         super(new GridLayout(cityRegister.size() + 1, 1));
-        int citiesCount = cityRegister.size();
+        this.cityRegister = cityRegister;
+        initPanel(cityRegister);
+
+        createTitle();
+
+        addCities(cityRegister);
+    }
+
+    private void initPanel(TreeMap<String, Color> cityRegister1) {
+        int citiesCount = cityRegister1.size();
         setPreferredSize(new Dimension(250, (citiesCount + 1) * (RESIDENCE_SIZE + HORIZONTAL_GAP / 2) + HORIZONTAL_GAP / 2));
         setSize(new Dimension(250, (citiesCount + 1) * (RESIDENCE_SIZE + HORIZONTAL_GAP / 2) + HORIZONTAL_GAP / 2));
         setBackground(Color.WHITE);
-        this.cityRegister = cityRegister;
+    }
 
+    private void createTitle() {
         JLabel legendTitle = new JLabel("      Názvy obcí");
         legendTitle.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(legendTitle);
+    }
 
+    private void addCities(TreeMap<String, Color> cityRegister1) {
         JLabel cityLabel;
         String space = "                 ";
-        for (String city : cityRegister.keySet()) {
+        for (String city : cityRegister1.keySet()) {
             cityLabel = new JLabel(space + city, JLabel.LEFT);
             cityLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
             this.add(cityLabel);

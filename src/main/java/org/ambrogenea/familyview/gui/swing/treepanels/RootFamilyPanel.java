@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
@@ -48,6 +50,7 @@ public class RootFamilyPanel extends JPanel {
     public static final int RESIDENCE_SIZE = 25;
 
     protected final Set<Line> lines;
+    protected final Set<Arc> arcs;
     protected final Set<ImageModel> images;
     protected final ArrayList<ResidenceModel> residences;
     protected final AncestorPerson personModel;
@@ -58,6 +61,7 @@ public class RootFamilyPanel extends JPanel {
         this.personModel = model;
         this.configuration = config;
         lines = new HashSet<>();
+        arcs = new HashSet<>();
         images = new HashSet<>();
         residences = new ArrayList<>();
         cityRegister = new TreeMap<>();
@@ -200,91 +204,76 @@ public class RootFamilyPanel extends JPanel {
         }
     }
 
-    protected void drawSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
+    protected void drawOlderSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         Person sibling;
+
         int olderSiblingCount = rootChild.getOlderSiblings().size();
+        int startX;
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+            startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
+            if (i == 0) {
+                addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
+            } else {
+                addStraightChildrenLine(startX, rootSiblingY, rootSiblingX);
+            }
         }
+    }
+
+    protected void drawYoungerSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
+        Person sibling;
 
         int startX;
-        for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
-            sibling = rootChild.getYoungerSiblings().get(i);
+        LinkedList<Person> youngerSiblings = rootChild.getYoungerSiblings();
+        for (int i = 0; i < youngerSiblings.size(); i++) {
+            sibling = youngerSiblings.get(i);
 
             startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
+            if (i == youngerSiblings.size() - 1) {
+                addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
+            } else {
+                addStraightChildrenLine(startX, rootSiblingY, rootSiblingX);
+            }
         }
+    }
+
+    protected void drawSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
+        drawOlderSiblings(rootSiblingX, rootSiblingY, rootChild);
+        drawYoungerSiblings(rootSiblingX, rootSiblingY, rootChild);
     }
 
     protected void drawSiblingsAroundMother(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
-        Person sibling;
-        int olderSiblingCount = rootChild.getOlderSiblings().size();
-        for (int i = 0; i < olderSiblingCount; i++) {
-            sibling = rootChild.getOlderSiblings().get(i);
-
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
-        }
-
-        int startX;
         int spouseGap = 0;
         if (rootChild.getSpouse() != null) {
             spouseGap = (getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth());
         }
 
-        for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
-            sibling = rootChild.getYoungerSiblings().get(i);
-
-            startX = rootSiblingX + spouseGap + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
+        if (!rootChild.getYoungerSiblings().isEmpty()) {
+            addLineAboveSpouse(rootSiblingX, rootSiblingY, rootSiblingX + spouseGap);
         }
+
+        drawOlderSiblings(rootSiblingX, rootSiblingY, rootChild);
+        drawYoungerSiblings(rootSiblingX + spouseGap, rootSiblingY, rootChild);
     }
 
     protected void drawSiblingsAroundFather(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
-        Person sibling;
         int spouseGap = 0;
         if (rootChild.getSpouse() != null) {
             spouseGap = (getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth());
         }
 
-        int olderSiblingCount = rootChild.getOlderSiblings().size();
-        int startX;
-        for (int i = 0; i < olderSiblingCount; i++) {
-            sibling = rootChild.getOlderSiblings().get(i);
-
-            startX = rootSiblingX - spouseGap - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
+        if (!rootChild.getOlderSiblings().isEmpty()) {
+            addLineAboveSpouse(rootSiblingX, rootSiblingY, rootSiblingX - spouseGap);
         }
 
-        for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
-            sibling = rootChild.getYoungerSiblings().get(i);
-
-            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
-        }
+        drawOlderSiblings(rootSiblingX - spouseGap, rootSiblingY, rootChild);
+        drawYoungerSiblings(rootSiblingX, rootSiblingY, rootChild);
     }
 
     protected void drawSiblingsAroundWifes(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild, int lastSpouseX) {
-        Person sibling;
-        int olderSiblingCount = rootChild.getOlderSiblings().size();
-        for (int i = 0; i < olderSiblingCount; i++) {
-            sibling = rootChild.getOlderSiblings().get(i);
-
-            int startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
-        }
-
-        int startX;
         int spouseGap;
         if (!rootChild.getSpouseID().isEmpty() && lastSpouseX == 0) {
             spouseGap = rootSiblingX + (getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth()) * rootChild.getSpouseCouples().size();
@@ -292,13 +281,19 @@ public class RootFamilyPanel extends JPanel {
             spouseGap = lastSpouseX;
         }
 
-        for (int i = 0; i < rootChild.getYoungerSiblings().size(); i++) {
-            sibling = rootChild.getYoungerSiblings().get(i);
-
-            startX = spouseGap + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-            drawPerson(startX, rootSiblingY, sibling);
-            addSiblingsToParents(startX, rootSiblingY, rootSiblingX);
+        if (!rootChild.getYoungerSiblings().isEmpty()) {
+            addLineAboveSpouse(rootSiblingX, rootSiblingY, spouseGap);
         }
+
+        drawOlderSiblings(rootSiblingX, rootSiblingY, rootChild);
+        drawYoungerSiblings(spouseGap, rootSiblingY, rootChild);
+    }
+
+    private void addLineAboveSpouse(int rootSiblingX, int rootSiblingY, int spouseGap) {
+        int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
+        Line spouseLine = new Line(rootSiblingX, rootSiblingY - verticalShift, spouseGap, rootSiblingY - verticalShift);
+        spouseLine.setType(Line.SIBLINGS);
+        lines.add(spouseLine);
     }
 
     protected int drawChildren(int labelXPosition, int y, Couple spouseCouple) {
@@ -316,7 +311,13 @@ public class RootFamilyPanel extends JPanel {
 
                 for (int i = 0; i < childrenCount; i++) {
                     int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
-                    addSiblingsToParents(childXPosition, childrenY, labelXPosition);
+                    if (i == 0 && childrenCount > 1) {
+                        addRoundChildrenLine(childXPosition, childrenY, labelXPosition);
+                    } else if (i == childrenCount - 1) {
+                        addRoundChildrenLine(childXPosition, childrenY, labelXPosition);
+                    } else {
+                        addStraightChildrenLine(childXPosition, childrenY, labelXPosition);
+                    }
                     drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
                 }
                 childrenWidth = childrenWidth / 2;
@@ -340,6 +341,11 @@ public class RootFamilyPanel extends JPanel {
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         }
 
+        for (Arc arc : arcs) {
+            g2.setStroke(new BasicStroke(1));
+            g2.drawArc(arc.getLeftUpperX(), arc.getLeftUpperY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
+        }
+
         for (ImageModel image : images) {
             g2.drawImage(image.getImage(), image.getX() - image.getWidth() / 2, image.getY() - image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
         }
@@ -356,15 +362,45 @@ public class RootFamilyPanel extends JPanel {
         lines.add(new Line(childXPosition, childYPosition, childXPosition, childYPosition - configuration.getAdultImageHeight() - VERTICAL_GAP));
     }
 
-    protected void addSiblingsToParents(int startX, int rootSiblingY, int rootSiblingX) {
+    protected void addStraightChildrenLine(int startX, int rootSiblingY, int rootSiblingX) {
         int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
-        Line vertical = new Line(startX, rootSiblingY - verticalShift, rootSiblingX, rootSiblingY - verticalShift);
+
+        Line vertical = new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY);
         vertical.setType(Line.SIBLINGS);
         lines.add(vertical);
+    }
 
-        Line horizontal = new Line(startX, rootSiblingY - verticalShift, startX, rootSiblingY);
-        horizontal.setType(Line.SIBLINGS);
-        lines.add(horizontal);
+    protected void addRoundChildrenLine(int startX, int rootSiblingY, int rootSiblingX) {
+        int verticalShift = (configuration.getAdultImageHeight() + VERTICAL_GAP) / 2;
+
+        int startAngle;
+        int xRadius;
+        int yRadius;
+        Arc arc;
+        if (startX < rootSiblingX) {
+            //older siblings
+            yRadius = Arc.RADIUS;
+            xRadius = Arc.RADIUS;
+            startAngle = 90;
+            arc = new Arc(startX, rootSiblingY - verticalShift, startAngle);
+            arcs.add(arc);
+        } else if (startX > rootSiblingX) {
+            //younger siblings
+            yRadius = Arc.RADIUS;
+            xRadius = -Arc.RADIUS;
+            startAngle = 0;
+            arc = new Arc(startX - 2 * Arc.RADIUS, rootSiblingY - verticalShift, startAngle);
+            arcs.add(arc);
+        } else {
+            xRadius = 0;
+            yRadius = 0;
+        }
+
+        addLineAboveSpouse(startX + xRadius, rootSiblingY, rootSiblingX);
+
+        Line vertical = new Line(startX, rootSiblingY - verticalShift + yRadius, startX, rootSiblingY);
+        vertical.setType(Line.SIBLINGS);
+        lines.add(vertical);
     }
 
     protected void addHeraldry(int childXPosition, int childYPosition, String simpleBirthPlace) {

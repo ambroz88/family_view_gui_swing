@@ -17,8 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
+import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.Person;
 import org.ambrogenea.familyview.model.enums.Sex;
 import org.ambrogenea.familyview.model.utils.Tools;
 
@@ -30,7 +30,7 @@ public class PersonPanel extends JPanel {
 
     private static final String SPACE = "  ";
 
-    private final Person person;
+    private final AncestorPerson person;
     protected final Configuration configuration;
     private BufferedImage personDiagram;
 
@@ -44,7 +44,7 @@ public class PersonPanel extends JPanel {
     private JLabel death;
     private JLabel deathPlace;
 
-    public PersonPanel(Person person, Configuration config) {
+    public PersonPanel(AncestorPerson person, Configuration config) {
         super(new GridBagLayout());
 
         this.person = person;
@@ -65,10 +65,18 @@ public class PersonPanel extends JPanel {
 
     private void loadPictures() {
         String imagePath;
-        if (person.getSex().equals(Sex.MALE)) {
-            imagePath = configuration.getAdultManImagePath();
+        if (person.isDirectLineage()) {
+            if (person.getSex().equals(Sex.MALE)) {
+                imagePath = configuration.getAdultManImagePath();
+            } else {
+                imagePath = configuration.getAdultWomanImagePath();
+            }
         } else {
-            imagePath = configuration.getAdultWomanImagePath();
+            if (person.getSex().equals(Sex.MALE)) {
+                imagePath = configuration.getSiblingManImagePath();
+            } else {
+                imagePath = configuration.getSiblingWomanImagePath();
+            }
         }
 
         try {
@@ -172,18 +180,32 @@ public class PersonPanel extends JPanel {
 
     private void showPlaces() {
         int shift = 0;
-        if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
-            shift = 12;
+
+        int imageWidth;
+        if (person.isDirectLineage()) {
+            imageWidth = configuration.getAdultImageWidth() / 2;
+            if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
+                shift = 12;
+            }
+        } else {
+            imageWidth = configuration.getSiblingImageWidth() / 2;
+            if (configuration.getSiblingDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
+                shift = 12;
+            }
         }
-        birth.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
-        birthPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
-        death.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 + shift, birth.getPreferredSize().height));
-        deathPlace.setPreferredSize(new Dimension(configuration.getAdultImageWidth() / 2 - shift, birth.getPreferredSize().height));
+        birth.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));
+        birthPlace.setPreferredSize(new Dimension(imageWidth - shift, birth.getPreferredSize().height));
+        death.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));
+        deathPlace.setPreferredSize(new Dimension(imageWidth - shift, birth.getPreferredSize().height));
     }
 
     private void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = configuration.getAdultTopOffset();
+        if (person.isDirectLineage()) {
+            c.ipady = configuration.getAdultTopOffset();
+        } else {
+            c.ipady = configuration.getSiblingTopOffset();
+        }
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -241,16 +263,29 @@ public class PersonPanel extends JPanel {
 
         c.gridy = 11;
         c.weighty = 5;
-        c.ipady = configuration.getAdultBottomOffset();
+        if (person.isDirectLineage()) {
+            c.ipady = configuration.getAdultBottomOffset();
+        } else {
+            c.ipady = configuration.getSiblingBottomOffset();
+        }
         add(new JLabel(""), c);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (person.isChild() && configuration.isShowTemple()) {
-            g.drawImage(personDiagram, 0, (configuration.getAdultImageHeight() / 7) / 2, configuration.getAdultImageWidth(), (int) (configuration.getAdultImageHeight() / 7.0 * 6), null);
+        int imageWidth;
+        int imageHeight;
+        if (person.isDirectLineage()) {
+            imageWidth = configuration.getAdultImageWidth();
+            imageHeight = configuration.getAdultImageHeight();
         } else {
-            g.drawImage(personDiagram, 0, 0, configuration.getAdultImageWidth(), configuration.getAdultImageHeight(), null);
+            imageWidth = configuration.getSiblingImageWidth();
+            imageHeight = configuration.getSiblingImageHeight();
+        }
+        if (person.isChild() && configuration.isShowTemple()) {
+            g.drawImage(personDiagram, 0, (imageHeight / 7) / 2, imageWidth, (int) (imageHeight / 7.0 * 6), null);
+        } else {
+            g.drawImage(personDiagram, 0, 0, imageWidth, imageHeight, null);
         }
     }
 

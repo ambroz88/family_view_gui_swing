@@ -62,10 +62,10 @@ public class PageSetup {
         int parentsWidth = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount())) + config.getWideMarriageLabel() + 2 * (config.getAdultImageWidth() + RootFamilyPanel.SIBLINGS_GAP);
 
         if (config.isShowSiblings()) {
-            int fatherSiblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMaxOlderSiblings() + person.getMaxYoungerSiblings());
-            int motherSiblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings());
+            int fatherSiblingWidth = (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMaxOlderSiblings() + person.getMaxYoungerSiblings());
+            int motherSiblingWidth = (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMother().getMaxOlderSiblings() + person.getMother().getMaxYoungerSiblings());
             siblingWidth = fatherSiblingWidth + motherSiblingWidth;
-            x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + config.getAdultImageWidth() + config.getWideMarriageLabel() / 2 + SIBLINGS_GAP + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMaxOlderSiblings();
+            x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + config.getSiblingImageWidth() + config.getWideMarriageLabel() / 2 + SIBLINGS_GAP + (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMaxOlderSiblings();
         } else {
             x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + config.getAdultImageWidth() + config.getWideMarriageLabel() / 2 + SIBLINGS_GAP;
         }
@@ -80,10 +80,10 @@ public class PageSetup {
         int parentsWidth;
         int siblingWidth;
         if (config.isShowSiblings()) {
-            siblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMaxOlderSiblings() + person.getMaxYoungerSiblings()) + SIBLINGS_GAP;
+            siblingWidth = (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (person.getMaxOlderSiblings() + person.getMaxYoungerSiblings()) + SIBLINGS_GAP;
             parentsWidth = config.getParentImageSpace() * Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + config.getCoupleWidth() - config.getParentImageSpace() + SIBLINGS_GAP;
             pictureWidth = parentsWidth + siblingWidth;
-            x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMaxOlderSiblings() + (config.getCoupleWidth() / 2 - config.getParentImageSpace()) + SIBLINGS_GAP + HORIZONTAL_GAP;
+            x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * person.getMaxOlderSiblings() + (config.getCoupleWidth() / 2 - config.getParentImageSpace()) + SIBLINGS_GAP + HORIZONTAL_GAP;
         } else {
             pictureWidth = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + config.getMarriageLabelWidth() + 2 * (config.getAdultImageWidth() + RootFamilyPanel.SIBLINGS_GAP);
             x = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 1) + config.getAdultImageWidth() + config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
@@ -97,10 +97,10 @@ public class PageSetup {
         int parentsWidth;
         int siblingWidth;
         if (config.isShowSiblings()) {
-            siblingWidth = (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (Math.max(person.getMother().getMaxOlderSiblings(), person.getMaxOlderSiblings()) + Math.max(person.getMother().getMaxYoungerSiblings(), person.getMaxYoungerSiblings())) + SIBLINGS_GAP;
+            siblingWidth = (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * (Math.max(person.getMother().getMaxOlderSiblings(), person.getMaxOlderSiblings()) + Math.max(person.getMother().getMaxYoungerSiblings(), person.getMaxYoungerSiblings())) + SIBLINGS_GAP;
             parentsWidth = config.getParentImageSpace() * Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount()) + config.getCoupleWidth() - config.getParentImageSpace() + SIBLINGS_GAP;
             pictureWidth = parentsWidth + siblingWidth;
-            x = config.getParentImageSpace() * (Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount())) + (config.getAdultImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * Math.max(person.getMother().getMaxOlderSiblings(), person.getMaxOlderSiblings()) - config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
+            x = config.getParentImageSpace() * (Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount())) + (config.getSiblingImageWidth() + RootFamilyPanel.HORIZONTAL_GAP) * Math.max(person.getMother().getMaxOlderSiblings(), person.getMaxOlderSiblings()) - config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
         } else {
             pictureWidth = config.getParentImageSpace() * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) - 2) + config.getMarriageLabelWidth() + 2 * (config.getAdultImageWidth() + RootFamilyPanel.SIBLINGS_GAP);
             x = config.getParentImageSpace() * (Math.min(person.getMother().getAncestorGenerations(), config.getGenerationCount())) - config.getMarriageLabelWidth() / 2 + SIBLINGS_GAP;
@@ -125,16 +125,16 @@ public class PageSetup {
         int childrenSpouseWidth = 0;
         int parentsHalfWidth = 0;
 
-        int siblingsLeftWidth = config.getAdultImageWidth() / 2 + HORIZONTAL_GAP;
-        int siblingsRightWidth = config.getAdultImageWidth() / 2 + HORIZONTAL_GAP;
+        int siblingsLeftWidth = config.getSiblingImageWidth() / 2 + HORIZONTAL_GAP;
+        int siblingsRightWidth = config.getSiblingImageWidth() / 2 + HORIZONTAL_GAP;
 
         if (config.isShowParents() && !personModel.getParents().isEmpty()) {
             parentsHalfWidth = config.getMarriageLabelWidth() / 2 + config.getAdultImageWidth() + HORIZONTAL_GAP;
         }
 
         if (config.isShowSiblingsFamily()) {
-            siblingsLeftWidth = siblingsLeftWidth + personModel.getOlderSiblings().size() * (config.getAdultImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
-            siblingsRightWidth = siblingsRightWidth + personModel.getYoungerSiblings().size() * (config.getAdultImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
+            siblingsLeftWidth = siblingsLeftWidth + personModel.getOlderSiblings().size() * (config.getSiblingImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
+            siblingsRightWidth = siblingsRightWidth + personModel.getYoungerSiblings().size() * (config.getSiblingImageWidth() + HORIZONTAL_GAP) + HORIZONTAL_GAP;
         }
         if (config.isShowSpousesFamily()) {
             int spouseRightIncrease;
@@ -143,13 +143,13 @@ public class PageSetup {
 
                 if (config.isShowChildren()) {
                     if (i == 0) {
-                        childrenLeftWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getAdultImageWidth() + HORIZONTAL_GAP)) - config.getHalfSpouseLabelSpace();
-                        childrenRightWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getAdultImageWidth() + HORIZONTAL_GAP)) + config.getHalfSpouseLabelSpace();
+                        childrenLeftWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getSiblingImageWidth() + HORIZONTAL_GAP)) - config.getHalfSpouseLabelSpace();
+                        childrenRightWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getSiblingImageWidth() + HORIZONTAL_GAP)) + config.getHalfSpouseLabelSpace();
                     } else if (i == personModel.getSpouseCouples().size() - 1) {
-                        childrenSpouseWidth = childrenSpouseWidth + (int) (personModel.getChildrenCount(i) / 2.0 * (config.getAdultImageWidth() + HORIZONTAL_GAP));
-                        childrenRightWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getAdultImageWidth() + HORIZONTAL_GAP));
+                        childrenSpouseWidth = childrenSpouseWidth + (int) (personModel.getChildrenCount(i) / 2.0 * (config.getSiblingImageWidth() + HORIZONTAL_GAP));
+                        childrenRightWidth = (int) (personModel.getChildrenCount(i) / 2.0 * (config.getSiblingImageWidth() + HORIZONTAL_GAP));
                     } else {
-                        childrenRightWidth = personModel.getChildrenCount(i) * (config.getAdultImageWidth() + HORIZONTAL_GAP);
+                        childrenRightWidth = personModel.getChildrenCount(i) * (config.getSiblingImageWidth() + HORIZONTAL_GAP);
                     }
                     childrenRightWidth = childrenRightWidth + SIBLINGS_GAP;
                 }
@@ -175,10 +175,10 @@ public class PageSetup {
         int minimalLeftSpace = config.getAdultImageWidth() / 2 + HORIZONTAL_GAP;
 
         if (config.isShowSiblingsFamily()) {
-            siblingsLeftSpace = personModel.getOlderSiblings().size() * (config.getAdultImageWidth() + HORIZONTAL_GAP) + config.getAdultImageWidth() / 2 + SIBLINGS_GAP;
+            siblingsLeftSpace = personModel.getOlderSiblings().size() * (config.getSiblingImageWidth() + HORIZONTAL_GAP) + config.getAdultImageWidth() / 2 + SIBLINGS_GAP;
         }
         if (config.isShowChildren()) {
-            childrenLeftSpace = (int) (personModel.getChildrenCount(0) / 2.0 * (config.getAdultImageWidth() + HORIZONTAL_GAP) - config.getHalfSpouseLabelSpace());
+            childrenLeftSpace = (int) (personModel.getChildrenCount(0) / 2.0 * (config.getSiblingImageWidth() + HORIZONTAL_GAP) - config.getHalfSpouseLabelSpace());
         }
         if (config.isShowParents() && !personModel.getParents().isEmpty()) {
             minimalLeftSpace = config.getAdultImageWidth() + HORIZONTAL_GAP + config.getMarriageLabelWidth() / 2;

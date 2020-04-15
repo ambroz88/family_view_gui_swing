@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -73,12 +72,21 @@ public class RootFamilyPanel extends JPanel {
         this.setLayout(null);
     }
 
-    protected void drawPerson(int centerX, int centerY, final Person person) {
+    protected void drawPerson(int centerX, int centerY, final AncestorPerson person) {
         PersonPanel personPanel = new PersonPanel(person, configuration);
         personPanel.addMouseAdapter();
-        personPanel.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
+        int imageWidth;
+        int imageHeight;
+        if (person.isDirectLineage()) {
+            imageWidth = configuration.getAdultImageWidth();
+            imageHeight = configuration.getAdultImageHeight();
+        } else {
+            imageWidth = configuration.getSiblingImageWidth();
+            imageHeight = configuration.getSiblingImageHeight();
+        }
+        personPanel.setPreferredSize(new Dimension(imageWidth, imageHeight));
         this.add(personPanel);
-        personPanel.setBounds(centerX - configuration.getAdultImageWidth() / 2, centerY - configuration.getAdultImageHeight() / 2, configuration.getAdultImageWidth(), configuration.getAdultImageHeight());
+        personPanel.setBounds(centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight);
 
         if (configuration.isShowResidence()) {
             drawResidence(person, personPanel);
@@ -158,11 +166,11 @@ public class RootFamilyPanel extends JPanel {
         if (person.getSpouse() != null) {
             int labelXPosition;
             int labelWidth = getConfiguration().getMarriageLabelWidth();
-            int childrenShift = -(Math.max(1, person.getChildrenCount(0)) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2) + (getConfiguration().getAdultImageWidth() + labelWidth) - SIBLINGS_GAP;
+            int childrenShift = -(Math.max(1, person.getChildrenCount(0)) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) / 2) + (getConfiguration().getAdultImageWidth() + labelWidth) - SIBLINGS_GAP;
 
             for (int index = 0; index < person.getSpouseCouples().size(); index++) {
                 husbandXPosition = spouseXPosition;
-                int childrenWidth = Math.max(1, person.getChildrenCount(index)) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + labelWidth);
+                int childrenWidth = Math.max(1, person.getChildrenCount(index)) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) / 2 - (getConfiguration().getAdultImageWidth() + labelWidth);
                 spouseXPosition = spouseXPosition + (getConfiguration().getAdultImageWidth() + labelWidth) + childrenShift + childrenWidth + SIBLINGS_GAP;
 
                 drawPerson(spouseXPosition, y, person.getSpouse(index));
@@ -205,14 +213,14 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void drawOlderSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
-        Person sibling;
+        AncestorPerson sibling;
 
         int olderSiblingCount = rootChild.getOlderSiblings().size();
         int startX;
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+            startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             if (i == 0) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
@@ -223,16 +231,16 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void drawYoungerSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
-        Person sibling;
+        AncestorPerson sibling;
 
         int startX;
-        LinkedList<Person> youngerSiblings = rootChild.getYoungerSiblings();
-        for (int i = 0; i < youngerSiblings.size(); i++) {
-            sibling = youngerSiblings.get(i);
+        int youngerSiblingsCount = rootChild.getYoungerSiblings().size();
+        for (int i = 0; i < youngerSiblingsCount; i++) {
+            sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
-            if (i == youngerSiblings.size() - 1) {
+            if (i == youngerSiblingsCount - 1) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
             } else {
                 addStraightChildrenLine(startX, rootSiblingY, rootSiblingX);
@@ -306,11 +314,11 @@ public class RootFamilyPanel extends JPanel {
                 lines.add(toChildren);
 
                 int childrenY = y + getConfiguration().getAdultImageHeight() + VERTICAL_GAP;
-                childrenWidth = childrenCount * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+                childrenWidth = childrenCount * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
                 int startXPosition = labelXPosition - childrenWidth / 2;
 
                 for (int i = 0; i < childrenCount; i++) {
-                    int childXPosition = startXPosition + getConfiguration().getAdultImageWidth() / 2 + i * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP);
+                    int childXPosition = startXPosition + getConfiguration().getSiblingImageWidth() / 2 + i * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP);
                     if (i == 0 && childrenCount > 1) {
                         addRoundChildrenLine(childXPosition, childrenY, labelXPosition);
                     } else if (i == childrenCount - 1) {

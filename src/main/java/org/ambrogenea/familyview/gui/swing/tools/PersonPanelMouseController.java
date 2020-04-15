@@ -23,6 +23,7 @@ import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.model.enums.PropertyName;
 
 /**
  *
@@ -86,7 +87,7 @@ public class PersonPanelMouseController extends MouseAdapter {
                 drawing.generateCloseFamily(personWithAncestors, configuration);
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
             }
         });
     }
@@ -105,7 +106,7 @@ public class PersonPanelMouseController extends MouseAdapter {
                 drawing.generateFatherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
             }
         });
     }
@@ -124,7 +125,7 @@ public class PersonPanelMouseController extends MouseAdapter {
                 drawing.generateMotherLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
             }
         });
     }
@@ -144,7 +145,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange("New Tree", personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
             }
         });
     }

@@ -1,0 +1,29 @@
+package org.ambrogenea.familyview.gui.swing.tools;
+
+import java.awt.Color;
+
+/**
+ *
+ * @author Jiri Ambroz <ambroz88@seznam.cz>
+ */
+public abstract class Colors {
+
+    public static Color LIGHT_BROWN = new Color(210, 180, 140);
+    public static Color DARK_BROWN = new Color(139, 69, 19);
+    public static Color LIGHT_RED = new Color(255, 69, 0);
+    public static Color DARK_RED = new Color(220, 20, 60);
+    public static Color LIGHT_GREEN = new Color(173, 255, 47);
+    public static Color OLIVE_GREEN = new Color(128, 128, 0);
+    public static Color DARK_GREEN = new Color(0, 128, 0);
+    public static Color LIGHT_BLUE = new Color(135, 206, 250);
+    public static Color DARK_BLUE = new Color(65, 105, 225);
+    public static Color LIGHT_GRAY = new Color(211, 211, 211);
+    public static Color DARK_GRAY = new Color(128, 128, 128);
+    public static Color PINK = new Color(255, 105, 180);
+    public static Color PURPLE = new Color(138, 43, 226);
+    public static Color YELLOW = new Color(255, 215, 0);
+
+    public static Color[] getColors() {
+        return new Color[]{LIGHT_RED, DARK_BLUE, LIGHT_GREEN, YELLOW, DARK_BROWN, LIGHT_GRAY, OLIVE_GREEN, DARK_RED, LIGHT_BLUE, PURPLE, LIGHT_BROWN, DARK_GREEN, PINK, DARK_GRAY};
+    }
+}

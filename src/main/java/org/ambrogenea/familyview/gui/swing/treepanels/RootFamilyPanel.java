@@ -26,6 +26,7 @@ import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
+import org.ambrogenea.familyview.gui.swing.tools.Colors;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
@@ -39,8 +40,6 @@ import org.ambrogenea.familyview.model.utils.Tools;
  * @author Jiri Ambroz
  */
 public class RootFamilyPanel extends JPanel {
-
-    private static final Color[] COLORS = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.LIGHT_GRAY, Color.ORANGE, Color.CYAN, Color.PINK, Color.MAGENTA};
 
     public static final int HORIZONTAL_GAP = 20;
     public static final int SIBLINGS_GAP = 2 * HORIZONTAL_GAP;
@@ -463,10 +462,10 @@ public class RootFamilyPanel extends JPanel {
 
     private void addCityToRegister(String city) {
         if (!cityRegister.containsKey(city)) {
-            if (cityRegister.size() >= COLORS.length) {
+            if (cityRegister.size() >= Colors.getColors().length) {
                 cityRegister.put(city, Color.BLACK);
             } else {
-                cityRegister.put(city, COLORS[cityRegister.size()]);
+                cityRegister.put(city, Colors.getColors()[cityRegister.size()]);
             }
         }
     }

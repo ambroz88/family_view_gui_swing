@@ -1,7 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -9,9 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,30 +16,29 @@ import javax.swing.JPanel;
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.enums.Sex;
 import org.ambrogenea.familyview.model.utils.Tools;
 
 /**
  *
  * @author Jiri Ambroz
  */
-public class PersonPanel extends JPanel {
+public abstract class PersonPanel extends JPanel {
 
-    private static final String SPACE = "  ";
+    protected static final String SPACE = "  ";
 
-    private final AncestorPerson person;
+    protected final AncestorPerson person;
     protected final Configuration configuration;
-    private BufferedImage personDiagram;
+    protected BufferedImage personDiagram;
 
-    private JLabel firstName;
-    private JLabel surName;
-    private JLabel occupation;
-    private JLabel belowNamesSpace;
-    private JLabel birth;
-    private JLabel birthPlace;
-    private JLabel belowDatesSpace;
-    private JLabel death;
-    private JLabel deathPlace;
+    protected JLabel firstName;
+    protected JLabel surName;
+    protected JLabel occupation;
+    protected JLabel belowNamesSpace;
+    protected JLabel birth;
+    protected JLabel birthPlace;
+    protected JLabel belowDatesSpace;
+    protected JLabel death;
+    protected JLabel deathPlace;
 
     public PersonPanel(AncestorPerson person, Configuration config) {
         super(new GridBagLayout());
@@ -55,6 +51,18 @@ public class PersonPanel extends JPanel {
         addLabels();
     }
 
+    protected abstract void loadPictures();
+
+    protected abstract void initLabels();
+
+    protected abstract void initNamesLabelFont();
+
+    protected abstract void initDateLabelsFont();
+
+    protected abstract void showPlaces();
+
+    protected abstract void addLabels();
+
     public void update() {
         this.removeAll();
         loadPictures();
@@ -63,37 +71,13 @@ public class PersonPanel extends JPanel {
         revalidate();
     }
 
-    private void loadPictures() {
-        String imagePath;
-        if (person.isDirectLineage()) {
-            if (person.getSex().equals(Sex.MALE)) {
-                imagePath = configuration.getAdultManImagePath();
-            } else {
-                imagePath = configuration.getAdultWomanImagePath();
-            }
-        } else {
-            if (person.getSex().equals(Sex.MALE)) {
-                imagePath = configuration.getSiblingManImagePath();
-            } else {
-                imagePath = configuration.getSiblingWomanImagePath();
-            }
-        }
-
-        try {
-            personDiagram = ImageIO.read(ClassLoader.getSystemResourceAsStream(imagePath));
-        } catch (IOException e) {
-            System.out.println("Image " + imagePath + " can't be open.");
-            e.printStackTrace();
-        }
-    }
-
-    private void initLabels() {
+    protected void initLabels(int fontSize) {
         belowNamesSpace = new JLabel("", JLabel.CENTER);
         belowDatesSpace = new JLabel("", JLabel.CENTER);
 
         occupation = new JLabel("", JLabel.CENTER);
         occupation.setText(person.getOccupation());
-        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
 
         initNameLabels();
         initDateLabels();
@@ -122,21 +106,21 @@ public class PersonPanel extends JPanel {
         initNamesLabelFont();
     }
 
-    private void initNamesLabelFont() {
+    protected void initNamesLabelFont(int fontSize) {
         if (firstName.getText().length() > 20) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize - 1));
         } else if (firstName.getText().length() > 15) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
         } else {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize + 1));
         }
 
         if (surName.getText().length() > 20) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 1));
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize - 1));
         } else if (surName.getText().length() > 15) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize()));
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
         } else {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() + 1));
+            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize + 1));
         }
     }
 
@@ -150,9 +134,9 @@ public class PersonPanel extends JPanel {
             birth.setText("\u2605 " + person.getBirthDateCzech());
             if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlace.setText(SPACE + Tools.cityShortVersion(person.getSimpleBirthPlace()));
+                    birthPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleBirthPlace()));
                 } else {
-                    birthPlace.setText(SPACE + person.getSimpleBirthPlace());
+                    birthPlace.setText("," + SPACE + person.getSimpleBirthPlace());
                 }
             }
         }
@@ -161,9 +145,9 @@ public class PersonPanel extends JPanel {
             death.setText("\u271D " + person.getDeathDateCzech());
             if (configuration.isShowPlaces() && !person.getDeathPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    deathPlace.setText(SPACE + Tools.cityShortVersion(person.getSimpleDeathPlace()));
+                    deathPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleDeathPlace()));
                 } else {
-                    deathPlace.setText(SPACE + person.getSimpleDeathPlace());
+                    deathPlace.setText("," + SPACE + person.getSimpleDeathPlace());
                 }
             }
         }
@@ -171,41 +155,16 @@ public class PersonPanel extends JPanel {
         initDateLabelsFont();
     }
 
-    private void initDateLabelsFont() {
-        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
-        birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
-        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
-        deathPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize() - 1));
+    protected void initDateLabelsFont(int fontSize) {
+        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
+        birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize - 1));
+        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
+        deathPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize - 1));
     }
 
-    private void showPlaces() {
-        int shift = 0;
-
-        int imageWidth;
-        if (person.isDirectLineage()) {
-            imageWidth = configuration.getAdultImageWidth() / 2;
-            if (configuration.getAdultDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
-                shift = 12;
-            }
-        } else {
-            imageWidth = configuration.getSiblingImageWidth() / 2;
-            if (configuration.getSiblingDiagram().equals(Configuration.DIAGRAM_PERGAMEN)) {
-                shift = 12;
-            }
-        }
-        birth.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));
-        birthPlace.setPreferredSize(new Dimension(imageWidth - shift, birth.getPreferredSize().height));
-        death.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));
-        deathPlace.setPreferredSize(new Dimension(imageWidth - shift, birth.getPreferredSize().height));
-    }
-
-    private void addLabels() {
+    protected void addLabels(int topOffset, int bottomOffset) {
         GridBagConstraints c = new GridBagConstraints();
-        if (person.isDirectLineage()) {
-            c.ipady = configuration.getAdultTopOffset();
-        } else {
-            c.ipady = configuration.getSiblingTopOffset();
-        }
+        c.ipady = topOffset;
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -263,11 +222,7 @@ public class PersonPanel extends JPanel {
 
         c.gridy = 11;
         c.weighty = 5;
-        if (person.isDirectLineage()) {
-            c.ipady = configuration.getAdultBottomOffset();
-        } else {
-            c.ipady = configuration.getSiblingBottomOffset();
-        }
+        c.ipady = bottomOffset;
         add(new JLabel(""), c);
     }
 
@@ -289,20 +244,20 @@ public class PersonPanel extends JPanel {
         }
     }
 
-    private JPanel creteTempleBox() {
+    protected JPanel creteTempleBox() {
         JPanel templeBox = new JPanel(new GridLayout(1, 3, -1, -1));
         templeBox.setBackground(Color.WHITE);
 
         JLabel baptism = new JLabel(" KK ", JLabel.CENTER);
-        baptism.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        baptism.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
         baptism.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel initiatory = new JLabel(" PO ", JLabel.CENTER);
-        initiatory.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        initiatory.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
         initiatory.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel endowment = new JLabel(" OB ", JLabel.CENTER);
-        endowment.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getFontSize()));
+        endowment.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
         endowment.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         templeBox.add(baptism);

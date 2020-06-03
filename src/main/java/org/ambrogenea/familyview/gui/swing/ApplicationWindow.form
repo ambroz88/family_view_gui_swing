@@ -27,7 +27,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="settingsTab" max="32767" attributes="0"/>
+              <Component id="settingsTab" pref="1175" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -65,71 +65,91 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="siblingPanel" alignment="0" pref="541" max="32767" attributes="0"/>
+                              <Component id="parentPanel" alignment="0" pref="541" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                                          <Component id="logoLabel" min="-2" pref="120" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="fileNameLabel" max="32767" attributes="0"/>
+                                              <Component id="filenameLabel" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="personBoxPanel" min="-2" pref="325" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="loadInputButton" min="-2" pref="162" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                              <Component id="logoLabel" min="-2" pref="120" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="fileNameLabel" max="32767" attributes="0"/>
-                                  <Component id="filenameLabel" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="loadInputButton" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
+                              <Component id="LIneagePanel" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                      <Component id="generateAncestorButton" min="-2" pref="140" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                  <Component id="generateAncestorButton" min="-2" pref="140" max="-2" attributes="0"/>
-                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="tableScroll" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="LIneagePanel" max="-2" attributes="0"/>
-                          <Component id="closeFamilyPanel" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                      <Component id="parentPanel" min="-2" pref="475" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="siblingPanel" min="-2" pref="475" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="personBoxPanel" max="-2" attributes="0"/>
-                      <EmptySpace pref="15" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tableScroll" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="siblingPanel" alignment="0" pref="298" max="32767" attributes="0"/>
-                          <Component id="parentPanel" alignment="0" pref="298" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="logoLabel" min="-2" pref="65" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="loadInputButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="filenameLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="fileNameLabel" min="-2" pref="25" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                              <Component id="generateAncestorButton" min="-2" pref="32" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="LIneagePanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="personBoxPanel" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                      <Component id="tableScroll" pref="530" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="LIneagePanel" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="logoLabel" min="-2" pref="65" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="loadInputButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="filenameLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="fileNameLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="closeFamilyPanel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="generateAncestorButton" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="personBoxPanel" min="-2" pref="168" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="parentPanel" min="-2" pref="405" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="siblingPanel" min="-2" pref="381" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="tableScroll" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -225,7 +245,7 @@
                               <Component id="generateLineageButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="generateWord" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -439,13 +459,16 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="shortenPlacesCheckBox" pref="143" max="32767" attributes="0"/>
-                              <Component id="residenceCheckBox" alignment="1" max="32767" attributes="0"/>
+                              <Component id="shortenPlacesCheckBox" max="32767" attributes="0"/>
                               <Component id="ageCheckBox" alignment="0" max="32767" attributes="0"/>
                               <Component id="occupationCheckBox" alignment="0" pref="143" max="32767" attributes="0"/>
                               <Component id="placesCheckBox" max="32767" attributes="0"/>
-                              <Component id="templeCheckBox" pref="143" max="32767" attributes="0"/>
-                              <Component id="heraldryCheckBox" alignment="0" pref="143" max="32767" attributes="0"/>
+                              <Component id="templeCheckBox" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="residenceCheckBox" alignment="1" max="32767" attributes="0"/>
+                              <Component id="heraldryCheckBox" alignment="0" max="32767" attributes="0"/>
                               <Component id="marriageCheckBox" alignment="0" max="32767" attributes="0"/>
                               <Component id="resetModeCheckBox" max="32767" attributes="0"/>
                           </Group>
@@ -455,25 +478,31 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="ageCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="occupationCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="placesCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="shortenPlacesCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="ageCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="occupationCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="placesCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="shortenPlacesCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="templeCheckBox" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="marriageCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="heraldryCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="residenceCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="resetModeCheckBox" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="marriageCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="heraldryCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="residenceCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="resetModeCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -597,10 +626,10 @@
                           <Component id="imageHeightSlider" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="imageWidthSlider" max="32767" attributes="0"/>
-                              <Component id="personImagePanel" max="32767" attributes="0"/>
+                              <Component id="imageWidthSlider" pref="300" max="32767" attributes="0"/>
+                              <Component id="personImagePanel" pref="300" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="bottomOffsetLabel" min="-2" pref="87" max="-2" attributes="0"/>
@@ -612,14 +641,14 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="adultSizeLabel" max="32767" attributes="0"/>
-                                      <Component id="TopOffsetLabel" pref="87" max="32767" attributes="0"/>
-                                      <Component id="fontSizeLabel" max="32767" attributes="0"/>
+                                      <Component id="TopOffsetLabel" max="32767" attributes="0"/>
+                                      <Component id="fontSizeLabel" min="-2" pref="87" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="topOffsetSpinner" max="32767" attributes="0"/>
                                       <Component id="fontSizeSpinner" max="32767" attributes="0"/>
-                                      <Component id="adultSize" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="adultSize" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -631,39 +660,38 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="imageWidthSlider" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="adultSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="adultSize" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="imageWidthSlider" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="imageHeightSlider" max="-2" attributes="0"/>
+                              <Component id="personImagePanel" alignment="0" pref="300" max="32767" attributes="0"/>
+                              <Component id="imageHeightSlider" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="adultSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="adultSize" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="topOffsetSpinner" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                                       <Component id="TopOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="fontSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="fontSizeSpinner" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="diagramLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="diagramComboBox" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <EmptySpace pref="62" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="bottomOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="bottomOffsetSpinner" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="personImagePanel" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="43" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -718,7 +746,7 @@
                 <Component class="javax.swing.JComboBox" name="diagramComboBox">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new DefaultComboBoxModel&lt;&gt;(new String[] {Configuration.DIAGRAM_PERGAMEN, Configuration.DIAGRAM_HERALDRY, Configuration.DIAGRAM_WAVE, Configuration.DIAGRAM_DOUBLEWAVE})" type="code"/>
+                      <Connection code="new DefaultComboBoxModel&lt;&gt;(Diagrams.values())" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -726,7 +754,7 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="diagramComboBox.setSelectedItem(configuration.getAdultDiagram());"/>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Diagrams&gt;"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="diagramLabel">
@@ -737,7 +765,7 @@
                 <Component class="javax.swing.JSlider" name="imageWidthSlider">
                   <Properties>
                     <Property name="majorTickSpacing" type="int" value="10"/>
-                    <Property name="maximum" type="int" value="250"/>
+                    <Property name="maximum" type="int" value="300"/>
                     <Property name="minimum" type="int" value="100"/>
                     <Property name="minorTickSpacing" type="int" value="5"/>
                     <Property name="paintTicks" type="boolean" value="true"/>
@@ -759,7 +787,7 @@
                 <Component class="javax.swing.JSlider" name="imageHeightSlider">
                   <Properties>
                     <Property name="majorTickSpacing" type="int" value="10"/>
-                    <Property name="maximum" type="int" value="215"/>
+                    <Property name="maximum" type="int" value="300"/>
                     <Property name="minimum" type="int" value="120"/>
                     <Property name="minorTickSpacing" type="int" value="5"/>
                     <Property name="orientation" type="int" value="1"/>
@@ -782,7 +810,7 @@
                 <Component class="javax.swing.JSpinner" name="fontSizeSpinner">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.SpinnerNumberModel(configuration.getFontSize(), 10, 25, 1)" type="code"/>
+                      <Connection code="new javax.swing.SpinnerNumberModel(configuration.getAdultFontSize(), 10, 25, 1)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -849,29 +877,34 @@
                           <Component id="siblingsHeightSlider" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="siblingsWidthSlider" alignment="0" max="32767" attributes="0"/>
-                              <Component id="siblingsImagePanel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="siblingsWidthSlider" pref="300" max="32767" attributes="0"/>
+                              <Component id="siblingsImagePanel" pref="300" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="siblingsBottomOffsetLabel" min="-2" pref="87" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="siblingsBottomOffsetSpinner" min="-2" pref="50" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="siblingsDiagramLabel" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
-                              <Component id="siblingsDiagramComboBox" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="siblingsSizeLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="siblingsTopOffsetLabel" alignment="0" pref="87" max="32767" attributes="0"/>
-                                      <Component id="siblingsFontSizeLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="siblingsSizeLabel" alignment="0" pref="87" max="32767" attributes="0"/>
+                                      <Component id="siblingsTopOffsetLabel" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="siblingsTopOffsetSpinner" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="siblingsFontSizeSpinner" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="siblingsSize" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="siblingsSize" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="siblingsDiagramLabel" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
+                                  <Component id="siblingsDiagramComboBox" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="siblingsFontSizeLabel" min="-2" pref="87" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="siblingFontSizeSpinner" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -892,30 +925,30 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="siblingsHeightSlider" alignment="0" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="siblingsTopOffsetSpinner" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                                       <Component id="siblingsTopOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <EmptySpace pref="70" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="siblingsFontSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="siblingsFontSizeSpinner" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                                      <Component id="siblingFontSizeSpinner" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="siblingsDiagramLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="siblingsDiagramComboBox" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="siblingsBottomOffsetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="siblingsBottomOffsetSpinner" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="siblingsImagePanel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="siblingsImagePanel" alignment="0" pref="300" max="32767" attributes="0"/>
+                              <Component id="siblingsHeightSlider" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="19" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -970,7 +1003,7 @@
                 <Component class="javax.swing.JComboBox" name="siblingsDiagramComboBox">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new DefaultComboBoxModel&lt;&gt;(new String[] {Configuration.DIAGRAM_PERGAMEN, Configuration.DIAGRAM_HERALDRY, Configuration.DIAGRAM_WAVE, Configuration.DIAGRAM_DOUBLEWAVE})" type="code"/>
+                      <Connection code="new DefaultComboBoxModel&lt;&gt;(Diagrams.values())" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -978,7 +1011,7 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="siblingsDiagramComboBox.setSelectedItem(configuration.getSiblingDiagram());"/>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Diagrams&gt;"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="siblingsDiagramLabel">
@@ -989,7 +1022,7 @@
                 <Component class="javax.swing.JSlider" name="siblingsWidthSlider">
                   <Properties>
                     <Property name="majorTickSpacing" type="int" value="10"/>
-                    <Property name="maximum" type="int" value="250"/>
+                    <Property name="maximum" type="int" value="300"/>
                     <Property name="minimum" type="int" value="100"/>
                     <Property name="minorTickSpacing" type="int" value="5"/>
                     <Property name="paintTicks" type="boolean" value="true"/>
@@ -1011,7 +1044,7 @@
                 <Component class="javax.swing.JSlider" name="siblingsHeightSlider">
                   <Properties>
                     <Property name="majorTickSpacing" type="int" value="10"/>
-                    <Property name="maximum" type="int" value="215"/>
+                    <Property name="maximum" type="int" value="300"/>
                     <Property name="minimum" type="int" value="120"/>
                     <Property name="minorTickSpacing" type="int" value="5"/>
                     <Property name="orientation" type="int" value="1"/>
@@ -1031,14 +1064,14 @@
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="siblingsHeightSliderStateChanged"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="siblingsFontSizeSpinner">
+                <Component class="javax.swing.JSpinner" name="siblingFontSizeSpinner">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.SpinnerNumberModel(configuration.getFontSize(), 10, 25, 1)" type="code"/>
+                      <Connection code="new javax.swing.SpinnerNumberModel(configuration.getSiblingFontSize(), 10, 25, 1)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="siblingsFontSizeSpinnerStateChanged"/>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="siblingFontSizeSpinnerStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="siblingsBottomOffsetSpinner">

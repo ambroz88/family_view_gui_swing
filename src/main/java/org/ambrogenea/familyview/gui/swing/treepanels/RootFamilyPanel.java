@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,11 +18,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ambrogenea.familyview.gui.swing.components.AdultPanel;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.components.SiblingPanel;
 import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
@@ -46,10 +48,13 @@ public class RootFamilyPanel extends JPanel {
     public static final int VERTICAL_GAP = 100;
     public static final int LABEL_HEIGHT = 30;
     public static final int RESIDENCE_SIZE = 25;
+    public static final Color LABEL_BACKGROUND = new Color(240, 240, 240);
+    public static final Color LINE_COLOR = Color.GRAY;
 
     protected final Set<Line> lines;
     protected final Set<Arc> arcs;
     protected final Set<ImageModel> images;
+    protected final Set<Rectangle> labels;
     protected final ArrayList<ResidenceModel> residences;
     protected final AncestorPerson personModel;
     protected final Configuration configuration;
@@ -60,6 +65,7 @@ public class RootFamilyPanel extends JPanel {
         this.configuration = config;
         lines = new HashSet<>();
         arcs = new HashSet<>();
+        labels = new HashSet<>();
         images = new HashSet<>();
         residences = new ArrayList<>();
         cityRegister = new TreeMap<>();
@@ -67,12 +73,19 @@ public class RootFamilyPanel extends JPanel {
     }
 
     private void initPanel() {
-        setBackground(Color.WHITE);
+//        setBackground(Color.WHITE);
+        setOpaque(false);
         this.setLayout(null);
     }
 
     protected void drawPerson(int centerX, int centerY, final AncestorPerson person) {
-        PersonPanel personPanel = new PersonPanel(person, configuration);
+        PersonPanel personPanel;
+        if (person.isDirectLineage()) {
+            personPanel = new AdultPanel(person, configuration);
+        } else {
+            personPanel = new SiblingPanel(person, configuration);
+        }
+
         personPanel.addMouseAdapter();
         int imageWidth;
         int imageHeight;
@@ -113,7 +126,7 @@ public class RootFamilyPanel extends JPanel {
                 if (residence.getNumber() > 0) {
                     number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
                     number.setSize(RESIDENCE_SIZE, RESIDENCE_SIZE);
-                    number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getFontSize() - 2));
+                    number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getAdultFontSize() - 2));
                     this.add(number);
                     number.setBounds(x, y, RESIDENCE_SIZE, RESIDENCE_SIZE);
                 }
@@ -183,32 +196,22 @@ public class RootFamilyPanel extends JPanel {
     }
 
     protected void drawLabel(int startX, int endX, int centerY, String text) {
+        startX = startX + 2;
+        endX = endX - 2;
+        int labelHeight = Math.max((int) (getConfiguration().getAdultImageHeight() * 0.2), LABEL_HEIGHT);
         if (text != null && !text.isEmpty() && configuration.isShowMarriage()) {
             JLabel date = new JLabel(text, JLabel.CENTER);
-            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
-            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
-            date.setOpaque(true);
-            date.setBackground(new Color(250, 250, 250));
+            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getAdultFontSize() - 1));
+//            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
+            date.setOpaque(false);
+//            date.setBackground(LABEL_BACKGROUND);
             this.add(date);
-            date.setBounds(startX, centerY - LABEL_HEIGHT, endX - startX, LABEL_HEIGHT);
+            date.setBounds(startX, centerY - labelHeight, endX - startX, labelHeight);
         } else {
             lines.add(new Line(startX, centerY, endX, centerY));
         }
-    }
-
-    protected void drawLongerLabel(int centerX, int centerY, String text) {
-        int wideMarriageLabel = getConfiguration().getWideMarriageLabel();
-        if (text != null && !text.isEmpty()) {
-            JLabel date = new JLabel(text, JLabel.CENTER);
-            date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getFontSize() - 1));
-            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
-            date.setOpaque(true);
-            date.setBackground(new Color(250, 250, 250));
-            this.add(date);
-            date.setBounds(centerX - wideMarriageLabel / 2, centerY - LABEL_HEIGHT, wideMarriageLabel, LABEL_HEIGHT);
-        } else {
-            lines.add(new Line(centerX - wideMarriageLabel / 2, centerY, centerX + wideMarriageLabel / 2, centerY));
-        }
+        Rectangle rect = new Rectangle(startX, centerY - labelHeight, endX - startX, labelHeight);
+        labels.add(rect);
     }
 
     protected void drawOlderSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
@@ -341,15 +344,30 @@ public class RootFamilyPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.BLACK);
+        g2.setColor(LINE_COLOR);
 
+        int lineStrokeExtra = 0;
+        if (configuration.getAdultFontSize() > 18) {
+            lineStrokeExtra = 1;
+        }
+
+        int cornerSize = 20;
         for (Line line : lines) {
-            g2.setStroke(new BasicStroke(line.getType()));
+            g2.setStroke(new BasicStroke(lineStrokeExtra + line.getType()));
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         }
 
+        for (Rectangle rect : labels) {
+            g2.setColor(LABEL_BACKGROUND);
+            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+            g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+            g2.setColor(LINE_COLOR);
+            g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+        }
+
+        g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
+        g2.setColor(LINE_COLOR);
         for (Arc arc : arcs) {
-            g2.setStroke(new BasicStroke(1));
             g2.drawArc(arc.getLeftUpperX(), arc.getLeftUpperY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
         }
 
@@ -357,7 +375,7 @@ public class RootFamilyPanel extends JPanel {
             g2.drawImage(image.getImage(), image.getX() - image.getWidth() / 2, image.getY() - image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
         }
 
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
         for (ResidenceModel residence : residences) {
             g2.setColor(cityRegister.get(residence.getCity()));
             g2.drawRoundRect(residence.getX(), residence.getY(), RESIDENCE_SIZE, RESIDENCE_SIZE, RESIDENCE_SIZE / 2, RESIDENCE_SIZE / 2);
@@ -434,7 +452,7 @@ public class RootFamilyPanel extends JPanel {
     }
 
     public BufferedImage getPicture() {
-        BufferedImage image = new BufferedImage(this.getPreferredSize().width, this.getPreferredSize().height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(this.getPreferredSize().width, this.getPreferredSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         this.paint(g);
         return image;

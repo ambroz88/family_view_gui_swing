@@ -48,7 +48,7 @@ public class RootFamilyPanel extends JPanel {
     public static final int VERTICAL_GAP = 100;
     public static final int LABEL_HEIGHT = 30;
     public static final int RESIDENCE_SIZE = 25;
-    public static final Color LABEL_BACKGROUND = new Color(240, 240, 240);
+    public static final Color LABEL_BACKGROUND = new Color(250, 250, 250);
     public static final Color LINE_COLOR = Color.GRAY;
 
     protected final Set<Line> lines;
@@ -208,7 +208,7 @@ public class RootFamilyPanel extends JPanel {
             this.add(date);
             date.setBounds(startX, centerY - labelHeight, endX - startX, labelHeight);
         } else {
-            lines.add(new Line(startX, centerY, endX, centerY));
+//            lines.add(new Line(startX, centerY, endX, centerY));
         }
         Rectangle rect = new Rectangle(startX, centerY - labelHeight, endX - startX, labelHeight);
         labels.add(rect);
@@ -217,12 +217,13 @@ public class RootFamilyPanel extends JPanel {
     protected void drawOlderSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         AncestorPerson sibling;
 
+        int movedRootX = rootSiblingX - SIBLINGS_GAP;
         int olderSiblingCount = rootChild.getOlderSiblings().size();
         int startX;
         for (int i = 0; i < olderSiblingCount; i++) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            startX = rootSiblingX - (olderSiblingCount - i) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+            startX = movedRootX - (olderSiblingCount - i) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
             if (i == 0) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
@@ -235,12 +236,13 @@ public class RootFamilyPanel extends JPanel {
     protected void drawYoungerSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         AncestorPerson sibling;
 
+        int movedRootX = rootSiblingX + SIBLINGS_GAP;
         int startX;
         int youngerSiblingsCount = rootChild.getYoungerSiblings().size();
         for (int i = 0; i < youngerSiblingsCount; i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = rootSiblingX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP);
+            startX = movedRootX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP);
             drawPerson(startX, rootSiblingY, sibling);
             if (i == youngerSiblingsCount - 1) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);

@@ -25,6 +25,8 @@ import org.ambrogenea.familyview.model.utils.Tools;
 public abstract class PersonPanel extends JPanel {
 
     protected static final String SPACE = "  ";
+    private static final String GENERAL_FONT = "Calibri";
+    private static final String NAMES_FONT = Font.SANS_SERIF;
 
     protected final AncestorPerson person;
     protected final Configuration configuration;
@@ -77,7 +79,7 @@ public abstract class PersonPanel extends JPanel {
 
         occupation = new JLabel("", JLabel.CENTER);
         occupation.setText(person.getOccupation());
-        occupation.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
+        occupation.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
 
         initNameLabels();
         initDateLabels();
@@ -108,19 +110,19 @@ public abstract class PersonPanel extends JPanel {
 
     protected void initNamesLabelFont(int fontSize) {
         if (firstName.getText().length() > 20) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize - 1));
+            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize - 1));
         } else if (firstName.getText().length() > 15) {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            firstName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize + 1));
+            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize + 1));
         }
 
         if (surName.getText().length() > 20) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize - 1));
+            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize - 1));
         } else if (surName.getText().length() > 15) {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            surName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontSize + 1));
+            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize + 1));
         }
     }
 
@@ -131,7 +133,7 @@ public abstract class PersonPanel extends JPanel {
         deathPlace = new JLabel("", JLabel.LEFT);
 
         if (!person.getBirthDate().isEmpty()) {
-            birth.setText("\u2605 " + person.getBirthDateCzech());
+            birth.setText("\u002A " + person.getBirthDateCzech());
             if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleBirthPlace()));
@@ -142,7 +144,7 @@ public abstract class PersonPanel extends JPanel {
         }
 
         if (!person.getDeathDate().isEmpty()) {
-            death.setText("\u271D " + person.getDeathDateCzech());
+            death.setText("\u2D15 " + person.getDeathDateCzech());
             if (configuration.isShowPlaces() && !person.getDeathPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleDeathPlace()));
@@ -156,10 +158,10 @@ public abstract class PersonPanel extends JPanel {
     }
 
     protected void initDateLabelsFont(int fontSize) {
-        birth.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
-        birthPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize - 1));
-        death.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));
-        deathPlace.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize - 1));
+        birth.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        birthPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
+        death.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        deathPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
     }
 
     protected void addLabels(int topOffset, int bottomOffset) {
@@ -249,15 +251,15 @@ public abstract class PersonPanel extends JPanel {
         templeBox.setBackground(Color.WHITE);
 
         JLabel baptism = new JLabel(" KK ", JLabel.CENTER);
-        baptism.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
+        baptism.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
         baptism.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel initiatory = new JLabel(" PO ", JLabel.CENTER);
-        initiatory.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
+        initiatory.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
         initiatory.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel endowment = new JLabel(" OB ", JLabel.CENTER);
-        endowment.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize()));
+        endowment.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
         endowment.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         templeBox.add(baptism);

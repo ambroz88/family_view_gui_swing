@@ -34,6 +34,7 @@ import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
 import org.ambrogenea.familyview.model.Person;
 import org.ambrogenea.familyview.model.Residence;
+import org.ambrogenea.familyview.model.enums.LabelShape;
 import org.ambrogenea.familyview.model.enums.Sex;
 import org.ambrogenea.familyview.model.utils.Tools;
 
@@ -199,31 +200,44 @@ public class RootFamilyPanel extends JPanel {
         startX = startX + 2;
         endX = endX - 2;
         int labelHeight = Math.max((int) (getConfiguration().getAdultImageHeight() * 0.2), LABEL_HEIGHT);
-        if (text != null && !text.isEmpty() && configuration.isShowMarriage()) {
+
+        if (configuration.isShowMarriage()) {
             JLabel date = new JLabel(text, JLabel.CENTER);
             date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, getConfiguration().getAdultFontSize() - 1));
 //            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
-            date.setOpaque(false);
 //            date.setBackground(LABEL_BACKGROUND);
+            date.setOpaque(false);
             this.add(date);
             date.setBounds(startX, centerY - labelHeight, endX - startX, labelHeight);
-        } else {
-//            lines.add(new Line(startX, centerY, endX, centerY));
         }
-        Rectangle rect = new Rectangle(startX, centerY - labelHeight, endX - startX, labelHeight);
-        labels.add(rect);
+
+        if (configuration.getLabelShape().equals(LabelShape.RECTANGLE) && text.isEmpty()) {
+            lines.add(new Line(startX - SIBLINGS_GAP, centerY, endX + SIBLINGS_GAP, centerY));
+        } else {
+            Rectangle rect = new Rectangle(startX, centerY - labelHeight, endX - startX, labelHeight);
+            labels.add(rect);
+        }
+
     }
 
     protected void drawOlderSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         AncestorPerson sibling;
 
-        int movedRootX = rootSiblingX - SIBLINGS_GAP;
         int olderSiblingCount = rootChild.getOlderSiblings().size();
-        int startX;
-        for (int i = 0; i < olderSiblingCount; i++) {
+        int startX = rootSiblingX - HORIZONTAL_GAP;
+        for (int i = olderSiblingCount - 1; i >= 0; i--) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            startX = movedRootX - (olderSiblingCount - i) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP) - HORIZONTAL_GAP;
+            startX = startX - getConfiguration().getSiblingImageWidth() - SIBLINGS_GAP;
+            if (getConfiguration().isShowSiblingSpouses() && sibling.getSpouse() != null) {
+                sibling.getSpouse().setDirectLineage(false);
+                drawPerson(startX, rootSiblingY, sibling.getSpouse());
+
+                int labelEnd = startX - getConfiguration().getSiblingImageWidth() / 2;
+                drawLabel(labelEnd - getConfiguration().getMarriageLabelWidth(), labelEnd, rootSiblingY, sibling.getSpouseCouple().getMarriageDate());
+                startX = startX - getConfiguration().getMarriageLabelWidth() - getConfiguration().getSiblingImageWidth();
+            }
+
             drawPerson(startX, rootSiblingY, sibling);
             if (i == 0) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
@@ -236,18 +250,27 @@ public class RootFamilyPanel extends JPanel {
     protected void drawYoungerSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         AncestorPerson sibling;
 
-        int movedRootX = rootSiblingX + SIBLINGS_GAP;
-        int startX;
+        int startX = rootSiblingX + HORIZONTAL_GAP;
         int youngerSiblingsCount = rootChild.getYoungerSiblings().size();
         for (int i = 0; i < youngerSiblingsCount; i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = movedRootX + HORIZONTAL_GAP + (i + 1) * (getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP);
+            startX = startX + getConfiguration().getSiblingImageWidth() + SIBLINGS_GAP;
             drawPerson(startX, rootSiblingY, sibling);
+
             if (i == youngerSiblingsCount - 1) {
                 addRoundChildrenLine(startX, rootSiblingY, rootSiblingX);
             } else {
                 addStraightChildrenLine(startX, rootSiblingY, rootSiblingX);
+            }
+
+            if (getConfiguration().isShowSiblingSpouses() && sibling.getSpouse() != null) {
+                sibling.getSpouse().setDirectLineage(false);
+
+                int labelStart = startX + getConfiguration().getSiblingImageWidth() / 2;
+                drawLabel(labelStart, labelStart + getConfiguration().getMarriageLabelWidth(), rootSiblingY, sibling.getSpouseCouple().getMarriageDate());
+                startX = startX + getConfiguration().getMarriageLabelWidth() + getConfiguration().getSiblingImageWidth();
+                drawPerson(startX, rootSiblingY, sibling.getSpouse());
             }
         }
     }
@@ -330,6 +353,7 @@ public class RootFamilyPanel extends JPanel {
                     } else {
                         addStraightChildrenLine(childXPosition, childrenY, labelXPosition);
                     }
+                    TODO: //draw spouse of the childer
                     drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
                 }
                 childrenWidth = childrenWidth / 2;
@@ -362,9 +386,16 @@ public class RootFamilyPanel extends JPanel {
         for (Rectangle rect : labels) {
             g2.setColor(LABEL_BACKGROUND);
             g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
-            g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-            g2.setColor(LINE_COLOR);
-            g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+
+            if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
+                g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                g2.setColor(LINE_COLOR);
+                g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+            } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
+                g2.fillRect(rect.x - SIBLINGS_GAP, rect.y, rect.width + 2 * SIBLINGS_GAP, rect.height);
+                g2.setColor(LINE_COLOR);
+                g2.drawRect(rect.x - SIBLINGS_GAP, rect.y, rect.width + 2 * SIBLINGS_GAP, rect.height);
+            }
         }
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));

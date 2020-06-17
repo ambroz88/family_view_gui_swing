@@ -31,6 +31,7 @@ public abstract class PersonPanel extends JPanel {
     protected final AncestorPerson person;
     protected final Configuration configuration;
     protected BufferedImage personDiagram;
+    private final int fontSize;
 
     protected JLabel firstName;
     protected JLabel surName;
@@ -48,18 +49,16 @@ public abstract class PersonPanel extends JPanel {
         this.person = person;
         this.configuration = config;
 
-        loadPictures();
-        initLabels();
-        addLabels();
+        if (person.isDirectLineage()) {
+            fontSize = configuration.getAdultFontSize();
+        } else {
+            fontSize = configuration.getSiblingFontSize();
+        }
+
+        initElements();
     }
 
     protected abstract void loadPictures();
-
-    protected abstract void initLabels();
-
-    protected abstract void initNamesLabelFont();
-
-    protected abstract void initDateLabelsFont();
 
     protected abstract void showPlaces();
 
@@ -67,18 +66,22 @@ public abstract class PersonPanel extends JPanel {
 
     public void update() {
         this.removeAll();
-        loadPictures();
-        initLabels();
-        addLabels();
+        initElements();
         revalidate();
     }
 
-    protected void initLabels(int fontSize) {
+    private void initElements() {
+        loadPictures();
+        initLabels();
+        addLabels();
+    }
+
+    private void initLabels() {
         belowNamesSpace = new JLabel("", JLabel.CENTER);
         belowDatesSpace = new JLabel("", JLabel.CENTER);
 
         occupation = new JLabel("", JLabel.CENTER);
-        occupation.setText(person.getOccupation());
+        occupation.setText(person.getOccupation().split(";")[0]);
         occupation.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
 
         initNameLabels();
@@ -108,7 +111,7 @@ public abstract class PersonPanel extends JPanel {
         initNamesLabelFont();
     }
 
-    protected void initNamesLabelFont(int fontSize) {
+    private void initNamesLabelFont() {
         if (firstName.getText().length() > 20) {
             firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize - 1));
         } else if (firstName.getText().length() > 15) {
@@ -157,7 +160,7 @@ public abstract class PersonPanel extends JPanel {
         initDateLabelsFont();
     }
 
-    protected void initDateLabelsFont(int fontSize) {
+    private void initDateLabelsFont() {
         birth.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
         birthPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
         death.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
@@ -246,20 +249,20 @@ public abstract class PersonPanel extends JPanel {
         }
     }
 
-    protected JPanel creteTempleBox() {
+    private JPanel creteTempleBox() {
         JPanel templeBox = new JPanel(new GridLayout(1, 3, -1, -1));
         templeBox.setBackground(Color.WHITE);
 
         JLabel baptism = new JLabel(" KK ", JLabel.CENTER);
-        baptism.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
+        baptism.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
         baptism.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel initiatory = new JLabel(" PO ", JLabel.CENTER);
-        initiatory.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
+        initiatory.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
         initiatory.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel endowment = new JLabel(" OB ", JLabel.CENTER);
-        endowment.setFont(new Font(GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
+        endowment.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
         endowment.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         templeBox.add(baptism);

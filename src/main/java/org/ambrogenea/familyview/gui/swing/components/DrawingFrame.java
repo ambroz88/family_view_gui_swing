@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,31 +34,40 @@ import org.ambrogenea.familyview.model.Configuration;
  */
 public class DrawingFrame extends JPanel {
 
-    private final JFileChooser saverFC;
-    private final JButton saveButton;
-    private final ScrollPane scrollAncestorPane;
+    private JFileChooser saverFC;
+    private JButton saveButton;
+    private ScrollPane scrollAncestorPane;
 
     public DrawingFrame() {
         initComponent();
+        initFileChooser();
 
-        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
-        saverFC.setFileFilter(new FileNameExtensionFilter("PNG file", "png"));
-        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
-
-        scrollAncestorPane = new ScrollPane();
-        scrollAncestorPane.setBackground(Color.WHITE);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        saveButton = new JButton("Save tree");
-        buttonPanel.add(saveButton);
-
-        add(buttonPanel, BorderLayout.NORTH);
-        add(scrollAncestorPane, BorderLayout.CENTER);
+        initSaveButton();
+        initScrollPane();
     }
 
     private void initComponent() {
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(800, 600));
+    }
+
+    private void initFileChooser() {
+        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        saverFC.setFileFilter(new FileNameExtensionFilter("PNG file", "png"));
+        saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
+    }
+
+    private void initSaveButton() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        saveButton = new JButton("Save tree");
+        buttonPanel.add(saveButton);
+        add(buttonPanel, BorderLayout.NORTH);
+    }
+
+    private void initScrollPane() throws HeadlessException {
+        scrollAncestorPane = new ScrollPane();
+        scrollAncestorPane.setBackground(Color.WHITE);
+        add(scrollAncestorPane, BorderLayout.CENTER);
     }
 
     public JPanel generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {

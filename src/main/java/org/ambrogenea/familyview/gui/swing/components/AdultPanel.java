@@ -39,21 +39,6 @@ public class AdultPanel extends PersonPanel {
     }
 
     @Override
-    protected void initLabels() {
-        super.initLabels(configuration.getAdultFontSize());
-    }
-
-    @Override
-    protected void initNamesLabelFont() {
-        super.initNamesLabelFont(configuration.getAdultFontSize());
-    }
-
-    @Override
-    protected void initDateLabelsFont() {
-        super.initDateLabelsFont(configuration.getAdultFontSize());
-    }
-
-    @Override
     protected void showPlaces() {
         int shift = 0;
 

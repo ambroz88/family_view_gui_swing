@@ -43,6 +43,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private JButton closeFamily;
     private JButton fatherLineage;
     private JButton motherLineage;
+    private JButton parentLineage;
     private JButton allGenerations;
 
     public PersonPanelMouseController(PersonPanel image, Configuration config, Person person) {
@@ -56,11 +57,13 @@ public class PersonPanelMouseController extends MouseAdapter {
         initCloseFamily();
         initFatherLineage();
         initMotherLineage();
+        initParentLineage();
         initAllGenerations();
 
+        this.floatMenu.add(closeFamily);
         this.floatMenu.add(fatherLineage);
         this.floatMenu.add(motherLineage);
-        this.floatMenu.add(closeFamily);
+        this.floatMenu.add(parentLineage);
         this.floatMenu.add(allGenerations);
     }
 
@@ -69,7 +72,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         this.floatMenu.setType(Window.Type.UTILITY);
         this.floatMenu.setTitle("Generate...");
         this.floatMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
-        this.floatMenu.setSize(new Dimension(4 * (BUTTON_DIMENSION.width + 10), 85));
+        this.floatMenu.setSize(new Dimension(5 * (BUTTON_DIMENSION.width + 10), 80));
         this.floatMenu.setResizable(false);
     }
 
@@ -95,7 +98,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private void initFatherLineage() {
         Icon fatherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/FatherLineageIcon.png"));
         fatherLineage = new JButton(fatherLineageIcon);
-        fatherLineage.setToolTipText("Generate father lineage");
+        fatherLineage.setToolTipText("Generate father's lineage");
         fatherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         fatherLineage.setSize(BUTTON_DIMENSION);
         fatherLineage.addActionListener(new ActionListener() {
@@ -114,7 +117,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private void initMotherLineage() {
         Icon motherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/MotherLineageIcon.png"));
         motherLineage = new JButton(motherLineageIcon);
-        motherLineage.setToolTipText("Generate mother lineage");
+        motherLineage.setToolTipText("Generate mother's lineage");
         motherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         motherLineage.setSize(BUTTON_DIMENSION);
         motherLineage.addActionListener(new ActionListener() {
@@ -123,6 +126,25 @@ public class PersonPanelMouseController extends MouseAdapter {
                 DrawingFrame drawing = new DrawingFrame();
                 AncestorPerson personWithAncestors = configuration.getAncestorModel().generateMotherLineage(personModel.getPosition());
                 drawing.generateMotherLineage(personWithAncestors, configuration);
+                floatMenu.dispose();
+                //ApplicationWindow is catching this propertyChange
+                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+            }
+        });
+    }
+
+    private void initParentLineage() {
+        Icon parentLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/ParentLineageIcon.png"));
+        parentLineage = new JButton(parentLineageIcon);
+        parentLineage.setToolTipText("Generate parent's lineage");
+        parentLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        parentLineage.setSize(BUTTON_DIMENSION);
+        parentLineage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingFrame drawing = new DrawingFrame();
+                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateParentsLineage(personModel.getPosition());
+                drawing.generateParentsLineage(personWithAncestors, configuration);
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
                 configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);

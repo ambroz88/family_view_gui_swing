@@ -472,7 +472,7 @@ public class RootFamilyPanel extends JPanel {
                     BufferedImage heraldryImage = ImageIO.read(heraldry);
                     images.add(new ImageModel(heraldryImage, childXPosition, childYPosition - verticalShift, VERTICAL_GAP / 2));
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    System.out.println(ex.getMessage());
                 }
             }
         }
@@ -492,15 +492,17 @@ public class RootFamilyPanel extends JPanel {
     }
 
     public InputStream getStream() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
         try {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(getPicture(), "png", os);
             InputStream is = new ByteArrayInputStream(os.toByteArray());
             os.close();
             return is;
-        } catch (IOException ex) {
-            return null;
+        } catch (IOException e) {
+            System.out.println("Image is not possible to convert: " + e.getMessage());
         }
+        return null;
     }
 
     public TreeMap<String, Color> getCityRegister() {

@@ -39,21 +39,6 @@ public class SiblingPanel extends PersonPanel {
     }
 
     @Override
-    protected void initLabels() {
-        super.initLabels(configuration.getSiblingFontSize());
-    }
-
-    @Override
-    protected void initNamesLabelFont() {
-        super.initNamesLabelFont(configuration.getSiblingFontSize());
-    }
-
-    @Override
-    protected void initDateLabelsFont() {
-        super.initDateLabelsFont(configuration.getSiblingFontSize());
-    }
-
-    @Override
     protected void showPlaces() {
         int shift = 0;
 

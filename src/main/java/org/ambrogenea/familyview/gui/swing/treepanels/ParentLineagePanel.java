@@ -35,7 +35,7 @@ public class ParentLineagePanel extends LineagePanel {
 
     private void drawParentsLineage(int x, int y) {
         int parentsY = y - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
-        int fatherX = x - (getConfiguration().getAdultImageWidth() / 2 + getConfiguration().getWideMarriageLabel() / 2);
+        int fatherX = x - getConfiguration().getHalfSpouseLabelSpace();
         switchParentSiblings();
 
         drawPerson(fatherX, parentsY, personModel.getFather());
@@ -48,7 +48,7 @@ public class ParentLineagePanel extends LineagePanel {
             int siblingsAmount = fathersSiblings + mothersSiblings;
             motherX = fatherX + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
         } else {
-            motherX = x + (getConfiguration().getAdultImageWidth() / 2 + getConfiguration().getWideMarriageLabel() / 2);
+            motherX = x + (getConfiguration().getAdultImageWidth() + getConfiguration().getWideMarriageLabel());
         }
 
         drawPerson(motherX, parentsY, personModel.getMother());

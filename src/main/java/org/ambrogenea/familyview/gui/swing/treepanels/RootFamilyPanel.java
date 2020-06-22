@@ -224,11 +224,11 @@ public class RootFamilyPanel extends JPanel {
         AncestorPerson sibling;
 
         int olderSiblingCount = rootChild.getOlderSiblings().size();
-        int startX = rootSiblingX - HORIZONTAL_GAP;
+        int startX = rootSiblingX - SIBLINGS_GAP;
         for (int i = olderSiblingCount - 1; i >= 0; i--) {
             sibling = rootChild.getOlderSiblings().get(i);
 
-            startX = startX - getConfiguration().getSiblingImageWidth() - SIBLINGS_GAP;
+            startX = startX - getConfiguration().getSiblingImageWidth() - HORIZONTAL_GAP;
             if (getConfiguration().isShowSiblingSpouses() && sibling.getSpouse() != null) {
                 sibling.getSpouse().setDirectLineage(false);
                 drawPerson(startX, rootSiblingY, sibling.getSpouse());
@@ -250,12 +250,12 @@ public class RootFamilyPanel extends JPanel {
     protected void drawYoungerSiblings(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild) {
         AncestorPerson sibling;
 
-        int startX = rootSiblingX + HORIZONTAL_GAP;
+        int startX = rootSiblingX + SIBLINGS_GAP;
         int youngerSiblingsCount = rootChild.getYoungerSiblings().size();
         for (int i = 0; i < youngerSiblingsCount; i++) {
             sibling = rootChild.getYoungerSiblings().get(i);
 
-            startX = startX + getConfiguration().getSiblingImageWidth() + SIBLINGS_GAP;
+            startX = startX + getConfiguration().getSiblingImageWidth() + HORIZONTAL_GAP;
             drawPerson(startX, rootSiblingY, sibling);
 
             if (i == youngerSiblingsCount - 1) {
@@ -353,7 +353,7 @@ public class RootFamilyPanel extends JPanel {
                     } else {
                         addStraightChildrenLine(childXPosition, childrenY, labelXPosition);
                     }
-                    TODO: //draw spouse of the childer
+                    TODO: //draw spouse of the children
                     drawPerson(childXPosition, childrenY, spouseCouple.getChildren().get(i));
                 }
                 childrenWidth = childrenWidth / 2;
@@ -373,7 +373,7 @@ public class RootFamilyPanel extends JPanel {
         g2.setColor(LINE_COLOR);
 
         int lineStrokeExtra = 0;
-        if (configuration.getAdultFontSize() > 18) {
+        if (configuration.getAdultFontSize() >= 18) {
             lineStrokeExtra = 1;
         }
 

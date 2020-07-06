@@ -26,6 +26,10 @@ public class MotherLineagePanel extends LineagePanel {
             drawMotherFamily(x, y, personModel);
         }
 
+        if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
+            drawChildren(x + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
+        }
+
         if (getConfiguration().isShowResidence()) {
             drawResidenceLegend(setup.getHeight());
         }
@@ -44,10 +48,6 @@ public class MotherLineagePanel extends LineagePanel {
 
         if (getConfiguration().isShowSiblings()) {
             drawSiblingsAroundFather(motherXPosition, y, person.getMother());
-        }
-
-        if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
-            drawChildren(childXPosition + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
         }
 
         drawFathersFamily(motherXPosition, y, person.getMother());

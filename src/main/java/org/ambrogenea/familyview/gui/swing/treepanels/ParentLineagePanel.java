@@ -36,7 +36,6 @@ public class ParentLineagePanel extends LineagePanel {
     private void drawParentsLineage(int x, int y) {
         int parentsY = y - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
         int fatherX = x - getConfiguration().getHalfSpouseLabelSpace();
-        switchParentSiblings();
 
         drawPerson(fatherX, parentsY, personModel.getFather());
         drawFathersFamily(fatherX, parentsY, personModel.getFather());
@@ -44,20 +43,18 @@ public class ParentLineagePanel extends LineagePanel {
         int motherX;
         if (getConfiguration().isShowSiblings()) {
             int fathersSiblings = personModel.getFather().getMaxYoungerSiblings();
+            drawSiblings(fatherX, parentsY, personModel.getFather());
+
             int mothersSiblings = personModel.getMother().getMaxOlderSiblings();
             int siblingsAmount = fathersSiblings + mothersSiblings;
-            motherX = fatherX + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
+            motherX = x + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
+            drawSiblings(motherX, parentsY, personModel.getMother());
         } else {
             motherX = x + (getConfiguration().getAdultImageWidth() + getConfiguration().getWideMarriageLabel());
         }
 
         drawPerson(motherX, parentsY, personModel.getMother());
         drawFathersFamily(motherX, parentsY, personModel.getMother());
-
-        if (getConfiguration().isShowSiblings()) {
-            drawSiblings(fatherX, parentsY, personModel.getFather());
-            drawSiblings(motherX, parentsY, personModel.getMother());
-        }
 
         int centerXPosition = (fatherX + motherX) / 2;
         drawPerson(centerXPosition, y, personModel);
@@ -81,13 +78,6 @@ public class ParentLineagePanel extends LineagePanel {
             drawSiblingsAroundFather(childXPosition, y, person.getMother());
         }
         drawFathersFamily(childXPosition, y, person.getMother());
-    }
-
-    private void switchParentSiblings() {
-        personModel.getFather().getOlderSiblings().addAll(0, personModel.getFather().getYoungerSiblings());
-        personModel.getFather().getYoungerSiblings().clear();
-        personModel.getMother().getYoungerSiblings().addAll(0, personModel.getMother().getOlderSiblings());
-        personModel.getMother().getOlderSiblings().clear();
     }
 
 }

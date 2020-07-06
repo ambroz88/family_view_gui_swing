@@ -19,6 +19,15 @@ public class AllParentsPanel extends RootFamilyPanel {
         int x = setup.getX();
         int y = setup.getY();
         drawPerson(x, y, personModel);
+
+        if (getConfiguration().isShowSpousesFamily()) {
+            if (getConfiguration().isShowChildren()) {
+                drawAllSpousesWithKids(x, y, personModel);
+            } else {
+                drawAllSpouses(x, y, personModel);
+            }
+        }
+
         drawParents(personModel, x, y);
     }
 

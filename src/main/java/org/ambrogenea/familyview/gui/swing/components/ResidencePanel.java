@@ -12,8 +12,7 @@ import java.util.TreeMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.HORIZONTAL_GAP;
-import static org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel.RESIDENCE_SIZE;
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 
 /**
  *
@@ -35,8 +34,8 @@ public class ResidencePanel extends JPanel {
 
     private void initPanel(TreeMap<String, Color> cityRegister1) {
         int citiesCount = cityRegister1.size();
-        setPreferredSize(new Dimension(250, (citiesCount + 1) * (RESIDENCE_SIZE + HORIZONTAL_GAP / 2) + HORIZONTAL_GAP / 2));
-        setSize(new Dimension(250, (citiesCount + 1) * (RESIDENCE_SIZE + HORIZONTAL_GAP / 2) + HORIZONTAL_GAP / 2));
+        setPreferredSize(new Dimension(250, (citiesCount + 1) * (Spaces.RESIDENCE_SIZE + Spaces.HORIZONTAL_GAP / 2) + Spaces.HORIZONTAL_GAP / 2));
+        setSize(new Dimension(250, (citiesCount + 1) * (Spaces.RESIDENCE_SIZE + Spaces.HORIZONTAL_GAP / 2) + Spaces.HORIZONTAL_GAP / 2));
         setBackground(Color.WHITE);
     }
 
@@ -65,7 +64,14 @@ public class ResidencePanel extends JPanel {
         int count = 1;
         for (String city : cityRegister.keySet()) {
             g2.setColor(cityRegister.get(city));
-            g2.drawRoundRect(HORIZONTAL_GAP, count * (RESIDENCE_SIZE + HORIZONTAL_GAP / 2) + HORIZONTAL_GAP / 2, RESIDENCE_SIZE, RESIDENCE_SIZE, RESIDENCE_SIZE / 2, RESIDENCE_SIZE / 2);
+            g2.drawRoundRect(
+                    Spaces.HORIZONTAL_GAP,
+                    count * (Spaces.RESIDENCE_SIZE + Spaces.HORIZONTAL_GAP / 2) + Spaces.HORIZONTAL_GAP / 2,
+                    Spaces.RESIDENCE_SIZE,
+                    Spaces.RESIDENCE_SIZE,
+                    Spaces.RESIDENCE_SIZE / 2,
+                    Spaces.RESIDENCE_SIZE / 2
+            );
             count++;
         }
 

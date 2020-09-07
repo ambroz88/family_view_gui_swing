@@ -1,5 +1,6 @@
-package org.ambrogenea.familyview.gui.swing.treepanels;
+package org.ambrogenea.familyview.gui.swing.treepanels.horizontal;
 
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;
@@ -34,7 +35,7 @@ public class ParentLineagePanel extends LineagePanel {
     }
 
     private void drawParentsLineage(int x, int y) {
-        int parentsY = y - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        int parentsY = y - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
         int fatherX = x - getConfiguration().getHalfSpouseLabelSpace();
 
         drawPerson(fatherX, parentsY, personModel.getFather());
@@ -47,7 +48,7 @@ public class ParentLineagePanel extends LineagePanel {
 
             int mothersSiblings = personModel.getMother().getMaxOlderSiblings();
             int siblingsAmount = fathersSiblings + mothersSiblings;
-            motherX = x + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
+            motherX = x + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + Spaces.HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
             drawSiblings(motherX, parentsY, personModel.getMother());
         } else {
             motherX = x + (getConfiguration().getAdultImageWidth() + getConfiguration().getWideMarriageLabel());
@@ -69,7 +70,7 @@ public class ParentLineagePanel extends LineagePanel {
     }
 
     private void drawMotherFamily(int childXPosition, int childYPosition, AncestorPerson person) {
-        int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        int y = childYPosition - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
 
         addLineToParents(childXPosition, childYPosition);
         drawMother(childXPosition, y, person);

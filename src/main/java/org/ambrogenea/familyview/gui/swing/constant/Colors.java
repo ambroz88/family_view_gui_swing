@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.tools;
+package org.ambrogenea.familyview.gui.swing.constant;
 
 import java.awt.Color;
 

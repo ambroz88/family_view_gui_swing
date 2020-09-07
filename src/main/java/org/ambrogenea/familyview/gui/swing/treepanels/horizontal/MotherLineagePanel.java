@@ -1,5 +1,6 @@
-package org.ambrogenea.familyview.gui.swing.treepanels;
+package org.ambrogenea.familyview.gui.swing.treepanels.horizontal;
 
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -36,7 +37,7 @@ public class MotherLineagePanel extends LineagePanel {
     }
 
     private void drawMotherFamily(int childXPosition, int childYPosition, AncestorPerson person) {
-        int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        int y = childYPosition - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
 
         addLineToParents(childXPosition, childYPosition);
         int motherXPosition = drawMother(childXPosition, y, person);

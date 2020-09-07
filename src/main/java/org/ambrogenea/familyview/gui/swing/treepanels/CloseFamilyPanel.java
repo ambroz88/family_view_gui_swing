@@ -2,7 +2,9 @@ package org.ambrogenea.familyview.gui.swing.treepanels;
 
 import java.awt.Dimension;
 
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
+import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -61,7 +63,7 @@ public class CloseFamilyPanel extends RootFamilyPanel {
     private void drawParents(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getMother() != null) {
             int halfLabelWidth = getConfiguration().getMarriageLabelWidth() / 2;
-            int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+            int y = childYPosition - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
 
             int motherXPosition;
 

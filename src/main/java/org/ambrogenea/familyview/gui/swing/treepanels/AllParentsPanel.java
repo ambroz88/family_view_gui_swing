@@ -1,7 +1,9 @@
 package org.ambrogenea.familyview.gui.swing.treepanels;
 
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
+import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -32,7 +34,7 @@ public class AllParentsPanel extends RootFamilyPanel {
     }
 
     private void drawParents(AncestorPerson child, int childX, int childY) {
-        int parentsY = childY - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+        int parentsY = childY - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
         if (child.getMother() != null) {
             double motherParentsCount = Math.min(child.getMother().getInnerParentsCount(), child.getMother().getLastParentsCount());
 
@@ -47,8 +49,8 @@ public class AllParentsPanel extends RootFamilyPanel {
                     fatherX = childX - getConfiguration().getHalfSpouseLabelSpace();
                     motherX = childX + getConfiguration().getHalfSpouseLabelSpace();
                 } else {
-                    double motherParentWidth = (getConfiguration().getCoupleWidth() + SIBLINGS_GAP) * motherParentsCount;
-                    double fatherParentWidth = (getConfiguration().getCoupleWidth() + SIBLINGS_GAP) * fatherParentsCount;
+                    double motherParentWidth = (getConfiguration().getCoupleWidth() + Spaces.SIBLINGS_GAP) * motherParentsCount;
+                    double fatherParentWidth = (getConfiguration().getCoupleWidth() + Spaces.SIBLINGS_GAP) * fatherParentsCount;
                     int halfParentWidth = (int) (fatherParentWidth + motherParentWidth) / 2;
                     fatherX = childX - halfParentWidth;
                     motherX = childX + halfParentWidth;

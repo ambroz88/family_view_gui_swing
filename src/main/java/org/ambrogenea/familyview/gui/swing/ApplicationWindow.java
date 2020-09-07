@@ -129,15 +129,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         generateAncestorButton = new javax.swing.JButton();
         personBoxPanel = new javax.swing.JPanel();
         ageCheckBox = new javax.swing.JCheckBox();
-        residenceCheckBox = new javax.swing.JCheckBox();
         templeCheckBox = new javax.swing.JCheckBox();
         placesCheckBox = new javax.swing.JCheckBox();
         shortenPlacesCheckBox = new javax.swing.JCheckBox();
         occupationCheckBox = new javax.swing.JCheckBox();
         marriageCheckBox = new javax.swing.JCheckBox();
-        resetModeCheckBox = new javax.swing.JCheckBox();
-        shapeLabelBox = new javax.swing.JComboBox<>();
-        heraldryCheckBox = new javax.swing.JCheckBox();
         parentPanel = new javax.swing.JPanel();
         personImagePanel = new javax.swing.JPanel();
         TopOffsetLabel = new javax.swing.JLabel();
@@ -167,6 +163,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingsTopOffsetSpinner = new javax.swing.JSpinner();
         siblingsSizeLabel = new javax.swing.JLabel();
         siblingsSize = new javax.swing.JLabel();
+        shapeLabelBox = new javax.swing.JComboBox<>();
+        heraldryCheckBox = new javax.swing.JCheckBox();
+        residenceCheckBox = new javax.swing.JCheckBox();
+        resetModeCheckBox = new javax.swing.JCheckBox();
+        verticalViewCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
@@ -394,14 +395,6 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             }
         });
 
-        residenceCheckBox.setSelected(configuration.isShowResidence());
-        residenceCheckBox.setText("Show residence");
-        residenceCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                residenceCheckBoxActionPerformed(evt);
-            }
-        });
-
         templeCheckBox.setSelected(configuration.isShowTemple());
         templeCheckBox.setText("Show temple box");
         templeCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -442,29 +435,6 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             }
         });
 
-        resetModeCheckBox.setText("Reset mode");
-        resetModeCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetModeCheckBoxActionPerformed(evt);
-            }
-        });
-
-        shapeLabelBox.setModel(new DefaultComboBoxModel<>(LabelShape.getStrings()));
-        shapeLabelBox.setSelectedItem(configuration.getLabelShape());
-        shapeLabelBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shapeLabelBoxActionPerformed(evt);
-            }
-        });
-
-        heraldryCheckBox.setSelected(configuration.isShowHeraldry());
-        heraldryCheckBox.setText("Show heraldry");
-        heraldryCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                heraldryCheckBoxActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout personBoxPanelLayout = new javax.swing.GroupLayout(personBoxPanel);
         personBoxPanel.setLayout(personBoxPanelLayout);
         personBoxPanelLayout.setHorizontalGroup(
@@ -472,17 +442,12 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             .addGroup(personBoxPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(resetModeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(residenceCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(heraldryCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(templeCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(placesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(occupationCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(shortenPlacesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(marriageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(shapeLabelBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(templeCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(placesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(occupationCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shortenPlacesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(marriageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         personBoxPanelLayout.setVerticalGroup(
@@ -495,19 +460,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
                 .addComponent(placesCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shortenPlacesCheckBox)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(templeCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(marriageCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(shapeLabelBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(heraldryCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(residenceCheckBox)
-                .addGap(18, 18, 18)
-                .addComponent(resetModeCheckBox)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         parentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person in direct lineage"));
@@ -826,6 +783,45 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
         siblingsDiagramComboBox.setSelectedItem(configuration.getSiblingDiagram());
 
+        shapeLabelBox.setModel(new DefaultComboBoxModel<>(LabelShape.getStrings()));
+        shapeLabelBox.setSelectedItem(configuration.getLabelShape());
+        shapeLabelBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shapeLabelBoxActionPerformed(evt);
+            }
+        });
+
+        heraldryCheckBox.setSelected(configuration.isShowHeraldry());
+        heraldryCheckBox.setText("Show heraldry");
+        heraldryCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                heraldryCheckBoxActionPerformed(evt);
+            }
+        });
+
+        residenceCheckBox.setSelected(configuration.isShowResidence());
+        residenceCheckBox.setText("Show residence");
+        residenceCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                residenceCheckBoxActionPerformed(evt);
+            }
+        });
+
+        resetModeCheckBox.setText("Reset mode");
+        resetModeCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetModeCheckBoxActionPerformed(evt);
+            }
+        });
+
+        verticalViewCheckBox.setSelected(configuration.isShowCouplesVertical());
+        verticalViewCheckBox.setText("Verical view");
+        verticalViewCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verticalViewCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
         settingsRootPanelLayout.setHorizontalGroup(
@@ -851,11 +847,20 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addComponent(parentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(siblingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(residenceCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(heraldryCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(verticalViewCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(resetModeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(shapeLabelBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(siblingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tableScroll))
                 .addContainerGap())
         );
@@ -864,7 +869,19 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             .addGroup(settingsRootPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(shapeLabelBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(heraldryCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(residenceCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetModeCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(verticalViewCheckBox)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(settingsRootPanelLayout.createSequentialGroup()
                         .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, settingsRootPanelLayout.createSequentialGroup()
@@ -910,7 +927,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingsTab, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+                .addComponent(settingsTab)
                 .addContainerGap())
         );
 
@@ -996,10 +1013,18 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
             if (configuration.isShowFathersLineage() && configuration.isShowMothersLineage()) {
                 personWithAncestors = ancestors.generateParentsLineage(recordsTable.getSelectedRow());
-                drawing.generateParentsLineage(personWithAncestors, configuration);
+                if (configuration.isShowCouplesVertical()) {
+                    drawing.generateParentsLineageVertical(personWithAncestors, configuration);
+                } else {
+                    drawing.generateParentsLineage(personWithAncestors, configuration);
+                }
             } else if (configuration.isShowFathersLineage()) {
                 personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
-                drawing.generateFatherLineage(personWithAncestors, configuration);
+                if (configuration.isShowCouplesVertical()) {
+                    drawing.generateFatherLineageVertical(personWithAncestors, configuration);
+                } else {
+                    drawing.generateFatherLineage(personWithAncestors, configuration);
+                }
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
                 drawing.generateMotherLineage(personWithAncestors, configuration);
@@ -1176,6 +1201,10 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         configuration.setShowSiblingSpouses(showSiblingSpouse.isSelected());
     }//GEN-LAST:event_showSiblingSpouseActionPerformed
 
+    private void verticalViewCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalViewCheckBoxActionPerformed
+        configuration.setShowCouplesVertical(verticalViewCheckBox.isSelected());
+    }//GEN-LAST:event_verticalViewCheckBoxActionPerformed
+
     private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
         if (person != null) {
             AncestorPerson actualPerson = person;
@@ -1324,6 +1353,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private javax.swing.JScrollPane tableScroll;
     private javax.swing.JCheckBox templeCheckBox;
     private javax.swing.JSpinner topOffsetSpinner;
+    private javax.swing.JCheckBox verticalViewCheckBox;
     // End of variables declaration//GEN-END:variables
 
     @Override

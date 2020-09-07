@@ -1,6 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.model;
 
-import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 
 /**
  *
@@ -8,7 +8,7 @@ import org.ambrogenea.familyview.gui.swing.treepanels.RootFamilyPanel;
  */
 public class Arc {
 
-    public static final int RADIUS = RootFamilyPanel.HORIZONTAL_GAP;
+    public static final int RADIUS = Spaces.HORIZONTAL_GAP;
     public static final int ANGLE_SIZE = 90;
 
     private final int leftUpperX;

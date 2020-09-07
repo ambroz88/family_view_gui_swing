@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.treepanels;
+package org.ambrogenea.familyview.gui.swing.treepanels.horizontal;
 
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;

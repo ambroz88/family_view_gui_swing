@@ -1,6 +1,7 @@
-package org.ambrogenea.familyview.gui.swing.treepanels;
+package org.ambrogenea.familyview.gui.swing.treepanels.horizontal;
 
 import org.ambrogenea.familyview.gui.swing.components.ResidencePanel;
+import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -30,7 +31,7 @@ public abstract class LineagePanel extends RootFamilyPanel {
 
     protected void drawFathersFamily(int childXPosition, int childYPosition, AncestorPerson person) {
         if (person.getMother() != null) {
-            int y = childYPosition - getConfiguration().getAdultImageHeight() - VERTICAL_GAP;
+            int y = childYPosition - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
 
             addLineToParents(childXPosition, childYPosition);
             if (getConfiguration().isShowHeraldry()) {
@@ -61,7 +62,7 @@ public abstract class LineagePanel extends RootFamilyPanel {
     protected void drawResidenceLegend(int parentPanelHeight) {
         ResidencePanel residencePanel = new ResidencePanel(getCityRegister());
         this.add(residencePanel);
-        residencePanel.setBounds(HORIZONTAL_GAP, parentPanelHeight - residencePanel.getHeight() - HORIZONTAL_GAP, residencePanel.getWidth(), residencePanel.getHeight());
+        residencePanel.setBounds(Spaces.HORIZONTAL_GAP, parentPanelHeight - residencePanel.getHeight() - Spaces.HORIZONTAL_GAP, residencePanel.getWidth(), residencePanel.getHeight());
     }
 
 }

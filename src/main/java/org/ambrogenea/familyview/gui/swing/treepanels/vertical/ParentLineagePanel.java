@@ -62,7 +62,7 @@ public class ParentLineagePanel extends LineagePanel {
         drawSpouseAndSiblings(centerXPosition, y);
 
         if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
-            drawChildren(centerXPosition + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
+            drawChildren(centerXPosition, y, personModel.getSpouseCouple());
         }
 
         drawLabel(fatherX + getConfiguration().getAdultImageWidth() / 2, motherX - getConfiguration().getAdultImageWidth() / 2, parentsY, personModel.getParents().getMarriageDate());

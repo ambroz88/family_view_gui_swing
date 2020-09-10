@@ -161,14 +161,18 @@ public class PageSetupVertical {
 
     private void calculateLineageVertical(AncestorPerson person) {
         if (config.getAdultDiagram().equals(Diagrams.PERGAMEN)) {
-            pictureHeight = (2 * config.getAdultImageHeight() - (int) (config.getAdultImageHeight() * 0.4) + config.getMarriageLabelHeight() + VERTICAL_GAP) * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + 1);
+            pictureHeight = config.getAdultImageHeight() + 2 * SIBLINGS_GAP
+                    + (2 * config.getAdultImageHeight() - (int) (config.getAdultImageHeight() * 0.2) + config.getMarriageLabelHeight() + VERTICAL_GAP)
+                    * Math.min(person.getAncestorGenerations(), config.getGenerationCount());
         } else {
-            pictureHeight = (2 * config.getAdultImageHeight() + config.getMarriageLabelHeight() + VERTICAL_GAP) * (Math.min(person.getAncestorGenerations(), config.getGenerationCount()) + 1);
+            pictureHeight = config.getAdultImageHeight() + 2 * SIBLINGS_GAP
+                    + (2 * config.getAdultImageHeight() + config.getMarriageLabelHeight() + VERTICAL_GAP)
+                    * Math.min(person.getAncestorGenerations(), config.getGenerationCount());
         }
         y = pictureHeight - VERTICAL_GAP / 2 - config.getAdultImageHeightAlternative() / 2;
 
         if (config.isShowSpouses() && config.isShowChildren() && person.getSpouseCouple() != null && !person.getSpouseCouple().getChildren().isEmpty()) {
-            pictureHeight = pictureHeight + config.getAdultImageHeight() + VERTICAL_GAP;
+            pictureHeight = pictureHeight + 2 * config.getAdultImageHeight() + config.getAdultImageHeight() + VERTICAL_GAP;
         }
     }
 

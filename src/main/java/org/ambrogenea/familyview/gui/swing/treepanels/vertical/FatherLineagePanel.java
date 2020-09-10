@@ -29,7 +29,7 @@ public class FatherLineagePanel extends LineagePanel {
         }
 
         if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
-            drawChildren(x + getConfiguration().getHalfSpouseLabelSpace(), y, personModel.getSpouseCouple());
+            drawChildren(x, y, personModel.getSpouseCouple());
         }
 
         if (getConfiguration().isShowResidence()) {

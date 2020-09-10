@@ -20,9 +20,9 @@ public abstract class LineagePanel extends RootFamilyPanel {
 
     protected void drawSpouseAndSiblings(int x, int y) {
         if (getConfiguration().isShowSpouses()) {
-            int spousesShift = drawAllSpouses(x, y, personModel);
+            drawSpouse(x, y, personModel);
             if (getConfiguration().isShowSiblings()) {
-                drawSiblingsAroundWifes(x, y, personModel, spousesShift);
+                drawSiblingsAroundMother(x, y, personModel);
             }
         } else if (getConfiguration().isShowSiblings()) {
             drawSiblings(x, y, personModel);
@@ -46,7 +46,7 @@ public abstract class LineagePanel extends RootFamilyPanel {
                 drawPerson(childXPosition, fatherYPosition, person.getFather());
 
                 if (getConfiguration().isShowSiblings()) {
-                    drawSiblingsAroundMother(childXPosition, childYPosition, person.getFather());
+                    drawSiblingsAroundMother(childXPosition, fatherYPosition, person.getFather());
                 }
 
                 drawFathersFamilyVertical(childXPosition, fatherYPosition, person.getFather());

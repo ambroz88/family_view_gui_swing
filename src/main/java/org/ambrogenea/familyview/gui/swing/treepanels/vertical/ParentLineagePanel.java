@@ -51,10 +51,14 @@ public class ParentLineagePanel extends LineagePanel {
             motherX = x + getConfiguration().getAdultImageWidth() + Math.max((siblingsAmount + 2) * (getConfiguration().getAdultImageWidth() + Spaces.HORIZONTAL_GAP), getConfiguration().getWideMarriageLabel());
             drawSiblings(motherX, parentsY, personModel.getMother());
         } else {
-            motherX = x + (getConfiguration().getAdultImageWidth() + getConfiguration().getCoupleWidthVertical());
+            if (personModel.getFather().getFather() == null && personModel.getFather().getMother() == null) {
+                motherX = x + getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth();
+            } else {
+                motherX = x + getConfiguration().getAdultImageWidth() + getConfiguration().getCoupleWidthVertical();
+            }
         }
 
-        drawPerson(motherX, parentsY, personModel.getMother());
+        drawPerson(motherX + 2, parentsY, personModel.getMother());
         drawFathersFamilyVertical(motherX, parentsY, personModel.getMother());
 
         int centerXPosition = (fatherX + motherX) / 2;

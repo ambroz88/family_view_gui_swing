@@ -141,6 +141,15 @@ public class RootFamilyPanel extends JPanel {
         return motherXPosition;
     }
 
+    protected void drawFatherVertical(int childXPosition, int spouseY, AncestorPerson child) {
+        int fatherY = spouseY + getConfiguration().getAdultImageHeightAlternative() + getConfiguration().getMarriageLabelHeight();
+        int fatherXPosition = childXPosition + getConfiguration().getMarriageLabelWidth();
+        drawLabel(childXPosition, childXPosition + getConfiguration().getMarriageLabelWidth(),
+                fatherY - getConfiguration().getAdultImageHeightAlternative() / 2, child.getParents().getMarriageDate());
+
+        drawPerson(fatherXPosition, fatherY, child.getFather());
+    }
+
     protected void drawSpouse(int husbandX, int spouseY, AncestorPerson person) {
         if (person.getSpouse() != null) {
             int spouseXPosition = husbandX + getConfiguration().getMarriageLabelWidth();
@@ -201,12 +210,8 @@ public class RootFamilyPanel extends JPanel {
             date.setBounds(startX, centerY - labelHeight - 3, endX - startX, labelHeight);
         }
 
-        if (configuration.getLabelShape().equals(LabelShape.RECTANGLE) && text.isEmpty()) {
-            lines.add(new Line(startX - Spaces.SIBLINGS_GAP, centerY, endX + Spaces.SIBLINGS_GAP, centerY));
-        } else {
-            Rectangle rect = new Rectangle(startX, centerY - labelHeight - 3, endX - startX, labelHeight);
-            labels.add(rect);
-        }
+        Rectangle rect = new Rectangle(startX, centerY - labelHeight - 3, endX - startX, labelHeight);
+        labels.add(rect);
 
     }
 
@@ -385,9 +390,9 @@ public class RootFamilyPanel extends JPanel {
                 g2.setColor(LINE_COLOR);
                 g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
             } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
-                g2.fillRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
+                g2.fillRect(rect.x, rect.y, rect.width, rect.height);
                 g2.setColor(LINE_COLOR);
-                g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
+                g2.drawRect(rect.x, rect.y, rect.width, rect.height);
             }
         }
 

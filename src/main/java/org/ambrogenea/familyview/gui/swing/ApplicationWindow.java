@@ -1027,7 +1027,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
                 }
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
-                drawing.generateMotherLineage(personWithAncestors, configuration);
+                if (configuration.isShowCouplesVertical()) {
+                    drawing.generateMotherLineageVertical(personWithAncestors, configuration);
+                } else {
+                    drawing.generateMotherLineage(personWithAncestors, configuration);
+                }
             }
 
             settingsTab.addTab(personWithAncestors.getName(), drawing);

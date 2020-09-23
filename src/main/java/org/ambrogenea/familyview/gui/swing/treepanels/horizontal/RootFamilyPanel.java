@@ -24,12 +24,12 @@ import javax.swing.JPanel;
 import org.ambrogenea.familyview.gui.swing.components.AdultPanel;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.components.SiblingPanel;
+import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
-import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.Couple;
@@ -207,7 +207,7 @@ public class RootFamilyPanel extends JPanel {
             date.setBounds(startX, centerY - labelHeight, endX - startX, labelHeight);
         }
 
-        if (configuration.getLabelShape().equals(LabelShape.RECTANGLE) && text.isEmpty()) {
+        if (text.isEmpty()) {
             lines.add(new Line(startX - Spaces.SIBLINGS_GAP, centerY, endX + Spaces.SIBLINGS_GAP, centerY));
         } else {
             Rectangle rect = new Rectangle(startX, centerY - labelHeight, endX - startX, labelHeight);

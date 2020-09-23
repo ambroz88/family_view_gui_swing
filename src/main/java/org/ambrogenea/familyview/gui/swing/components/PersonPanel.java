@@ -144,6 +144,15 @@ public abstract class PersonPanel extends JPanel {
                     birthPlace.setText("," + SPACE + person.getSimpleBirthPlace());
                 }
             }
+        } else {
+            if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
+                if (configuration.isShortenPlaces()) {
+                    birthPlace.setText("\u002A " + Tools.cityShortVersion(person.getSimpleBirthPlace()));
+                } else {
+                    birthPlace.setText("\u002A " + person.getSimpleBirthPlace());
+                }
+                birthPlace.setHorizontalAlignment(JLabel.CENTER);
+            }
         }
 
         if (!person.getDeathDate().isEmpty()) {
@@ -198,14 +207,20 @@ public abstract class PersonPanel extends JPanel {
         c.gridy = 5;
         c.ipady = 0;
         c.weighty = 0;
-        add(birth, c);
+        if (!person.getBirthDate().isEmpty()) {
+            add(birth, c);
+        }
 
         c.gridy = 7;
         add(death, c);
 
         if (configuration.isShowPlaces()) {
             c.gridy = 5;
-            c.gridx = 1;
+            if (!person.getBirthDate().isEmpty()) {
+                c.gridx = 1;
+            } else {
+                c.gridx = 0;
+            }
             add(birthPlace, c);
 
             c.gridy = 7;

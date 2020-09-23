@@ -119,6 +119,15 @@ public class DrawingFrame extends JPanel {
         return fathersFamilyPanel;
     }
 
+    public JPanel generateMotherLineageVertical(AncestorPerson personWithAncestors, Configuration config) {
+        PageSetupVertical setup = new PageSetupVertical(config);
+        setup.calculateMotherLineage(personWithAncestors);
+        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.LineagePanel fathersFamilyPanel
+                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.MotherLineagePanel(personWithAncestors, config);
+        generateLineageVertical(setup, fathersFamilyPanel);
+        return fathersFamilyPanel;
+    }
+
     public JPanel generateParentsLineage(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
         setup.calculateParentLineage(personWithAncestors);

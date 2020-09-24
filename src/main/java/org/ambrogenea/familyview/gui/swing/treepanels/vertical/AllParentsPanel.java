@@ -1,9 +1,8 @@
-package org.ambrogenea.familyview.gui.swing.treepanels;
+package org.ambrogenea.familyview.gui.swing.treepanels.vertical;
 
 import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Line;
-import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.RootFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 
@@ -17,16 +16,15 @@ public class AllParentsPanel extends RootFamilyPanel {
         super(model, config);
     }
 
-    public void drawAncestorPanel(PageSetup setup) {
+    public void drawAncestorPanel(PageSetupVertical setup) {
         int x = setup.getX();
         int y = setup.getY();
         drawPerson(x, y, personModel);
 
-        if (getConfiguration().isShowSpousesFamily()) {
+        if (getConfiguration().isShowSpouses()) {
+            drawSpouse(x, y, personModel);
             if (getConfiguration().isShowChildren()) {
-                drawAllSpousesWithKids(x, y, personModel);
-            } else {
-                drawAllSpouses(x, y, personModel);
+                drawChildren(x, y, personModel.getSpouseCouple());
             }
         }
 

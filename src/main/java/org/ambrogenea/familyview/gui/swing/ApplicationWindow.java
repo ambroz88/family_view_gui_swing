@@ -1047,8 +1047,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
 
             DrawingFrame drawing = new DrawingFrame();
-            drawing.generateAllAncestors(personWithAncestors, configuration);
-
+            if (configuration.isShowCouplesVertical()) {
+                drawing.generateAllAncestorsVertical(personWithAncestors, configuration);
+            } else {
+                drawing.generateAllAncestors(personWithAncestors, configuration);
+            }
             settingsTab.addTab(personWithAncestors.getName(), drawing);
             settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
         }

@@ -19,8 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
-import org.ambrogenea.familyview.gui.swing.treepanels.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.AllParentsPanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.FatherLineagePanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.LineagePanel;
 import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.MotherLineagePanel;
@@ -78,6 +78,28 @@ public class DrawingFrame extends JPanel {
         int pictureHeight = setup.getHeight();
 
         final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors, config);
+        ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
+        scrollAncestorPane.add(ancestorPanel);
+        scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);
+        ancestorPanel.drawAncestorPanel(setup);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(ancestorPanel);
+            }
+        });
+        return ancestorPanel;
+    }
+
+    public JPanel generateAllAncestorsVertical(AncestorPerson personWithAncestors, Configuration config) {
+        PageSetupVertical setup = new PageSetupVertical(config);
+        setup.calculateAllAncestors(personWithAncestors);
+        int pictureWidth = setup.getWidth();
+        int pictureHeight = setup.getHeight();
+
+        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.AllParentsPanel ancestorPanel
+                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.AllParentsPanel(personWithAncestors, config);
         ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
         scrollAncestorPane.add(ancestorPanel);
         scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);

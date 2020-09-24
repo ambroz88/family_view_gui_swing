@@ -52,10 +52,10 @@ public class PageSetupVertical {
     }
 
     public void calculateAllAncestors(AncestorPerson person) {
-        pictureHeight = (config.getAdultImageHeight() + VERTICAL_GAP) * (Math.min(config.getGenerationCount(), person.getAncestorGenerations()) + 1);
+//        pictureHeight = (config.getAdultImageHeight() + VERTICAL_GAP) * (Math.min(config.getGenerationCount(), person.getAncestorGenerations()) + 1);
         pictureWidth = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (person.getLastParentsCount()));
         x = (int) ((config.getCoupleWidth() + SIBLINGS_GAP) * (person.getFather().getLastParentsCount() - person.getFather().getInnerParentsCount() + (person.getFather().getInnerParentsCount() + person.getMother().getInnerParentsCount()) / 2));
-        y = getHeight() - config.getAdultImageHeight();
+        calculateLineageVertical(person);
     }
 
     private void calculateParentLineageHorizontal(AncestorPerson person) {
@@ -182,8 +182,11 @@ public class PageSetupVertical {
         }
         y = pictureHeight - VERTICAL_GAP / 2 - config.getAdultImageHeightAlternative() / 2;
 
-        if (config.isShowSpouses() && config.isShowChildren() && person.getSpouseCouple() != null && !person.getSpouseCouple().getChildren().isEmpty()) {
-            pictureHeight = pictureHeight + 2 * config.getAdultImageHeight() + config.getAdultImageHeight() + VERTICAL_GAP;
+        if (config.isShowSpouses() && person.getSpouse() != null) {
+            pictureHeight = pictureHeight + config.getAdultImageHeightAlternative() + config.getMarriageLabelHeight();
+            if (config.isShowChildren() && person.getSpouseCouple() != null && !person.getSpouseCouple().getChildren().isEmpty()) {
+                pictureHeight = pictureHeight + config.getSiblingImageHeight() + VERTICAL_GAP + SIBLINGS_GAP;
+            }
         }
     }
 

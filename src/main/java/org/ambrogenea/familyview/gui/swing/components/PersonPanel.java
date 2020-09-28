@@ -211,8 +211,10 @@ public abstract class PersonPanel extends JPanel {
             add(birth, c);
         }
 
-        c.gridy = 7;
-        add(death, c);
+        if (configuration.isShowAge()) {
+            c.gridy = 7;
+            add(death, c);
+        }
 
         if (configuration.isShowPlaces()) {
             c.gridy = 5;
@@ -223,8 +225,10 @@ public abstract class PersonPanel extends JPanel {
             }
             add(birthPlace, c);
 
-            c.gridy = 7;
-            add(deathPlace, c);
+            if (configuration.isShowAge()) {
+                c.gridy = 7;
+                add(deathPlace, c);
+            }
 
             c.gridx = 0;
             c.gridwidth = 2;

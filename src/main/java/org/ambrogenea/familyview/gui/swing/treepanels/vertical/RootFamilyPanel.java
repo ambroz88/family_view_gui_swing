@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -29,6 +30,7 @@ import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.gui.swing.model.Position;
 import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -207,10 +209,10 @@ public class RootFamilyPanel extends JPanel {
 //            date.setBackground(LABEL_BACKGROUND);
             date.setOpaque(false);
             this.add(date);
-            date.setBounds(startX, centerY - labelHeight - 3, endX - startX, labelHeight);
+            date.setBounds(startX, centerY - labelHeight - 3, endX - startX - 1, labelHeight);
         }
 
-        Rectangle rect = new Rectangle(startX, centerY - labelHeight - 3, endX - startX, labelHeight);
+        Rectangle rect = new Rectangle(startX, centerY - labelHeight - 3, endX - startX - 1, labelHeight);
         labels.add(rect);
 
     }
@@ -364,6 +366,34 @@ public class RootFamilyPanel extends JPanel {
         return childrenWidth;
     }
 
+    protected void drawLine(Point start, Point end, int lineType) {
+        Line horizontal;
+        Line vertical;
+        if (getConfiguration().getLabelShape().equals(LabelShape.RECTANGLE)) {
+            horizontal = new Line(start.x, start.y, end.x, start.y);
+            vertical = new Line(end.x, start.y, end.x, end.y);
+            lines.add(horizontal);
+            lines.add(vertical);
+        } else if (getConfiguration().getLabelShape().equals(LabelShape.OVAL)) {
+
+            Arc arc;
+            if (start.x < end.x) {
+                horizontal = new Line(start.x, start.y, end.x - Arc.RADIUS, start.y);
+                vertical = new Line(end.x, start.y - Arc.RADIUS, end.x, end.y);
+                arc = new Arc(new Position(end.x - 2 * Arc.RADIUS, start.y - 2 * Arc.RADIUS), -90);
+            } else {
+                horizontal = new Line(start.x, start.y, end.x + Arc.RADIUS, start.y);
+                vertical = new Line(end.x, start.y - Arc.RADIUS, end.x, end.y);
+                arc = new Arc(new Position(end.x, start.y - 2 * Arc.RADIUS), 180);
+            }
+
+            arc.setType(lineType);
+            arcs.add(arc);
+            lines.add(horizontal);
+            lines.add(vertical);
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -399,7 +429,8 @@ public class RootFamilyPanel extends JPanel {
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(LINE_COLOR);
         for (Arc arc : arcs) {
-            g2.drawArc(arc.getLeftUpperX(), arc.getLeftUpperY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
+            g2.setStroke(new BasicStroke(lineStrokeExtra + arc.getType()));
+            g2.drawArc(arc.getLeftUpperCorner().getX(), arc.getLeftUpperCorner().getY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
         }
 
         for (ImageModel image : images) {
@@ -439,14 +470,14 @@ public class RootFamilyPanel extends JPanel {
             yRadius = Arc.RADIUS;
             xRadius = Arc.RADIUS;
             startAngle = 90;
-            arc = new Arc(startX, rootSiblingY - verticalShift, startAngle);
+            arc = new Arc(new Position(startX, rootSiblingY - verticalShift), startAngle);
             arcs.add(arc);
         } else if (startX > rootSiblingX) {
             //younger siblings
             yRadius = Arc.RADIUS;
             xRadius = -Arc.RADIUS;
             startAngle = 0;
-            arc = new Arc(startX - 2 * Arc.RADIUS, rootSiblingY - verticalShift, startAngle);
+            arc = new Arc(new Position(startX - 2 * Arc.RADIUS, rootSiblingY - verticalShift), startAngle);
             arcs.add(arc);
         } else {
             xRadius = 0;

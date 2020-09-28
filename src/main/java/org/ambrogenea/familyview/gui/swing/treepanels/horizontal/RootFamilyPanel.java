@@ -29,6 +29,7 @@ import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Arc;
 import org.ambrogenea.familyview.gui.swing.model.ImageModel;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.gui.swing.model.Position;
 import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -397,7 +398,7 @@ public class RootFamilyPanel extends JPanel {
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(LINE_COLOR);
         for (Arc arc : arcs) {
-            g2.drawArc(arc.getLeftUpperX(), arc.getLeftUpperY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
+            g2.drawArc(arc.getLeftUpperCorner().getX(), arc.getLeftUpperCorner().getY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
         }
 
         for (ImageModel image : images) {
@@ -436,14 +437,14 @@ public class RootFamilyPanel extends JPanel {
             yRadius = Arc.RADIUS;
             xRadius = Arc.RADIUS;
             startAngle = 90;
-            arc = new Arc(startX, rootSiblingY - verticalShift, startAngle);
+            arc = new Arc(new Position(startX, rootSiblingY - verticalShift), startAngle);
             arcs.add(arc);
         } else if (startX > rootSiblingX) {
             //younger siblings
             yRadius = Arc.RADIUS;
             xRadius = -Arc.RADIUS;
             startAngle = 0;
-            arc = new Arc(startX - 2 * Arc.RADIUS, rootSiblingY - verticalShift, startAngle);
+            arc = new Arc(new Position(startX - 2 * Arc.RADIUS, rootSiblingY - verticalShift), startAngle);
             arcs.add(arc);
         } else {
             xRadius = 0;

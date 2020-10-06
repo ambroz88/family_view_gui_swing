@@ -14,6 +14,19 @@ public class Position {
         this.y = y;
     }
 
+    public Position(Position newPosition) {
+        this.x = newPosition.x;
+        this.y = newPosition.y;
+    }
+
+    public void addX(int addDistance) {
+        this.x = x + addDistance;
+    }
+
+    public void addY(int addDistance) {
+        this.y = y + addDistance;
+    }
+
     public int getX() {
         return x;
     }

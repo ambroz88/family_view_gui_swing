@@ -128,8 +128,15 @@ public class PageSetupVertical {
     private void addFathersSiblingDimension(AncestorPerson person) {
         int siblingWidth = 0;
         if (person.getMaxOlderSiblings() > 0) {
-            x = x + (config.getSiblingImageWidth() + HORIZONTAL_GAP) * person.getMaxOlderSiblings() + HORIZONTAL_GAP;
-            siblingWidth = (config.getSiblingImageWidth() + HORIZONTAL_GAP) * person.getMaxOlderSiblings() + SIBLINGS_GAP;
+            int olderSiblingsCount;
+            if (config.isShowFathersLineage() && config.isShowMothersLineage()) {
+                olderSiblingsCount = Math.max(person.getMaxOlderSiblings(), person.getFather().getAllSiblingsCount());
+            } else {
+                olderSiblingsCount = person.getMaxOlderSiblings();
+            }
+
+            x = x + (config.getSiblingImageWidth() + HORIZONTAL_GAP) * olderSiblingsCount + HORIZONTAL_GAP;
+            siblingWidth = (config.getSiblingImageWidth() + HORIZONTAL_GAP) * olderSiblingsCount + SIBLINGS_GAP;
 
             if (config.isShowSiblingSpouses()) {
                 x = x + person.getMaxOlderSiblingsSpouse() * (config.getMarriageLabelWidth() + config.getSiblingImageWidth());

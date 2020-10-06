@@ -467,7 +467,7 @@ public class RootFamilyPanel extends JPanel {
             if (heraldry != null) {
                 try {
                     BufferedImage heraldryImage = ImageIO.read(heraldry);
-                    images.add(new ImageModel(heraldryImage, childXPosition, childYPosition - verticalShift, Spaces.VERTICAL_GAP / 2));
+                    images.add(new ImageModel(heraldryImage, new Position(childXPosition, childYPosition - verticalShift), Spaces.VERTICAL_GAP / 2));
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }

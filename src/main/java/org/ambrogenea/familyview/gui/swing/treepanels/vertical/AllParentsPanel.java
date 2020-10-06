@@ -1,9 +1,8 @@
 package org.ambrogenea.familyview.gui.swing.treepanels.vertical;
 
-import java.awt.Point;
-
 import org.ambrogenea.familyview.gui.swing.constant.Spaces;
 import org.ambrogenea.familyview.gui.swing.model.Line;
+import org.ambrogenea.familyview.gui.swing.model.Position;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -22,123 +21,118 @@ public class AllParentsPanel extends RootFamilyPanel {
     public void drawAncestorPanel(PageSetupVertical setup) {
         int x = setup.getX();
         int y = setup.getY();
-        drawFirstParents(x, y);
-//        drawFirstParentsVertical(x, y);
+        Position child = new Position(x, y);
+        drawFirstParents(child);
+//        drawFirstParentsVertical(child);
     }
 
-    private void drawFirstParentsVertical(int childX, int childY) {
+    private void drawFirstParentsVertical(Position child) {
         if (personModel.getMother() != null) {
 
-            addLineToParentsVertical(childX, childY);
+            addLineToParentsVertical(child);
             if (getConfiguration().isShowHeraldry()) {
-                addHeraldry(childX, childY, personModel.getSimpleBirthPlace());
+                addHeraldry(child, personModel.getSimpleBirthPlace());
             }
-
-            int motherY = childY - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
-            int fatherY = motherY - getConfiguration().getAdultImageHeightAlternative() - getConfiguration().getMarriageLabelHeight();
 
             if (personModel.getFather() != null) {
-                drawPerson(childX, fatherY, personModel.getFather());
-                drawParents(personModel.getFather(), childX, fatherY);
+                Position fatherPosition = drawFather(child, personModel.getFather());
+                drawParents(personModel.getFather(), fatherPosition);
             }
 
-            int motherX = childX + getConfiguration().getMarriageLabelWidth();
-            drawPerson(motherX, motherY, personModel.getMother());
-            drawParents(personModel.getMother(), motherX, motherY);
-
-            drawLabel(childX, motherX, motherY - getConfiguration().getAdultImageHeightAlternative() / 2, personModel.getParents().getMarriageDate());
+            Position motherPosition = drawMother(child, personModel.getMother(), personModel.getParents().getMarriageDate());
+            drawParents(personModel.getMother(), motherPosition);
         }
 
-        drawPerson(childX, childY, personModel);
+        drawPerson(child, personModel);
 
         if (getConfiguration().isShowSpouses()) {
-            drawSpouse(childX, childY, personModel);
+            drawSpouse(child, personModel);
             if (getConfiguration().isShowChildren()) {
-                drawChildren(childX, childY, personModel.getSpouseCouple());
+                drawChildren(child, personModel.getSpouseCouple());
             }
         }
 
     }
 
-    private void drawFirstParents(int childX, int childY) {
+    private void drawFirstParents(Position child) {
         if (personModel.getMother() != null) {
-            int parentsY = childY - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
+            int parentsY = child.getY() - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
 
             if (getConfiguration().isShowHeraldry()) {
-                addHeraldry(childX, childY, personModel.getSimpleBirthPlace());
+                addHeraldry(child, personModel.getSimpleBirthPlace());
             }
 
             int shiftX = getConfiguration().getAdultImageWidth() / 4;
             double motherParentsCount = Math.min(personModel.getFather().getInnerParentsCount(), personModel.getFather().getLastParentsCount());
             double fatherParentsCount = Math.min(personModel.getMother().getInnerParentsCount(), personModel.getMother().getLastParentsCount());
-            int fatherX = childX - getConfiguration().getAdultImageWidth() + shiftX
+            int fatherX = child.getX() - getConfiguration().getAdultImageWidth() + shiftX
                     - (int) ((getConfiguration().getCoupleWidthVertical() + shiftX) * fatherParentsCount);
-            int motherX = childX + getConfiguration().getAdultImageWidth() - shiftX
+            int motherX = child.getX() + getConfiguration().getAdultImageWidth() - shiftX
                     + (int) ((getConfiguration().getCoupleWidthVertical() + shiftX) * motherParentsCount);
 
             if (personModel.getFather() != null) {
-                drawPerson(fatherX, parentsY, personModel.getFather());
-                drawGrandParent(personModel.getFather(), fatherX, parentsY);
+                Position fatherPosition = new Position(fatherX, parentsY);
+                drawPerson(fatherPosition, personModel.getFather());
+                drawGrandParent(personModel.getFather(), fatherPosition);
             }
 
-            drawPerson(motherX, parentsY, personModel.getMother());
-            drawGrandParent(personModel.getMother(), motherX, parentsY);
+            Position motherPosition = new Position(motherX, parentsY);
+            drawPerson(motherPosition, personModel.getMother());
+            drawGrandParent(personModel.getMother(), motherPosition);
 
             int halfAdult = getConfiguration().getAdultImageWidth() / 2;
-            drawLabel(fatherX + halfAdult, motherX - halfAdult, parentsY + getConfiguration().getMarriageLabelHeight() / 2, personModel.getParents().getMarriageDate());
+            int labelWidth = motherX - fatherX - getConfiguration().getAdultImageWidth();
+            drawLabel(new Position(fatherX + halfAdult, parentsY - getConfiguration().getMarriageLabelHeight() / 2), labelWidth, personModel.getParents().getMarriageDate());
 
             int newChildX = (fatherX + motherX) / 2;
-            drawPerson(newChildX, childY, personModel);
-            drawLine(new Point(newChildX, childY), new Point(newChildX, parentsY), Line.LINEAGE);
+            Position newChild = new Position(newChildX, child.getY());
+            drawPerson(newChild, personModel);
+            drawLine(newChild, new Position(newChildX, parentsY), Line.LINEAGE);
 
             if (getConfiguration().isShowSpouses()) {
-                drawSpouse(newChildX, childY, personModel);
+                drawSpouse(newChild, personModel);
 
                 if (getConfiguration().isShowChildren()) {
-                    drawChildren(newChildX, childY, personModel.getSpouseCouple());
+                    drawChildren(newChild, personModel.getSpouseCouple());
                 }
             }
         }
 
     }
 
-    private void drawGrandParent(AncestorPerson child, int childX, int childY) {
+    private void drawGrandParent(AncestorPerson child, Position childPosition) {
         if (child.getMother() != null) {
-            int motherX;
-
-            int fatherY = childY - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP
-                    - getConfiguration().getAdultImageHeightAlternative() - getConfiguration().getMarriageLabelHeight();
-            int motherY = childY - getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP;
-            int labelY = (motherY + fatherY) / 2;
-
             if (child.getFather() == null) {
-                motherX = childX;
-                drawPerson(motherX, motherY, child.getMother());
-                drawParents(child.getMother(), motherX, motherY);
+                Position motherPosition = new Position(childPosition);
+                motherPosition.addY(-getConfiguration().getAdultImageHeight() - Spaces.VERTICAL_GAP);
+                drawPerson(motherPosition, child.getMother());
+                drawParents(child.getMother(), motherPosition);
+                drawLine(childPosition, motherPosition, Line.LINEAGE);
             } else {
-                motherX = childX + getConfiguration().getMarriageLabelWidth();
-                drawPerson(childX, fatherY, child.getFather());
-                drawParents(child.getFather(), childX, fatherY);
+                Position fatherPosition = drawFather(childPosition, child.getFather());
+                drawParents(child.getFather(), fatherPosition);
 
-                drawPerson(motherX, motherY, child.getMother());
-                drawParents(child.getMother(), motherX, motherY);
+                Position motherPosition = drawMother(childPosition, child.getMother(), child.getParents().getMarriageDate());
+                drawParents(child.getMother(), motherPosition);
 
-                drawLabel(childX, motherX, labelY + getConfiguration().getMarriageLabelHeight() / 2, child.getParents().getMarriageDate());
-                drawLine(new Point(childX, childY), new Point(childX, labelY), Line.LINEAGE);
+                fatherPosition.addY(getConfiguration().getAdultImageHeightAlternative());
+                drawLine(childPosition, fatherPosition, Line.LINEAGE);
 
                 if (getConfiguration().isShowHeraldry()) {
-                    addHeraldry(childX, childY, child.getSimpleBirthPlace());
+                    addHeraldry(childPosition, child.getSimpleBirthPlace());
                 }
             }
         }
     }
 
-    private void drawParents(AncestorPerson child, int childX, int childY) {
+    private void drawParents(AncestorPerson child, Position childPosition) {
         if (child.getMother() != null) {
             int fatherY;
             int motherY;
             int fatherX;
             int motherX;
+            int childX = childPosition.getX();
+            int childY = childPosition.getY();
 
             if (child.getFather() == null) {
                 motherX = childX;
@@ -181,17 +175,20 @@ public class AllParentsPanel extends RootFamilyPanel {
 
                 int labelY = (motherY + fatherY) / 2;
 
-                drawPerson(fatherX, fatherY, child.getFather());
-                drawParents(child.getFather(), fatherX, fatherY);
+                Position fatherPosition = new Position(fatherX, fatherY);
+                drawPerson(fatherPosition, child.getFather());
+                drawParents(child.getFather(), fatherPosition);
 
-                drawPerson(motherX, motherY, child.getMother());
-                drawParents(child.getMother(), motherX, motherY);
+                Position motherPosition = new Position(motherX, motherY);
+                drawPerson(motherPosition, child.getMother());
+                drawParents(child.getMother(), motherPosition);
 
-                drawLabel(fatherX, motherX, labelY + getConfiguration().getMarriageLabelHeight() / 2, child.getParents().getMarriageDate());
-                drawLine(new Point(childX, childY), new Point(fatherX, labelY), Line.LINEAGE);
+                drawLabel(new Position(fatherX, labelY + getConfiguration().getMarriageLabelHeight() / 2),
+                        getConfiguration().getMarriageLabelWidth(), child.getParents().getMarriageDate());
+                drawLine(childPosition, new Position(fatherX, labelY), Line.LINEAGE);
 
                 if (getConfiguration().isShowHeraldry()) {
-                    addHeraldry(fatherX, childY, child.getSimpleBirthPlace());
+                    addHeraldry(new Position(fatherX, childY), child.getSimpleBirthPlace());
                 }
             }
 

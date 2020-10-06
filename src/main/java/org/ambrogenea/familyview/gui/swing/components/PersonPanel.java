@@ -226,6 +226,7 @@ public abstract class PersonPanel extends JPanel {
             add(birthPlace, c);
 
             if (configuration.isShowAge()) {
+//                c.gridx = 1;
                 c.gridy = 7;
                 add(deathPlace, c);
             }

@@ -1,5 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.treepanels.vertical;
 
+import org.ambrogenea.familyview.gui.swing.model.Position;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
@@ -18,18 +19,19 @@ public class FatherLineagePanel extends LineagePanel {
     public void drawAncestorPanel(PageSetupVertical setup) {
         int x = setup.getX();
         int y = setup.getY();
+        Position child = new Position(x, y);
 
-        drawPerson(x, y, personModel);
-        drawSpouseAndSiblings(x, y);
+        drawPerson(child, personModel);
+        drawSpouseAndSiblings(child);
 
         if (personModel.getFather() != null) {
             if (getConfiguration().isShowCouplesVertical()) {
-                drawFathersFamilyVertical(x, y, personModel);
+                drawFathersFamilyVertical(child, personModel);
             }
         }
 
         if (getConfiguration().isShowSpouses() && getConfiguration().isShowChildren()) {
-            drawChildren(x, y, personModel.getSpouseCouple());
+            drawChildren(child, personModel.getSpouseCouple());
         }
 
         if (getConfiguration().isShowResidence()) {

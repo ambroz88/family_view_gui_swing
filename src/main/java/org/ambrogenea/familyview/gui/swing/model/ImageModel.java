@@ -14,10 +14,10 @@ public class ImageModel {
     private final int width;
     private final int height;
 
-    public ImageModel(BufferedImage image, int x, int y, int height) {
+    public ImageModel(BufferedImage image, Position imageLeftCorner, int height) {
         this.image = image;
-        this.x = x;
-        this.y = y;
+        this.x = imageLeftCorner.getX();
+        this.y = imageLeftCorner.getY();
         this.height = height;
         double scale = height / (double) image.getHeight();
         this.width = (int) (image.getWidth() * scale);

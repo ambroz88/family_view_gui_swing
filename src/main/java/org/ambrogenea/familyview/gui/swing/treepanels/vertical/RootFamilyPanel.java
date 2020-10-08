@@ -118,6 +118,7 @@ public class RootFamilyPanel extends CommonTreePanel {
                 label.addX(spouseDistance);
                 spousePosition.addX(spouseDistance);
             }
+            spousePosition.addX(-spouseDistance);
             return spousePosition;
         }
         return rootPersonPosition;
@@ -163,27 +164,27 @@ public class RootFamilyPanel extends CommonTreePanel {
         drawYoungerSiblings(spousePosition, rootChild);
     }
 
-    protected void drawSiblingsAroundWifes(int rootSiblingX, int rootSiblingY, AncestorPerson rootChild, int lastSpouseX) {
+    protected void drawSiblingsAroundWifes(Position rootSibling, AncestorPerson rootChild, int lastSpouseX) {
         int spouseGap;
         if (!rootChild.getSpouseID().isEmpty() && lastSpouseX == 0) {
-            spouseGap = rootSiblingX + (getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth()) * rootChild.getSpouseCouples().size();
+            spouseGap = rootSibling.getX() + (getConfiguration().getAdultImageWidth() + getConfiguration().getMarriageLabelWidth()) * rootChild.getSpouseCouples().size();
         } else {
             spouseGap = lastSpouseX;
         }
 
         if (!rootChild.getYoungerSiblings().isEmpty()) {
-            addLineAboveSpouse(rootSiblingX, rootSiblingY, spouseGap);
+            addLineAboveSpouse(rootSibling, spouseGap);
         }
 
-        drawOlderSiblings(new Position(rootSiblingX, rootSiblingY), rootChild);
-        drawYoungerSiblings(new Position(spouseGap, rootSiblingY), rootChild);
+        drawOlderSiblings(rootSibling, rootChild);
+        drawYoungerSiblings(new Position(spouseGap, rootSibling.getY()), rootChild);
     }
 
-    private void addLineAboveSpouse(int rootSiblingX, int rootSiblingY, int spouseGap) {
+    private void addLineAboveSpouse(Position rootSibling, int spouseGap) {
         int verticalShift = (configuration.getAdultImageHeight() + Spaces.VERTICAL_GAP) / 2;
-        Line spouseLine = new Line(rootSiblingX, rootSiblingY - verticalShift, spouseGap, rootSiblingY - verticalShift);
-        spouseLine.setType(Line.SIBLINGS);
-        lines.add(spouseLine);
+        Position linePosition = new Position(rootSibling);
+        linePosition.addY(-verticalShift);
+        drawLine(linePosition, new Position(linePosition.getX() + spouseGap, linePosition.getY()), Line.SIBLINGS);
     }
 
     @Override
@@ -196,19 +197,18 @@ public class RootFamilyPanel extends CommonTreePanel {
             int childrenCount = spouseCouple.getChildren().size();
             if (getConfiguration().isShowChildren() && childrenCount > 0) {
                 int childrenLineY = fatherY + (int) (1.5 * getConfiguration().getAdultImageHeightAlternative()) + getConfiguration().getMarriageLabelHeight() / 2 + Spaces.VERTICAL_GAP;
-                Line toChildren = new Line(
-                        childrenX, fatherY + (getConfiguration().getAdultImageHeightAlternative() + getConfiguration().getMarriageLabelHeight()) / 2,
-                        childrenX, childrenLineY);
-                toChildren.setType(Line.SIBLINGS);
-                lines.add(toChildren);
+                Position lineLevel = new Position(fatherPosition.getX(), childrenLineY);
+                int labelY = fatherY + (getConfiguration().getAdultImageHeightAlternative() + getConfiguration().getMarriageLabelHeight()) / 2;
+                drawLine(lineLevel, new Position(fatherPosition.getX(), labelY), Line.SIBLINGS);
 
                 int childrenY = childrenLineY + (getConfiguration().getSiblingImageHeight() + Spaces.VERTICAL_GAP + getConfiguration().getMarriageLabelHeight()) / 2;
                 childrenWidth = childrenCount * (getConfiguration().getSiblingImageWidth() + Spaces.HORIZONTAL_GAP) - Spaces.HORIZONTAL_GAP;
-                int startXPosition = childrenX - childrenWidth / 2;
+                int startXPosition = childrenX + getConfiguration().getSiblingImageWidth() / 2 - childrenWidth / 2;
 
                 Position childrenPosition = new Position(startXPosition, childrenY);
+
                 for (int i = 0; i < childrenCount; i++) {
-                    int childXPosition = startXPosition + getConfiguration().getSiblingImageWidth() / 2 + i * (getConfiguration().getSiblingImageWidth() + Spaces.HORIZONTAL_GAP);
+                    int childXPosition = startXPosition + i * (getConfiguration().getSiblingImageWidth() + Spaces.HORIZONTAL_GAP);
                     if (i == 0 && childrenCount > 1) {
                         addRoundChildrenLine(childXPosition, childrenY, childrenX);
                     } else if (i == childrenCount - 1) {
@@ -217,8 +217,8 @@ public class RootFamilyPanel extends CommonTreePanel {
                         addStraightChildrenLine(childXPosition, childrenY, childrenX);
                     }
                     TODO: //draw spouse of the children
-                    childrenPosition.setX(getConfiguration().getSiblingImageWidth() / 2 + i * (getConfiguration().getSiblingImageWidth() + Spaces.HORIZONTAL_GAP));
                     drawPerson(childrenPosition, spouseCouple.getChildren().get(i));
+                    childrenPosition.addX(getConfiguration().getSiblingImageWidth() + Spaces.HORIZONTAL_GAP);
                 }
                 childrenWidth = childrenWidth / 2;
 
@@ -322,8 +322,7 @@ public class RootFamilyPanel extends CommonTreePanel {
             yRadius = 0;
         }
 
-        addLineAboveSpouse(startX + xRadius, rootSiblingY, rootSiblingX);
-
+        addLineAboveSpouse(new Position(startX + xRadius, rootSiblingY), rootSiblingX - startX);
         Line vertical = new Line(startX, rootSiblingY - verticalShift + yRadius, startX, rootSiblingY);
         vertical.setType(Line.SIBLINGS);
         lines.add(vertical);

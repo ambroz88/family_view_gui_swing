@@ -179,9 +179,9 @@ public abstract class CommonTreePanel extends JPanel implements RootFamilyInterf
                 Arc arc;
                 if (start.getX() < end.getX()) {
                     if (start.getY() < end.getY()) {//ancestors
-                        horizontal = new Line(start.getX(), start.getY(), end.getX() - Arc.RADIUS, start.getY());
-                        vertical = new Line(end.getX(), start.getY() - Arc.RADIUS, end.getX(), end.getY());
-                        arc = new Arc(new Position(end.getX() - 2 * Arc.RADIUS, start.getY() - 2 * Arc.RADIUS), -90);
+                        horizontal = new Line(start.getX() + Arc.RADIUS, end.getY(), end.getX(), end.getY());
+                        vertical = new Line(start.getX(), start.getY(), start.getX(), end.getY() - Arc.RADIUS);
+                        arc = new Arc(new Position(start.getX(), end.getY() - 2 * Arc.RADIUS), 180);
                     } else {//children
                         horizontal = new Line(start.getX() + Arc.RADIUS, end.getY(), end.getX(), end.getY());
                         vertical = new Line(start.getX(), start.getY(), start.getX(), end.getY() + Arc.RADIUS);
@@ -189,9 +189,9 @@ public abstract class CommonTreePanel extends JPanel implements RootFamilyInterf
                     }
                 } else {
                     if (start.getY() < end.getY()) {
-                        horizontal = new Line(start.getX(), start.getY(), end.getX() + Arc.RADIUS, start.getY());
-                        vertical = new Line(end.getX(), start.getY() - Arc.RADIUS, end.getX(), end.getY());
-                        arc = new Arc(new Position(end.getX(), start.getY() - 2 * Arc.RADIUS), 180);
+                        horizontal = new Line(start.getX() - Arc.RADIUS, end.getY(), end.getX(), end.getY());
+                        vertical = new Line(start.getX(), start.getY(), start.getX(), end.getY() - Arc.RADIUS);
+                        arc = new Arc(new Position(start.getX() - 2 * Arc.RADIUS, end.getY() - 2 * Arc.RADIUS), -90);
                     } else {
                         horizontal = new Line(start.getX() - Arc.RADIUS, end.getY(), end.getX(), end.getY());
                         vertical = new Line(start.getX(), start.getY(), start.getX(), end.getY() + Arc.RADIUS);
@@ -219,7 +219,7 @@ public abstract class CommonTreePanel extends JPanel implements RootFamilyInterf
                 try {
                     BufferedImage heraldryImage = ImageIO.read(heraldry);
                     Position heraldryPosition = new Position(childPosition);
-                    heraldryPosition.addY(-(configuration.getSiblingImageHeight() + Spaces.VERTICAL_GAP) / 2);
+                    heraldryPosition.addY(-(configuration.getAdultImageHeight() + Spaces.VERTICAL_GAP) / 2);
 
                     images.add(new ImageModel(heraldryImage, heraldryPosition, Spaces.VERTICAL_GAP / 2));
                 } catch (IOException ex) {

@@ -2,6 +2,7 @@ package org.ambrogenea.familyview.gui.swing.treepanels.vertical;
 
 import org.ambrogenea.familyview.gui.swing.components.ResidencePanel;
 import org.ambrogenea.familyview.gui.swing.constant.Spaces;
+import org.ambrogenea.familyview.gui.swing.model.Line;
 import org.ambrogenea.familyview.gui.swing.model.Position;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
 import org.ambrogenea.familyview.model.AncestorPerson;
@@ -21,9 +22,9 @@ public abstract class LineagePanel extends RootFamilyPanel {
 
     protected void drawSpouseAndSiblings(Position rootPerson) {
         if (getConfiguration().isShowSpouses()) {
-            drawSpouse(rootPerson, personModel);
+            Position lastSpouse = drawAllSpouses(rootPerson, personModel);
             if (getConfiguration().isShowSiblings()) {
-                drawSiblingsAroundMother(rootPerson, personModel);
+                drawSiblingsAroundWifes(rootPerson, personModel, lastSpouse.getX());
             }
         } else if (getConfiguration().isShowSiblings()) {
             drawSiblings(rootPerson, personModel);
@@ -33,12 +34,12 @@ public abstract class LineagePanel extends RootFamilyPanel {
     protected void drawFathersFamilyVertical(Position child, AncestorPerson person) {
         if (person.getMother() != null) {
 
-            addLineToParentsVertical(child);
             if (getConfiguration().isShowHeraldry()) {
                 addHeraldry(child, person.getSimpleBirthPlace());
             }
 
             if (person.getFather() != null) {
+                addLineToParentsVertical(child);
                 drawMother(child, person.getMother(), person.getParents().getMarriageDate());
 
                 Position fatherPosition = drawFather(child, person.getFather());
@@ -50,6 +51,7 @@ public abstract class LineagePanel extends RootFamilyPanel {
                 drawFathersFamilyVertical(fatherPosition, person.getFather());
             } else {
                 Position motherPosition = drawFather(child, person.getMother());
+                drawLine(child, motherPosition, Line.LINEAGE);
                 drawFathersFamilyVertical(motherPosition, person.getMother());
                 if (getConfiguration().isShowSiblings()) {
                     drawSiblingsAroundMother(motherPosition, person.getMother());

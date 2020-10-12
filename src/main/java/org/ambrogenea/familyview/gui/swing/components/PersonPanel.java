@@ -13,10 +13,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ambrogenea.familyview.domain.PersonRecord;
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
-import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.utils.Tools;
+import org.ambrogenea.familyview.utils.Tools;
 
 /**
  *
@@ -28,7 +28,7 @@ public abstract class PersonPanel extends JPanel {
     private static final String GENERAL_FONT = "Calibri";
     private static final String NAMES_FONT = Font.SANS_SERIF;
 
-    protected final AncestorPerson person;
+    protected final PersonRecord person;
     protected final Configuration configuration;
     protected BufferedImage personDiagram;
     private final int fontSize;
@@ -43,7 +43,7 @@ public abstract class PersonPanel extends JPanel {
     protected JLabel death;
     protected JLabel deathPlace;
 
-    public PersonPanel(AncestorPerson person, Configuration config) {
+    public PersonPanel(PersonRecord person, Configuration config) {
         super(new GridBagLayout());
 
         this.person = person;

@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.ambrogenea.familyview.gui.swing.constant.Spaces;
+import org.ambrogenea.familyview.constant.Spaces;
 
 /**
  *

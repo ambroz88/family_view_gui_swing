@@ -5,10 +5,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.ambrogenea.familyview.model.AncestorPerson;
+import org.ambrogenea.familyview.domain.PersonRecord;
+import org.ambrogenea.familyview.enums.Diagrams;
+import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.model.Configuration;
-import org.ambrogenea.familyview.model.enums.Diagrams;
-import org.ambrogenea.familyview.model.enums.Sex;
 
 /**
  *
@@ -16,7 +16,7 @@ import org.ambrogenea.familyview.model.enums.Sex;
  */
 public class SiblingPanel extends PersonPanel {
 
-    public SiblingPanel(AncestorPerson person, Configuration config) {
+    public SiblingPanel(PersonRecord person, Configuration config) {
         super(person, config);
     }
 
@@ -34,7 +34,6 @@ public class SiblingPanel extends PersonPanel {
             personDiagram = ImageIO.read(ClassLoader.getSystemResourceAsStream(imagePath));
         } catch (IOException e) {
             System.out.println("Image " + imagePath + " can't be open.");
-            e.printStackTrace();
         }
     }
 

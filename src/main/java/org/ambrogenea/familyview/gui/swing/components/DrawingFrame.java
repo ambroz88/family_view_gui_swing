@@ -17,17 +17,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.ambrogenea.familyview.domain.TreeModel;
 import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
-import org.ambrogenea.familyview.gui.swing.tools.PageSetupVertical;
-import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.AllParentsPanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.FatherLineagePanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.LineagePanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.MotherLineagePanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.ParentLineagePanel;
-import org.ambrogenea.familyview.gui.swing.treepanels.horizontal.RootFamilyPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.TreeService;
+import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
+import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
+import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
+import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
+import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
 
 /**
  *
@@ -74,171 +73,64 @@ public class DrawingFrame extends JPanel {
     public JPanel generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
         setup.calculateAllAncestors(personWithAncestors);
-        int pictureWidth = setup.getWidth();
-        int pictureHeight = setup.getHeight();
 
-        final AllParentsPanel ancestorPanel = new AllParentsPanel(personWithAncestors, config);
-        ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        scrollAncestorPane.add(ancestorPanel);
-        scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);
-        ancestorPanel.drawAncestorPanel(setup);
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(ancestorPanel);
-            }
-        });
-        return ancestorPanel;
-    }
-
-    public JPanel generateAllAncestorsVertical(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetupVertical setup = new PageSetupVertical(config);
-        setup.calculateAllAncestors(personWithAncestors);
-        int pictureWidth = setup.getWidth();
-        int pictureHeight = setup.getHeight();
-
-        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.AllParentsPanel ancestorPanel
-                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.AllParentsPanel(personWithAncestors, config);
-        ancestorPanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        scrollAncestorPane.add(ancestorPanel);
-        scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);
-        ancestorPanel.drawAncestorPanel(setup);
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(ancestorPanel);
-            }
-        });
-        return ancestorPanel;
+        TreeService treeService = new AllAncestorTreeService(config, personWithAncestors);
+        return generateTreePanel(treeService, setup);
     }
 
     public JPanel generateFatherLineage(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
         setup.calculateFatherLineage(personWithAncestors);
 
-        final LineagePanel fathersFamilyPanel = new FatherLineagePanel(personWithAncestors, config);
-        generateLineage(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
-    }
-
-    public JPanel generateFatherLineageVertical(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetupVertical setup = new PageSetupVertical(config);
-        setup.calculateFatherLineage(personWithAncestors);
-
-        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.LineagePanel fathersFamilyPanel
-                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.FatherLineagePanel(personWithAncestors, config);
-        generateLineageVertical(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
+        TreeService treeService = new FatherLineageTreeService(config, personWithAncestors);
+        return generateTreePanel(treeService, setup);
     }
 
     public JPanel generateMotherLineage(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
         setup.calculateMotherLineage(personWithAncestors);
-        final LineagePanel fathersFamilyPanel = new MotherLineagePanel(personWithAncestors, config);
-        generateLineage(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
-    }
 
-    public JPanel generateMotherLineageVertical(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetupVertical setup = new PageSetupVertical(config);
-        setup.calculateMotherLineage(personWithAncestors);
-        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.LineagePanel fathersFamilyPanel
-                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.MotherLineagePanel(personWithAncestors, config);
-        generateLineageVertical(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
+        TreeService treeService = new MotherLineageTreeService(config, personWithAncestors);
+        return generateTreePanel(treeService, setup);
     }
 
     public JPanel generateParentsLineage(AncestorPerson personWithAncestors, Configuration config) {
         PageSetup setup = new PageSetup(config);
         setup.calculateParentLineage(personWithAncestors);
 
-        final LineagePanel fathersFamilyPanel = new ParentLineagePanel(personWithAncestors, config);
-        generateLineage(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
-    }
-
-    public JPanel generateParentsLineageVertical(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetupVertical setup = new PageSetupVertical(config);
-        setup.calculateParentLineage(personWithAncestors);
-
-        final org.ambrogenea.familyview.gui.swing.treepanels.vertical.LineagePanel fathersFamilyPanel
-                = new org.ambrogenea.familyview.gui.swing.treepanels.vertical.ParentLineagePanel(personWithAncestors, config);
-        generateLineageVertical(setup, fathersFamilyPanel);
-        return fathersFamilyPanel;
-    }
-
-    private void generateLineage(PageSetup setup, final LineagePanel lineagePanel) {
-        int pictureWidth = setup.getWidth();
-        int pictureHeight = setup.getHeight();
-
-        lineagePanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        scrollAncestorPane.add(lineagePanel);
-        scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);
-        lineagePanel.drawAncestorPanel(setup);
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(lineagePanel);
-            }
-        });
-    }
-
-    private void generateLineageVertical(PageSetupVertical setup, final org.ambrogenea.familyview.gui.swing.treepanels.vertical.LineagePanel lineagePanel) {
-        int pictureWidth = setup.getWidth();
-        int pictureHeight = setup.getHeight();
-
-        lineagePanel.setPreferredSize(new Dimension(pictureWidth, pictureHeight));
-        scrollAncestorPane.add(lineagePanel);
-        scrollAncestorPane.setScrollPosition(setup.getX(), pictureHeight);
-        lineagePanel.drawAncestorPanel(setup);
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(lineagePanel);
-            }
-        });
+        TreeService treeService = new ParentLineageTreeService(config, personWithAncestors);
+        return generateTreePanel(treeService, setup);
     }
 
     public JPanel generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
-        final CloseFamilyPanel fathersFamilyPanel = new CloseFamilyPanel(personWithAncestors, config);
+        PageSetup setup = new PageSetup(config);
+        setup.calculateFamily(config, personWithAncestors);
 
-        scrollAncestorPane.add(fathersFamilyPanel);
-        scrollAncestorPane.setScrollPosition((personWithAncestors.getOlderSiblings().size() + 1) * config.getAdultImageWidth() + config.getAdultImageWidth() / 2 - this.getWidth() / 2, fathersFamilyPanel.getHeight());
-        fathersFamilyPanel.drawAncestorPanel();
+        TreeService treeService = new CloseFamilyTreeService(config, personWithAncestors);
+        return generateTreePanel(treeService, setup);
+    }
 
+    private TreePanel generateTreePanel(TreeService treeService, PageSetup setup) {
+        TreeModel treeModel = treeService.generateTreeModel(setup.getRootPosition());
+        final TreePanel treePanel = new TreePanel(treeModel, setup.getConfig());
+        treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
+
+        treePanel.addNotify();
+        treePanel.validate();
+//        treePanel.paintComponent();
+
+        scrollAncestorPane.add(treePanel);
+        scrollAncestorPane.setScrollPosition(setup.getRootPosition().getX(), setup.getHeight());
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(fathersFamilyPanel);
+                saveButtonActionPerformed(treePanel);
             }
         });
-        return fathersFamilyPanel;
+        return treePanel;
     }
 
-    private void saveButtonActionPerformed(RootFamilyPanel ancestorPanel) {
-        int returnVal = saverFC.showSaveDialog(this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = saverFC.getSelectedFile();
-            if (!file.getAbsolutePath().contains(".")) {
-                file = new File(file.getAbsolutePath() + ".png");
-            }
-            try {
-                ImageIO.write(ancestorPanel.getPicture(), "PNG", file);
-                System.out.println("Picture was saved to " + file.getName() + ".");
-            } catch (IOException ex) {
-                System.out.println("Saving was failed due to: " + ex.getLocalizedMessage() + ".");
-            }
-        } else {
-            System.out.println("Open command cancelled by user.");
-        }
-    }
-
-    private void saveButtonActionPerformed(org.ambrogenea.familyview.gui.swing.treepanels.vertical.RootFamilyPanel ancestorPanel) {
+    private void saveButtonActionPerformed(TreePanel ancestorPanel) {
         int returnVal = saverFC.showSaveDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {

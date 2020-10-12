@@ -23,22 +23,26 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.ambrogenea.familyview.domain.TreeModel;
+import org.ambrogenea.familyview.enums.Diagrams;
+import org.ambrogenea.familyview.enums.LabelShape;
+import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.AdultPanel;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.components.SiblingPanel;
+import org.ambrogenea.familyview.gui.swing.components.TreePanel;
 import org.ambrogenea.familyview.gui.swing.model.Table;
-import org.ambrogenea.familyview.gui.swing.treepanels.CloseFamilyPanel;
+import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.DataModel;
-import org.ambrogenea.familyview.model.enums.Diagrams;
-import org.ambrogenea.familyview.model.enums.LabelShape;
-import org.ambrogenea.familyview.model.enums.PropertyName;
-import org.ambrogenea.familyview.model.utils.FileIO;
-import org.ambrogenea.familyview.model.utils.Tools;
-import org.ambrogenea.familyview.model.word.WordGenerator;
+import org.ambrogenea.familyview.service.TreeService;
+import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
+import org.ambrogenea.familyview.utils.FileIO;
+import org.ambrogenea.familyview.utils.Tools;
+import org.ambrogenea.familyview.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
@@ -1013,25 +1017,13 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
             if (configuration.isShowFathersLineage() && configuration.isShowMothersLineage()) {
                 personWithAncestors = ancestors.generateParentsLineage(recordsTable.getSelectedRow());
-                if (configuration.isShowCouplesVertical()) {
-                    drawing.generateParentsLineageVertical(personWithAncestors, configuration);
-                } else {
-                    drawing.generateParentsLineage(personWithAncestors, configuration);
-                }
+                drawing.generateParentsLineage(personWithAncestors, configuration);
             } else if (configuration.isShowFathersLineage()) {
                 personWithAncestors = ancestors.generateFatherLineage(recordsTable.getSelectedRow());
-                if (configuration.isShowCouplesVertical()) {
-                    drawing.generateFatherLineageVertical(personWithAncestors, configuration);
-                } else {
-                    drawing.generateFatherLineage(personWithAncestors, configuration);
-                }
+                drawing.generateFatherLineage(personWithAncestors, configuration);
             } else {
                 personWithAncestors = ancestors.generateMotherLineage(recordsTable.getSelectedRow());
-                if (configuration.isShowCouplesVertical()) {
-                    drawing.generateMotherLineageVertical(personWithAncestors, configuration);
-                } else {
-                    drawing.generateMotherLineage(personWithAncestors, configuration);
-                }
+                drawing.generateMotherLineage(personWithAncestors, configuration);
             }
 
             settingsTab.addTab(personWithAncestors.getName(), drawing);
@@ -1047,11 +1039,8 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             AncestorPerson personWithAncestors = ancestors.generateAncestors(recordsTable.getSelectedRow());
 
             DrawingFrame drawing = new DrawingFrame();
-            if (configuration.isShowCouplesVertical()) {
-                drawing.generateAllAncestorsVertical(personWithAncestors, configuration);
-            } else {
-                drawing.generateAllAncestors(personWithAncestors, configuration);
-            }
+            drawing.generateAllAncestors(personWithAncestors, configuration);
+
             settingsTab.addTab(personWithAncestors.getName(), drawing);
             settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
         }
@@ -1229,16 +1218,23 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     }
 
     private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
-        CloseFamilyPanel familyPanel = createOneFamily(actualPerson);
-        int generations = familyPanel.calculateGenerations();
+        PageSetup setup = new PageSetup(configuration);
+        setup.calculateFamily(configuration, actualPerson);
+
+        TreePanel familyPanel = createOneFamily(actualPerson, setup);
+        int generations = setup.calculateGenerations(actualPerson);
+
         WordGenerator.setMaxHeight(generations);
         WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
         WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getWidth(), familyPanel.getHeight());
     }
 
-    private CloseFamilyPanel createOneFamily(AncestorPerson personWithAncestors) {
-        CloseFamilyPanel familyPanel = new CloseFamilyPanel(personWithAncestors, configuration);
-        familyPanel.drawAncestorPanel();
+    private TreePanel createOneFamily(AncestorPerson personWithAncestors, PageSetup setup) {
+
+        TreeService treeService = new CloseFamilyTreeService(configuration, personWithAncestors);
+        TreeModel treeModel = treeService.generateTreeModel(setup.getRootPosition());
+        TreePanel familyPanel = new TreePanel(treeModel, setup.getConfig());
+
         familyPanel.addNotify();
         familyPanel.validate();
         return familyPanel;

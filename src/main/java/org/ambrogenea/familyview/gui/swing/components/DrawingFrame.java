@@ -18,10 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.domain.TreeModel;
-import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.PageSetup;
 import org.ambrogenea.familyview.service.TreeService;
+import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
+import org.ambrogenea.familyview.service.impl.paging.CloseFamilyPageSetup;
+import org.ambrogenea.familyview.service.impl.paging.FatherLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.paging.MotherLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.paging.ParentLineagePageSetup;
 import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
 import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
@@ -71,53 +76,47 @@ public class DrawingFrame extends JPanel {
     }
 
     public JPanel generateAllAncestors(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetup setup = new PageSetup(config);
-        setup.calculateAllAncestors(personWithAncestors);
+        PageSetup setup = new AllAncestorPageSetup(config, personWithAncestors);
 
         TreeService treeService = new AllAncestorTreeService(config, personWithAncestors);
-        return generateTreePanel(treeService, setup);
+        return generateTreePanel(treeService, setup, config);
     }
 
     public JPanel generateFatherLineage(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetup setup = new PageSetup(config);
-        setup.calculateFatherLineage(personWithAncestors);
+        PageSetup setup = new FatherLineagePageSetup(config, personWithAncestors);
 
         TreeService treeService = new FatherLineageTreeService(config, personWithAncestors);
-        return generateTreePanel(treeService, setup);
+        return generateTreePanel(treeService, setup, config);
     }
 
     public JPanel generateMotherLineage(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetup setup = new PageSetup(config);
-        setup.calculateMotherLineage(personWithAncestors);
+        PageSetup setup = new MotherLineagePageSetup(config, personWithAncestors);
 
         TreeService treeService = new MotherLineageTreeService(config, personWithAncestors);
-        return generateTreePanel(treeService, setup);
+        return generateTreePanel(treeService, setup, config);
     }
 
     public JPanel generateParentsLineage(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetup setup = new PageSetup(config);
-        setup.calculateParentLineage(personWithAncestors);
+        PageSetup setup = new ParentLineagePageSetup(config, personWithAncestors);
 
         TreeService treeService = new ParentLineageTreeService(config, personWithAncestors);
-        return generateTreePanel(treeService, setup);
+        return generateTreePanel(treeService, setup, config);
     }
 
     public JPanel generateCloseFamily(AncestorPerson personWithAncestors, Configuration config) {
-        PageSetup setup = new PageSetup(config);
-        setup.calculateFamily(config, personWithAncestors);
+        PageSetup setup = new CloseFamilyPageSetup(config, personWithAncestors);
 
         TreeService treeService = new CloseFamilyTreeService(config, personWithAncestors);
-        return generateTreePanel(treeService, setup);
+        return generateTreePanel(treeService, setup, config);
     }
 
-    private TreePanel generateTreePanel(TreeService treeService, PageSetup setup) {
+    private TreePanel generateTreePanel(TreeService treeService, PageSetup setup, Configuration config) {
         TreeModel treeModel = treeService.generateTreeModel(setup.getRootPosition());
-        final TreePanel treePanel = new TreePanel(treeModel, setup.getConfig());
+        final TreePanel treePanel = new TreePanel(treeModel, config);
         treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
 
         treePanel.addNotify();
         treePanel.validate();
-//        treePanel.paintComponent();
 
         scrollAncestorPane.add(treePanel);
         scrollAncestorPane.setScrollPosition(setup.getRootPosition().getX(), setup.getHeight());

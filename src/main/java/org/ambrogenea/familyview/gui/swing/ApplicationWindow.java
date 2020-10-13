@@ -33,12 +33,13 @@ import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.components.SiblingPanel;
 import org.ambrogenea.familyview.gui.swing.components.TreePanel;
 import org.ambrogenea.familyview.gui.swing.model.Table;
-import org.ambrogenea.familyview.gui.swing.tools.PageSetup;
 import org.ambrogenea.familyview.model.AncestorModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
 import org.ambrogenea.familyview.model.DataModel;
+import org.ambrogenea.familyview.service.PageSetup;
 import org.ambrogenea.familyview.service.TreeService;
+import org.ambrogenea.familyview.service.impl.paging.CloseFamilyPageSetup;
 import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
 import org.ambrogenea.familyview.utils.FileIO;
 import org.ambrogenea.familyview.utils.Tools;
@@ -1218,8 +1219,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     }
 
     private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
-        PageSetup setup = new PageSetup(configuration);
-        setup.calculateFamily(configuration, actualPerson);
+        CloseFamilyPageSetup setup = new CloseFamilyPageSetup(configuration, actualPerson);
 
         TreePanel familyPanel = createOneFamily(actualPerson, setup);
         int generations = setup.calculateGenerations(actualPerson);
@@ -1233,7 +1233,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
         TreeService treeService = new CloseFamilyTreeService(configuration, personWithAncestors);
         TreeModel treeModel = treeService.generateTreeModel(setup.getRootPosition());
-        TreePanel familyPanel = new TreePanel(treeModel, setup.getConfig());
+        TreePanel familyPanel = new TreePanel(treeModel, configuration);
 
         familyPanel.addNotify();
         familyPanel.validate();

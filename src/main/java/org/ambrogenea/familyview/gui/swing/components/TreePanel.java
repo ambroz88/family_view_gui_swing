@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,9 +23,11 @@ import org.ambrogenea.familyview.constant.Spaces;
 import org.ambrogenea.familyview.domain.Arc;
 import org.ambrogenea.familyview.domain.ImageModel;
 import org.ambrogenea.familyview.domain.Line;
+import org.ambrogenea.familyview.domain.Marriage;
 import org.ambrogenea.familyview.domain.PersonRecord;
 import org.ambrogenea.familyview.domain.ResidenceModel;
 import org.ambrogenea.familyview.domain.TreeModel;
+import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.model.Configuration;
@@ -55,9 +58,19 @@ public class TreePanel extends JPanel {
         setOpaque(false);
         this.setLayout(null);
 
-//        paintComponent();
         for (PersonRecord person : treeModel.getPersons()) {
             drawPerson(person);
+        }
+
+        if (configuration.isShowMarriage()) {
+            int labelHeight = configuration.getMarriageLabelHeight();
+            for (Marriage marriage : treeModel.getMarriages()) {
+                JLabel date = new JLabel(marriage.getDate(), JLabel.CENTER);
+                date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize() - 1));
+                date.setOpaque(false);
+                this.add(date);
+                date.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
+            }
         }
     }
 
@@ -78,34 +91,27 @@ public class TreePanel extends JPanel {
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         }
 
-//        if (configuration.isShowMarriage()) {
-//            int labelHeight = configuration.getMarriageLabelHeight();
-//            for (Marriage marriage : treeModel.getMarriages()) {
-//
-//                JLabel date = new JLabel(marriage.getDate(), JLabel.CENTER);
-//                date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize() - 1));
-////            date.setBorder(BorderFactory.createMatteBorder(1, 0, 2, 0, Color.BLACK));
-////            date.setBackground(LABEL_BACKGROUND);
-//                date.setOpaque(false);
-//                this.add(date);
-//                date.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
-//
-//                Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
-//
-//                g2.setColor(Colors.LABEL_BACKGROUND);
-//                g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
-//
-//                if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
-//                    g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-//                    g2.setColor(Colors.LINE_COLOR);
-//                    g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-//                } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
-//                    g2.fillRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
-//                    g2.setColor(Colors.LINE_COLOR);
-//                    g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
-//                }
-//            }
-//        }
+        if (configuration.isShowMarriage()) {
+            int labelHeight = configuration.getMarriageLabelHeight();
+
+            for (Marriage marriage : treeModel.getMarriages()) {
+                Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
+
+                g2.setColor(Colors.LABEL_BACKGROUND);
+                g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+
+                if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
+                    g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                    g2.setColor(Colors.LINE_COLOR);
+                    g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
+                    g2.fillRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
+                    g2.setColor(Colors.LINE_COLOR);
+                    g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
+                }
+            }
+        }
+
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
         for (Arc arc : treeModel.getArcs()) {

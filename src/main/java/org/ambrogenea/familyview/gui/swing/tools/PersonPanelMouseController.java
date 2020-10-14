@@ -24,6 +24,17 @@ import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.PageSetup;
+import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
+import org.ambrogenea.familyview.service.impl.paging.CloseFamilyPageSetup;
+import org.ambrogenea.familyview.service.impl.paging.FatherLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.paging.MotherLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.paging.ParentLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
+import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
+import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
+import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
+import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
 
 /**
  *
@@ -85,12 +96,14 @@ public class PersonPanelMouseController extends MouseAdapter {
         closeFamily.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame();
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateCloseFamily(personModel.getDbPosition());
-                drawing.generateCloseFamily(personWithAncestors, configuration);
+                DrawingFrame drawing = new DrawingFrame(new CloseFamilyTreeService());
+                AncestorPerson rootPerson = configuration.getAncestorModel().generateCloseFamily(personModel.getDbPosition());
+                PageSetup setup = new CloseFamilyPageSetup(configuration, rootPerson);
+                drawing.generateTreePanel(rootPerson, setup, configuration);
+
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
             }
         });
     }
@@ -104,12 +117,14 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame();
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateFatherLineage(personModel.getDbPosition());
-                drawing.generateFatherLineage(personWithAncestors, configuration);
+                DrawingFrame drawing = new DrawingFrame(new FatherLineageTreeService());
+                AncestorPerson rootPerson = configuration.getAncestorModel().generateFatherLineage(personModel.getDbPosition());
+                PageSetup setup = new FatherLineagePageSetup(configuration, rootPerson);
+                drawing.generateTreePanel(rootPerson, setup, configuration);
+
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
             }
         });
     }
@@ -123,12 +138,14 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame();
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateMotherLineage(personModel.getDbPosition());
-                drawing.generateMotherLineage(personWithAncestors, configuration);
+                DrawingFrame drawing = new DrawingFrame(new MotherLineageTreeService());
+                AncestorPerson rootPerson = configuration.getAncestorModel().generateMotherLineage(personModel.getDbPosition());
+                PageSetup setup = new MotherLineagePageSetup(configuration, rootPerson);
+                drawing.generateTreePanel(rootPerson, setup, configuration);
+
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
             }
         });
     }
@@ -142,12 +159,14 @@ public class PersonPanelMouseController extends MouseAdapter {
         parentLineage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame();
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateParentsLineage(personModel.getDbPosition());
-                drawing.generateParentsLineage(personWithAncestors, configuration);
+                DrawingFrame drawing = new DrawingFrame(new ParentLineageTreeService());
+                AncestorPerson rootPerson = configuration.getAncestorModel().generateParentsLineage(personModel.getDbPosition());
+                PageSetup setup = new ParentLineagePageSetup(configuration, rootPerson);
+                drawing.generateTreePanel(rootPerson, setup, configuration);
+
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
             }
         });
     }
@@ -161,13 +180,14 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame();
-                AncestorPerson personWithAncestors = configuration.getAncestorModel().generateAncestors(personModel.getDbPosition());
-                drawing.generateAllAncestors(personWithAncestors, configuration);
+                DrawingFrame drawing = new DrawingFrame(new AllAncestorTreeService());
+                AncestorPerson rootPerson = configuration.getAncestorModel().generateAncestors(personModel.getDbPosition());
+                PageSetup setup = new AllAncestorPageSetup(configuration, rootPerson);
+                drawing.generateTreePanel(rootPerson, setup, configuration);
 
                 floatMenu.dispose();
                 //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, personWithAncestors.getName(), drawing);
+                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
             }
         });
     }

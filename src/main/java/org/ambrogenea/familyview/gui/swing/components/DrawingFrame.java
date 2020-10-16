@@ -19,7 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.domain.TreeModel;
 import org.ambrogenea.familyview.model.AncestorPerson;
-import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
 import org.ambrogenea.familyview.service.TreeService;
 
@@ -67,7 +67,7 @@ public class DrawingFrame extends JPanel {
         add(scrollAncestorPane, BorderLayout.CENTER);
     }
 
-    public TreePanel generateTreePanel(AncestorPerson rootPerson, PageSetup setup, Configuration config) {
+    public TreePanel generateTreePanel(AncestorPerson rootPerson, PageSetup setup, ConfigurationService config) {
         TreeModel treeModel = treeService.generateTreeModel(rootPerson, setup.getRootPosition(), config);
         final TreePanel treePanel = new TreePanel(treeModel, config);
         treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));

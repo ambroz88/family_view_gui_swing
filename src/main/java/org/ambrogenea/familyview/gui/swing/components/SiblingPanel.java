@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import org.ambrogenea.familyview.domain.PersonRecord;
 import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.Sex;
-import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
  *
@@ -16,7 +16,7 @@ import org.ambrogenea.familyview.model.Configuration;
  */
 public class SiblingPanel extends PersonPanel {
 
-    public SiblingPanel(PersonRecord person, Configuration config) {
+    public SiblingPanel(PersonRecord person, ConfigurationService config) {
         super(person, config);
     }
 

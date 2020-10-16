@@ -30,7 +30,7 @@ import org.ambrogenea.familyview.domain.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
-import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.model.Residence;
 
 /**
@@ -40,12 +40,12 @@ import org.ambrogenea.familyview.model.Residence;
 public class TreePanel extends JPanel {
 
     private final TreeModel treeModel;
-    private final Configuration configuration;
+    private final ConfigurationService configuration;
 
     protected final TreeMap<String, Color> cityRegister;
     protected final ArrayList<ResidenceModel> residences;
 
-    public TreePanel(TreeModel treeModel, Configuration configuration) {
+    public TreePanel(TreeModel treeModel, ConfigurationService configuration) {
         this.treeModel = treeModel;
         this.configuration = configuration;
         residences = new ArrayList<>();

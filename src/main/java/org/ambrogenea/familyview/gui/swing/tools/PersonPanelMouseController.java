@@ -23,7 +23,7 @@ import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.model.AncestorPerson;
-import org.ambrogenea.familyview.model.Configuration;
+import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
 import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
 import org.ambrogenea.familyview.service.impl.paging.CloseFamilyPageSetup;
@@ -48,7 +48,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final PersonPanel personPanel;
     private final PersonRecord personModel;
-    private final Configuration configuration;
+    private final ConfigurationService configuration;
 
     private JDialog floatMenu;
     private JButton closeFamily;
@@ -57,7 +57,7 @@ public class PersonPanelMouseController extends MouseAdapter {
     private JButton parentLineage;
     private JButton allGenerations;
 
-    public PersonPanelMouseController(PersonPanel image, Configuration config, PersonRecord person) {
+    public PersonPanelMouseController(PersonPanel image, ConfigurationService config, PersonRecord person) {
         this.personPanel = image;
         this.personPanel.setToolTipText("Show tree possibilities");
         this.personModel = person;

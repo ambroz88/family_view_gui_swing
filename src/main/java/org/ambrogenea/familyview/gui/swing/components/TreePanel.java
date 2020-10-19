@@ -25,16 +25,15 @@ import org.ambrogenea.familyview.domain.ImageModel;
 import org.ambrogenea.familyview.domain.Line;
 import org.ambrogenea.familyview.domain.Marriage;
 import org.ambrogenea.familyview.domain.PersonRecord;
-import org.ambrogenea.familyview.domain.ResidenceModel;
 import org.ambrogenea.familyview.domain.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
+import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.model.Residence;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class TreePanel extends JPanel {
@@ -91,24 +90,22 @@ public class TreePanel extends JPanel {
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         }
 
-        if (configuration.isShowMarriage()) {
-            int labelHeight = configuration.getMarriageLabelHeight();
+        int labelHeight = configuration.getMarriageLabelHeight();
 
-            for (Marriage marriage : treeModel.getMarriages()) {
-                Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
+        for (Marriage marriage : treeModel.getMarriages()) {
+            Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
 
-                g2.setColor(Colors.LABEL_BACKGROUND);
-                g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+            g2.setColor(Colors.LABEL_BACKGROUND);
+            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
 
-                if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
-                    g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                    g2.setColor(Colors.LINE_COLOR);
-                    g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
-                    g2.fillRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
-                    g2.setColor(Colors.LINE_COLOR);
-                    g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
-                }
+            if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
+                g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                g2.setColor(Colors.LINE_COLOR);
+                g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+            } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
+                g2.fillRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
+                g2.setColor(Colors.LINE_COLOR);
+                g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
             }
         }
 

@@ -31,7 +31,7 @@ public abstract class PersonPanel extends JPanel {
     protected final PersonRecord person;
     protected final ConfigurationService configuration;
     protected BufferedImage personDiagram;
-    private final int fontSize;
+    private int fontSize;
 
     protected JLabel firstName;
     protected JLabel surName;
@@ -49,12 +49,6 @@ public abstract class PersonPanel extends JPanel {
         this.person = person;
         this.configuration = config;
 
-        if (person.isDirectLineage()) {
-            fontSize = configuration.getAdultFontSize();
-        } else {
-            fontSize = configuration.getSiblingFontSize();
-        }
-
         initElements();
     }
 
@@ -71,6 +65,12 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initElements() {
+        if (person.isDirectLineage()) {
+            fontSize = configuration.getAdultFontSize();
+        } else {
+            fontSize = configuration.getSiblingFontSize();
+        }
+
         loadPictures();
         initLabels();
         addLabels();

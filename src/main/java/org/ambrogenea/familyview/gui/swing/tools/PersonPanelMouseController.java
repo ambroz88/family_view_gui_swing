@@ -1,40 +1,18 @@
 package org.ambrogenea.familyview.gui.swing.tools;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.IllegalComponentStateException;
-import java.awt.Rectangle;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-
 import org.ambrogenea.familyview.domain.PersonRecord;
+import org.ambrogenea.familyview.domain.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
-import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.service.ConfigurationService;
-import org.ambrogenea.familyview.service.PageSetup;
-import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
-import org.ambrogenea.familyview.service.impl.paging.CloseFamilyPageSetup;
-import org.ambrogenea.familyview.service.impl.paging.FatherLineagePageSetup;
-import org.ambrogenea.familyview.service.impl.paging.MotherLineagePageSetup;
-import org.ambrogenea.familyview.service.impl.paging.ParentLineagePageSetup;
-import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
-import org.ambrogenea.familyview.service.impl.tree.CloseFamilyTreeService;
-import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
-import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
-import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
+import org.ambrogenea.familyview.service.IsolatedTreeCreator;
+import org.ambrogenea.familyview.service.impl.IsolatedTreeCreatorImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -93,18 +71,17 @@ public class PersonPanelMouseController extends MouseAdapter {
         closeFamily.setToolTipText("Generate close family");
         closeFamily.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         closeFamily.setSize(BUTTON_DIMENSION);
-        closeFamily.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame(new CloseFamilyTreeService());
-                AncestorPerson rootPerson = configuration.getAncestorModel().generateCloseFamily(personModel.getDbPosition());
-                PageSetup setup = new CloseFamilyPageSetup(configuration, rootPerson);
-                drawing.generateTreePanel(rootPerson, setup, configuration);
+        closeFamily.addActionListener(listener -> {
+            DrawingFrame drawing = new DrawingFrame();
 
-                floatMenu.dispose();
-                //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
-            }
+            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
+            TreeModel model = creator.generateCloseFamilyCreator(configuration, personModel.getId());
+
+            drawing.generateTreePanel(model, configuration);
+
+            floatMenu.dispose();
+            //ApplicationWindow is catching this propertyChange
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
         });
     }
 
@@ -114,18 +91,17 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.setToolTipText("Generate father's lineage");
         fatherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         fatherLineage.setSize(BUTTON_DIMENSION);
-        fatherLineage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame(new FatherLineageTreeService());
-                AncestorPerson rootPerson = configuration.getAncestorModel().generateFatherLineage(personModel.getDbPosition());
-                PageSetup setup = new FatherLineagePageSetup(configuration, rootPerson);
-                drawing.generateTreePanel(rootPerson, setup, configuration);
+        fatherLineage.addActionListener(listener -> {
+            DrawingFrame drawing = new DrawingFrame();
 
-                floatMenu.dispose();
-                //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
-            }
+            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
+            TreeModel model = creator.generateFatherLineageCreator(configuration, personModel.getId());
+
+            drawing.generateTreePanel(model, configuration);
+
+            floatMenu.dispose();
+            //ApplicationWindow is catching this propertyChange
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
         });
     }
 
@@ -135,18 +111,17 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.setToolTipText("Generate mother's lineage");
         motherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         motherLineage.setSize(BUTTON_DIMENSION);
-        motherLineage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame(new MotherLineageTreeService());
-                AncestorPerson rootPerson = configuration.getAncestorModel().generateMotherLineage(personModel.getDbPosition());
-                PageSetup setup = new MotherLineagePageSetup(configuration, rootPerson);
-                drawing.generateTreePanel(rootPerson, setup, configuration);
+        motherLineage.addActionListener(listener -> {
+            DrawingFrame drawing = new DrawingFrame();
 
-                floatMenu.dispose();
-                //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
-            }
+            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
+            TreeModel model = creator.generateMotherLineageCreator(configuration, personModel.getId());
+
+            drawing.generateTreePanel(model, configuration);
+
+            floatMenu.dispose();
+            //ApplicationWindow is catching this propertyChange
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
         });
     }
 
@@ -156,18 +131,17 @@ public class PersonPanelMouseController extends MouseAdapter {
         parentLineage.setToolTipText("Generate parent's lineage");
         parentLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         parentLineage.setSize(BUTTON_DIMENSION);
-        parentLineage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame(new ParentLineageTreeService());
-                AncestorPerson rootPerson = configuration.getAncestorModel().generateParentsLineage(personModel.getDbPosition());
-                PageSetup setup = new ParentLineagePageSetup(configuration, rootPerson);
-                drawing.generateTreePanel(rootPerson, setup, configuration);
+        parentLineage.addActionListener(listener -> {
+            DrawingFrame drawing = new DrawingFrame();
 
-                floatMenu.dispose();
-                //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
-            }
+            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
+            TreeModel model = creator.generateParentLineageCreator(configuration, personModel.getId());
+
+            drawing.generateTreePanel(model, configuration);
+
+            floatMenu.dispose();
+            //ApplicationWindow is catching this propertyChange
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
         });
     }
 
@@ -177,18 +151,17 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.setToolTipText("Generate all generations");
         allGenerations.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         allGenerations.setSize(BUTTON_DIMENSION);
-        allGenerations.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DrawingFrame drawing = new DrawingFrame(new AllAncestorTreeService());
-                AncestorPerson rootPerson = configuration.getAncestorModel().generateAncestors(personModel.getDbPosition());
-                PageSetup setup = new AllAncestorPageSetup(configuration, rootPerson);
-                drawing.generateTreePanel(rootPerson, setup, configuration);
+        allGenerations.addActionListener(listener -> {
+            DrawingFrame drawing = new DrawingFrame();
 
-                floatMenu.dispose();
-                //ApplicationWindow is catching this propertyChange
-                configuration.firePropertyChange(PropertyName.NEW_TREE, rootPerson.getName(), drawing);
-            }
+            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
+            TreeModel model = creator.generateAllAncestorCreator(configuration, personModel.getId());
+
+            drawing.generateTreePanel(model, configuration);
+
+            floatMenu.dispose();
+            //ApplicationWindow is catching this propertyChange
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
         });
     }
 

@@ -1,27 +1,15 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.HeadlessException;
-import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.ambrogenea.familyview.domain.TreeModel;
-import org.ambrogenea.familyview.model.AncestorPerson;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
-import org.ambrogenea.familyview.service.TreeService;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -29,13 +17,11 @@ import org.ambrogenea.familyview.service.TreeService;
  */
 public class DrawingFrame extends JPanel {
 
-    private final TreeService treeService;
     private JFileChooser saverFC;
     private JButton saveButton;
     private ScrollPane scrollAncestorPane;
 
-    public DrawingFrame(TreeService service) {
-        treeService = service;
+    public DrawingFrame() {
         initComponent();
         initFileChooser();
 
@@ -67,9 +53,9 @@ public class DrawingFrame extends JPanel {
         add(scrollAncestorPane, BorderLayout.CENTER);
     }
 
-    public TreePanel generateTreePanel(AncestorPerson rootPerson, PageSetup setup, ConfigurationService config) {
-        TreeModel treeModel = treeService.generateTreeModel(rootPerson, setup.getRootPosition(), config);
+    public void generateTreePanel(TreeModel treeModel, ConfigurationService config) {
         final TreePanel treePanel = new TreePanel(treeModel, config);
+        PageSetup setup = treeModel.getPageSetup();
         treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
 
         treePanel.addNotify();
@@ -77,13 +63,7 @@ public class DrawingFrame extends JPanel {
 
         scrollAncestorPane.add(treePanel);
         scrollAncestorPane.setScrollPosition(setup.getRootPosition().getX(), setup.getHeight());
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(treePanel);
-            }
-        });
-        return treePanel;
+        saveButton.addActionListener(evt -> saveButtonActionPerformed(treePanel));
     }
 
     private void saveButtonActionPerformed(TreePanel ancestorPanel) {

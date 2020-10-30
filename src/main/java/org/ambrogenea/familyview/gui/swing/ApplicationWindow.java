@@ -1,25 +1,5 @@
 package org.ambrogenea.familyview.gui.swing;
 
-import org.ambrogenea.familyview.model.Table;
-import org.ambrogenea.familyview.domain.TreeModel;
-import org.ambrogenea.familyview.enums.Diagrams;
-import org.ambrogenea.familyview.enums.LabelShape;
-import org.ambrogenea.familyview.enums.PropertyName;
-import org.ambrogenea.familyview.gui.swing.components.*;
-import org.ambrogenea.familyview.model.AncestorPerson;
-import org.ambrogenea.familyview.model.FamilyData;
-import org.ambrogenea.familyview.service.*;
-import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
-import org.ambrogenea.familyview.service.impl.paging.*;
-import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
-import org.ambrogenea.familyview.service.impl.selection.*;
-import org.ambrogenea.familyview.service.impl.tree.*;
-import org.ambrogenea.familyview.utils.Tools;
-import org.ambrogenea.familyview.word.WordGenerator;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,6 +9,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.ambrogenea.familyview.dto.tree.TreeModel;
+import org.ambrogenea.familyview.enums.Diagrams;
+import org.ambrogenea.familyview.enums.LabelShape;
+import org.ambrogenea.familyview.enums.PropertyName;
+import org.ambrogenea.familyview.gui.swing.components.*;
+import org.ambrogenea.familyview.dto.AncestorPerson;
+import org.ambrogenea.familyview.domain.FamilyData;
+import org.ambrogenea.familyview.gui.swing.model.Table;
+import org.ambrogenea.familyview.service.*;
+import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
+import org.ambrogenea.familyview.service.impl.paging.*;
+import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
+import org.ambrogenea.familyview.service.impl.selection.*;
+import org.ambrogenea.familyview.service.impl.tree.*;
+import org.ambrogenea.familyview.utils.Tools;
+import org.ambrogenea.familyview.word.WordGenerator;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -1041,6 +1042,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
     private void fatherLineageTypeAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fatherLineageTypeAncestorAdded
         treeService = new FatherLineageTreeService();
+        selectionService = new FathersSelectionService(familyData);
     }//GEN-LAST:event_fatherLineageTypeAncestorAdded
 
     private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
@@ -1124,7 +1126,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         EventQueue.invokeLater(() -> new ApplicationWindow().setVisible(true));
     }

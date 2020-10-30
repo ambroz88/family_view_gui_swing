@@ -1,12 +1,13 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import org.ambrogenea.familyview.domain.TreeModel;
+import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;

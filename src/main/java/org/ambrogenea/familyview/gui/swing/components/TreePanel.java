@@ -12,26 +12,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.constant.Spaces;
-import org.ambrogenea.familyview.domain.Arc;
-import org.ambrogenea.familyview.domain.ImageModel;
-import org.ambrogenea.familyview.domain.Line;
-import org.ambrogenea.familyview.domain.Marriage;
-import org.ambrogenea.familyview.domain.PersonRecord;
-import org.ambrogenea.familyview.domain.TreeModel;
+import org.ambrogenea.familyview.dto.tree.Arc;
+import org.ambrogenea.familyview.dto.tree.Line;
+import org.ambrogenea.familyview.dto.tree.Marriage;
+import org.ambrogenea.familyview.dto.tree.PersonRecord;
+import org.ambrogenea.familyview.dto.tree.ResidenceDto;
+import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
-import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
-import org.ambrogenea.familyview.gui.swing.model.ResidenceModel;
 import org.ambrogenea.familyview.service.ConfigurationService;
-import org.ambrogenea.familyview.model.Residence;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -41,14 +36,9 @@ public class TreePanel extends JPanel {
     private final TreeModel treeModel;
     private final ConfigurationService configuration;
 
-    protected final TreeMap<String, Color> cityRegister;
-    protected final ArrayList<ResidenceModel> residences;
-
     public TreePanel(TreeModel treeModel, ConfigurationService configuration) {
         this.treeModel = treeModel;
         this.configuration = configuration;
-        residences = new ArrayList<>();
-        cityRegister = new TreeMap<>();
         initPanel();
     }
 
@@ -57,19 +47,18 @@ public class TreePanel extends JPanel {
         setOpaque(false);
         this.setLayout(null);
 
-        for (PersonRecord person : treeModel.getPersons()) {
-            drawPerson(person);
-        }
+        treeModel.getPersons().forEach(person -> drawPerson(person));
 
         if (configuration.isShowMarriage()) {
             int labelHeight = configuration.getMarriageLabelHeight();
-            for (Marriage marriage : treeModel.getMarriages()) {
+            treeModel.getMarriages().forEach(marriage -> {
                 JLabel date = new JLabel(marriage.getDate(), JLabel.CENTER);
                 date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize() - 1));
                 date.setOpaque(false);
                 this.add(date);
-                date.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
-            }
+                date.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY(),
+                        marriage.getLength(), labelHeight);
+            });
         }
     }
 
@@ -111,19 +100,20 @@ public class TreePanel extends JPanel {
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
-        for (Arc arc : treeModel.getArcs()) {
+        treeModel.getArcs().forEach(arc -> {
             g2.drawArc(arc.getLeftUpperCorner().getX(), arc.getLeftUpperCorner().getY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
-        }
+        });
 
-        for (ImageModel image : treeModel.getImages()) {
+        treeModel.getImages().forEach(image -> {
             g2.drawImage(image.getImage(), image.getX() - image.getWidth() / 2, image.getY() - image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
-        }
+        });
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
-        for (ResidenceModel residence : residences) {
-            g2.setColor(cityRegister.get(residence.getCity()));
-            g2.drawRoundRect(residence.getX(), residence.getY(), Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
-        }
+        treeModel.getResidences().stream().forEach(residence -> {
+            drawResidence(residence);
+            g2.setColor(getCityColor(treeModel.getCityRegister().indexOf(residence.getCity())));
+            g2.drawRoundRect(residence.getPosition().getX(), residence.getPosition().getY(), Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
+        });
 
     }
 
@@ -147,11 +137,8 @@ public class TreePanel extends JPanel {
         }
         personPanel.setPreferredSize(new Dimension(imageWidth, imageHeight));
         this.add(personPanel);
-        personPanel.setBounds(person.getPosition().getX() - imageWidth / 2, person.getPosition().getY() - imageHeight / 2, imageWidth, imageHeight);
-
-        if (configuration.isShowResidence()) {
-            drawResidence(person, personPanel);
-        }
+        personPanel.setBounds(person.getPosition().getX() - imageWidth / 2, person.getPosition().getY() - imageHeight / 2,
+                imageWidth, imageHeight);
     }
 
     public BufferedImage getPicture() {
@@ -175,48 +162,23 @@ public class TreePanel extends JPanel {
         return null;
     }
 
-    private void drawResidence(final PersonRecord person, JPanel personPanel) {
-        Residence residence;
-        JLabel number;
-        int x;
-        int y;
-        for (int i = 0; i < person.getResidences().size(); i++) {
-            residence = person.getResidences().get(i);
-            if (!residence.getCity().isEmpty()) {
-
-                if (person.getSex().equals(Sex.MALE)) {
-                    x = personPanel.getX() - Spaces.RESIDENCE_SIZE - Spaces.HORIZONTAL_GAP / 2;
-                } else {
-                    x = personPanel.getX() + configuration.getAdultImageWidth() + Spaces.HORIZONTAL_GAP / 2;
-                }
-
-                y = personPanel.getY() + i * (Spaces.RESIDENCE_SIZE + 5);
-                residences.add(new ResidenceModel(x, y, residence));
-                addCityToRegister(residence.getCity());
-                if (residence.getNumber() > 0) {
-                    number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
-                    number.setSize(Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
-                    number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getAdultFontSize() - 2));
-                    this.add(number);
-                    number.setBounds(x, y, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
-                }
-
-            }
+    private void drawResidence(ResidenceDto residence) {
+        if (residence.getNumber() > 0) {
+            JLabel number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
+            number.setSize(Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
+            number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getAdultFontSize() - 2));
+            this.add(number);
+            number.setBounds(residence.getPosition().getX(), residence.getPosition().getY(),
+                    Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
         }
     }
 
-    private void addCityToRegister(String city) {
-        if (!cityRegister.containsKey(city)) {
-            if (cityRegister.size() >= Colors.getColors().length) {
-                cityRegister.put(city, Color.BLACK);
-            } else {
-                cityRegister.put(city, Colors.getColors()[cityRegister.size()]);
-            }
+    private Color getCityColor(int colorIndex) {
+        if (colorIndex >= Colors.getColors().length) {
+            return Color.BLACK;
+        } else {
+            return Colors.getColors()[colorIndex];
         }
-    }
-
-    public TreeMap<String, Color> getCityRegister() {
-        return cityRegister;
     }
 
 }

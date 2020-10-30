@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.ambrogenea.familyview.domain.PersonRecord;
+import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.Sex;
 import org.ambrogenea.familyview.service.ConfigurationService;

@@ -1,7 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.tools;
 
-import org.ambrogenea.familyview.domain.PersonRecord;
-import org.ambrogenea.familyview.domain.TreeModel;
+import org.ambrogenea.familyview.dto.tree.PersonRecord;
+import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
@@ -10,6 +10,7 @@ import org.ambrogenea.familyview.service.IsolatedTreeCreator;
 import org.ambrogenea.familyview.service.impl.IsolatedTreeCreatorImpl;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

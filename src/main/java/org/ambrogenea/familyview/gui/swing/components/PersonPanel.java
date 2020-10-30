@@ -13,7 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.ambrogenea.familyview.domain.PersonRecord;
+import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.utils.Tools;

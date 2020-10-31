@@ -13,13 +13,13 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.ambrogenea.familyview.domain.FamilyData;
+import org.ambrogenea.familyview.dto.AncestorPerson;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.*;
-import org.ambrogenea.familyview.dto.AncestorPerson;
-import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.service.*;
 import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
@@ -876,11 +876,10 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
             String personId = familyData.getPerson(recordsTable.getSelectedRow()).getId();
-            CloseFamilySelectionService closeFamilySelectionService = new CloseFamilySelectionService(familyData);
+            FathersSelectionService closeFamilySelectionService = new FathersSelectionService(familyData);
             AncestorPerson rootPerson = closeFamilySelectionService.select(personId, configuration.getGenerationCount());
 
-            addFamilyToDoc(rootPerson, doc);
-            createFamilyDocument(rootPerson.getFather(), doc);
+            createFamilyDocument(rootPerson, doc);
 
             saveFamilyDocument(rootPerson, doc);
         }
@@ -1076,6 +1075,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         TreeService closeFamilyTreeService = new CloseFamilyTreeService();
         TreeModel treeModel = closeFamilyTreeService.generateTreeModel(personWithAncestors, setup, configuration);
         TreePanel familyPanel = new TreePanel(treeModel, configuration);
+        familyPanel.setSize(new Dimension(setup.getWidth(), setup.getHeight()));
         familyPanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
 
         familyPanel.addNotify();

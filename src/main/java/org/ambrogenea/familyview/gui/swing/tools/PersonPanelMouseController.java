@@ -1,5 +1,11 @@
 package org.ambrogenea.familyview.gui.swing.tools;
 
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.*;
+
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
@@ -8,12 +14,6 @@ import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.IsolatedTreeCreator;
 import org.ambrogenea.familyview.service.impl.IsolatedTreeCreatorImpl;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  *
@@ -82,7 +82,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
         });
     }
 
@@ -102,7 +102,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
         });
     }
 
@@ -122,7 +122,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
         });
     }
 
@@ -142,7 +142,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
         });
     }
 
@@ -162,7 +162,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getRootPerson().getName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
         });
     }
 

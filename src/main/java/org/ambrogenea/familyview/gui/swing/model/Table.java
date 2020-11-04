@@ -33,7 +33,7 @@ public class Table extends DefaultTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Person chosen = familyData.getPerson(rowIndex);
+        Person chosen = familyData.getPersonByPosition(rowIndex);
         String result = "";
         if (columnIndex == 0) {
             result = chosen.getFirstName();

@@ -1,6 +1,6 @@
 package org.ambrogenea.familyview.gui.swing;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Level;
@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 import org.ambrogenea.familyview.enums.PropertyName;
+import org.ambrogenea.familyview.gui.swing.components.SettingsPanel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
 
@@ -17,6 +18,8 @@ import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class Window extends JFrame implements PropertyChangeListener {
+
+    private static final int BORDER_SIZE = 70;
 
     private SettingsPanel settingsPanel;
     private ConfigurationService configuration;
@@ -28,6 +31,13 @@ public class Window extends JFrame implements PropertyChangeListener {
         configuration.addPropertyChangeListener(this);
 
         initComponents();
+        setWindowSize();
+    }
+
+    private void setWindowSize() throws HeadlessException {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        this.setSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
+        this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth() - BORDER_SIZE, gd.getDisplayMode().getHeight() - BORDER_SIZE));
     }
 
     private void initComponents() {

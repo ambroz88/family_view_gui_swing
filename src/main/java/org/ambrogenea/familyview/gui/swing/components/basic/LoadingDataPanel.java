@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing;
+package org.ambrogenea.familyview.gui.swing.components.basic;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.ambrogenea.familyview.gui.swing.components.SettingsPanel;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.Loader;
 
@@ -41,8 +42,7 @@ public class LoadingDataPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("/language/loader", window.getConfiguration().getLocale());
-
+        ResourceBundle description = ResourceBundle.getBundle("language/loader", window.getConfiguration().getLocale());
         loadInputButton = new JButton(description.getString(Loader.LOAD));
 
         fileNameLabel = new JLabel(description.getString(Loader.NAME));
@@ -71,7 +71,7 @@ public class LoadingDataPanel extends JPanel {
     }
 
     private void loadInputButtonActionPerformed(ActionEvent evt) {
-        int returnVal = openFC.showOpenDialog(this);
+        int returnVal = openFC.showOpenDialog(window);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = openFC.getSelectedFile();

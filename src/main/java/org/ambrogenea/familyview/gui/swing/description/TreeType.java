@@ -6,6 +6,7 @@ package org.ambrogenea.familyview.gui.swing.description;
  */
 public abstract class TreeType {
 
+    public static String TITLE = "title";
     public static String ALL_ANCESTORS = "allAncestor";
     public static String PARENTS = "parents";
     public static String FATHERS = "fathers";

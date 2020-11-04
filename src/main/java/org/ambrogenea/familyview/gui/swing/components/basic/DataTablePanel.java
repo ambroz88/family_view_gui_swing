@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing;
+package org.ambrogenea.familyview.gui.swing.components.basic;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

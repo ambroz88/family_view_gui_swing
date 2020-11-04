@@ -1,5 +1,8 @@
-package org.ambrogenea.familyview.gui.swing;
+package org.ambrogenea.familyview.gui.swing.components;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +14,17 @@ import javax.swing.JPanel;
 import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.dto.AncestorPerson;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
-import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
+import org.ambrogenea.familyview.gui.swing.Window;
+import org.ambrogenea.familyview.gui.swing.components.basic.DataTablePanel;
+import org.ambrogenea.familyview.gui.swing.components.basic.LoadingDataPanel;
+import org.ambrogenea.familyview.gui.swing.components.basic.TreeSetupPanel;
+import org.ambrogenea.familyview.gui.swing.components.basic.TreeTypePanel;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.service.*;
 import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
+import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
+import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
+import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 
 /**
  *
@@ -36,17 +46,28 @@ public class SettingsPanel extends JPanel {
 
     public SettingsPanel(Window window) {
         this.window = window;
+        this.setLayout(new BorderLayout());
 
         treeTypePanel = new TreeTypePanel(this);
         treeSetupPanel = new TreeSetupPanel(window.getConfiguration());
         loadingDataPanel = new LoadingDataPanel(this);
         dataTablePanel = new DataTablePanel();
 
+        selectionService = new FathersSelectionService();
+        treeService = new FatherLineageTreeService();
         addComponents();
     }
 
     private void addComponents() {
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        int height = Dimensions.DATA_LOADING_PANEL_HEIGHT + Dimensions.TREE_SETUP_PANEL_HEIGHT + Dimensions.TREE_TYPE_PANEL_HEIGHT;
+        leftPanel.setPreferredSize(new Dimension(Dimensions.DATA_LOADING_PANEL_WIDTH + 10, height + 10));
+        leftPanel.add(loadingDataPanel);
+        leftPanel.add(treeTypePanel);
+        leftPanel.add(treeSetupPanel);
 
+        this.add(leftPanel, BorderLayout.WEST);
+        this.add(dataTablePanel, BorderLayout.CENTER);
     }
 
     public void loadTable(String absolutePath) {
@@ -87,6 +108,7 @@ public class SettingsPanel extends JPanel {
 
     public void setSelectionService(SelectionService selectionService) {
         this.selectionService = selectionService;
+        this.selectionService.setFamilyData(familyData);
     }
 
     public void setSiblingsShow(boolean show) {

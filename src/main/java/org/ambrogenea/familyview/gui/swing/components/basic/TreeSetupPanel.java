@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing;
+package org.ambrogenea.familyview.gui.swing.components.basic;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -7,11 +7,13 @@ import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeSetup;
+import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
@@ -46,7 +48,8 @@ public class TreeSetupPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("/language/treeSetup", configuration.getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", configuration.getLocale());
+        this.setBorder(new TitledBorder(description.getString(TreeSetup.TITLE)));
 
         verticalViewCheckBox = new JCheckBox();
         verticalViewCheckBox.setSelected(configuration.isShowCouplesVertical());

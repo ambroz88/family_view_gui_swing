@@ -6,6 +6,7 @@ package org.ambrogenea.familyview.gui.swing.description;
  */
 public abstract class TreeSetup {
 
+    public static String TITLE = "title";
     public static String VERTICAL = "vertical";
     public static String HERALDRY = "heraldry";
     public static String MARRIAGE = "marriage";

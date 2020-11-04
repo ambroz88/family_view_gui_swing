@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing;
+package org.ambrogenea.familyview.gui.swing.components.basic;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -9,10 +9,13 @@ import java.util.ResourceBundle;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.dto.AncestorPerson;
+import org.ambrogenea.familyview.gui.swing.components.SettingsPanel;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
+import org.ambrogenea.familyview.gui.swing.description.Loader;
 import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
@@ -52,10 +55,14 @@ public class TreeTypePanel extends JPanel {
 
     private void initComponents() {
         Locale locale = window.getConfiguration().getLocale();
-        ResourceBundle description = ResourceBundle.getBundle("/language/treeType", locale);
+        ResourceBundle description = ResourceBundle.getBundle("language/treeType", locale);
+        this.setBorder(new TitledBorder(description.getString(TreeType.TITLE)));
+
         allAncestorType = new JRadioButton(description.getString(TreeType.ALL_ANCESTORS));
         parentLineageType = new JRadioButton(description.getString(TreeType.PARENTS));
         fatherLineageType = new JRadioButton(description.getString(TreeType.FATHERS));
+        fatherLineageType.setSelected(true);
+
         motherLineageType = new JRadioButton(description.getString(TreeType.MOTHERS));
         ButtonGroup treeTypeGroup = new ButtonGroup();
 

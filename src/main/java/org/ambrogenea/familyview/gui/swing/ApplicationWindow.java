@@ -58,6 +58,9 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         initComponents();
         initLogo();
 
+        treeService = new FatherLineageTreeService();
+        selectionService = new FathersSelectionService();
+
         personImage = new AdultPanel(Tools.generateSamplePerson(), configuration);
         personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
         personImagePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -163,18 +166,22 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Family Viewer");
-        setName("rootFrame");
+        setName("rootFrame"); // NOI18N
 
-        settingsTab.setName("");
+        settingsTab.setName(""); // NOI18N
 
         loadInputButton.setText("Load GEDCOM file");
-        loadInputButton.addActionListener(this::loadInputButtonActionPerformed);
+        loadInputButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadInputButtonActionPerformed(evt);
+            }
+        });
 
         recordsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][]{
+            new Object [][] {
                 {}
             },
-            new String[]{
+            new String [] {
 
             }
         ));
@@ -186,58 +193,82 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         fileNameLabel.setPreferredSize(new java.awt.Dimension(148, 25));
 
         generateTreeButton.setText("Generate Tree");
-        generateTreeButton.addActionListener(this::generateTreeButtonActionPerformed);
+        generateTreeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateTreeButtonActionPerformed(evt);
+            }
+        });
 
         personBoxPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person box setup"));
         personBoxPanel.setPreferredSize(new java.awt.Dimension(165, 304));
 
         ageCheckBox.setSelected(configuration.isShowAge());
         ageCheckBox.setText("Show age");
-        ageCheckBox.addActionListener(this::ageCheckBoxActionPerformed);
+        ageCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ageCheckBoxActionPerformed(evt);
+            }
+        });
 
         templeCheckBox.setSelected(configuration.isShowTemple());
         templeCheckBox.setText("Show temple box");
-        templeCheckBox.addActionListener(this::templeCheckBoxActionPerformed);
+        templeCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                templeCheckBoxActionPerformed(evt);
+            }
+        });
 
         placesCheckBox.setSelected(configuration.isShowPlaces());
         placesCheckBox.setText("Show places");
-        placesCheckBox.addActionListener(this::placesCheckBoxActionPerformed);
+        placesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                placesCheckBoxActionPerformed(evt);
+            }
+        });
 
         shortenPlacesCheckBox.setSelected(configuration.isShortenPlaces());
         shortenPlacesCheckBox.setText("Shorten places");
-        shortenPlacesCheckBox.addActionListener(this::shortenPlacesCheckBoxActionPerformed);
+        shortenPlacesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shortenPlacesCheckBoxActionPerformed(evt);
+            }
+        });
 
         occupationCheckBox.setSelected(configuration.isShowOccupation());
         occupationCheckBox.setText("Show occupation");
-        occupationCheckBox.addActionListener(this::occupationCheckBoxActionPerformed);
+        occupationCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                occupationCheckBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout personBoxPanelLayout = new javax.swing.GroupLayout(personBoxPanel);
         personBoxPanel.setLayout(personBoxPanelLayout);
         personBoxPanelLayout.setHorizontalGroup(
             personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(personBoxPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(templeCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(placesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(occupationCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(shortenPlacesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap())
+            .addGroup(personBoxPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(templeCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(placesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ageCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(occupationCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shortenPlacesCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         personBoxPanelLayout.setVerticalGroup(
             personBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(personBoxPanelLayout.createSequentialGroup()
-                    .addComponent(ageCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(occupationCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(placesCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(shortenPlacesCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(templeCheckBox)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(personBoxPanelLayout.createSequentialGroup()
+                .addComponent(ageCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(occupationCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(placesCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(shortenPlacesCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(templeCheckBox)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         parentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Person in direct lineage"));
@@ -252,11 +283,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         personImagePanel.setLayout(personImagePanelLayout);
         personImagePanelLayout.setHorizontalGroup(
             personImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         personImagePanelLayout.setVerticalGroup(
             personImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         TopOffsetLabel.setText("Top offset");
@@ -266,7 +297,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         fontSizeLabel.setText("Font size");
 
         diagramComboBox.setModel(new DefaultComboBoxModel<>(Diagrams.values()));
-        diagramComboBox.addActionListener(this::diagramComboBoxActionPerformed);
+        diagramComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                diagramComboBoxActionPerformed(evt);
+            }
+        });
 
         diagramLabel.setText("Diagram");
 
@@ -279,7 +314,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         imageWidthSlider.setValue(configuration.getAdultImageWidth());
         imageWidthSlider.setMaximumSize(new java.awt.Dimension(250, 27));
         imageWidthSlider.setPreferredSize(new java.awt.Dimension(250, 27));
-        imageWidthSlider.addChangeListener(this::imageWidthSliderStateChanged);
+        imageWidthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                imageWidthSliderStateChanged(evt);
+            }
+        });
 
         imageHeightSlider.setMajorTickSpacing(10);
         imageHeightSlider.setMaximum(250);
@@ -291,16 +330,32 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         imageHeightSlider.setValue(configuration.getAdultImageHeight());
         imageHeightSlider.setMaximumSize(new java.awt.Dimension(29, 215));
         imageHeightSlider.setPreferredSize(new java.awt.Dimension(29, 215));
-        imageHeightSlider.addChangeListener(this::imageHeightSliderStateChanged);
+        imageHeightSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                imageHeightSliderStateChanged(evt);
+            }
+        });
 
         fontSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getAdultFontSize(), 10, 25, 1));
-        fontSizeSpinner.addChangeListener(this::fontSizeSpinnerStateChanged);
+        fontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                fontSizeSpinnerStateChanged(evt);
+            }
+        });
 
         bottomOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getAdultBottomOffset(), 0, 40, 1));
-        bottomOffsetSpinner.addChangeListener(this::bottomOffsetSpinnerStateChanged);
+        bottomOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bottomOffsetSpinnerStateChanged(evt);
+            }
+        });
 
         topOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getAdultTopOffset(), 0, 40, 1));
-        topOffsetSpinner.addChangeListener(this::topOffsetSpinnerStateChanged);
+        topOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                topOffsetSpinnerStateChanged(evt);
+            }
+        });
 
         adultSizeLabel.setText("width x height:");
 
@@ -310,67 +365,67 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         parentPanel.setLayout(parentPanelLayout);
         parentPanelLayout.setHorizontalGroup(
             parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(parentPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(imageHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(imageWidthSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(18, 18, 18)
-                    .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(diagramLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(diagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(parentPanelLayout.createSequentialGroup()
-                            .addComponent(bottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(parentPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(imageWidthSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(diagramLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(diagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(parentPanelLayout.createSequentialGroup()
+                        .addComponent(bottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, parentPanelLayout.createSequentialGroup()
+                            .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, parentPanelLayout.createSequentialGroup()
-                                .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fontSizeSpinner))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, parentPanelLayout.createSequentialGroup()
-                                .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(adultSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(TopOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(topOffsetSpinner)
-                                    .addComponent(adultSize, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                    .addContainerGap(12, Short.MAX_VALUE))
+                            .addComponent(fontSizeSpinner))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, parentPanelLayout.createSequentialGroup()
+                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(adultSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(TopOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(topOffsetSpinner)
+                                .addComponent(adultSize, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         parentPanelLayout.setVerticalGroup(
             parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parentPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(imageWidthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(imageHeightSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                        .addGroup(parentPanelLayout.createSequentialGroup()
-                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(adultSizeLabel)
-                                .addComponent(adultSize))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(topOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(TopOffsetLabel))
-                            .addGap(18, 18, 18)
-                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(fontSizeLabel)
-                                .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(diagramLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(diagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(bottomOffsetLabel)
-                                .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parentPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageWidthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(imageHeightSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                        .addComponent(personImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                    .addGroup(parentPanelLayout.createSequentialGroup()
+                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(adultSizeLabel)
+                            .addComponent(adultSize))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(topOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TopOffsetLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fontSizeLabel)
+                            .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(diagramLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(diagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(parentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bottomOffsetLabel)
+                            .addComponent(bottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         diagramComboBox.setSelectedItem(configuration.getAdultDiagram());
@@ -390,11 +445,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingsImagePanel.setLayout(siblingsImagePanelLayout);
         siblingsImagePanelLayout.setHorizontalGroup(
             siblingsImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         siblingsImagePanelLayout.setVerticalGroup(
             siblingsImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 248, Short.MAX_VALUE)
+            .addGap(0, 248, Short.MAX_VALUE)
         );
 
         siblingsTopOffsetLabel.setText("Top offset");
@@ -404,7 +459,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingsFontSizeLabel.setText("Font size");
 
         siblingsDiagramComboBox.setModel(new DefaultComboBoxModel<>(Diagrams.values()));
-        siblingsDiagramComboBox.addActionListener(this::siblingsDiagramComboBoxActionPerformed);
+        siblingsDiagramComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siblingsDiagramComboBoxActionPerformed(evt);
+            }
+        });
 
         siblingsDiagramLabel.setText("Diagram");
 
@@ -417,7 +476,11 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingsWidthSlider.setValue(configuration.getSiblingImageWidth());
         siblingsWidthSlider.setMaximumSize(new java.awt.Dimension(250, 27));
         siblingsWidthSlider.setPreferredSize(new java.awt.Dimension(250, 27));
-        siblingsWidthSlider.addChangeListener(this::siblingsWidthSliderStateChanged);
+        siblingsWidthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                siblingsWidthSliderStateChanged(evt);
+            }
+        });
 
         siblingsHeightSlider.setMajorTickSpacing(10);
         siblingsHeightSlider.setMaximum(250);
@@ -429,16 +492,32 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingsHeightSlider.setValue(configuration.getSiblingImageHeight());
         siblingsHeightSlider.setMaximumSize(new java.awt.Dimension(29, 215));
         siblingsHeightSlider.setPreferredSize(new java.awt.Dimension(29, 215));
-        siblingsHeightSlider.addChangeListener(this::siblingsHeightSliderStateChanged);
+        siblingsHeightSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                siblingsHeightSliderStateChanged(evt);
+            }
+        });
 
         siblingFontSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getSiblingFontSize(), 10, 25, 1));
-        siblingFontSizeSpinner.addChangeListener(this::siblingFontSizeSpinnerStateChanged);
+        siblingFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                siblingFontSizeSpinnerStateChanged(evt);
+            }
+        });
 
         siblingsBottomOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getSiblingBottomOffset(), 0, 40, 1));
-        siblingsBottomOffsetSpinner.addChangeListener(this::siblingsBottomOffsetSpinnerStateChanged);
+        siblingsBottomOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                siblingsBottomOffsetSpinnerStateChanged(evt);
+            }
+        });
 
         siblingsTopOffsetSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getSiblingTopOffset(), 0, 40, 1));
-        siblingsTopOffsetSpinner.addChangeListener(this::siblingsTopOffsetSpinnerStateChanged);
+        siblingsTopOffsetSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                siblingsTopOffsetSpinnerStateChanged(evt);
+            }
+        });
 
         siblingsSizeLabel.setText("width x height:");
 
@@ -448,323 +527,384 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         siblingPanel.setLayout(siblingPanelLayout);
         siblingPanelLayout.setHorizontalGroup(
             siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(siblingPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(siblingsHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(siblingPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(siblingsHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(siblingsWidthSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(siblingsImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(siblingsDiagramLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(siblingsWidthSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(siblingsImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(18, 18, 18)
-                    .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(siblingsDiagramLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(siblingPanelLayout.createSequentialGroup()
-                                .addComponent(siblingsFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(siblingFontSizeSpinner))
-                            .addGroup(siblingPanelLayout.createSequentialGroup()
-                                .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(siblingsSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(siblingsTopOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(siblingsTopOffsetSpinner)
-                                    .addComponent(siblingsSize, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addGroup(siblingPanelLayout.createSequentialGroup()
-                            .addComponent(siblingsBottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(siblingsBottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(siblingsDiagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(siblingsFontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(siblingFontSizeSpinner))
+                        .addGroup(siblingPanelLayout.createSequentialGroup()
+                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(siblingsSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(siblingsTopOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(siblingsTopOffsetSpinner)
+                                .addComponent(siblingsSize, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addGroup(siblingPanelLayout.createSequentialGroup()
+                        .addComponent(siblingsBottomOffsetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(siblingsBottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(siblingsDiagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         siblingPanelLayout.setVerticalGroup(
             siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, siblingPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(siblingsWidthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(siblingPanelLayout.createSequentialGroup()
-                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(siblingsSizeLabel)
-                                .addComponent(siblingsSize))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(siblingsTopOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(siblingsTopOffsetLabel))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(siblingsFontSizeLabel)
-                                .addComponent(siblingFontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(siblingsDiagramLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(siblingsDiagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(siblingsBottomOffsetLabel)
-                                .addComponent(siblingsBottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(siblingsImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(siblingsHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, siblingPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(siblingsWidthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(siblingPanelLayout.createSequentialGroup()
+                        .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(siblingsSizeLabel)
+                            .addComponent(siblingsSize))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(siblingsTopOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(siblingsTopOffsetLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(siblingsFontSizeLabel)
+                            .addComponent(siblingFontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(siblingsDiagramLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(siblingsDiagramComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(siblingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(siblingsBottomOffsetLabel)
+                            .addComponent(siblingsBottomOffsetSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(siblingsImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(siblingsHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         siblingsDiagramComboBox.setSelectedItem(configuration.getSiblingDiagram());
 
         resetModeCheckBox.setText("Reset mode");
-        resetModeCheckBox.addActionListener(this::resetModeCheckBoxActionPerformed);
+        resetModeCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetModeCheckBoxActionPerformed(evt);
+            }
+        });
 
         treeTypePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tree Type"));
 
         treeTypeGroup.add(fatherLineageType);
         fatherLineageType.setSelected(true);
         fatherLineageType.setText("Father's lineage");
-        fatherLineageType.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                fatherLineageTypeAncestorAdded(evt);
-            }
-
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+        fatherLineageType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fatherLineageTypeActionPerformed(evt);
             }
         });
-        fatherLineageType.addActionListener(this::fatherLineageTypeActionPerformed);
 
         treeTypeGroup.add(motherLineageType);
         motherLineageType.setText("Mother's lineage");
-        motherLineageType.addActionListener(this::motherLineageTypeActionPerformed);
+        motherLineageType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                motherLineageTypeActionPerformed(evt);
+            }
+        });
 
         treeTypeGroup.add(parentLineageType);
         parentLineageType.setText("Parent's lineage");
-        parentLineageType.addActionListener(this::parentLineageTypeActionPerformed);
+        parentLineageType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parentLineageTypeActionPerformed(evt);
+            }
+        });
 
         treeTypeGroup.add(allAncestorType);
         allAncestorType.setText("All ancestor couple");
-        allAncestorType.addChangeListener(this::allAncestorTypeStateChanged);
+        allAncestorType.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                allAncestorTypeStateChanged(evt);
+            }
+        });
 
         treeTypeGroup.add(closeFamilyType);
         closeFamilyType.setText("Close family");
-        closeFamilyType.addChangeListener(this::closeFamilyTypeStateChanged);
+        closeFamilyType.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                closeFamilyTypeStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout treeTypePanelLayout = new javax.swing.GroupLayout(treeTypePanel);
         treeTypePanel.setLayout(treeTypePanelLayout);
         treeTypePanelLayout.setHorizontalGroup(
             treeTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(treeTypePanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(treeTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(allAncestorType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(parentLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(motherLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(fatherLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(closeFamilyType, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap())
+            .addGroup(treeTypePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(treeTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(allAncestorType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(parentLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(motherLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fatherLineageType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(closeFamilyType, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         treeTypePanelLayout.setVerticalGroup(
             treeTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, treeTypePanelLayout.createSequentialGroup()
-                    .addComponent(fatherLineageType)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(motherLineageType)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(parentLineageType)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(allAncestorType)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(closeFamilyType)
-                    .addGap(26, 26, 26))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, treeTypePanelLayout.createSequentialGroup()
+                .addComponent(fatherLineageType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(motherLineageType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(parentLineageType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(allAncestorType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeFamilyType)
+                .addGap(26, 26, 26))
         );
 
         treeSetupPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tree setup"));
 
         spousesCheckbox.setSelected(configuration.isShowSpouses());
         spousesCheckbox.setText("Spouses for root");
-        spousesCheckbox.addActionListener(this::spousesCheckboxActionPerformed);
+        spousesCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spousesCheckboxActionPerformed(evt);
+            }
+        });
 
         showSiblingsCheckbox.setSelected(configuration.isShowSiblings());
         showSiblingsCheckbox.setText("Show siblings");
-        showSiblingsCheckbox.addActionListener(this::showSiblingsCheckboxActionPerformed);
+        showSiblingsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showSiblingsCheckboxActionPerformed(evt);
+            }
+        });
 
         childrenCheckbox.setSelected(configuration.isShowChildren());
         childrenCheckbox.setText("Show children");
-        childrenCheckbox.addActionListener(this::childrenCheckboxActionPerformed);
+        childrenCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                childrenCheckboxActionPerformed(evt);
+            }
+        });
 
         showParentsCheckbox.setSelected(configuration.isShowParents());
         showParentsCheckbox.setText("Show parents");
         showParentsCheckbox.setEnabled(false);
-        showParentsCheckbox.addActionListener(this::showParentsCheckboxActionPerformed);
+        showParentsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showParentsCheckboxActionPerformed(evt);
+            }
+        });
 
         showSiblingSpouse.setSelected(configuration.isShowSiblingSpouses());
         showSiblingSpouse.setText("Sibling spouse");
-        showSiblingSpouse.addActionListener(this::showSiblingSpouseActionPerformed);
+        showSiblingSpouse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showSiblingSpouseActionPerformed(evt);
+            }
+        });
 
         generationsLabel.setText("Generations:");
 
         generationSpinner.setModel(new javax.swing.SpinnerNumberModel(configuration.getGenerationCount(), 1, 20, 1));
-        generationSpinner.addChangeListener(this::generationSpinnerStateChanged);
+        generationSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                generationSpinnerStateChanged(evt);
+            }
+        });
 
         verticalViewCheckBox.setSelected(configuration.isShowCouplesVertical());
         verticalViewCheckBox.setText("Verical view");
-        verticalViewCheckBox.addActionListener(this::verticalViewCheckBoxActionPerformed);
+        verticalViewCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verticalViewCheckBoxActionPerformed(evt);
+            }
+        });
 
         heraldryCheckBox.setSelected(configuration.isShowHeraldry());
         heraldryCheckBox.setText("Show heraldry");
-        heraldryCheckBox.addActionListener(this::heraldryCheckBoxActionPerformed);
+        heraldryCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                heraldryCheckBoxActionPerformed(evt);
+            }
+        });
 
         marriageCheckBox.setSelected(configuration.isShowMarriage());
         marriageCheckBox.setText("Show marriage");
-        marriageCheckBox.addActionListener(this::marriageCheckBoxActionPerformed);
+        marriageCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marriageCheckBoxActionPerformed(evt);
+            }
+        });
 
         residenceCheckBox.setSelected(configuration.isShowResidence());
         residenceCheckBox.setText("Show residence");
-        residenceCheckBox.addActionListener(this::residenceCheckBoxActionPerformed);
+        residenceCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                residenceCheckBoxActionPerformed(evt);
+            }
+        });
 
         shapeLabelBox.setModel(new DefaultComboBoxModel<>(LabelShape.getStrings()));
         shapeLabelBox.setSelectedItem(configuration.getLabelShape());
-        shapeLabelBox.addActionListener(this::shapeLabelBoxActionPerformed);
+        shapeLabelBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shapeLabelBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout treeSetupPanelLayout = new javax.swing.GroupLayout(treeSetupPanel);
         treeSetupPanel.setLayout(treeSetupPanelLayout);
         treeSetupPanelLayout.setHorizontalGroup(
             treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(treeSetupPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(marriageCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(residenceCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(childrenCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(showParentsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(showSiblingsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(showSiblingSpouse, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, treeSetupPanelLayout.createSequentialGroup()
-                            .addGap(9, 9, 9)
-                            .addComponent(generationsLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(heraldryCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(spousesCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(verticalViewCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(shapeLabelBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(17, 17, 17))
+            .addGroup(treeSetupPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(marriageCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(residenceCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(childrenCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showParentsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showSiblingsCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showSiblingSpouse, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, treeSetupPanelLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(generationsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(heraldryCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spousesCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(verticalViewCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shapeLabelBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
         );
         treeSetupPanelLayout.setVerticalGroup(
             treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, treeSetupPanelLayout.createSequentialGroup()
-                    .addComponent(verticalViewCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(heraldryCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(marriageCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(residenceCheckBox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(spousesCheckbox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(childrenCheckbox)
-                    .addGap(5, 5, 5)
-                    .addComponent(showParentsCheckbox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(showSiblingsCheckbox)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(showSiblingSpouse)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(generationsLabel))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(shapeLabelBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, treeSetupPanelLayout.createSequentialGroup()
+                .addComponent(verticalViewCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(heraldryCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(marriageCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(residenceCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spousesCheckbox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(childrenCheckbox)
+                .addGap(5, 5, 5)
+                .addComponent(showParentsCheckbox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showSiblingsCheckbox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showSiblingSpouse)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(treeSetupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generationsLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(shapeLabelBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         generateWord.setText("Generate Word");
-        generateWord.addActionListener(this::generateWordActionPerformed);
+        generateWord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateWordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout settingsRootPanelLayout = new javax.swing.GroupLayout(settingsRootPanel);
         settingsRootPanel.setLayout(settingsRootPanelLayout);
         settingsRootPanelLayout.setHorizontalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addContainerGap()
+            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(filenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fileNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addComponent(generateWord, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                    .addGap(16, 16, 16)
-                                    .addComponent(loadInputButton))))
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addComponent(generateTreeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsRootPanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(treeTypePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(treeSetupPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addComponent(parentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                    .addGap(13, 13, 13)
-                                    .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addComponent(resetModeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(siblingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 17, Short.MAX_VALUE))
-                        .addComponent(tableScroll))
-                    .addContainerGap())
+                                .addComponent(filenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(generateWord, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(loadInputButton))))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(generateTreeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(treeTypePanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(treeSetupPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addComponent(parentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(resetModeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(siblingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 17, Short.MAX_VALUE))
+                    .addComponent(tableScroll))
+                .addContainerGap())
         );
         settingsRootPanelLayout.setVerticalGroup(
             settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addGap(23, 23, 23)
-                            .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(resetModeCheckBox))
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(parentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                                .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addComponent(loadInputButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(filenameLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(generateTreeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(12, 12, 12)
-                                    .addComponent(treeTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(siblingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(settingsRootPanelLayout.createSequentialGroup()
-                            .addComponent(treeSetupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(generateWord)
-                            .addGap(0, 73, Short.MAX_VALUE))
-                        .addComponent(tableScroll))
-                    .addContainerGap())
+            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(personBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetModeCheckBox))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(parentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                            .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(loadInputButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(filenameLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fileNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(generateTreeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(treeTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(siblingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingsRootPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsRootPanelLayout.createSequentialGroup()
+                        .addComponent(treeSetupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(generateWord)
+                        .addGap(0, 73, Short.MAX_VALUE))
+                    .addComponent(tableScroll))
+                .addContainerGap())
         );
 
         settingsTab.addTab("Settings", settingsRootPanel);
@@ -773,16 +913,16 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(settingsTab))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(settingsTab))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(settingsTab)
-                    .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(settingsTab)
+                .addContainerGap())
         );
 
         settingsTab.getAccessibleContext().setAccessibleName("Settings");
@@ -817,7 +957,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
     private void generateTreeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTreeButtonActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
             configuration.setFamilyData(familyData);
-            String personId = familyData.getPerson(recordsTable.getSelectedRow()).getId();
+            String personId = familyData.getPersonByPosition(recordsTable.getSelectedRow()).getId();
             AncestorPerson rootPerson = selectionService.select(personId, configuration.getGenerationCount());
 
             PageSetup setup;
@@ -875,7 +1015,7 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
 
     private void generateWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateWordActionPerformed
         if (recordsTable.getSelectedRow() != -1) {
-            String personId = familyData.getPerson(recordsTable.getSelectedRow()).getId();
+            String personId = familyData.getPersonByPosition(recordsTable.getSelectedRow()).getId();
 
             DocumentGeneratorService service = new A4WordGeneratorService(configuration);
             java.util.List<DocumentInputs> inputs = service.generateFamilies(personId, familyData);
@@ -1042,11 +1182,6 @@ public class ApplicationWindow extends JFrame implements PropertyChangeListener 
             generationSpinner.setEnabled(true);
         }
     }//GEN-LAST:event_closeFamilyTypeStateChanged
-
-    private void fatherLineageTypeAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fatherLineageTypeAncestorAdded
-        treeService = new FatherLineageTreeService();
-        selectionService = new FathersSelectionService(familyData);
-    }//GEN-LAST:event_fatherLineageTypeAncestorAdded
 
     private TreePanel createOneFamily(TreeModel treeModel) {
         PageSetup setup = treeModel.getPageSetup();

@@ -373,7 +373,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="12" max="32767" attributes="0"/>
+                          <EmptySpace pref="11" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -414,7 +414,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -890,7 +890,6 @@
                     <Property name="text" type="java.lang.String" value="Father&apos;s lineage"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="fatherLineageTypeAncestorAdded"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fatherLineageTypeActionPerformed"/>
                   </Events>
                 </Component>

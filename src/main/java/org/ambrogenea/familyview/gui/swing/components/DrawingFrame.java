@@ -68,11 +68,12 @@ public class DrawingFrame extends JPanel {
     }
 
     private void saveButtonActionPerformed(TreePanel ancestorPanel) {
+        saverFC.setSelectedFile(new File(ancestorPanel.getTreeName()));
         int returnVal = saverFC.showSaveDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = saverFC.getSelectedFile();
-            if (!file.getAbsolutePath().contains(".")) {
+            if (!file.getAbsolutePath().endsWith(".png")) {
                 file = new File(file.getAbsolutePath() + ".png");
             }
             try {

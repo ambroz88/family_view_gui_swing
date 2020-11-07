@@ -60,6 +60,10 @@ public class TreePanel extends JPanel {
                         marriage.getLength(), labelHeight);
             });
         }
+
+        treeModel.getResidences().stream().forEach(residence -> {
+            drawResidence(residence);
+        });
     }
 
     @Override
@@ -110,9 +114,9 @@ public class TreePanel extends JPanel {
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
         treeModel.getResidences().stream().forEach(residence -> {
-            drawResidence(residence);
             g2.setColor(getCityColor(treeModel.getCityRegister().indexOf(residence.getCity())));
-            g2.drawRoundRect(residence.getPosition().getX(), residence.getPosition().getY(), Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
+            g2.drawRoundRect(residence.getPosition().getX(), residence.getPosition().getY(),
+                    Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
         });
 
     }
@@ -160,6 +164,10 @@ public class TreePanel extends JPanel {
             System.out.println("Image is not possible to convert: " + e.getMessage());
         }
         return null;
+    }
+
+    public String getTreeName() {
+        return treeModel.getTreeName();
     }
 
     private void drawResidence(ResidenceDto residence) {

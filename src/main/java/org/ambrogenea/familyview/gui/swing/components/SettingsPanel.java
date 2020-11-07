@@ -19,11 +19,11 @@ import org.ambrogenea.familyview.gui.swing.components.basic.DataTablePanel;
 import org.ambrogenea.familyview.gui.swing.components.basic.LoadingDataPanel;
 import org.ambrogenea.familyview.gui.swing.components.basic.TreeSetupPanel;
 import org.ambrogenea.familyview.gui.swing.components.basic.TreeTypePanel;
+import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.service.*;
 import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
 import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
-import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 
 /**
@@ -74,12 +74,12 @@ public class SettingsPanel extends JPanel {
         try {
             ParsingService parsingService = new GedcomParsingService();
 
-            InputStream inputStream = new FileInputStream(absolutePath);
-            familyData = parsingService.parse(inputStream);
-
-            dataTablePanel.setModel(new Table(familyData));
-            selectionService.setFamilyData(familyData);
+            try ( InputStream inputStream = new FileInputStream(absolutePath)) {
+                familyData = parsingService.parse(inputStream);
+                dataTablePanel.setModel(new Table(familyData));
+                selectionService.setFamilyData(familyData);
 //            recordsTable.setAutoCreateRowSorter(true);
+            }
         } catch (IOException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }

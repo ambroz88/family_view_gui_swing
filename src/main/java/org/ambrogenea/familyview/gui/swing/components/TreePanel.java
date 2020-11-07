@@ -1,12 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,8 +13,6 @@ import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.constant.Spaces;
 import org.ambrogenea.familyview.dto.tree.Arc;
-import org.ambrogenea.familyview.dto.tree.Line;
-import org.ambrogenea.familyview.dto.tree.Marriage;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.ResidenceDto;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
@@ -72,20 +64,22 @@ public class TreePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Colors.LINE_COLOR);
 
-        int lineStrokeExtra = 0;
+        final int lineStrokeExtra;
         if (configuration.getAdultFontSize() >= 18) {
             lineStrokeExtra = 1;
+        } else {
+            lineStrokeExtra = 0;
         }
 
         int cornerSize = 20;
-        for (Line line : treeModel.getLines()) {
-            g2.setStroke(new BasicStroke(lineStrokeExtra + line.getType()));
+        treeModel.getLines().forEach(line -> {
+            g2.setStroke(new BasicStroke(lineStrokeExtra + line.getRelation().getInt()));
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
-        }
+        });
 
         int labelHeight = configuration.getMarriageLabelHeight();
 
-        for (Marriage marriage : treeModel.getMarriages()) {
+        treeModel.getMarriages().forEach(marriage -> {
             Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY(), marriage.getLength(), labelHeight);
 
             g2.setColor(Colors.LABEL_BACKGROUND);
@@ -101,10 +95,12 @@ public class TreePanel extends JPanel {
                 g2.drawRect(rect.x - Spaces.SIBLINGS_GAP, rect.y, rect.width + 2 * Spaces.SIBLINGS_GAP, rect.height);
             }
         }
+        );
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
         treeModel.getArcs().forEach(arc -> {
+            g2.setStroke(new BasicStroke(lineStrokeExtra + arc.getRelation().getInt()));
             g2.drawArc(arc.getLeftUpperCorner().getX(), arc.getLeftUpperCorner().getY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
         });
 

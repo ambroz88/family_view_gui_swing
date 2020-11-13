@@ -3,8 +3,6 @@ package org.ambrogenea.familyview.gui.swing;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.*;
 
@@ -32,6 +30,14 @@ public class Window extends JFrame implements PropertyChangeListener {
 
         initComponents();
         setWindowSize();
+        initLogo();
+    }
+
+    private void initLogo() {
+        ImageIcon img = new ImageIcon("src/main/resources/SW Icon.png");
+        setIconImage(img.getImage());
+        ImageIcon logo = new ImageIcon("src/main/resources/Logo 120x65.png");
+//        logoLabel.setIcon(logo);
     }
 
     private void setWindowSize() throws HeadlessException {
@@ -65,7 +71,7 @@ public class Window extends JFrame implements PropertyChangeListener {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

@@ -1,11 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 
@@ -13,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ambrogenea.familyview.domain.DatePlace;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.service.ConfigurationService;
@@ -135,33 +131,35 @@ public abstract class PersonPanel extends JPanel {
         death = new JLabel(" ", JLabel.RIGHT);
         deathPlace = new JLabel("", JLabel.LEFT);
 
-        if (!person.getBirthDate().isEmpty()) {
-            birth.setText("\u002A " + person.getBirthDateCzech());
-            if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
+        DatePlace birthDatePlace = person.getBirthDatePlace();
+        if (birthDatePlace.getDate() != null) {
+            birth.setText("\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale()));
+            if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleBirthPlace()));
+                    birthPlace.setText("," + SPACE + Tools.cityShortVersion(birthDatePlace.getSimplePlace()));
                 } else {
-                    birthPlace.setText("," + SPACE + person.getSimpleBirthPlace());
+                    birthPlace.setText("," + SPACE + birthDatePlace.getSimplePlace());
                 }
             }
         } else {
-            if (configuration.isShowPlaces() && !person.getBirthPlace().isEmpty()) {
+            if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlace.setText("\u002A " + Tools.cityShortVersion(person.getSimpleBirthPlace()));
+                    birthPlace.setText("\u002A " + Tools.cityShortVersion(birthDatePlace.getSimplePlace()));
                 } else {
-                    birthPlace.setText("\u002A " + person.getSimpleBirthPlace());
+                    birthPlace.setText("\u002A " + birthDatePlace.getSimplePlace());
                 }
                 birthPlace.setHorizontalAlignment(JLabel.CENTER);
             }
         }
 
-        if (!person.getDeathDate().isEmpty()) {
-            death.setText("\u2D15 " + person.getDeathDateCzech());
-            if (configuration.isShowPlaces() && !person.getDeathPlace().isEmpty()) {
+        DatePlace deathDatePlace = person.getDeathDatePlace();
+        if (deathDatePlace.getDate() != null) {
+            death.setText("\u2D15 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
+            if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    deathPlace.setText("," + SPACE + Tools.cityShortVersion(person.getSimpleDeathPlace()));
+                    deathPlace.setText("," + SPACE + Tools.cityShortVersion(deathDatePlace.getSimplePlace()));
                 } else {
-                    deathPlace.setText("," + SPACE + person.getSimpleDeathPlace());
+                    deathPlace.setText("," + SPACE + deathDatePlace.getSimplePlace());
                 }
             }
         }
@@ -207,7 +205,7 @@ public abstract class PersonPanel extends JPanel {
         c.gridy = 5;
         c.ipady = 0;
         c.weighty = 0;
-        if (!person.getBirthDate().isEmpty()) {
+        if (person.getBirthDatePlace().getDate() != null) {
             add(birth, c);
         }
 
@@ -218,7 +216,7 @@ public abstract class PersonPanel extends JPanel {
 
         if (configuration.isShowPlaces()) {
             c.gridy = 5;
-            if (!person.getBirthDate().isEmpty()) {
+            if (person.getBirthDatePlace().getDate() != null) {
                 c.gridx = 1;
             } else {
                 c.gridx = 0;

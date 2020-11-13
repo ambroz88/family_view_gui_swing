@@ -48,14 +48,18 @@ public class SettingsPanel extends JPanel {
         this.window = window;
         this.setLayout(new BorderLayout());
 
-        treeTypePanel = new TreeTypePanel(this);
-        treeSetupPanel = new TreeSetupPanel(window.getConfiguration());
-        loadingDataPanel = new LoadingDataPanel(this);
-        dataTablePanel = new DataTablePanel();
+        initComponents();
 
         selectionService = new FathersSelectionService();
         treeService = new FatherLineageTreeService();
         addComponents();
+    }
+
+    private void initComponents() {
+        treeTypePanel = new TreeTypePanel(this);
+        treeSetupPanel = new TreeSetupPanel(getConfiguration());
+        loadingDataPanel = new LoadingDataPanel(this);
+        dataTablePanel = new DataTablePanel();
     }
 
     private void addComponents() {
@@ -76,7 +80,7 @@ public class SettingsPanel extends JPanel {
 
             try ( InputStream inputStream = new FileInputStream(absolutePath)) {
                 familyData = parsingService.parse(inputStream);
-                dataTablePanel.setModel(new Table(familyData));
+                dataTablePanel.setModel(new Table(familyData, getConfiguration()));
                 selectionService.setFamilyData(familyData);
 //            recordsTable.setAutoCreateRowSorter(true);
             }

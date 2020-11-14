@@ -1,16 +1,19 @@
 package org.ambrogenea.familyview.gui.swing.components;
 
-import org.ambrogenea.familyview.dto.tree.TreeModel;
-import org.ambrogenea.familyview.service.ConfigurationService;
-import org.ambrogenea.familyview.service.PageSetup;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.ambrogenea.familyview.dto.tree.TreeModel;
+import org.ambrogenea.familyview.gui.swing.components.basic.TreePanel;
+import org.ambrogenea.familyview.service.ConfigurationService;
+import org.ambrogenea.familyview.service.PageSetup;
 
 /**
  *

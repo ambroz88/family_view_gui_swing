@@ -3,13 +3,28 @@ package org.ambrogenea.familyview.gui.swing;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 
+import org.ambrogenea.familyview.domain.FamilyData;
+import org.ambrogenea.familyview.dto.AncestorPerson;
+import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
-import org.ambrogenea.familyview.gui.swing.components.SettingsPanel;
-import org.ambrogenea.familyview.service.ConfigurationService;
+import org.ambrogenea.familyview.gui.swing.Window;
+import org.ambrogenea.familyview.gui.swing.components.basic.*;
+import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
+import org.ambrogenea.familyview.gui.swing.model.Table;
+import org.ambrogenea.familyview.service.*;
 import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
+import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
+import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
+import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 
 /**
  *
@@ -17,20 +32,32 @@ import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
  */
 public class Window extends JFrame implements PropertyChangeListener {
 
+    private static final String TITLE = "Family Viewer";
     private static final int BORDER_SIZE = 70;
 
-    private SettingsPanel settingsPanel;
-    private ConfigurationService configuration;
+    private final ConfigurationService configuration;
 
-    private JTabbedPane settingsTab;
+    private MenuPanel loadingDataPanel;
+    private TreeTypePanel treeTypePanel;
+    private PersonSetupPanel personSetupPanel;
+    private DataTablePanel dataTablePanel;
+    private RightPanel rightPanel;
+
+    private SelectionService selectionService;
+    private TreeService treeService;
+    private FamilyData familyData;
 
     public Window() {
         configuration = new DefaultConfigurationService();
         configuration.addPropertyChangeListener(this);
 
-        initComponents();
         setWindowSize();
+        initComponents();
+        addComponents();
         initLogo();
+
+        selectionService = new FathersSelectionService();
+        treeService = new FatherLineageTreeService();
     }
 
     private void initLogo() {
@@ -48,13 +75,26 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private void initComponents() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setTitle("Family Viewer");
+        this.setTitle(TITLE);
 
-        settingsPanel = new SettingsPanel(this);
-        settingsTab = new JTabbedPane();
-        settingsTab.addTab("Settings", settingsPanel);
+        loadingDataPanel = new MenuPanel(this);
+        treeTypePanel = new TreeTypePanel(this);
+        personSetupPanel = new PersonSetupPanel(this);
+        dataTablePanel = new DataTablePanel();
 
-        this.add(settingsTab);
+        rightPanel = new RightPanel(this);
+    }
+
+    private void addComponents() {
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        leftPanel.setPreferredSize(Dimensions.LEF_PANEL_DIMENSION);
+        leftPanel.add(loadingDataPanel);
+        leftPanel.add(treeTypePanel);
+        leftPanel.add(personSetupPanel);
+        leftPanel.add(dataTablePanel);
+
+        this.add(leftPanel, BorderLayout.WEST);
+        this.add(rightPanel, BorderLayout.CENTER);
     }
 
     public static void main(String[] args) {
@@ -79,16 +119,57 @@ public class Window extends JFrame implements PropertyChangeListener {
         EventQueue.invokeLater(() -> new Window().setVisible(true));
     }
 
-    public void addTab(String name, JComponent panel) {
-        settingsTab.addTab(name, panel);
-        settingsTab.setSelectedIndex(settingsTab.getTabCount() - 1);
+    public void loadTable(File gedcomFile) {
+        String absolutePath = gedcomFile.getAbsolutePath();
+        try {
+            ParsingService parsingService = new GedcomParsingService();
+
+            try ( InputStream inputStream = new FileInputStream(absolutePath)) {
+                familyData = parsingService.parse(inputStream);
+                dataTablePanel.setModel(new Table(familyData, getConfiguration()));
+                selectionService.setFamilyData(familyData);
+                this.setTitle(TITLE + " - " + gedcomFile.getName());
+//            recordsTable.setAutoCreateRowSorter(true);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void generateTree() {
+        if (dataTablePanel.getSelectedRow() != -1) {
+            getConfiguration().setFamilyData(familyData);
+            String personId = familyData.getPersonByPosition(dataTablePanel.getSelectedRow()).getId();
+            AncestorPerson rootPerson = selectionService.select(personId, getConfiguration().getGenerationCount());
+
+            PageSetup setup = treeTypePanel.createPageSetup(rootPerson);
+            TreeModel treeModel = treeService.generateTreeModel(rootPerson, setup, getConfiguration());
+            rightPanel.generateTreePanel(treeModel, getConfiguration());
+        }
+    }
+
+    public void setTreeService(TreeService treeService) {
+        this.treeService = treeService;
+    }
+
+    public void setSelectionService(SelectionService selectionService) {
+        this.selectionService = selectionService;
+        this.selectionService.setFamilyData(familyData);
+    }
+
+    public void setSiblingsShow(boolean show) {
+        rightPanel.setSiblingsShow(show);
+    }
+
+    public TreePanel getTreePanel() {
+        return rightPanel.getTreePanel();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(PropertyName.NEW_TREE.toString())) {
-            JComponent panel = (JComponent) evt.getNewValue();
-            addTab(evt.getOldValue().toString(), panel);
+            TreePanel panel = (TreePanel) evt.getNewValue();
+            rightPanel.setTreePanel(panel);
         } else if (evt.getPropertyName().equals(PropertyName.LINEAGE_CONFIG_CHANGE.toString())) {
 //            personImage.update();
 //            personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));

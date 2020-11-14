@@ -1,21 +1,17 @@
 package org.ambrogenea.familyview.gui.swing.components.basic;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.dto.AncestorPerson;
-import org.ambrogenea.familyview.gui.swing.components.SettingsPanel;
+import org.ambrogenea.familyview.gui.swing.Window;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
-import org.ambrogenea.familyview.gui.swing.description.Loader;
 import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
@@ -38,19 +34,20 @@ import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
  */
 public class TreeTypePanel extends JPanel {
 
-    private final SettingsPanel window;
-    private JRadioButton allAncestorType;
-    private JRadioButton fatherLineageType;
-    private JRadioButton motherLineageType;
-    private JRadioButton parentLineageType;
+    private final Window window;
+    private JToggleButton allAncestorType;
+    private JToggleButton fatherLineageType;
+    private JToggleButton motherLineageType;
+    private JToggleButton parentLineageType;
 
-    public TreeTypePanel(SettingsPanel window) {
+    public TreeTypePanel(Window window) {
+        super(new FlowLayout(FlowLayout.LEFT, 5, 1));
         this.window = window;
-        this.setLayout(new GridLayout(4, 1));
-        this.setPreferredSize(new Dimension(Dimensions.TREE_TYPE_PANEL_WIDTH, Dimensions.TREE_TYPE_PANEL_HEIGHT));
+        this.setPreferredSize(Dimensions.TREE_TYPE_DIMENSION);
 
         initComponents();
         initActions();
+        addComponents();
     }
 
     private void initComponents() {
@@ -58,14 +55,30 @@ public class TreeTypePanel extends JPanel {
         ResourceBundle description = ResourceBundle.getBundle("language/treeType", locale);
         this.setBorder(new TitledBorder(description.getString(TreeType.TITLE)));
 
-        allAncestorType = new JRadioButton(description.getString(TreeType.ALL_ANCESTORS));
-        parentLineageType = new JRadioButton(description.getString(TreeType.PARENTS));
-        fatherLineageType = new JRadioButton(description.getString(TreeType.FATHERS));
+        Icon allGenerationIcon = new ImageIcon(ClassLoader.getSystemResource("icons/AllGenerationsIcon.png"));
+        allAncestorType = new JToggleButton(allGenerationIcon);
+        allAncestorType.setToolTipText(description.getString(TreeType.ALL_ANCESTORS));
+        allAncestorType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+
+        Icon parentLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/ParentLineageIcon.png"));
+        parentLineageType = new JToggleButton(parentLineageIcon);
+        parentLineageType.setToolTipText(description.getString(TreeType.PARENTS));
+        parentLineageType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+
+        Icon fatherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/FatherLineageIcon.png"));
+        fatherLineageType = new JToggleButton(fatherLineageIcon);
+        fatherLineageType.setToolTipText(description.getString(TreeType.FATHERS));
+        fatherLineageType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
         fatherLineageType.setSelected(true);
 
-        motherLineageType = new JRadioButton(description.getString(TreeType.MOTHERS));
-        ButtonGroup treeTypeGroup = new ButtonGroup();
+        Icon motherLineageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/MotherLineageIcon.png"));
+        motherLineageType = new JToggleButton(motherLineageIcon);
+        motherLineageType.setToolTipText(description.getString(TreeType.MOTHERS));
+        motherLineageType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+    }
 
+    private void addComponents() {
+        ButtonGroup treeTypeGroup = new ButtonGroup();
         treeTypeGroup.add(allAncestorType);
         treeTypeGroup.add(parentLineageType);
         treeTypeGroup.add(fatherLineageType);

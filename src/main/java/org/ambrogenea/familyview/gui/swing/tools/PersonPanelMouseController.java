@@ -9,8 +9,8 @@ import javax.swing.*;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
-import org.ambrogenea.familyview.gui.swing.components.DrawingFrame;
 import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.components.basic.TreePanel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.IsolatedTreeCreator;
 import org.ambrogenea.familyview.service.impl.IsolatedTreeCreatorImpl;
@@ -30,7 +30,6 @@ public class PersonPanelMouseController extends MouseAdapter {
     private final ConfigurationService configuration;
 
     private JDialog floatMenu;
-    private JButton closeFamily;
     private JButton fatherLineage;
     private JButton motherLineage;
     private JButton parentLineage;
@@ -44,13 +43,11 @@ public class PersonPanelMouseController extends MouseAdapter {
 
         initFloatMenu();
 
-        initCloseFamily();
         initFatherLineage();
         initMotherLineage();
         initParentLineage();
         initAllGenerations();
 
-        this.floatMenu.add(closeFamily);
         this.floatMenu.add(fatherLineage);
         this.floatMenu.add(motherLineage);
         this.floatMenu.add(parentLineage);
@@ -62,28 +59,8 @@ public class PersonPanelMouseController extends MouseAdapter {
         this.floatMenu.setType(Window.Type.UTILITY);
         this.floatMenu.setTitle("Generate...");
         this.floatMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
-        this.floatMenu.setSize(new Dimension(5 * (BUTTON_DIMENSION.width + 10), 80));
+        this.floatMenu.setSize(new Dimension(5 * (BUTTON_DIMENSION.width + 10), 90));
         this.floatMenu.setResizable(false);
-    }
-
-    private void initCloseFamily() {
-        Icon closeFamilyIcon = new ImageIcon(ClassLoader.getSystemResource("icons/CloseFamilyIcon.png"));
-        closeFamily = new JButton(closeFamilyIcon);
-        closeFamily.setToolTipText("Generate close family");
-        closeFamily.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        closeFamily.setSize(BUTTON_DIMENSION);
-        closeFamily.addActionListener(listener -> {
-            DrawingFrame drawing = new DrawingFrame();
-
-            IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
-            TreeModel model = creator.generateCloseFamilyCreator(configuration, personModel.getId());
-
-            drawing.generateTreePanel(model, configuration);
-
-            floatMenu.dispose();
-            //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
-        });
     }
 
     private void initFatherLineage() {
@@ -93,16 +70,15 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         fatherLineage.setSize(BUTTON_DIMENSION);
         fatherLineage.addActionListener(listener -> {
-            DrawingFrame drawing = new DrawingFrame();
-
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateFatherLineageCreator(configuration, personModel.getId());
 
-            drawing.generateTreePanel(model, configuration);
+            TreePanel treePanel = new TreePanel(model, configuration);
+            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
         });
     }
 
@@ -113,16 +89,15 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         motherLineage.setSize(BUTTON_DIMENSION);
         motherLineage.addActionListener(listener -> {
-            DrawingFrame drawing = new DrawingFrame();
-
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateMotherLineageCreator(configuration, personModel.getId());
 
-            drawing.generateTreePanel(model, configuration);
+            TreePanel treePanel = new TreePanel(model, configuration);
+            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
         });
     }
 
@@ -133,16 +108,15 @@ public class PersonPanelMouseController extends MouseAdapter {
         parentLineage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         parentLineage.setSize(BUTTON_DIMENSION);
         parentLineage.addActionListener(listener -> {
-            DrawingFrame drawing = new DrawingFrame();
-
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateParentLineageCreator(configuration, personModel.getId());
 
-            drawing.generateTreePanel(model, configuration);
+            TreePanel treePanel = new TreePanel(model, configuration);
+            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
         });
     }
 
@@ -153,16 +127,15 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         allGenerations.setSize(BUTTON_DIMENSION);
         allGenerations.addActionListener(listener -> {
-            DrawingFrame drawing = new DrawingFrame();
-
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateAllAncestorCreator(configuration, personModel.getId());
 
-            drawing.generateTreePanel(model, configuration);
+            TreePanel treePanel = new TreePanel(model, configuration);
+            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
 
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), drawing);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
         });
     }
 

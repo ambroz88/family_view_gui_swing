@@ -1,8 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.components.basic;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
@@ -13,7 +12,6 @@ import javax.swing.event.ChangeEvent;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeSetup;
-import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
@@ -30,7 +28,6 @@ public class TreeSetupPanel extends JPanel {
     private JCheckBox residenceCheckBox;
     private JCheckBox spousesCheckbox;
     private JCheckBox childrenCheckbox;
-    private JCheckBox showParentsCheckbox;
     private JCheckBox showSiblingsCheckbox;
     private JCheckBox showSiblingSpouse;
     private JLabel generationsLabel;
@@ -39,8 +36,8 @@ public class TreeSetupPanel extends JPanel {
 
     public TreeSetupPanel(ConfigurationService configuration) {
         this.configuration = configuration;
-        this.setPreferredSize(new Dimension(Dimensions.TREE_SETUP_PANEL_WIDTH, Dimensions.TREE_SETUP_PANEL_HEIGHT));
-        this.setLayout(new GridLayout(11, 1));
+        this.setPreferredSize(Dimensions.TREE_SETUP_DIMENSION);
+        this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
         initComponents();
         initActions();
@@ -75,11 +72,6 @@ public class TreeSetupPanel extends JPanel {
         childrenCheckbox.setSelected(configuration.isShowChildren());
         childrenCheckbox.setText(description.getString(TreeSetup.CHILDREN));
 
-        showParentsCheckbox = new JCheckBox();
-        showParentsCheckbox.setSelected(configuration.isShowParents());
-        showParentsCheckbox.setText(description.getString(TreeSetup.PARENTS));
-        showParentsCheckbox.setEnabled(false);
-
         showSiblingsCheckbox = new JCheckBox();
         showSiblingsCheckbox.setSelected(configuration.isShowSiblings());
         showSiblingsCheckbox.setText(description.getString(TreeSetup.SIBLINGS));
@@ -104,7 +96,6 @@ public class TreeSetupPanel extends JPanel {
         residenceCheckBox.addActionListener(this::residenceCheckBoxActionPerformed);
         spousesCheckbox.addActionListener(this::spousesCheckboxActionPerformed);
         childrenCheckbox.addActionListener(this::childrenCheckboxActionPerformed);
-        showParentsCheckbox.addActionListener(this::showParentsCheckboxActionPerformed);
         showSiblingsCheckbox.addActionListener(this::showSiblingsCheckboxActionPerformed);
         showSiblingSpouse.addActionListener(this::showSiblingSpouseActionPerformed);
         generationSpinner.addChangeListener(this::generationSpinnerStateChanged);
@@ -118,7 +109,6 @@ public class TreeSetupPanel extends JPanel {
         this.add(residenceCheckBox);
         this.add(spousesCheckbox);
         this.add(childrenCheckbox);
-        this.add(showParentsCheckbox);
         this.add(showSiblingsCheckbox);
         this.add(showSiblingSpouse);
 
@@ -164,14 +154,6 @@ public class TreeSetupPanel extends JPanel {
         if (childrenCheckbox.isSelected() && !spousesCheckbox.isSelected()) {
             spousesCheckbox.setSelected(true);
             configuration.setShowSpouses(true);
-        }
-    }
-
-    private void showParentsCheckboxActionPerformed(ActionEvent evt) {
-        configuration.setShowParents(showParentsCheckbox.isSelected());
-        if (!showParentsCheckbox.isSelected() && showSiblingsCheckbox.isSelected()) {
-            configuration.setShowSiblings(false);
-            showSiblingsCheckbox.setSelected(false);
         }
     }
 

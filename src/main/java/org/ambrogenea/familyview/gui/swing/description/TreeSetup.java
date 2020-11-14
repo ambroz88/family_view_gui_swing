@@ -13,7 +13,6 @@ public abstract class TreeSetup {
     public static String RESIDENCE = "residence";
     public static String SPOUSES = "spouses";
     public static String CHILDREN = "children";
-    public static String PARENTS = "parents";
     public static String SIBLINGS = "siblings";
     public static String SIBLINGS_SPOUSE = "siblingsSpouse";
     public static String GENERATIONS = "generations";

@@ -15,7 +15,7 @@ import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
  */
 public class Table extends DefaultTableModel {
 
-    public static final int TABLE_COLUMN = 6;
+    public static final int TABLE_COLUMN = 4;
 
     private final FamilyData familyData;
     private final ConfigurationService configuration;
@@ -59,10 +59,6 @@ public class Table extends DefaultTableModel {
             result = chosen.getBirthDatePlace().getLocalizedDate(configuration.getLocale());
         } else if (columnIndex == 3) {
             result = chosen.getBirthDatePlace().getSimplePlace();
-        } else if (columnIndex == 4) {
-            result = chosen.getDeathDatePlace().getLocalizedDate(configuration.getLocale());
-        } else if (columnIndex == 5) {
-            result = chosen.getDeathDatePlace().getSimplePlace();
         }
 
         return result;
@@ -74,9 +70,7 @@ public class Table extends DefaultTableModel {
             description.getString(TableHeader.FIRST_NAME),
             description.getString(TableHeader.SURNAME),
             description.getString(TableHeader.BIRTH_DATE),
-            description.getString(TableHeader.BIRTH_PLACE),
-            description.getString(TableHeader.DEATH_DATE),
-            description.getString(TableHeader.DEATH_PLACE)
+            description.getString(TableHeader.BIRTH_PLACE)
         };
     }
 }

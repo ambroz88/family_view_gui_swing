@@ -10,6 +10,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.enums.LabelShape;
+import org.ambrogenea.familyview.gui.swing.Window;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeSetup;
 import org.ambrogenea.familyview.service.ConfigurationService;
@@ -20,7 +21,7 @@ import org.ambrogenea.familyview.service.ConfigurationService;
  */
 public class TreeSetupPanel extends JPanel {
 
-    private final ConfigurationService configuration;
+    private final Window window;
 
     private JCheckBox verticalViewCheckBox;
     private JCheckBox heraldryCheckBox;
@@ -34,8 +35,8 @@ public class TreeSetupPanel extends JPanel {
     private JSpinner generationSpinner;
     private JComboBox<String> shapeLabelBox;
 
-    public TreeSetupPanel(ConfigurationService configuration) {
-        this.configuration = configuration;
+    public TreeSetupPanel(Window window) {
+        this.window = window;
         this.setPreferredSize(Dimensions.TREE_SETUP_DIMENSION);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
@@ -45,48 +46,48 @@ public class TreeSetupPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", configuration.getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", getConfiguration().getLocale());
         this.setBorder(new TitledBorder(description.getString(TreeSetup.TITLE)));
 
         verticalViewCheckBox = new JCheckBox();
-        verticalViewCheckBox.setSelected(configuration.isShowCouplesVertical());
+        verticalViewCheckBox.setSelected(getConfiguration().isShowCouplesVertical());
         verticalViewCheckBox.setText(description.getString(TreeSetup.VERTICAL));
 
         heraldryCheckBox = new JCheckBox();
-        heraldryCheckBox.setSelected(configuration.isShowHeraldry());
+        heraldryCheckBox.setSelected(getConfiguration().isShowHeraldry());
         heraldryCheckBox.setText(description.getString(TreeSetup.HERALDRY));
 
         marriageCheckBox = new JCheckBox();
-        marriageCheckBox.setSelected(configuration.isShowMarriage());
+        marriageCheckBox.setSelected(getConfiguration().isShowMarriage());
         marriageCheckBox.setText(description.getString(TreeSetup.MARRIAGE));
 
         residenceCheckBox = new JCheckBox();
-        residenceCheckBox.setSelected(configuration.isShowResidence());
+        residenceCheckBox.setSelected(getConfiguration().isShowResidence());
         residenceCheckBox.setText(description.getString(TreeSetup.RESIDENCE));
 
         spousesCheckbox = new JCheckBox();
-        spousesCheckbox.setSelected(configuration.isShowSpouses());
+        spousesCheckbox.setSelected(getConfiguration().isShowSpouses());
         spousesCheckbox.setText(description.getString(TreeSetup.SPOUSES));
 
         childrenCheckbox = new JCheckBox();
-        childrenCheckbox.setSelected(configuration.isShowChildren());
+        childrenCheckbox.setSelected(getConfiguration().isShowChildren());
         childrenCheckbox.setText(description.getString(TreeSetup.CHILDREN));
 
         showSiblingsCheckbox = new JCheckBox();
-        showSiblingsCheckbox.setSelected(configuration.isShowSiblings());
+        showSiblingsCheckbox.setSelected(getConfiguration().isShowSiblings());
         showSiblingsCheckbox.setText(description.getString(TreeSetup.SIBLINGS));
 
         showSiblingSpouse = new JCheckBox();
-        showSiblingSpouse.setSelected(configuration.isShowSiblingSpouses());
+        showSiblingSpouse.setSelected(getConfiguration().isShowSiblingSpouses());
         showSiblingSpouse.setText(description.getString(TreeSetup.SIBLINGS_SPOUSE));
 
         generationsLabel = new JLabel();
         generationsLabel.setText(description.getString(TreeSetup.GENERATIONS));
 
-        generationSpinner = new JSpinner(new SpinnerNumberModel(configuration.getGenerationCount(), 1, 20, 1));
+        generationSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getGenerationCount(), 1, 20, 1));
 
         shapeLabelBox = new JComboBox<>(new DefaultComboBoxModel<>(LabelShape.getStrings()));
-        shapeLabelBox.setSelectedItem(configuration.getLabelShape());
+        shapeLabelBox.setSelectedItem(getConfiguration().getLabelShape());
     }
 
     private void initActions() {
@@ -126,51 +127,65 @@ public class TreeSetupPanel extends JPanel {
     }
 
     private void verticalViewCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowCouplesVertical(verticalViewCheckBox.isSelected());
+        getConfiguration().setShowCouplesVertical(verticalViewCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void heraldryCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowHeraldry(heraldryCheckBox.isSelected());
+        getConfiguration().setShowHeraldry(heraldryCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void marriageCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowMarriage(marriageCheckBox.isSelected());
+        getConfiguration().setShowMarriage(marriageCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void residenceCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowResidence(residenceCheckBox.isSelected());
+        getConfiguration().setShowResidence(residenceCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void spousesCheckboxActionPerformed(ActionEvent evt) {
-        configuration.setShowSpouses(spousesCheckbox.isSelected());
+        getConfiguration().setShowSpouses(spousesCheckbox.isSelected());
         if (childrenCheckbox.isSelected() && !spousesCheckbox.isSelected()) {
             childrenCheckbox.setSelected(false);
-            configuration.setShowChildren(false);
+            getConfiguration().setShowChildren(false);
         }
+        window.generateTree();
     }
 
     private void childrenCheckboxActionPerformed(ActionEvent evt) {
-        configuration.setShowChildren(childrenCheckbox.isSelected());
+        getConfiguration().setShowChildren(childrenCheckbox.isSelected());
         if (childrenCheckbox.isSelected() && !spousesCheckbox.isSelected()) {
             spousesCheckbox.setSelected(true);
-            configuration.setShowSpouses(true);
+            getConfiguration().setShowSpouses(true);
         }
+        window.generateTree();
     }
 
     private void showSiblingsCheckboxActionPerformed(ActionEvent evt) {
-        configuration.setShowSiblings(showSiblingsCheckbox.isSelected());
+        getConfiguration().setShowSiblings(showSiblingsCheckbox.isSelected());
+        window.generateTree();
     }
 
     private void showSiblingSpouseActionPerformed(ActionEvent evt) {
-        configuration.setShowSiblingSpouses(showSiblingSpouse.isSelected());
+        getConfiguration().setShowSiblingSpouses(showSiblingSpouse.isSelected());
+        window.generateTree();
     }
 
     private void generationSpinnerStateChanged(ChangeEvent evt) {
-        configuration.setGenerationCount((int) generationSpinner.getValue());
+        getConfiguration().setGenerationCount((int) generationSpinner.getValue());
+        window.generateTree();
     }
 
     private void shapeLabelBoxActionPerformed(ActionEvent evt) {
-        configuration.setLabelShape(LabelShape.valueOf(shapeLabelBox.getSelectedItem().toString()));
+        getConfiguration().setLabelShape(LabelShape.valueOf(shapeLabelBox.getSelectedItem().toString()));
+        window.generateTree();
+    }
+
+    private ConfigurationService getConfiguration() {
+        return window.getConfiguration();
     }
 
 }

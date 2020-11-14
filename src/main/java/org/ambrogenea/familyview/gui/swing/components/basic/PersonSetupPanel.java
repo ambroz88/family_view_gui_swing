@@ -87,10 +87,12 @@ public class PersonSetupPanel extends JPanel {
 
     private void ageCheckBoxActionPerformed(ActionEvent evt) {
         getConfiguration().setShowAge(ageCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void occupationCheckBoxActionPerformed(ActionEvent evt) {
         getConfiguration().setShowOccupation(occupationCheckBox.isSelected());
+        window.generateTree();
     }
 
     private void placesCheckBoxActionPerformed(ActionEvent evt) {
@@ -99,6 +101,7 @@ public class PersonSetupPanel extends JPanel {
             shortenPlacesCheckBox.setSelected(false);
             getConfiguration().setShortenPlaces(false);
         }
+        window.generateTree();
     }
 
     private void shortenPlacesCheckBoxActionPerformed(ActionEvent evt) {
@@ -107,10 +110,12 @@ public class PersonSetupPanel extends JPanel {
             placesCheckBox.setSelected(true);
             getConfiguration().setShowPlaces(true);
         }
+        window.generateTree();
     }
 
     private void templeCheckBoxActionPerformed(ActionEvent evt) {
         getConfiguration().setShowTemple(templeCheckBox.isSelected());
+        window.generateTree();
     }
 
     private ConfigurationService getConfiguration() {

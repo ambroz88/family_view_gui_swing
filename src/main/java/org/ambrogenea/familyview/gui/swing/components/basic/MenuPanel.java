@@ -1,5 +1,6 @@
 package org.ambrogenea.familyview.gui.swing.components.basic;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -7,9 +8,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.Window;
@@ -29,10 +28,10 @@ public class MenuPanel extends JPanel {
 
     private JButton loadInputButton;
     private JButton saveButton;
-    private JButton generateTreeButton;
+    private JLabel logoLabel;
 
     public MenuPanel(Window window) {
-        super(new FlowLayout(FlowLayout.LEFT, 5, 1));
+        super(new BorderLayout());
         this.window = window;
         this.setPreferredSize(Dimensions.DATA_PANEL_DIMENSION);
 
@@ -44,17 +43,15 @@ public class MenuPanel extends JPanel {
 
     private void initComponents() {
         ResourceBundle description = ResourceBundle.getBundle("language/menu", window.getConfiguration().getLocale());
-        loadInputButton = new JButton("L");
+        loadInputButton = new JButton(new ImageIcon("src/main/resources/icons/Import 40x40.jpg"));
         loadInputButton.setToolTipText(description.getString(Menu.LOAD));
         loadInputButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
-        saveButton = new JButton("S");
+        saveButton = new JButton(new ImageIcon("src/main/resources/icons/Save 40x40.jpg"));
         saveButton.setToolTipText(description.getString(Menu.SAVE));
         saveButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
-        generateTreeButton = new JButton("G");
-        generateTreeButton.setToolTipText(description.getString(Menu.GENERATE));
-        generateTreeButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+        logoLabel = new JLabel(new ImageIcon("src/main/resources/Logo 120x65.png"));
     }
 
     private void initFileChoosers() {
@@ -69,18 +66,16 @@ public class MenuPanel extends JPanel {
 
     private void initActions() {
         loadInputButton.addActionListener(this::loadInputButtonActionPerformed);
-        generateTreeButton.addActionListener(this::generateTreeButtonActionPerformed);
         saveButton.addActionListener(this::saveButtonActionPerformed);
     }
 
     private void addComponents() {
-        this.add(loadInputButton);
-        this.add(saveButton);
-        this.add(generateTreeButton);
-    }
+        JPanel leftMenu = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 1));
+        leftMenu.add(loadInputButton);
+        leftMenu.add(saveButton);
 
-    private void generateTreeButtonActionPerformed(ActionEvent evt) {
-        window.generateTree();
+        this.add(leftMenu, BorderLayout.WEST);
+        this.add(logoLabel, BorderLayout.EAST);
     }
 
     private void loadInputButtonActionPerformed(ActionEvent evt) {

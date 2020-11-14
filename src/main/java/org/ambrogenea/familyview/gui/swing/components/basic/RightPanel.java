@@ -33,7 +33,7 @@ public class RightPanel extends JPanel {
     }
 
     private void initComponents() {
-        treeSetupPanel = new TreeSetupPanel(getConfiguration());
+        treeSetupPanel = new TreeSetupPanel(window);
 
         scrollAncestorPane = new JScrollPane();
         scrollAncestorPane.setBackground(Color.WHITE);
@@ -65,10 +65,6 @@ public class RightPanel extends JPanel {
         this.treePanel = treePanel;
         this.treePanel.validate();
         scrollAncestorPane.setViewportView(this.treePanel);
-    }
-
-    public ConfigurationService getConfiguration() {
-        return window.getConfiguration();
     }
 
     public TreePanel getTreePanel() {

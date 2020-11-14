@@ -62,9 +62,7 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private void initLogo() {
         ImageIcon img = new ImageIcon("src/main/resources/SW Icon.png");
-        setIconImage(img.getImage());
-        ImageIcon logo = new ImageIcon("src/main/resources/Logo 120x65.png");
-//        logoLabel.setIcon(logo);
+        this.setIconImage(img.getImage());
     }
 
     private void setWindowSize() throws HeadlessException {
@@ -80,18 +78,23 @@ public class Window extends JFrame implements PropertyChangeListener {
         loadingDataPanel = new MenuPanel(this);
         treeTypePanel = new TreeTypePanel(this);
         personSetupPanel = new PersonSetupPanel(this);
-        dataTablePanel = new DataTablePanel();
+        dataTablePanel = new DataTablePanel(this);
 
         rightPanel = new RightPanel(this);
     }
 
     private void addComponents() {
-        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
-        leftPanel.setPreferredSize(Dimensions.LEF_PANEL_DIMENSION);
-        leftPanel.add(loadingDataPanel);
-        leftPanel.add(treeTypePanel);
-        leftPanel.add(personSetupPanel);
-        leftPanel.add(dataTablePanel);
+        JPanel leftPanel = new JPanel(new BorderLayout(0, 5));
+        leftPanel.setPreferredSize(Dimensions.LEFT_PANEL_DIMENSION);
+
+        JPanel setupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        setupPanel.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
+        setupPanel.add(loadingDataPanel);
+        setupPanel.add(treeTypePanel);
+        setupPanel.add(personSetupPanel);
+
+        leftPanel.add(setupPanel, BorderLayout.NORTH);
+        leftPanel.add(dataTablePanel, BorderLayout.CENTER);
 
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.CENTER);
@@ -128,6 +131,7 @@ public class Window extends JFrame implements PropertyChangeListener {
                 familyData = parsingService.parse(inputStream);
                 dataTablePanel.setModel(new Table(familyData, getConfiguration()));
                 selectionService.setFamilyData(familyData);
+                getConfiguration().setFamilyData(familyData);
                 this.setTitle(TITLE + " - " + gedcomFile.getName());
 //            recordsTable.setAutoCreateRowSorter(true);
             }
@@ -138,7 +142,6 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     public void generateTree() {
         if (dataTablePanel.getSelectedRow() != -1) {
-            getConfiguration().setFamilyData(familyData);
             String personId = familyData.getPersonByPosition(dataTablePanel.getSelectedRow()).getId();
             AncestorPerson rootPerson = selectionService.select(personId, getConfiguration().getGenerationCount());
 

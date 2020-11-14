@@ -118,6 +118,7 @@ public class TreeTypePanel extends JPanel {
         if (fatherLineageType.isSelected()) {
             window.setTreeService(new FatherLineageTreeService());
             window.setSelectionService(new FathersSelectionService());
+            window.generateTree();
         }
     }
 
@@ -125,6 +126,7 @@ public class TreeTypePanel extends JPanel {
         if (motherLineageType.isSelected()) {
             window.setTreeService(new MotherLineageTreeService());
             window.setSelectionService(new MothersSelectionService());
+            window.generateTree();
         }
     }
 
@@ -132,6 +134,7 @@ public class TreeTypePanel extends JPanel {
         if (parentLineageType.isSelected()) {
             window.setTreeService(new ParentLineageTreeService());
             window.setSelectionService(new ParentsSelectionService());
+            window.generateTree();
         }
 
     }
@@ -141,6 +144,7 @@ public class TreeTypePanel extends JPanel {
             window.setTreeService(new AllAncestorTreeService());
             window.setSelectionService(new AllAncestorsSelectionService());
             window.setSiblingsShow(false);
+            window.generateTree();
         } else {
             window.setSiblingsShow(true);
         }

@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components.basic;
+package org.ambrogenea.familyview.gui.swing.components.setup;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.gui.swing.Window;
+import org.ambrogenea.familyview.gui.swing.components.draw.TreePanel;
+import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.Menu;
 
@@ -33,6 +35,7 @@ public class MenuPanel extends JPanel {
     public MenuPanel(Window window) {
         super(new BorderLayout());
         this.window = window;
+        this.setBackground(Colors.SW_BACKGROUND);
         this.setPreferredSize(Dimensions.DATA_PANEL_DIMENSION);
 
         initComponents();
@@ -73,6 +76,7 @@ public class MenuPanel extends JPanel {
         JPanel leftMenu = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 1));
         leftMenu.add(loadInputButton);
         leftMenu.add(saveButton);
+        leftMenu.setBackground(Colors.SW_BACKGROUND);
 
         this.add(leftMenu, BorderLayout.WEST);
         this.add(logoLabel, BorderLayout.EAST);

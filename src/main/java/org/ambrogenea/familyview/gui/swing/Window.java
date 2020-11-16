@@ -17,7 +17,10 @@ import org.ambrogenea.familyview.dto.AncestorPerson;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.Window;
-import org.ambrogenea.familyview.gui.swing.components.basic.*;
+import org.ambrogenea.familyview.gui.swing.components.draw.TreePanel;
+import org.ambrogenea.familyview.gui.swing.components.draw.TreeScrollPanel;
+import org.ambrogenea.familyview.gui.swing.components.setup.*;
+import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.model.Table;
 import org.ambrogenea.familyview.service.*;
@@ -41,7 +44,9 @@ public class Window extends JFrame implements PropertyChangeListener {
     private TreeTypePanel treeTypePanel;
     private PersonSetupPanel personSetupPanel;
     private DataTablePanel dataTablePanel;
-    private RightPanel rightPanel;
+
+    private TreeSetupPanel treeSetupPanel;
+    private TreeScrollPanel treeScrollPane;
 
     private SelectionService selectionService;
     private TreeService treeService;
@@ -74,13 +79,15 @@ public class Window extends JFrame implements PropertyChangeListener {
     private void initComponents() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle(TITLE);
+        this.setForeground(Colors.COMPONENT_BACKGROUND);
 
         loadingDataPanel = new MenuPanel(this);
         treeTypePanel = new TreeTypePanel(this);
         personSetupPanel = new PersonSetupPanel(this);
         dataTablePanel = new DataTablePanel(this);
 
-        rightPanel = new RightPanel(this);
+        treeSetupPanel = new TreeSetupPanel(this);
+        treeScrollPane = new TreeScrollPanel(this);
     }
 
     private void addComponents() {
@@ -92,9 +99,16 @@ public class Window extends JFrame implements PropertyChangeListener {
         setupPanel.add(loadingDataPanel);
         setupPanel.add(treeTypePanel);
         setupPanel.add(personSetupPanel);
+        setupPanel.setBackground(Colors.SW_BACKGROUND);
 
         leftPanel.add(setupPanel, BorderLayout.NORTH);
         leftPanel.add(dataTablePanel, BorderLayout.CENTER);
+        leftPanel.setBackground(Colors.SW_BACKGROUND);
+
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 5));
+        rightPanel.add(treeSetupPanel, BorderLayout.NORTH);
+        rightPanel.add(treeScrollPane, BorderLayout.CENTER);
+        rightPanel.setBackground(Colors.SW_BACKGROUND);
 
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.CENTER);
@@ -147,7 +161,7 @@ public class Window extends JFrame implements PropertyChangeListener {
 
             PageSetup setup = treeTypePanel.createPageSetup(rootPerson);
             TreeModel treeModel = treeService.generateTreeModel(rootPerson, setup, getConfiguration());
-            rightPanel.generateTreePanel(treeModel, getConfiguration());
+            treeScrollPane.generateTreePanel(treeModel);
         }
     }
 
@@ -161,18 +175,18 @@ public class Window extends JFrame implements PropertyChangeListener {
     }
 
     public void setSiblingsShow(boolean show) {
-        rightPanel.setSiblingsShow(show);
+        treeSetupPanel.setSiblingsShow(show);
     }
 
     public TreePanel getTreePanel() {
-        return rightPanel.getTreePanel();
+        return treeScrollPane.getTreePanel();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(PropertyName.NEW_TREE.toString())) {
             TreePanel panel = (TreePanel) evt.getNewValue();
-            rightPanel.setTreePanel(panel);
+            treeScrollPane.setTreePanel(panel);
         } else if (evt.getPropertyName().equals(PropertyName.LINEAGE_CONFIG_CHANGE.toString())) {
 //            personImage.update();
 //            personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));

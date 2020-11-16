@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.ambrogenea.familyview.dto.tree.TreeModel;
-import org.ambrogenea.familyview.gui.swing.components.basic.TreePanel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.PageSetup;
 

@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components.basic;
+package org.ambrogenea.familyview.gui.swing.components.setup;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +10,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
 import org.ambrogenea.familyview.gui.swing.Window;
+import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.PersonSetup;
 import org.ambrogenea.familyview.service.ConfigurationService;
@@ -32,6 +33,7 @@ public class PersonSetupPanel extends JPanel {
         super(new FlowLayout(FlowLayout.LEFT, 5, 1));
         this.window = window;
         this.setPreferredSize(Dimensions.TREE_TYPE_DIMENSION);
+        this.setBackground(Colors.SW_BACKGROUND);
 
         initComponents();
         initActions();

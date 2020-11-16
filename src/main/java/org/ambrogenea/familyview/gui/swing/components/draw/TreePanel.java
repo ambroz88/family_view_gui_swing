@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components.basic;
+package org.ambrogenea.familyview.gui.swing.components.draw;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -6,6 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
@@ -65,6 +67,7 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
 
         final int lineStrokeExtra;
@@ -118,6 +121,15 @@ public class TreePanel extends JPanel {
                     Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
         });
 
+    }
+
+    private void addImageBackground(Graphics2D g2) {
+        try {
+            BufferedImage image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-landscape.jpg"));
+            g2.drawImage(image, 0, 0, treeModel.getPageSetup().getWidth(), treeModel.getPageSetup().getHeight(), null);
+        } catch (IOException ex) {
+            Logger.getLogger(TreeScrollPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void drawPerson(PersonRecord person) {

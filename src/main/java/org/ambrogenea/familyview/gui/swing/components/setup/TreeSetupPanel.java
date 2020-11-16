@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components.basic;
+package org.ambrogenea.familyview.gui.swing.components.setup;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -11,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.Window;
+import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeSetup;
 import org.ambrogenea.familyview.service.ConfigurationService;
@@ -39,6 +40,7 @@ public class TreeSetupPanel extends JPanel {
         this.window = window;
         this.setPreferredSize(Dimensions.TREE_SETUP_DIMENSION);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        this.setBackground(Colors.SW_BACKGROUND);
 
         initComponents();
         initActions();
@@ -116,6 +118,7 @@ public class TreeSetupPanel extends JPanel {
         JPanel generationPanel = new JPanel(new BorderLayout());
         generationPanel.add(generationSpinner, BorderLayout.EAST);
         generationPanel.add(generationsLabel, BorderLayout.CENTER);
+        generationPanel.setBackground(Colors.SW_BACKGROUND);
 
         this.add(generationPanel);
         this.add(shapeLabelBox);

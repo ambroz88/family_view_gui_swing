@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components;
+package org.ambrogenea.familyview.gui.swing.components.draw;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

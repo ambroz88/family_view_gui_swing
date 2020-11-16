@@ -49,18 +49,19 @@ public class Table extends DefaultTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Person chosen = familyData.getPersonByPosition(rowIndex);
         String result = "";
-        if (columnIndex == 0) {
-            result = chosen.getFirstName();
-        } else if (columnIndex == 1) {
-            result = chosen.getSurname();
-        } else if (columnIndex == 2) {
-            result = chosen.getBirthDatePlace().getLocalizedDate(configuration.getLocale());
-        } else if (columnIndex == 3) {
-            result = chosen.getBirthDatePlace().getSimplePlace();
+        if (familyData != null) {
+            Person chosen = familyData.getPersonByPosition(rowIndex);
+            if (columnIndex == 0) {
+                result = chosen.getFirstName();
+            } else if (columnIndex == 1) {
+                result = chosen.getSurname();
+            } else if (columnIndex == 2) {
+                result = chosen.getBirthDatePlace().getLocalizedDate(configuration.getLocale());
+            } else if (columnIndex == 3) {
+                result = chosen.getBirthDatePlace().getSimplePlace();
+            }
         }
-
         return result;
     }
 

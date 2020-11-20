@@ -1,11 +1,14 @@
 package org.ambrogenea.familyview.gui.swing.components.setup;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
@@ -29,10 +32,12 @@ public class PersonSetupPanel extends JPanel {
     private JToggleButton shortenPlacesCheckBox;
     private JToggleButton templeCheckBox;
 
+    private PersonBoxSetupPanel personBoxSetupPanel;
+
     public PersonSetupPanel(Window window) {
-        super(new FlowLayout(FlowLayout.LEFT, 5, 1));
+        super(new BorderLayout(0, 5));
         this.window = window;
-        this.setPreferredSize(Dimensions.TREE_TYPE_DIMENSION);
+        this.setPreferredSize(Dimensions.PERSON_SETUP_DIMENSION);
         this.setBackground(Colors.SW_BACKGROUND);
 
         initComponents();
@@ -69,6 +74,8 @@ public class PersonSetupPanel extends JPanel {
         templeCheckBox.setPreferredSize(Dimensions.BUTTON_DIMENSION);
         templeCheckBox.setSelected(getConfiguration().isShowTemple());
         templeCheckBox.setToolTipText(description.getString(PersonSetup.TEMPLE));
+
+        personBoxSetupPanel = new PersonBoxSetupPanel(window);
     }
 
     private void initActions() {
@@ -80,11 +87,20 @@ public class PersonSetupPanel extends JPanel {
     }
 
     private void addComponents() {
-        this.add(ageCheckBox);
-        this.add(occupationCheckBox);
-        this.add(placesCheckBox);
-        this.add(shortenPlacesCheckBox);
-        this.add(templeCheckBox);
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        top.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH, Dimensions.BUTTON_MENU_HEIGHT));
+        top.setBackground(Colors.SW_BACKGROUND);
+        top.add(ageCheckBox);
+        top.add(occupationCheckBox);
+        top.add(placesCheckBox);
+        top.add(shortenPlacesCheckBox);
+        top.add(templeCheckBox);
+
+        JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
+        sep.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH, 5));
+        top.add(sep);
+        this.add(top, BorderLayout.NORTH);
+        this.add(personBoxSetupPanel, BorderLayout.CENTER);
     }
 
     private void ageCheckBoxActionPerformed(ActionEvent evt) {

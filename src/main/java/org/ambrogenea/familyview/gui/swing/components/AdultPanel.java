@@ -42,7 +42,7 @@ public class AdultPanel extends PersonPanel {
         int shift = 0;
 
         int imageWidth = configuration.getAdultImageWidth() / 2;
-        if (configuration.getAdultDiagram().equals(Diagrams.PERGAMEN)) {
+        if (configuration.getAdultDiagram().equals(Diagrams.SCROLL)) {
             shift = 12;
         }
 

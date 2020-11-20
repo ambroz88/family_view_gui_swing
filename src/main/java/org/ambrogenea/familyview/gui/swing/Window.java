@@ -43,6 +43,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     private MenuPanel loadingDataPanel;
     private TreeTypePanel treeTypePanel;
     private PersonSetupPanel personSetupPanel;
+    private PersonBoxSetupPanel personBoxSetupPanel;
     private DataTablePanel dataTablePanel;
 
     private TreeSetupPanel treeSetupPanel;
@@ -84,6 +85,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         loadingDataPanel = new MenuPanel(this);
         treeTypePanel = new TreeTypePanel(this);
         personSetupPanel = new PersonSetupPanel(this);
+        personBoxSetupPanel = new PersonBoxSetupPanel(this);
         dataTablePanel = new DataTablePanel(this);
 
         treeSetupPanel = new TreeSetupPanel(this);
@@ -99,6 +101,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         setupPanel.add(loadingDataPanel);
         setupPanel.add(treeTypePanel);
         setupPanel.add(personSetupPanel);
+        setupPanel.add(personBoxSetupPanel);
         setupPanel.setBackground(Colors.SW_BACKGROUND);
 
         leftPanel.add(setupPanel, BorderLayout.NORTH);

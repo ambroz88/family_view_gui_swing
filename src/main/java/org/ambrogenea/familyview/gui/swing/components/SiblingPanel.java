@@ -42,7 +42,7 @@ public class SiblingPanel extends PersonPanel {
         int shift = 0;
 
         int imageWidth = configuration.getSiblingImageWidth() / 2;
-        if (configuration.getSiblingDiagram().equals(Diagrams.PERGAMEN)) {
+        if (configuration.getSiblingDiagram().equals(Diagrams.SCROLL)) {
             shift = 12;
         }
 

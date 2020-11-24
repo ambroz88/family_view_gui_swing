@@ -9,7 +9,7 @@ import javax.swing.*;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
-import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
+import org.ambrogenea.familyview.gui.swing.components.draw.PersonPanel;
 import org.ambrogenea.familyview.gui.swing.components.draw.TreePanel;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.IsolatedTreeCreator;

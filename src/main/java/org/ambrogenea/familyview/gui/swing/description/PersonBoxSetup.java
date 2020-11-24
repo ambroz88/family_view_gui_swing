@@ -11,8 +11,7 @@ abstract public class PersonBoxSetup {
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
     public static final String FONT_SIZE = "fontSize";
-    public static final String TOP_PADDING = "topPadding";
-    public static final String BOTTOM_PADDING = "bottomPadding";
+    public static final String VERTICAL_SHIFT = "verticalShift";
     public static final String DIAGRAM = "diagram";
 
 }

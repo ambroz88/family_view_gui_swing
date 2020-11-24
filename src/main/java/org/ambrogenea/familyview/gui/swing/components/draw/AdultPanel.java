@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components;
+package org.ambrogenea.familyview.gui.swing.components.draw;
 
 import java.awt.Dimension;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class AdultPanel extends PersonPanel {
 
     @Override
     protected void addLabels() {
-        super.addLabels(configuration.getAdultTopOffset(), configuration.getAdultBottomOffset());
+        super.addLabels(configuration.getAdultVerticalShift());
     }
 
 }

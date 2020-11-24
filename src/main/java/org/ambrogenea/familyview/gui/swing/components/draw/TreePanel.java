@@ -19,9 +19,6 @@ import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.ResidenceDto;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
-import org.ambrogenea.familyview.gui.swing.components.AdultPanel;
-import org.ambrogenea.familyview.gui.swing.components.PersonPanel;
-import org.ambrogenea.familyview.gui.swing.components.SiblingPanel;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
@@ -116,6 +113,10 @@ public class TreePanel extends JPanel {
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
         treeModel.getResidences().stream().forEach(residence -> {
+            g2.setColor(Colors.LABEL_BACKGROUND);
+            g2.fillRoundRect(residence.getPosition().getX(), residence.getPosition().getY(),
+                    Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
+
             g2.setColor(getCityColor(treeModel.getCityRegister().indexOf(residence.getCity())));
             g2.drawRoundRect(residence.getPosition().getX(), residence.getPosition().getY(),
                     Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE / 2, Spaces.RESIDENCE_SIZE / 2);
@@ -186,6 +187,7 @@ public class TreePanel extends JPanel {
             JLabel number = new JLabel("" + residence.getNumber(), JLabel.CENTER);
             number.setSize(Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
             number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getAdultFontSize() - 2));
+            number.setOpaque(false);
             this.add(number);
             number.setBounds(residence.getPosition().getX(), residence.getPosition().getY(),
                     Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);

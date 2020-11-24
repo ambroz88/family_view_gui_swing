@@ -1,4 +1,4 @@
-package org.ambrogenea.familyview.gui.swing.components;
+package org.ambrogenea.familyview.gui.swing.components.draw;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -174,9 +174,9 @@ public abstract class PersonPanel extends JPanel {
         deathPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
     }
 
-    protected void addLabels(int topOffset, int bottomOffset) {
+    protected void addLabels(int verticalShift) {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = topOffset;
+        c.ipady = 0 - verticalShift;
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -245,7 +245,7 @@ public abstract class PersonPanel extends JPanel {
 
         c.gridy = 11;
         c.weighty = 5;
-        c.ipady = bottomOffset;
+        c.ipady = 0 + verticalShift;
         add(new JLabel(""), c);
     }
 

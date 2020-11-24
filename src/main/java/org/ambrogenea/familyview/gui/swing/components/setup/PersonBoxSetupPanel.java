@@ -25,14 +25,12 @@ public class PersonBoxSetupPanel extends JPanel {
     private JSpinner adultWidthSpinner;
     private JSpinner adultHeightSpinner;
     private JSpinner adultFontSizeSpinner;
-    private JSpinner adultBottomPaddingSpinner;
-    private JSpinner adultTopPaddingSpinner;
+    private JSpinner adultVerticalShiftSpinner;
 
     private JSpinner siblingWidthSpinner;
     private JSpinner siblingHeightSpinner;
     private JSpinner siblingFontSizeSpinner;
-    private JSpinner siblingBottomPaddingSpinner;
-    private JSpinner siblingTopPaddingSpinner;
+    private JSpinner siblingVerticalShiftSpinner;
 
     private JComboBox adultDiagramBox;
     private JComboBox siblingDiagramBox;
@@ -42,14 +40,13 @@ public class PersonBoxSetupPanel extends JPanel {
     private JLabel heightLabel;
     private JLabel widthLabel;
     private JLabel fontSizeLabel;
-    private JLabel topPaddingLabel;
-    private JLabel bottomPaddingLabel;
+    private JLabel verticalShiftLabel;
     private JLabel diagramLabel;
 
     public PersonBoxSetupPanel(Window window) {
         this.window = window;
 //        this.setPreferredSize(Dimensions.PERSON_BOX_SETUP_DIMENSION);
-        this.setLayout(new GridLayout(7, 3));
+        this.setLayout(new GridLayout(6, 3));
         this.setBackground(Colors.SW_BACKGROUND);
 
         initComponents();
@@ -64,8 +61,7 @@ public class PersonBoxSetupPanel extends JPanel {
         heightLabel = new JLabel(description.getString(PersonBoxSetup.HEIGHT), JLabel.CENTER);
         widthLabel = new JLabel(description.getString(PersonBoxSetup.WIDTH), JLabel.CENTER);
         fontSizeLabel = new JLabel(description.getString(PersonBoxSetup.FONT_SIZE), JLabel.CENTER);
-        topPaddingLabel = new JLabel(description.getString(PersonBoxSetup.TOP_PADDING), JLabel.CENTER);
-        bottomPaddingLabel = new JLabel(description.getString(PersonBoxSetup.BOTTOM_PADDING), JLabel.CENTER);
+        verticalShiftLabel = new JLabel(description.getString(PersonBoxSetup.VERTICAL_SHIFT), JLabel.CENTER);
         diagramLabel = new JLabel(description.getString(PersonBoxSetup.DIAGRAM), JLabel.CENTER);
 
         adultWidthSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultImageWidth(), 120, 240, 10));
@@ -74,12 +70,10 @@ public class PersonBoxSetupPanel extends JPanel {
         siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageHeight(), 120, 240, 10));
 
         adultFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultFontSize(), 10, 22, 1));
-        adultTopPaddingSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultTopOffset(), 0, 40, 1));
-        adultBottomPaddingSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultBottomOffset(), 0, 40, 1));
+        adultVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultVerticalShift(), -30, 30, 5));
 
         siblingFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingFontSize(), 10, 22, 1));
-        siblingTopPaddingSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingTopOffset(), 0, 40, 1));
-        siblingBottomPaddingSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingBottomOffset(), 0, 40, 1));
+        siblingVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingVerticalShift(), -30, 30, 5));
 
         String[] names = new String[Diagrams.values().length];
         for (int i = 0; i < names.length; i++) {
@@ -100,11 +94,9 @@ public class PersonBoxSetupPanel extends JPanel {
         siblingHeightSpinner.addChangeListener(this::siblingsHeightSpinnerStateChanged);
 
         adultFontSizeSpinner.addChangeListener(this::fontSizeSpinnerStateChanged);
-        adultTopPaddingSpinner.addChangeListener(this::topOffsetSpinnerStateChanged);
-        adultBottomPaddingSpinner.addChangeListener(this::bottomOffsetSpinnerStateChanged);
+        adultVerticalShiftSpinner.addChangeListener(this::adultVerticalShiftSpinnerStateChanged);
         siblingFontSizeSpinner.addChangeListener(this::siblingFontSizeSpinnerStateChanged);
-        siblingTopPaddingSpinner.addChangeListener(this::siblingsTopOffsetSpinnerStateChanged);
-        siblingBottomPaddingSpinner.addChangeListener(this::siblingsBottomOffsetSpinnerStateChanged);
+        siblingVerticalShiftSpinner.addChangeListener(this::siblingVerticalShiftSpinnerStateChanged);
 
         adultDiagramBox.addActionListener(this::adultDiagramComboBoxActionPerformed);
         siblingDiagramBox.addActionListener(this::siblingsDiagramComboBoxActionPerformed);
@@ -127,13 +119,9 @@ public class PersonBoxSetupPanel extends JPanel {
         this.add(fontSizeLabel);
         this.add(siblingFontSizeSpinner);
 
-        this.add(adultTopPaddingSpinner);
-        this.add(topPaddingLabel);
-        this.add(siblingTopPaddingSpinner);
-
-        this.add(adultBottomPaddingSpinner);
-        this.add(bottomPaddingLabel);
-        this.add(siblingBottomPaddingSpinner);
+        this.add(adultVerticalShiftSpinner);
+        this.add(verticalShiftLabel);
+        this.add(siblingVerticalShiftSpinner);
 
         this.add(adultDiagramBox);
         this.add(diagramLabel);
@@ -171,15 +159,9 @@ public class PersonBoxSetupPanel extends JPanel {
         window.generateTree();
     }
 
-    private void topOffsetSpinnerStateChanged(ChangeEvent evt) {
-        int adultTtopOffset = Integer.parseInt(adultTopPaddingSpinner.getValue().toString());
-        getConfiguration().setAdultTopOffset(adultTtopOffset);
-        window.generateTree();
-    }
-
-    private void bottomOffsetSpinnerStateChanged(ChangeEvent evt) {
-        int adultBottomOffset = Integer.parseInt(adultBottomPaddingSpinner.getValue().toString());
-        getConfiguration().setAdultBottomOffset(adultBottomOffset);
+    private void adultVerticalShiftSpinnerStateChanged(ChangeEvent evt) {
+        int adultVerticalShift = Integer.parseInt(adultVerticalShiftSpinner.getValue().toString());
+        getConfiguration().setAdultVerticalShift(adultVerticalShift);
         window.generateTree();
     }
 
@@ -189,15 +171,9 @@ public class PersonBoxSetupPanel extends JPanel {
         window.generateTree();
     }
 
-    private void siblingsBottomOffsetSpinnerStateChanged(ChangeEvent evt) {
-        int siblingsBottomOffset = Integer.parseInt(siblingBottomPaddingSpinner.getValue().toString());
-        getConfiguration().setSiblingBottomOffset(siblingsBottomOffset);
-        window.generateTree();
-    }
-
-    private void siblingsTopOffsetSpinnerStateChanged(ChangeEvent evt) {
-        int siblingsTopOffset = Integer.parseInt(siblingTopPaddingSpinner.getValue().toString());
-        getConfiguration().setSiblingTopOffset(siblingsTopOffset);
+    private void siblingVerticalShiftSpinnerStateChanged(ChangeEvent evt) {
+        int siblingsVerticalShift = Integer.parseInt(siblingVerticalShiftSpinner.getValue().toString());
+        getConfiguration().setSiblingVerticalShift(siblingsVerticalShift);
         window.generateTree();
     }
 

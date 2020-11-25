@@ -28,6 +28,7 @@ import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
 import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
+import org.ambrogenea.familyview.utils.Calculation;
 
 /**
  *
@@ -106,7 +107,7 @@ public class TreeTypePanel extends JPanel {
         } else {
             setup = new FatherLineagePageSetup(configuration, rootPerson);
         }
-        return setup;
+        return Calculation.standardizePageSetup(setup);
     }
 
     private void initActions() {

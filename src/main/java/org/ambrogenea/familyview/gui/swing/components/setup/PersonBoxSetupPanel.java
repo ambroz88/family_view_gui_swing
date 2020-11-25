@@ -64,10 +64,10 @@ public class PersonBoxSetupPanel extends JPanel {
         verticalShiftLabel = new JLabel(description.getString(PersonBoxSetup.VERTICAL_SHIFT), JLabel.CENTER);
         diagramLabel = new JLabel(description.getString(PersonBoxSetup.DIAGRAM), JLabel.CENTER);
 
-        adultWidthSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultImageWidth(), 120, 240, 10));
-        adultHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultImageHeight(), 120, 240, 10));
-        siblingWidthSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageWidth(), 120, 240, 10));
-        siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageHeight(), 120, 240, 10));
+        adultWidthSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultImageWidth(), 100, 300, 10));
+        adultHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultImageHeight(), 100, 300, 10));
+        siblingWidthSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageWidth(), 100, 300, 10));
+        siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageHeight(), 100, 300, 10));
 
         adultFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultFontSize(), 10, 22, 1));
         adultVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultVerticalShift(), -30, 30, 5));

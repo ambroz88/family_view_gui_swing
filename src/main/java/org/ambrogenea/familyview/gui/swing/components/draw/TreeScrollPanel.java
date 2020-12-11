@@ -1,6 +1,7 @@
 package org.ambrogenea.familyview.gui.swing.components.draw;
 
 import java.awt.Dimension;
+import java.awt.Point;
 
 import javax.swing.JScrollPane;
 
@@ -38,7 +39,8 @@ public class TreeScrollPanel extends JScrollPane {
         treePanel.validate();
 
         this.setViewportView(treePanel);
-//        scrollAncestorPane.setScrollPosition(setup.getRootPosition().getX(), setup.getHeight());
+        this.getViewport().setViewPosition(new Point(setup.getRootPosition().getX() - this.getWidth() / 2,
+                setup.getRootPosition().getY() - this.getHeight() + getConfiguration().getAdultImageHeight()));
     }
 
     public void setTreePanel(TreePanel treePanel) {

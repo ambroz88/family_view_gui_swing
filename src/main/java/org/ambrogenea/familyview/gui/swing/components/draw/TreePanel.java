@@ -64,7 +64,7 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        addImageBackground(g2);
+//        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
 
         final int lineStrokeExtra;
@@ -126,7 +126,12 @@ public class TreePanel extends JPanel {
 
     private void addImageBackground(Graphics2D g2) {
         try {
-            BufferedImage image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-landscape.jpg"));
+            BufferedImage image;
+            if (this.getWidth() / (double) this.getHeight() > 2) {
+                image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-wide.jpg"));
+            } else {
+                image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-landscape.jpg"));
+            }
             g2.drawImage(image, 0, 0, treeModel.getPageSetup().getWidth(), treeModel.getPageSetup().getHeight(), null);
         } catch (IOException ex) {
             Logger.getLogger(TreeScrollPanel.class.getName()).log(Level.SEVERE, null, ex);

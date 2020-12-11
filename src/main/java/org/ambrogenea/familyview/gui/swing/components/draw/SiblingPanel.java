@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.Sex;
+import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
@@ -43,7 +44,7 @@ public class SiblingPanel extends PersonPanel {
 
         int imageWidth = configuration.getSiblingImageWidth() / 2;
         if (configuration.getSiblingDiagram().equals(Diagrams.SCROLL)) {
-            shift = 12;
+            shift = Dimensions.SCROLL_SHIFT;
         }
 
         birth.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));

@@ -21,7 +21,7 @@ import org.ambrogenea.familyview.utils.Tools;
 public abstract class PersonPanel extends JPanel {
 
     protected static final String SPACE = "  ";
-    private static final String GENERAL_FONT = "Calibri";
+    private static final String GENERAL_FONT = "Liberation Sans";
     private static final String NAMES_FONT = Font.SANS_SERIF;
 
     protected final PersonRecord person;
@@ -154,7 +154,7 @@ public abstract class PersonPanel extends JPanel {
 
         DatePlace deathDatePlace = person.getDeathDatePlace();
         if (deathDatePlace.getDate() != null) {
-            death.setText("\u2D15 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
+            death.setText("\u2020 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
             if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText("," + SPACE + Tools.cityShortVersion(deathDatePlace.getSimplePlace()));

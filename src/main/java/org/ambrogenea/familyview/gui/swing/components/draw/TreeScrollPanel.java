@@ -5,11 +5,11 @@ import java.awt.Point;
 
 import javax.swing.JScrollPane;
 
+import org.ambrogenea.familyview.dto.PageSetup;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.gui.swing.Window;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.service.ConfigurationService;
-import org.ambrogenea.familyview.service.PageSetup;
 
 /**
  *

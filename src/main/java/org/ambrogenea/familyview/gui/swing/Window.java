@@ -14,6 +14,7 @@ import javax.swing.*;
 
 import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.dto.AncestorPerson;
+import org.ambrogenea.familyview.dto.PageSetup;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.Window;
@@ -23,7 +24,10 @@ import org.ambrogenea.familyview.gui.swing.components.setup.*;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.model.Table;
-import org.ambrogenea.familyview.service.*;
+import org.ambrogenea.familyview.service.ConfigurationService;
+import org.ambrogenea.familyview.service.ParsingService;
+import org.ambrogenea.familyview.service.SelectionService;
+import org.ambrogenea.familyview.service.TreeService;
 import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
 import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
 import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
@@ -125,13 +129,14 @@ public class Window extends JFrame implements PropertyChangeListener {
          */
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+//                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-//            Logger.getLogger(ApplicationWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

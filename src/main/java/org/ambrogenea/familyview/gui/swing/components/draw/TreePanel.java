@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.ambrogenea.familyview.constant.Spaces;
 import org.ambrogenea.familyview.dto.tree.Arc;
@@ -20,6 +21,7 @@ import org.ambrogenea.familyview.dto.tree.ResidenceDto;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
+import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
@@ -27,8 +29,12 @@ import org.ambrogenea.familyview.service.ConfigurationService;
  */
 public class TreePanel extends JPanel {
 
+    private static final String TITLE_FONT = "Monotype Corsiva";
+    private static final int TITLE_SIZE = 50;
+
     private final TreeModel treeModel;
     private final ConfigurationService configuration;
+    private JTextField title;
 
     public TreePanel(TreeModel treeModel, ConfigurationService configuration) {
         this.treeModel = treeModel;
@@ -40,6 +46,14 @@ public class TreePanel extends JPanel {
 //        setBackground(Color.WHITE);
         setOpaque(false);
         this.setLayout(null);
+        title = new JTextField(treeModel.getTreeName());
+        title.setHorizontalAlignment(JTextField.CENTER);
+        title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
+        title.setBorder(null);
+        title.setPreferredSize(new Dimension(treeModel.getPageSetup().getWidth(), Dimensions.TITLE_HEIGHT));
+        title.setOpaque(false);
+
+        this.add(title);
 
         treeModel.getPersons().forEach(person -> drawPerson(person));
 
@@ -66,6 +80,7 @@ public class TreePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 //        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
+        title.setBounds(0, treeModel.getPageSetup().getOriginalY() + Spaces.SIBLINGS_GAP, treeModel.getPageSetup().getWidth(), Dimensions.TITLE_HEIGHT);
 
         final int lineStrokeExtra;
         if (configuration.getAdultFontSize() >= 18) {

@@ -10,12 +10,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.ambrogenea.familyview.dto.AncestorPerson;
+import org.ambrogenea.familyview.dto.PageSetup;
 import org.ambrogenea.familyview.gui.swing.Window;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
-import org.ambrogenea.familyview.service.PageSetup;
+import org.ambrogenea.familyview.service.Pageable;
 import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
 import org.ambrogenea.familyview.service.impl.paging.FatherLineagePageSetup;
 import org.ambrogenea.familyview.service.impl.paging.MotherLineagePageSetup;
@@ -28,7 +29,6 @@ import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
 import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
-import org.ambrogenea.familyview.utils.Calculation;
 
 /**
  *
@@ -95,19 +95,20 @@ public class TreeTypePanel extends JPanel {
 
     public PageSetup createPageSetup(AncestorPerson rootPerson) {
         ConfigurationService configuration = window.getConfiguration();
-        PageSetup setup;
+        Pageable setup;
         if (fatherLineageType.isSelected()) {
-            setup = new FatherLineagePageSetup(configuration, rootPerson);
+            setup = new FatherLineagePageSetup(configuration);
         } else if (motherLineageType.isSelected()) {
-            setup = new MotherLineagePageSetup(configuration, rootPerson);
+            setup = new MotherLineagePageSetup(configuration);
         } else if (parentLineageType.isSelected()) {
-            setup = new ParentLineagePageSetup(configuration, rootPerson);
+            setup = new ParentLineagePageSetup(configuration);
         } else if (allAncestorType.isSelected()) {
-            setup = new AllAncestorPageSetup(configuration, rootPerson);
+            setup = new AllAncestorPageSetup(configuration);
         } else {
-            setup = new FatherLineagePageSetup(configuration, rootPerson);
+            setup = new FatherLineagePageSetup(configuration);
         }
-        return Calculation.standardizePageSetup(setup);
+//        return Calculation.standardizePageSetup(setup.createPageSetup(rootPerson));
+        return setup.createPageSetup(rootPerson);
     }
 
     private void initActions() {

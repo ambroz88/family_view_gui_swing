@@ -51,40 +51,40 @@ public class TreeSetupPanel extends JPanel {
         ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", getConfiguration().getLocale());
         this.setBorder(new TitledBorder(description.getString(TreeSetup.TITLE)));
 
-        verticalViewCheckBox = new JCheckBox();
+        verticalViewCheckBox = new JCheckBox(description.getString(TreeSetup.VERTICAL));
         verticalViewCheckBox.setSelected(getConfiguration().isShowCouplesVertical());
-        verticalViewCheckBox.setText(description.getString(TreeSetup.VERTICAL));
+        verticalViewCheckBox.setOpaque(false);
 
-        heraldryCheckBox = new JCheckBox();
+        heraldryCheckBox = new JCheckBox(description.getString(TreeSetup.HERALDRY));
         heraldryCheckBox.setSelected(getConfiguration().isShowHeraldry());
-        heraldryCheckBox.setText(description.getString(TreeSetup.HERALDRY));
+        heraldryCheckBox.setOpaque(false);
 
-        marriageCheckBox = new JCheckBox();
+        marriageCheckBox = new JCheckBox(description.getString(TreeSetup.MARRIAGE));
         marriageCheckBox.setSelected(getConfiguration().isShowMarriage());
-        marriageCheckBox.setText(description.getString(TreeSetup.MARRIAGE));
+        marriageCheckBox.setOpaque(false);
 
-        residenceCheckBox = new JCheckBox();
+        residenceCheckBox = new JCheckBox(description.getString(TreeSetup.RESIDENCE));
         residenceCheckBox.setSelected(getConfiguration().isShowResidence());
-        residenceCheckBox.setText(description.getString(TreeSetup.RESIDENCE));
+        residenceCheckBox.setOpaque(false);
 
-        spousesCheckbox = new JCheckBox();
+        spousesCheckbox = new JCheckBox(description.getString(TreeSetup.SPOUSES));
         spousesCheckbox.setSelected(getConfiguration().isShowSpouses());
-        spousesCheckbox.setText(description.getString(TreeSetup.SPOUSES));
+        spousesCheckbox.setOpaque(false);
 
-        childrenCheckbox = new JCheckBox();
+        childrenCheckbox = new JCheckBox(description.getString(TreeSetup.CHILDREN));
         childrenCheckbox.setSelected(getConfiguration().isShowChildren());
-        childrenCheckbox.setText(description.getString(TreeSetup.CHILDREN));
+        childrenCheckbox.setOpaque(false);
 
-        showSiblingsCheckbox = new JCheckBox();
+        showSiblingsCheckbox = new JCheckBox(description.getString(TreeSetup.SIBLINGS));
         showSiblingsCheckbox.setSelected(getConfiguration().isShowSiblings());
-        showSiblingsCheckbox.setText(description.getString(TreeSetup.SIBLINGS));
+        showSiblingsCheckbox.setOpaque(false);
 
-        showSiblingSpouse = new JCheckBox();
+        showSiblingSpouse = new JCheckBox(description.getString(TreeSetup.SIBLINGS_SPOUSE));
         showSiblingSpouse.setSelected(getConfiguration().isShowSiblingSpouses());
-        showSiblingSpouse.setText(description.getString(TreeSetup.SIBLINGS_SPOUSE));
+        showSiblingSpouse.setOpaque(false);
 
-        generationsLabel = new JLabel();
-        generationsLabel.setText(description.getString(TreeSetup.GENERATIONS));
+        generationsLabel = new JLabel(description.getString(TreeSetup.GENERATIONS));
+        generationsLabel.setOpaque(false);
 
         generationSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getGenerationCount(), 1, 20, 1));
 

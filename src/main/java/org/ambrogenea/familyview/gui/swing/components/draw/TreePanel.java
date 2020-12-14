@@ -21,7 +21,7 @@ import org.ambrogenea.familyview.dto.tree.ResidenceDto;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
-import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
+import org.ambrogenea.familyview.gui.swing.constant.Fonts;
 import org.ambrogenea.familyview.service.ConfigurationService;
 
 /**
@@ -50,7 +50,7 @@ public class TreePanel extends JPanel {
         title.setHorizontalAlignment(JTextField.CENTER);
         title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
         title.setBorder(null);
-        title.setPreferredSize(new Dimension(treeModel.getPageSetup().getWidth(), Dimensions.TITLE_HEIGHT));
+        title.setPreferredSize(new Dimension(treeModel.getPageSetup().getWidth(), Spaces.TITLE_HEIGHT));
         title.setOpaque(false);
 
         this.add(title);
@@ -61,7 +61,7 @@ public class TreePanel extends JPanel {
             int labelHeight = configuration.getMarriageLabelHeight();
             treeModel.getMarriages().forEach(marriage -> {
                 JLabel date = new JLabel(marriage.getDate(), JLabel.CENTER);
-                date.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, configuration.getAdultFontSize() - 1));
+                date.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
                 date.setOpaque(false);
                 this.add(date);
                 date.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY(),
@@ -80,7 +80,7 @@ public class TreePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 //        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
-        title.setBounds(0, treeModel.getPageSetup().getOriginalY() + Spaces.SIBLINGS_GAP, treeModel.getPageSetup().getWidth(), Dimensions.TITLE_HEIGHT);
+        title.setBounds(0, treeModel.getPageSetup().getOriginalY() + Spaces.HORIZONTAL_GAP, treeModel.getPageSetup().getWidth(), Spaces.TITLE_HEIGHT);
 
         final int lineStrokeExtra;
         if (configuration.getAdultFontSize() >= 18) {

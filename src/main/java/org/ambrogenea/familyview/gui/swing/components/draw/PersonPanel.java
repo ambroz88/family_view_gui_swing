@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import org.ambrogenea.familyview.domain.DatePlace;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
+import org.ambrogenea.familyview.gui.swing.constant.Fonts;
 import org.ambrogenea.familyview.gui.swing.tools.PersonPanelMouseController;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.utils.Tools;
@@ -21,8 +22,6 @@ import org.ambrogenea.familyview.utils.Tools;
 public abstract class PersonPanel extends JPanel {
 
     protected static final String SPACE = "  ";
-    private static final String GENERAL_FONT = "Liberation Sans";
-    private static final String NAMES_FONT = Font.SANS_SERIF;
 
     protected final PersonRecord person;
     protected final ConfigurationService configuration;
@@ -78,7 +77,7 @@ public abstract class PersonPanel extends JPanel {
 
         occupation = new JLabel("", JLabel.CENTER);
         occupation.setText(person.getOccupation().split(";")[0]);
-        occupation.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        occupation.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
 
         initNameLabels();
         initDateLabels();
@@ -109,19 +108,19 @@ public abstract class PersonPanel extends JPanel {
 
     private void initNamesLabelFont() {
         if (firstName.getText().length() > 20) {
-            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize - 1));
+            firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize - 1));
         } else if (firstName.getText().length() > 15) {
-            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize));
+            firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            firstName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize + 1));
+            firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 1));
         }
 
         if (surName.getText().length() > 20) {
-            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize - 1));
+            surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize - 1));
         } else if (surName.getText().length() > 15) {
-            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize));
+            surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            surName.setFont(new Font(NAMES_FONT, Font.BOLD, fontSize + 1));
+            surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 1));
         }
     }
 
@@ -168,10 +167,10 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initDateLabelsFont() {
-        birth.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
-        birthPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
-        death.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
-        deathPlace.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize - 1));
+        birth.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
+        birthPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize - 1));
+        death.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
+        deathPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize - 1));
     }
 
     protected void addLabels(int verticalShift) {
@@ -272,15 +271,15 @@ public abstract class PersonPanel extends JPanel {
         templeBox.setBackground(Color.WHITE);
 
         JLabel baptism = new JLabel(" KK ", JLabel.CENTER);
-        baptism.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        baptism.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
         baptism.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel initiatory = new JLabel(" PO ", JLabel.CENTER);
-        initiatory.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        initiatory.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
         initiatory.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel endowment = new JLabel(" OB ", JLabel.CENTER);
-        endowment.setFont(new Font(GENERAL_FONT, Font.PLAIN, fontSize));
+        endowment.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
         endowment.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         templeBox.add(baptism);

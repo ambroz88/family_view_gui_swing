@@ -21,7 +21,7 @@ import org.ambrogenea.familyview.utils.Tools;
  */
 public abstract class PersonPanel extends JPanel {
 
-    protected static final String SPACE = "  ";
+    protected static final String SPACE = " ";
 
     protected final PersonRecord person;
     protected final ConfigurationService configuration;
@@ -78,6 +78,7 @@ public abstract class PersonPanel extends JPanel {
         occupation = new JLabel("", JLabel.CENTER);
         occupation.setText(person.getOccupation().split(";")[0]);
         occupation.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
+//        occupation.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), fontSize + 2));
 
         initNameLabels();
         initDateLabels();
@@ -112,7 +113,7 @@ public abstract class PersonPanel extends JPanel {
         } else if (firstName.getText().length() > 15) {
             firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 1));
+            firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 2));
         }
 
         if (surName.getText().length() > 20) {
@@ -120,7 +121,7 @@ public abstract class PersonPanel extends JPanel {
         } else if (surName.getText().length() > 15) {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
-            surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 1));
+            surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 2));
         }
     }
 
@@ -130,30 +131,39 @@ public abstract class PersonPanel extends JPanel {
         death = new JLabel(" ", JLabel.RIGHT);
         deathPlace = new JLabel("", JLabel.LEFT);
 
+        String birthPlaceString = "";
+        String birthDateString = "";
         DatePlace birthDatePlace = person.getBirthDatePlace();
         if (birthDatePlace.getDate() != null) {
-            birth.setText("\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale()));
+            birthDateString = "\u002A" + birthDatePlace.getLocalizedDate(configuration.getLocale()) + "";
             if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlace.setText("," + SPACE + Tools.cityShortVersion(birthDatePlace.getSimplePlace()));
+                    birthPlaceString = "," + SPACE + Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {
-                    birthPlace.setText("," + SPACE + birthDatePlace.getSimplePlace());
+                    birthPlaceString = "," + SPACE + birthDatePlace.getSimplePlace();
                 }
             }
         } else {
             if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlace.setText("\u002A " + Tools.cityShortVersion(birthDatePlace.getSimplePlace()));
+                    birthPlaceString = "\u002A" + Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {
-                    birthPlace.setText("\u002A " + birthDatePlace.getSimplePlace());
+                    birthPlaceString = "\u002A" + birthDatePlace.getSimplePlace();
                 }
                 birthPlace.setHorizontalAlignment(JLabel.CENTER);
             }
         }
 
+        if (configuration.isShowAge()) {
+            birth.setText(birthDateString);
+            birthPlace.setText(birthPlaceString);
+        } else {
+            birth.setText(birthDateString + birthPlaceString);
+        }
+
         DatePlace deathDatePlace = person.getDeathDatePlace();
-        if (deathDatePlace.getDate() != null) {
-            death.setText("\u2020 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
+        if (configuration.isShowAge() && deathDatePlace.getDate() != null) {
+            death.setText("\u2020" + deathDatePlace.getLocalizedDate(configuration.getLocale()) + "");
             if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText("," + SPACE + Tools.cityShortVersion(deathDatePlace.getSimplePlace()));
@@ -205,6 +215,9 @@ public abstract class PersonPanel extends JPanel {
         c.ipady = 0;
         c.weighty = 0;
         if (person.getBirthDatePlace().getDate() != null) {
+            if (!configuration.isShowAge()) {
+                c.gridwidth = 2;
+            }
             add(birth, c);
         }
 
@@ -214,15 +227,14 @@ public abstract class PersonPanel extends JPanel {
         }
 
         if (configuration.isShowPlaces()) {
-            c.gridy = 5;
-            if (person.getBirthDatePlace().getDate() != null) {
-                c.gridx = 1;
-            } else {
-                c.gridx = 0;
-            }
-            add(birthPlace, c);
-
             if (configuration.isShowAge()) {
+                c.gridy = 5;
+                if (person.getBirthDatePlace().getDate() != null) {
+                    c.gridx = 1;
+                } else {
+                    c.gridx = 0;
+                }
+                add(birthPlace, c);
 //                c.gridx = 1;
                 c.gridy = 7;
                 add(deathPlace, c);

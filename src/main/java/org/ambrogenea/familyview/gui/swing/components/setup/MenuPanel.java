@@ -58,11 +58,11 @@ public class MenuPanel extends JPanel {
     }
 
     private void initFileChoosers() {
-        openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/AmbroGENEA/zákazníci");
         openFC.setFileFilter(new FileNameExtensionFilter("GEDCOM files", "ged"));
         openFC.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/Genealogie");
+        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/AmbroGENEA/zákazníci");
         saverFC.setFileFilter(new FileNameExtensionFilter("PNG file", "png"));
         saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
     }

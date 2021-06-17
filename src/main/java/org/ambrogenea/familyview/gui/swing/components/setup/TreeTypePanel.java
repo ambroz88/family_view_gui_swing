@@ -17,18 +17,13 @@ import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.description.TreeType;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.service.Pageable;
-import org.ambrogenea.familyview.service.impl.paging.AllAncestorPageSetup;
-import org.ambrogenea.familyview.service.impl.paging.FatherLineagePageSetup;
-import org.ambrogenea.familyview.service.impl.paging.MotherLineagePageSetup;
-import org.ambrogenea.familyview.service.impl.paging.ParentLineagePageSetup;
+import org.ambrogenea.familyview.service.impl.selection.DescendentSelectionService;
+import org.ambrogenea.familyview.service.impl.paging.*;
 import org.ambrogenea.familyview.service.impl.selection.AllAncestorsSelectionService;
 import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
 import org.ambrogenea.familyview.service.impl.selection.MothersSelectionService;
 import org.ambrogenea.familyview.service.impl.selection.ParentsSelectionService;
-import org.ambrogenea.familyview.service.impl.tree.AllAncestorTreeService;
-import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
-import org.ambrogenea.familyview.service.impl.tree.MotherLineageTreeService;
-import org.ambrogenea.familyview.service.impl.tree.ParentLineageTreeService;
+import org.ambrogenea.familyview.service.impl.tree.*;
 
 /**
  *
@@ -41,9 +36,10 @@ public class TreeTypePanel extends JPanel {
     private JToggleButton fatherLineageType;
     private JToggleButton motherLineageType;
     private JToggleButton parentLineageType;
+    private JToggleButton descendentsLineageType;
 
     public TreeTypePanel(Window window) {
-        super(new FlowLayout(FlowLayout.LEFT, 5, 1));
+        super(new FlowLayout(FlowLayout.LEFT, 6, 1));
         this.window = window;
         this.setPreferredSize(Dimensions.TREE_TYPE_DIMENSION);
         this.setBackground(Colors.SW_BACKGROUND);
@@ -78,6 +74,10 @@ public class TreeTypePanel extends JPanel {
         motherLineageType = new JToggleButton(motherLineageIcon);
         motherLineageType.setToolTipText(description.getString(TreeType.MOTHERS));
         motherLineageType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+
+        descendentsLineageType = new JToggleButton();
+        descendentsLineageType.setToolTipText(description.getString(TreeType.MOTHERS));
+        descendentsLineageType.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
     }
 
     private void addComponents() {
@@ -86,11 +86,13 @@ public class TreeTypePanel extends JPanel {
         treeTypeGroup.add(parentLineageType);
         treeTypeGroup.add(fatherLineageType);
         treeTypeGroup.add(motherLineageType);
+        treeTypeGroup.add(descendentsLineageType);
 
         this.add(allAncestorType);
         this.add(parentLineageType);
         this.add(fatherLineageType);
         this.add(motherLineageType);
+        this.add(descendentsLineageType);
     }
 
     public PageSetup createPageSetup(AncestorPerson rootPerson) {
@@ -104,6 +106,8 @@ public class TreeTypePanel extends JPanel {
             setup = new ParentLineagePageSetup(configuration);
         } else if (allAncestorType.isSelected()) {
             setup = new AllAncestorPageSetup(configuration);
+        } else if (descendentsLineageType.isSelected()) {
+            setup = new AllDescendentsPageSetup(configuration);
         } else {
             setup = new FatherLineagePageSetup(configuration);
         }
@@ -116,6 +120,7 @@ public class TreeTypePanel extends JPanel {
         parentLineageType.addActionListener(this::parentLineageTypeActionPerformed);
         fatherLineageType.addActionListener(this::fatherLineageTypeActionPerformed);
         motherLineageType.addActionListener(this::motherLineageTypeActionPerformed);
+        descendentsLineageType.addChangeListener(this::descendentsLineageTypeStateChanged);
     }
 
     private void fatherLineageTypeActionPerformed(ActionEvent evt) {
@@ -147,6 +152,17 @@ public class TreeTypePanel extends JPanel {
         if (allAncestorType.isSelected()) {
             window.setTreeService(new AllAncestorTreeService());
             window.setSelectionService(new AllAncestorsSelectionService());
+            window.setSiblingsShow(false);
+            window.generateTree();
+        } else {
+            window.setSiblingsShow(true);
+        }
+    }
+
+    private void descendentsLineageTypeStateChanged(ChangeEvent evt) {
+        if (descendentsLineageType.isSelected()) {
+            window.setTreeService(new AllDescendentsTreeService());
+            window.setSelectionService(new DescendentSelectionService());
             window.setSiblingsShow(false);
             window.generateTree();
         } else {

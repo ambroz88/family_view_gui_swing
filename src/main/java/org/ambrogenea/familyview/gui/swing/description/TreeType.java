@@ -11,5 +11,6 @@ public abstract class TreeType {
     public static String PARENTS = "parents";
     public static String FATHERS = "fathers";
     public static String MOTHERS = "mothers";
+    public static String DESCENDENTS = "descendents";
 
 }

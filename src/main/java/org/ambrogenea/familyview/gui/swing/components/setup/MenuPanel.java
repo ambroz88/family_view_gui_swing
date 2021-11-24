@@ -30,6 +30,7 @@ public class MenuPanel extends JPanel {
 
     private JButton loadInputButton;
     private JButton saveButton;
+    private JButton docButton;
     private JLabel logoLabel;
 
     public MenuPanel(Window window) {
@@ -54,6 +55,10 @@ public class MenuPanel extends JPanel {
         saveButton.setToolTipText(description.getString(Menu.SAVE));
         saveButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
+        docButton = new JButton("Doc");
+        docButton.setToolTipText(description.getString(Menu.DOCUMENT));
+        docButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
+
         logoLabel = new JLabel(new ImageIcon("src/main/resources/Logo 120x65.png"));
     }
 
@@ -70,12 +75,14 @@ public class MenuPanel extends JPanel {
     private void initActions() {
         loadInputButton.addActionListener(this::loadInputButtonActionPerformed);
         saveButton.addActionListener(this::saveButtonActionPerformed);
+        docButton.addActionListener(this::docButtonActionPerformed);
     }
 
     private void addComponents() {
         JPanel leftMenu = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 1));
         leftMenu.add(loadInputButton);
         leftMenu.add(saveButton);
+        leftMenu.add(docButton);
         leftMenu.setBackground(Colors.SW_BACKGROUND);
 
         this.add(leftMenu, BorderLayout.WEST);
@@ -113,6 +120,10 @@ public class MenuPanel extends JPanel {
         } else {
             System.out.println("Open command cancelled by user.");
         }
+    }
+
+    private void docButtonActionPerformed(ActionEvent evt) {
+
     }
 
 }

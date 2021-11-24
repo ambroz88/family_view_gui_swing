@@ -9,8 +9,8 @@ import java.awt.Dimension;
 public class Dimensions {
 
     public final static int SCROLL_SHIFT = 10;
-    public final static int LEFT_PANEL_WIDTH = 290;
-    public final static int BUTTON_MENU_PANEL_HEIGHT = 100;
+    public final static int LEFT_PANEL_WIDTH = 320;
+    public final static int BUTTON_MENU_PANEL_HEIGHT = 90;
     public final static int BUTTON_MENU_HEIGHT = 60;
     private final static int PERSON_SETUP_PANEL_HEIGHT = 200;
 

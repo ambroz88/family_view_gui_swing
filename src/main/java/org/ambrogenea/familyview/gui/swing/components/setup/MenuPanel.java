@@ -123,7 +123,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void docButtonActionPerformed(ActionEvent evt) {
-
+        window.generateDocument();
     }
 
 }

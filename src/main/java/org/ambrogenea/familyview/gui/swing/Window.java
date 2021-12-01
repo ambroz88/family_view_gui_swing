@@ -32,6 +32,8 @@ import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
 import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
 import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
+import org.ambrogenea.familyview.word.WordGenerator;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
  *
@@ -218,4 +220,82 @@ public class Window extends JFrame implements PropertyChangeListener {
         return configuration;
     }
 
+    public void generateDocument() {
+        if (dataTablePanel.getSelectedRow() != -1) {
+            XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
+
+            String personId = familyData.getPersonByPosition(dataTablePanel.getSelectedRow()).getId();
+            AncestorPerson rootPerson = selectionService.select(personId, 10);
+            addFamilyToDoc(rootPerson, doc);
+
+            if (rootPerson.getFather() != null) {
+                createFamilyDocument(rootPerson.getFather(), doc);
+            } else {
+                createFamilyDocument(rootPerson.getMother(), doc);
+            }
+
+            saveFamilyDocument(rootPerson, doc);
+        }
+    }
+
+    private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
+        if (person != null) {
+            AncestorPerson actualPerson = person;
+            int generations = 0;
+            while (actualPerson != null) {
+                if (generations < configuration.getGenerationCount()) {
+                    addFamilyToDoc(actualPerson, doc);
+                    actualPerson = actualPerson.getFather();
+                    generations++;
+                } else {
+                    actualPerson = null;
+                }
+            }
+        }
+    }
+
+    private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
+        TreePanel familyPanel = createOneFamily(actualPerson);
+        int generations = calculateGenerations(actualPerson);
+        WordGenerator.setMaxHeight(generations);
+        WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
+        WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
+    }
+
+    private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
+        DefaultConfigurationService config = new DefaultConfigurationService();
+        config.setGenerationCount(10);
+        PageSetup setup = treeTypePanel.createPageSetup(personWithAncestors);
+        TreeModel treeModel = treeService.generateTreeModel(personWithAncestors, setup, config);
+        return generateTreePanel(treeModel);
+    }
+
+    private void saveFamilyDocument(AncestorPerson personWithAncestors, XWPFDocument doc) {
+        try {
+            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personWithAncestors.getName() + ".docx", doc);
+        } catch (IOException ex) {
+            System.out.println("It is not possible to save document: " + ex.getMessage());
+        }
+    }
+
+    private int calculateGenerations(AncestorPerson actualPerson) {
+        int generations = 1;
+        if (getConfiguration().isShowChildren() && actualPerson.getChildrenCount(0) > 0) {
+            generations++;
+//        } else if (getConfiguration().getGenerationCount() > 1 && !actualPerson.hasNoParents()) {
+//            generations++;
+        }
+        return generations;
+    }
+
+    private TreePanel generateTreePanel(TreeModel treeModel) {
+        TreePanel treePanel = new TreePanel(treeModel, getConfiguration());
+        PageSetup setup = treeModel.getPageSetup();
+        treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
+
+        treePanel.addNotify();
+        treePanel.validate();
+
+        return treePanel;
+    }
 }

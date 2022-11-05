@@ -24,7 +24,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.ambrogenea.familyview.gui.swing.ApplicationWindow</mainClass>
+                            <mainClass>org.ambrogenea.familyview.gui.swing.Window</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

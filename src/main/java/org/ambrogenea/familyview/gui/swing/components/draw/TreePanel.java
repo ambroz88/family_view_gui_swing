@@ -19,6 +19,7 @@ import org.ambrogenea.familyview.dto.tree.Arc;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.dto.tree.ResidenceDto;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
+import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.LabelShape;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Fonts;
@@ -91,7 +92,7 @@ public class TreePanel extends JPanel {
 
         int cornerSize = 20;
         treeModel.getLines().forEach(line -> {
-            g2.setStroke(new BasicStroke(lineStrokeExtra + line.getRelation().getInt()));
+            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         });
 
@@ -118,7 +119,7 @@ public class TreePanel extends JPanel {
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
         treeModel.getArcs().forEach(arc -> {
-            g2.setStroke(new BasicStroke(lineStrokeExtra + arc.getRelation().getInt()));
+            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
             g2.drawArc(arc.getLeftUpperCorner().getX(), arc.getLeftUpperCorner().getY(), 2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.getStartAngle(), Arc.ANGLE_SIZE);
         });
 
@@ -155,10 +156,10 @@ public class TreePanel extends JPanel {
 
     private void drawPerson(PersonRecord person) {
         PersonPanel personPanel;
-        if (person.isDirectLineage()) {
-            personPanel = new AdultPanel(person, configuration);
+        if (configuration.getAdultDiagram() == Diagrams.SCROLL) {
+            personPanel = new HorizontalPersonPanel(person, configuration);
         } else {
-            personPanel = new SiblingPanel(person, configuration);
+            personPanel = new VerticalPersonPanel(person, configuration);
         }
 
         personPanel.addMouseAdapter();

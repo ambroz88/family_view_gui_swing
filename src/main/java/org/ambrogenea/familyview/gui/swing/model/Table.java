@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.ambrogenea.familyview.configuration.Configuration;
 import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.domain.Person;
 import org.ambrogenea.familyview.gui.swing.description.TableHeader;
@@ -30,7 +31,7 @@ public class Table extends DefaultTableModel {
     public Table(FamilyData tree) {
         super();
         this.familyData = tree;
-        this.configuration = new DefaultConfigurationService();
+        this.configuration = new DefaultConfigurationService(new Configuration());
         setColumnIdentifiers(getHeaderNames());
     }
 

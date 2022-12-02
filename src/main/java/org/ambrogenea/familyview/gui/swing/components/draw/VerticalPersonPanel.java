@@ -19,8 +19,6 @@ import org.ambrogenea.familyview.utils.Tools;
  */
 public class VerticalPersonPanel extends PersonPanel {
 
-    private static String BORDER_SPACE = "     ";
-
     public VerticalPersonPanel(PersonRecord person, ConfigurationService config) {
         super(person, config);
     }
@@ -82,7 +80,7 @@ public class VerticalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = 0 - configuration.getAdultVerticalShift();
+        c.ipady = - configuration.getAdultVerticalShift();
         c.weighty = 5;
         c.gridwidth = 1;
         add(new JLabel(""), c);
@@ -134,7 +132,7 @@ public class VerticalPersonPanel extends PersonPanel {
 
         c.gridy = 12;
         c.weighty = 5;
-        c.ipady = 0 + configuration.getAdultVerticalShift();
+        c.ipady = configuration.getAdultVerticalShift();
         add(new JLabel(""), c);
     }
 

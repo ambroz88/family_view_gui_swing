@@ -1,23 +1,11 @@
 package org.ambrogenea.familyview.gui.swing;
 
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.*;
-
+import org.ambrogenea.familyview.configuration.Configuration;
 import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.dto.AncestorPerson;
 import org.ambrogenea.familyview.dto.PageSetup;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
-import org.ambrogenea.familyview.gui.swing.Window;
 import org.ambrogenea.familyview.gui.swing.components.draw.TreePanel;
 import org.ambrogenea.familyview.gui.swing.components.draw.TreeScrollPanel;
 import org.ambrogenea.familyview.gui.swing.components.setup.*;
@@ -34,6 +22,17 @@ import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 import org.ambrogenea.familyview.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,7 +59,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     private FamilyData familyData;
 
     public Window() {
-        configuration = new DefaultConfigurationService();
+        configuration = new DefaultConfigurationService(new Configuration());
         configuration.addPropertyChangeListener(this);
 
         setWindowSize();
@@ -263,7 +262,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     }
 
     private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
-        DefaultConfigurationService config = new DefaultConfigurationService();
+        DefaultConfigurationService config = new DefaultConfigurationService(new Configuration());
         config.setGenerationCount(10);
         PageSetup setup = treeTypePanel.createPageSetup(personWithAncestors);
         TreeModel treeModel = treeService.generateTreeModel(personWithAncestors, setup, config);

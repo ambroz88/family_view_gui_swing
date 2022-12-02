@@ -1,8 +1,9 @@
 package org.ambrogenea.familyview.gui.swing.components.setup;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
@@ -30,10 +31,8 @@ public class PersonBoxSetupPanel extends JPanel {
     private JSpinner siblingWidthSpinner;
     private JSpinner siblingHeightSpinner;
     private JSpinner siblingFontSizeSpinner;
-    private JSpinner siblingVerticalShiftSpinner;
 
-    private JComboBox adultDiagramBox;
-    private JComboBox siblingDiagramBox;
+    private JComboBox<String> adultDiagramBox;
 
     private JLabel directLabel;
     private JLabel sideLabel;
@@ -73,18 +72,13 @@ public class PersonBoxSetupPanel extends JPanel {
         adultVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultVerticalShift(), -30, 30, 5));
 
         siblingFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingFontSize(), 10, 22, 1));
-        siblingVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingVerticalShift(), -30, 30, 5));
 
         String[] names = new String[Diagrams.values().length];
         for (int i = 0; i < names.length; i++) {
             names[i] = description.getString(Diagrams.values()[i].toString());
         }
-        adultDiagramBox = new JComboBox(new DefaultComboBoxModel<>(names));
+        adultDiagramBox = new JComboBox<>(new DefaultComboBoxModel<>(names));
         adultDiagramBox.setSelectedItem(description.getString(getConfiguration().getAdultDiagram().toString()));
-
-        siblingDiagramBox = new JComboBox(new DefaultComboBoxModel<>(names));
-        siblingDiagramBox.setSelectedItem(description.getString(getConfiguration().getSiblingDiagram().toString()));
-
     }
 
     private void initActions() {
@@ -96,10 +90,8 @@ public class PersonBoxSetupPanel extends JPanel {
         adultFontSizeSpinner.addChangeListener(this::fontSizeSpinnerStateChanged);
         adultVerticalShiftSpinner.addChangeListener(this::adultVerticalShiftSpinnerStateChanged);
         siblingFontSizeSpinner.addChangeListener(this::siblingFontSizeSpinnerStateChanged);
-        siblingVerticalShiftSpinner.addChangeListener(this::siblingVerticalShiftSpinnerStateChanged);
 
         adultDiagramBox.addActionListener(this::adultDiagramComboBoxActionPerformed);
-        siblingDiagramBox.addActionListener(this::siblingsDiagramComboBoxActionPerformed);
     }
 
     private void addComponents() {
@@ -121,12 +113,10 @@ public class PersonBoxSetupPanel extends JPanel {
 
         this.add(adultVerticalShiftSpinner);
         this.add(verticalShiftLabel);
-        this.add(siblingVerticalShiftSpinner);
+        this.add(new JLabel(""));
 
         this.add(adultDiagramBox);
         this.add(diagramLabel);
-        this.add(siblingDiagramBox);
-
     }
 
     private void adultWidthSpinnerStateChanged(ChangeEvent evt) {
@@ -171,36 +161,15 @@ public class PersonBoxSetupPanel extends JPanel {
         window.generateTree();
     }
 
-    private void siblingVerticalShiftSpinnerStateChanged(ChangeEvent evt) {
-        int siblingsVerticalShift = Integer.parseInt(siblingVerticalShiftSpinner.getValue().toString());
-        getConfiguration().setSiblingVerticalShift(siblingsVerticalShift);
-        window.generateTree();
-    }
-
     private void adultDiagramComboBoxActionPerformed(ActionEvent evt) {
         ResourceBundle description = ResourceBundle.getBundle("language/personBoxSetup", getConfiguration().getLocale());
-        Iterator it = description.getKeys().asIterator();
-        String selectedDiagramName = adultDiagramBox.getSelectedItem().toString();
+        Iterator<String> it = description.getKeys().asIterator();
+        String selectedDiagramName = Objects.requireNonNull(adultDiagramBox.getSelectedItem()).toString();
         String diagramType;
         while (it.hasNext()) {
-            diagramType = it.next().toString();
+            diagramType = it.next();
             if (description.getString(diagramType).equals(selectedDiagramName)) {
                 getConfiguration().setAdultDiagram(Diagrams.fromString(diagramType));
-                window.generateTree();
-                break;
-            }
-        }
-    }
-
-    private void siblingsDiagramComboBoxActionPerformed(ActionEvent evt) {
-        ResourceBundle description = ResourceBundle.getBundle("language/personBoxSetup", getConfiguration().getLocale());
-        Iterator it = description.getKeys().asIterator();
-        String selectedDiagramName = siblingDiagramBox.getSelectedItem().toString();
-        String diagramType;
-        while (it.hasNext()) {
-            diagramType = it.next().toString();
-            if (description.getString(diagramType).equals(selectedDiagramName)) {
-                getConfiguration().setSiblingDiagram(Diagrams.fromString(diagramType));
                 window.generateTree();
                 break;
             }

@@ -1,14 +1,5 @@
 package org.ambrogenea.familyview.gui.swing.components.draw;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import static org.ambrogenea.familyview.gui.swing.components.draw.PersonPanel.SPACE;
-
 import org.ambrogenea.familyview.domain.DatePlace;
 import org.ambrogenea.familyview.dto.tree.PersonRecord;
 import org.ambrogenea.familyview.enums.Diagrams;
@@ -16,6 +7,9 @@ import org.ambrogenea.familyview.gui.swing.constant.Dimensions;
 import org.ambrogenea.familyview.gui.swing.constant.Fonts;
 import org.ambrogenea.familyview.service.ConfigurationService;
 import org.ambrogenea.familyview.utils.Tools;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -89,7 +83,7 @@ public class HorizontalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = 0 - configuration.getAdultVerticalShift();
+        c.ipady = configuration.getAdultVerticalShift();
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -156,7 +150,7 @@ public class HorizontalPersonPanel extends PersonPanel {
 
         c.gridy = 11;
         c.weighty = 5;
-        c.ipady = 0 + configuration.getAdultVerticalShift();
+        c.ipady = configuration.getAdultVerticalShift();
         add(new JLabel(""), c);
     }
 

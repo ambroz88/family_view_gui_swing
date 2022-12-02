@@ -162,7 +162,7 @@ public class TreeTypePanel extends JPanel {
     private void descendentsLineageTypeStateChanged(ChangeEvent evt) {
         if (descendentsLineageType.isSelected()) {
             window.getConfiguration().setShowParentLineage(false);
-            window.setTreeService(new AllDescendentsTreeService());
+            window.setTreeService(new AllDescendentsTreeService(window.getConfiguration()));
             window.setSelectionService(new DescendentSelectionService());
             window.setSiblingsShow(false);
             window.generateTree();

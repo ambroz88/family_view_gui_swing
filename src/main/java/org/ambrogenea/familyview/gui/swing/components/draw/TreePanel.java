@@ -13,12 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.ambrogenea.familyview.constant.Spaces;
-import org.ambrogenea.familyview.dto.tree.Arc;
-import org.ambrogenea.familyview.dto.tree.PersonRecord;
-import org.ambrogenea.familyview.dto.tree.ResidenceDto;
-import org.ambrogenea.familyview.dto.tree.TreeModel;
+import org.ambrogenea.familyview.dto.tree.*;
 import org.ambrogenea.familyview.enums.Diagrams;
 import org.ambrogenea.familyview.enums.LabelShape;
+import org.ambrogenea.familyview.enums.LabelType;
 import org.ambrogenea.familyview.gui.swing.constant.Colors;
 import org.ambrogenea.familyview.gui.swing.constant.Fonts;
 import org.ambrogenea.familyview.service.ConfigurationService;
@@ -30,6 +28,7 @@ public class TreePanel extends JPanel {
 
     private static final String TITLE_FONT = "Monotype Corsiva";
     private static final int TITLE_SIZE = 50;
+    private static final int LABEL_GAP = 4;
 
     private final TreeModel treeModel;
     private final ConfigurationService configuration;
@@ -57,10 +56,9 @@ public class TreePanel extends JPanel {
         treeModel.getPersons().forEach(this::drawPerson);
 
         if (configuration.isShowMarriage()) {
-            int labelHeight = getMarriageLabelHeight();
             treeModel.getMarriages().forEach(marriage -> {
                 JComponent dateComponent;
-                if (!configuration.isShowCouplesVertical()) {
+                if (marriage.getLabelType() == LabelType.TALL) {
                     int index = marriage.getDate().lastIndexOf(" ");
                     if (index != -1) {
                         String date = marriage.getDate().substring(0, index);
@@ -85,8 +83,7 @@ public class TreePanel extends JPanel {
                 }
                 dateComponent.setOpaque(false);
                 this.add(dateComponent);
-                dateComponent.setBounds(marriage.getPosition().getX(), marriage.getPosition().getY() - labelHeight / 2,
-                        marriage.getLength(), labelHeight);
+                dateComponent.setBounds(getMarriageDateRect(marriage));
             });
         }
 
@@ -97,7 +94,7 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        addImageBackground(g2);
+//        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
         title.setBounds(0, treeModel.getPageSetup().getOriginalY() + Spaces.HORIZONTAL_GAP, treeModel.getPageSetup().getWidth(), Spaces.TITLE_HEIGHT);
 
@@ -114,10 +111,8 @@ public class TreePanel extends JPanel {
             g2.drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
         });
 
-        int labelHeight = getMarriageLabelHeight();
-
         treeModel.getMarriages().forEach(marriage -> {
-                    Rectangle rect = new Rectangle(marriage.getPosition().getX(), marriage.getPosition().getY() - labelHeight / 2, marriage.getLength(), labelHeight);
+                    Rectangle rect = getMarriageLabelRect(marriage);
 
                     g2.setColor(Colors.LABEL_BACKGROUND);
                     g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
@@ -158,12 +153,45 @@ public class TreePanel extends JPanel {
 
     }
 
-    private int getMarriageLabelHeight() {
-        if (configuration.isShowCouplesVertical()) {
-            return Spaces.VERT_MARRIAGE_LABEL_HEIGHT;
+    private Rectangle getMarriageDateRect(Marriage marriage) {
+        if (marriage.getLabelType() == LabelType.LONG) {
+            return getLongRectangle(marriage);
         } else {
-            return Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT;
+            return getTallRectangle(marriage, Spaces.HORIZ_MARRIAGE_LABEL_WIDTH);
         }
+    }
+
+    private Rectangle getMarriageLabelRect(Marriage marriage) {
+        if (marriage.getLabelType() == LabelType.LONG) {
+            return getLongRectangle(marriage);
+        } else {
+            int width;
+            if (configuration.getLabelShape() == LabelShape.OVAL) {
+                width = Spaces.HORIZ_MARRIAGE_LABEL_WIDTH - LABEL_GAP;
+            } else {
+                width = configuration.getAdultImageWidth() + Spaces.HORIZ_MARRIAGE_LABEL_WIDTH;
+            }
+            return getTallRectangle(marriage, width);
+        }
+    }
+
+    private Rectangle getTallRectangle(Marriage marriage, int width) {
+        return new Rectangle(
+                marriage.getPosition().getX() - width / 2,
+                marriage.getPosition().getY() - Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT / 2,
+                width,
+                Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT
+        );
+    }
+
+    private Rectangle getLongRectangle(Marriage marriage) {
+        int height = Spaces.VERT_MARRIAGE_LABEL_HEIGHT - LABEL_GAP;
+        return new Rectangle(
+                marriage.getPosition().getX(),
+                marriage.getPosition().getY() - height / 2,
+                Math.max(Spaces.MIN_VERT_MARRIAGE_LABEL_WIDTH, (int) (configuration.getAdultImageWidth() / 3.0 * 2)),
+                height
+        );
     }
 
     private void addImageBackground(Graphics2D g2) {

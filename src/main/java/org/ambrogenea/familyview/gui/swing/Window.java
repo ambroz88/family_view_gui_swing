@@ -3,7 +3,6 @@ package org.ambrogenea.familyview.gui.swing;
 import org.ambrogenea.familyview.configuration.Configuration;
 import org.ambrogenea.familyview.domain.FamilyData;
 import org.ambrogenea.familyview.dto.AncestorPerson;
-import org.ambrogenea.familyview.dto.PageSetup;
 import org.ambrogenea.familyview.dto.tree.TreeModel;
 import org.ambrogenea.familyview.enums.PropertyName;
 import org.ambrogenea.familyview.gui.swing.components.draw.TreePanel;
@@ -168,8 +167,7 @@ public class Window extends JFrame implements PropertyChangeListener {
             String personId = familyData.getPersonByPosition(dataTablePanel.getSelectedRow()).getId();
             AncestorPerson rootPerson = selectionService.select(personId, getConfiguration().getGenerationCount());
 
-            PageSetup setup = treeTypePanel.createPageSetup(rootPerson);
-            TreeModel treeModel = treeService.generateTreeModel(rootPerson, setup, getConfiguration());
+            TreeModel treeModel = treeService.generateTreeModel(rootPerson, getConfiguration());
             treeScrollPane.generateTreePanel(treeModel);
         }
     }
@@ -264,8 +262,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
         DefaultConfigurationService config = new DefaultConfigurationService(new Configuration());
         config.setGenerationCount(10);
-        PageSetup setup = treeTypePanel.createPageSetup(personWithAncestors);
-        TreeModel treeModel = treeService.generateTreeModel(personWithAncestors, setup, config);
+        TreeModel treeModel = treeService.generateTreeModel(personWithAncestors, config);
         return generateTreePanel(treeModel);
     }
 
@@ -289,12 +286,8 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private TreePanel generateTreePanel(TreeModel treeModel) {
         TreePanel treePanel = new TreePanel(treeModel, getConfiguration());
-        PageSetup setup = treeModel.getPageSetup();
-        treePanel.setPreferredSize(new Dimension(setup.getWidth(), setup.getHeight()));
-
         treePanel.addNotify();
         treePanel.validate();
-
         return treePanel;
     }
 }

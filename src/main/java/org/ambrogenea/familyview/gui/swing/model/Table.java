@@ -1,64 +1,78 @@
 package org.ambrogenea.familyview.gui.swing.model;
 
+import java.util.ResourceBundle;
+
 import javax.swing.table.DefaultTableModel;
 
-import org.ambrogenea.familyview.model.DataModel;
-import org.ambrogenea.familyview.model.Person;
+import org.ambrogenea.familyview.configuration.Configuration;
+import org.ambrogenea.familyview.domain.FamilyData;
+import org.ambrogenea.familyview.domain.Person;
+import org.ambrogenea.familyview.gui.swing.description.TableHeader;
+import org.ambrogenea.familyview.service.ConfigurationService;
+import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class Table extends DefaultTableModel {
 
-    private final DataModel dataModel;
+    public static final int TABLE_COLUMN = 4;
 
-    public Table(DataModel tree) {
+    private final FamilyData familyData;
+    private final ConfigurationService configuration;
+
+    public Table(FamilyData tree, ConfigurationService configuration) {
         super();
+        this.familyData = tree;
+        this.configuration = configuration;
         setColumnIdentifiers(getHeaderNames());
-        this.dataModel = tree;
+    }
+
+    public Table(FamilyData tree) {
+        super();
+        this.familyData = tree;
+        this.configuration = new DefaultConfigurationService(new Configuration());
+        setColumnIdentifiers(getHeaderNames());
     }
 
     @Override
     public int getRowCount() {
-        if (dataModel == null) {
+        if (familyData == null) {
             return 1;
         }
-        return dataModel.getIndividualsCount();
+        return familyData.getIndividualMap().size();
     }
 
     @Override
     public int getColumnCount() {
-        return getHeaderNames().length;
+        return TABLE_COLUMN;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Person chosen = dataModel.getPerson(rowIndex);
         String result = "";
-        if (columnIndex == 0) {
-            result = chosen.getFirstName();
+        if (familyData != null) {
+            Person chosen = familyData.getPersonByPosition(rowIndex);
+            if (columnIndex == 0) {
+                result = chosen.getFirstName();
+            } else if (columnIndex == 1) {
+                result = chosen.getSurname();
+            } else if (columnIndex == 2) {
+                result = chosen.getBirthDatePlace().getLocalizedDate(configuration.getLocale());
+            } else if (columnIndex == 3) {
+                result = chosen.getBirthDatePlace().getSimplePlace();
+            }
         }
-        if (columnIndex == 1) {
-            result = chosen.getSurname();
-        }
-        if (columnIndex == 2) {
-            result = chosen.getBirthDate();
-        }
-        if (columnIndex == 3) {
-            result = chosen.getBirthPlace();
-        }
-        if (columnIndex == 4) {
-            result = chosen.getDeathDate();
-        }
-        if (columnIndex == 5) {
-            result = chosen.getDeathPlace();
-        }
-
         return result;
     }
 
-    private static Object[] getHeaderNames() {
-        return new Object[]{"First name", "Surname", "Date of birth", "Place of birth", "Date of death", "Place of death"};
+    private Object[] getHeaderNames() {
+        ResourceBundle description = ResourceBundle.getBundle("language/tableHeader", this.configuration.getLocale());
+        return new Object[]{
+            description.getString(TableHeader.FIRST_NAME),
+            description.getString(TableHeader.SURNAME),
+            description.getString(TableHeader.BIRTH_DATE),
+            description.getString(TableHeader.BIRTH_PLACE)
+        };
     }
 }

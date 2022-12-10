@@ -66,7 +66,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         addComponents();
         initLogo();
 
-        selectionService = new FathersSelectionService();
+        selectionService = new FathersSelectionService(configuration);
         treeService = new FatherLineageTreeService();
     }
 

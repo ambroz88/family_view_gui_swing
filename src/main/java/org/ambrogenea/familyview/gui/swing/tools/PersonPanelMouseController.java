@@ -72,10 +72,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateFatherLineageCreator(configuration, personModel.getId());
-
             TreePanel treePanel = new TreePanel(model, configuration);
-            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
-
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
             configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
@@ -91,10 +88,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateMotherLineageCreator(configuration, personModel.getId());
-
             TreePanel treePanel = new TreePanel(model, configuration);
-            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
-
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
             configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
@@ -110,10 +104,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         parentLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateParentLineageCreator(configuration, personModel.getId());
-
             TreePanel treePanel = new TreePanel(model, configuration);
-            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
-
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
             configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
@@ -129,10 +120,7 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
             TreeModel model = creator.generateAllAncestorCreator(configuration, personModel.getId());
-
             TreePanel treePanel = new TreePanel(model, configuration);
-            treePanel.setPreferredSize(new Dimension(model.getPageSetup().getWidth(), model.getPageSetup().getHeight()));
-
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
             configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);

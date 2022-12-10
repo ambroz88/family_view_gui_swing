@@ -97,7 +97,7 @@ public class TreeTypePanel extends JPanel {
         if (fatherLineageType.isSelected()) {
             window.getConfiguration().setShowParentLineage(false);
             window.setTreeService(new FatherLineageTreeService());
-            window.setSelectionService(new FathersSelectionService());
+            window.setSelectionService(new FathersSelectionService(window.getConfiguration()));
             window.generateTree();
         }
     }
@@ -106,7 +106,7 @@ public class TreeTypePanel extends JPanel {
         if (motherLineageType.isSelected()) {
             window.getConfiguration().setShowParentLineage(false);
             window.setTreeService(new MotherLineageTreeService());
-            window.setSelectionService(new MothersSelectionService());
+            window.setSelectionService(new MothersSelectionService(window.getConfiguration()));
             window.generateTree();
         }
     }
@@ -115,7 +115,7 @@ public class TreeTypePanel extends JPanel {
         if (parentLineageType.isSelected()) {
             window.getConfiguration().setShowParentLineage(true);
             window.setTreeService(new ParentLineageTreeService());
-            window.setSelectionService(new ParentsSelectionService());
+            window.setSelectionService(new ParentsSelectionService(window.getConfiguration()));
             window.generateTree();
         }
 
@@ -125,7 +125,7 @@ public class TreeTypePanel extends JPanel {
         if (allAncestorType.isSelected()) {
             window.getConfiguration().setShowParentLineage(false);
             window.setTreeService(new AllAncestorTreeService());
-            window.setSelectionService(new AllAncestorsSelectionService());
+            window.setSelectionService(new AllAncestorsSelectionService(window.getConfiguration()));
             window.setSiblingsShow(false);
             window.generateTree();
         } else {
@@ -136,8 +136,8 @@ public class TreeTypePanel extends JPanel {
     private void descendentsLineageTypeStateChanged(ChangeEvent evt) {
         if (descendentsLineageType.isSelected()) {
             window.getConfiguration().setShowParentLineage(false);
-            window.setTreeService(new AllDescendentsTreeService(window.getConfiguration()));
-            window.setSelectionService(new DescendentSelectionService());
+            window.setTreeService(new AllDescendentsTreeService());
+            window.setSelectionService(new DescendentSelectionService(window.getConfiguration()));
             window.setSiblingsShow(false);
             window.generateTree();
         } else {

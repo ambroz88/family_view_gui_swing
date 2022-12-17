@@ -65,7 +65,7 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initElements() {
-        if (person.isDirectLineage()) {
+        if (person.directLineage()) {
             fontSize = configuration.getAdultFontSize();
         } else {
             fontSize = configuration.getSiblingFontSize();
@@ -94,7 +94,7 @@ public abstract class PersonPanel extends JPanel {
 
     private void initLabels() {
         occupation = new JLabel("", JLabel.CENTER);
-        occupation.setText(person.getOccupation().split(";")[0]);
+        occupation.setText(person.occupation().split(";")[0]);
         occupation.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
 
         initNameLabels();
@@ -146,7 +146,7 @@ public abstract class PersonPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         int imageWidth;
         int imageHeight;
-        if (person.isDirectLineage()) {
+        if (person.directLineage()) {
             imageWidth = configuration.getAdultImageWidth();
             imageHeight = configuration.getAdultImageHeight();
         } else {

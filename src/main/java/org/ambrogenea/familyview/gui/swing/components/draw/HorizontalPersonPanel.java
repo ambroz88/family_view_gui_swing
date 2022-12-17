@@ -30,7 +30,7 @@ public class HorizontalPersonPanel extends PersonPanel {
 
         String birthPlaceString = "";
         String birthDateString = "";
-        DatePlace birthDatePlace = person.getBirthDatePlace();
+        DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.getDate() != null) {
             birthDateString = "\u002A" + birthDatePlace.getLocalizedDate(configuration.getLocale()) + "";
             if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
@@ -58,7 +58,7 @@ public class HorizontalPersonPanel extends PersonPanel {
             birth.setText(birthDateString + birthPlaceString);
         }
 
-        DatePlace deathDatePlace = person.getDeathDatePlace();
+        DatePlace deathDatePlace = person.deathDatePlace();
         if (configuration.isShowAge() && deathDatePlace.getDate() != null) {
             death.setText("\u2020" + deathDatePlace.getLocalizedDate(configuration.getLocale()) + "");
             if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
@@ -96,7 +96,7 @@ public class HorizontalPersonPanel extends PersonPanel {
         c.ipady = 4;
         add(surName, c);
 
-        if (configuration.isShowOccupation() && !person.getOccupation().isEmpty()) {
+        if (configuration.isShowOccupation() && !person.occupation().isEmpty()) {
             c.gridy = 3;
             c.ipady = 0;
             add(occupation, c);
@@ -110,7 +110,7 @@ public class HorizontalPersonPanel extends PersonPanel {
         c.gridy = 5;
         c.ipady = 0;
         c.weighty = 0;
-        if (person.getBirthDatePlace().getDate() != null) {
+        if (person.birthDatePlace().getDate() != null) {
             if (!configuration.isShowAge()) {
                 c.gridwidth = 2;
             }
@@ -125,7 +125,7 @@ public class HorizontalPersonPanel extends PersonPanel {
         if (configuration.isShowPlaces()) {
             if (configuration.isShowAge()) {
                 c.gridy = 5;
-                if (person.getBirthDatePlace().getDate() != null) {
+                if (person.birthDatePlace().getDate() != null) {
                     c.gridx = 1;
                 } else {
                     c.gridx = 0;
@@ -140,7 +140,7 @@ public class HorizontalPersonPanel extends PersonPanel {
             c.gridwidth = 2;
         }
 
-        if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
+        if (configuration.isShowTemple() && !person.isChild() && !person.living()) {
             addEmptyLabel(9, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;

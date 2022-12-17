@@ -23,6 +23,8 @@ import org.ambrogenea.familyview.gui.swing.description.Menu;
  */
 public class MenuPanel extends JPanel {
 
+//    public static final String FILE_CHOOSER_PATH = "/Documents/AmbroGENEA/zákazníci";
+    public static final String FILE_CHOOSER_PATH = "/Documents/Genealogie/Data-vstupy";
     private final Window window;
 
     private JFileChooser openFC;
@@ -63,11 +65,11 @@ public class MenuPanel extends JPanel {
     }
 
     private void initFileChoosers() {
-        openFC = new JFileChooser(System.getProperty("user.home") + "/Documents/AmbroGENEA/zákazníci");
+        openFC = new JFileChooser(System.getProperty("user.home") + FILE_CHOOSER_PATH);
         openFC.setFileFilter(new FileNameExtensionFilter("GEDCOM files", "ged"));
         openFC.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        saverFC = new JFileChooser(System.getProperty("user.home") + "/Documents/AmbroGENEA/zákazníci");
+        saverFC = new JFileChooser(System.getProperty("user.home") + FILE_CHOOSER_PATH);
         saverFC.setFileFilter(new FileNameExtensionFilter("PNG file", "png"));
         saverFC.setDialogType(JFileChooser.SAVE_DIALOG);
     }

@@ -32,7 +32,7 @@ public class VerticalPersonPanel extends PersonPanel {
 
         String birthPlaceString = "";
         String birthDateString = "";
-        DatePlace birthDatePlace = person.getBirthDatePlace();
+        DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.getDate() != null) {
             birthDateString = "\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale());
             if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
@@ -55,7 +55,7 @@ public class VerticalPersonPanel extends PersonPanel {
         birth.setText(birthDateString);
         birthPlace.setText(birthPlaceString);
 
-        DatePlace deathDatePlace = person.getDeathDatePlace();
+        DatePlace deathDatePlace = person.deathDatePlace();
         if (configuration.isShowAge() && deathDatePlace.getDate() != null) {
             death.setText("\u2020 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
             if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
@@ -94,7 +94,7 @@ public class VerticalPersonPanel extends PersonPanel {
         c.ipady = 4;
         add(surName, c);
 
-        if (configuration.isShowOccupation() && !person.getOccupation().isEmpty()) {
+        if (configuration.isShowOccupation() && !person.occupation().isEmpty()) {
             c.gridy = 3;
             c.ipady = 0;
             add(occupation, c);
@@ -106,7 +106,7 @@ public class VerticalPersonPanel extends PersonPanel {
         c.ipady = 0;
         add(birth, c);
 
-        if (configuration.isShowPlaces() && person.getBirthDatePlace().getPlace() != null) {
+        if (configuration.isShowPlaces() && person.birthDatePlace().getPlace() != null) {
             c.gridy = 6;
             add(birthPlace, c);
         }
@@ -122,7 +122,7 @@ public class VerticalPersonPanel extends PersonPanel {
             }
         }
 
-        if (configuration.isShowTemple() && !person.isChild() && !person.isLiving()) {
+        if (configuration.isShowTemple() && !person.isChild() && !person.living()) {
             addEmptyLabel(10, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;

@@ -71,11 +71,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         fatherLineage.setSize(BUTTON_DIMENSION);
         fatherLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
-            TreeModel model = creator.generateFatherLineageCreator(configuration, personModel.getId());
+            TreeModel model = creator.generateFatherLineageCreator(configuration, personModel.id());
             TreePanel treePanel = new TreePanel(model, configuration);
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.treeName(), treePanel);
         });
     }
 
@@ -87,11 +87,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         motherLineage.setSize(BUTTON_DIMENSION);
         motherLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
-            TreeModel model = creator.generateMotherLineageCreator(configuration, personModel.getId());
+            TreeModel model = creator.generateMotherLineageCreator(configuration, personModel.id());
             TreePanel treePanel = new TreePanel(model, configuration);
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.treeName(), treePanel);
         });
     }
 
@@ -103,11 +103,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         parentLineage.setSize(BUTTON_DIMENSION);
         parentLineage.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
-            TreeModel model = creator.generateParentLineageCreator(configuration, personModel.getId());
+            TreeModel model = creator.generateParentLineageCreator(configuration, personModel.id());
             TreePanel treePanel = new TreePanel(model, configuration);
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.treeName(), treePanel);
         });
     }
 
@@ -119,11 +119,11 @@ public class PersonPanelMouseController extends MouseAdapter {
         allGenerations.setSize(BUTTON_DIMENSION);
         allGenerations.addActionListener(listener -> {
             IsolatedTreeCreator creator = new IsolatedTreeCreatorImpl();
-            TreeModel model = creator.generateAllAncestorCreator(configuration, personModel.getId());
+            TreeModel model = creator.generateAllAncestorCreator(configuration, personModel.id());
             TreePanel treePanel = new TreePanel(model, configuration);
             floatMenu.dispose();
             //ApplicationWindow is catching this propertyChange
-            configuration.firePropertyChange(PropertyName.NEW_TREE, model.getTreeName(), treePanel);
+            configuration.firePropertyChange(PropertyName.NEW_TREE, model.treeName(), treePanel);
         });
     }
 

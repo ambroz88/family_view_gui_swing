@@ -194,7 +194,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         if (evt.getPropertyName().equals(PropertyName.NEW_TREE.toString())) {
             TreePanel panel = (TreePanel) evt.getNewValue();
             treeScrollPane.setTreePanel(panel);
-        } else if (evt.getPropertyName().equals(PropertyName.LINEAGE_CONFIG_CHANGE.toString())) {
+        } else  if (evt.getPropertyName().equals(PropertyName.LINEAGE_CONFIG_CHANGE.toString())) {
 //            personImage.update();
 //            personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
 //            personImagePanel.repaint();

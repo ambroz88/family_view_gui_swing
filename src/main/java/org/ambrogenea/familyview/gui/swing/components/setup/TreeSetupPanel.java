@@ -124,11 +124,6 @@ public class TreeSetupPanel extends JPanel {
         this.add(shapeLabelBox);
     }
 
-    public void setSiblingsShow(boolean show) {
-        showSiblingsCheckbox.setEnabled(show);
-        showSiblingSpouse.setEnabled(show);
-    }
-
     private void verticalViewCheckBoxActionPerformed(ActionEvent evt) {
         getConfiguration().setShowCouplesVertical(verticalViewCheckBox.isSelected());
         window.generateTree();

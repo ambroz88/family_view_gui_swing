@@ -74,7 +74,7 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        addImageBackground(g2);
+//        addImageBackground(g2);
         g2.setColor(Colors.LINE_COLOR);
         title.setBounds(
                 0, Spaces.HORIZONTAL_GAP,

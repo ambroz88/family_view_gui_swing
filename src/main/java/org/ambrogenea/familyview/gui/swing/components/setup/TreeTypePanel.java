@@ -126,10 +126,7 @@ public class TreeTypePanel extends JPanel {
             window.getConfiguration().setShowParentLineage(false);
             window.setTreeService(new AllAncestorTreeService());
             window.setSelectionService(new AllAncestorsSelectionService(window.getConfiguration()));
-            window.setSiblingsShow(false);
             window.generateTree();
-        } else {
-            window.setSiblingsShow(true);
         }
     }
 
@@ -138,10 +135,7 @@ public class TreeTypePanel extends JPanel {
             window.getConfiguration().setShowParentLineage(false);
             window.setTreeService(new AllDescendentsTreeService());
             window.setSelectionService(new DescendentSelectionService(window.getConfiguration()));
-            window.setSiblingsShow(false);
             window.generateTree();
-        } else {
-            window.setSiblingsShow(true);
         }
     }
 

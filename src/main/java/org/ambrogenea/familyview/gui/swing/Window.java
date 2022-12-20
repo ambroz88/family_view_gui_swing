@@ -181,10 +181,6 @@ public class Window extends JFrame implements PropertyChangeListener {
         this.selectionService.setFamilyData(familyData);
     }
 
-    public void setSiblingsShow(boolean show) {
-        treeSetupPanel.setSiblingsShow(show);
-    }
-
     public TreePanel getTreePanel() {
         return treeScrollPane.getTreePanel();
     }

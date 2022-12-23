@@ -83,7 +83,7 @@ public class HorizontalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = configuration.getAdultVerticalShift();
+        c.ipady = configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -150,7 +150,7 @@ public class HorizontalPersonPanel extends PersonPanel {
 
         c.gridy = 11;
         c.weighty = 5;
-        c.ipady = configuration.getAdultVerticalShift();
+        c.ipady = configuration.getVerticalShift();
         add(new JLabel(""), c);
     }
 
@@ -159,7 +159,7 @@ public class HorizontalPersonPanel extends PersonPanel {
         int shift = 0;
 
         int imageWidth = configuration.getAdultImageWidth() / 2;
-        if (configuration.getAdultDiagram().equals(Diagrams.SCROLL)) {
+        if (configuration.getDiagram().equals(Diagrams.SCROLL)) {
             shift = Dimensions.SCROLL_SHIFT;
         }
 

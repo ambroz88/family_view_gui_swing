@@ -69,7 +69,7 @@ public class PersonBoxSetupPanel extends JPanel {
         siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingImageHeight(), 100, 300, 10));
 
         adultFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultFontSize(), 10, 22, 1));
-        adultVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getAdultVerticalShift(), -30, 30, 5));
+        adultVerticalShiftSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getVerticalShift(), -30, 30, 5));
 
         siblingFontSizeSpinner = new JSpinner(new SpinnerNumberModel(getConfiguration().getSiblingFontSize(), 10, 22, 1));
 
@@ -78,7 +78,7 @@ public class PersonBoxSetupPanel extends JPanel {
             names[i] = description.getString(Diagrams.values()[i].toString());
         }
         adultDiagramBox = new JComboBox<>(new DefaultComboBoxModel<>(names));
-        adultDiagramBox.setSelectedItem(description.getString(getConfiguration().getAdultDiagram().toString()));
+        adultDiagramBox.setSelectedItem(description.getString(getConfiguration().getDiagram().toString()));
     }
 
     private void initActions() {
@@ -151,7 +151,7 @@ public class PersonBoxSetupPanel extends JPanel {
 
     private void adultVerticalShiftSpinnerStateChanged(ChangeEvent evt) {
         int adultVerticalShift = Integer.parseInt(adultVerticalShiftSpinner.getValue().toString());
-        getConfiguration().setAdultVerticalShift(adultVerticalShift);
+        getConfiguration().setVerticalShift(adultVerticalShift);
         window.generateTree();
     }
 
@@ -169,7 +169,7 @@ public class PersonBoxSetupPanel extends JPanel {
         while (it.hasNext()) {
             diagramType = it.next();
             if (description.getString(diagramType).equals(selectedDiagramName)) {
-                getConfiguration().setAdultDiagram(Diagrams.fromString(diagramType));
+                getConfiguration().setDiagram(Diagrams.fromString(diagramType));
                 window.generateTree();
                 break;
             }

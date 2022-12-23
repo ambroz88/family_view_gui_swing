@@ -17,6 +17,7 @@ import org.ambrogenea.familyview.service.SelectionService;
 import org.ambrogenea.familyview.service.TreeService;
 import org.ambrogenea.familyview.service.impl.DefaultConfigurationService;
 import org.ambrogenea.familyview.service.impl.parsing.GedcomParsingService;
+import org.ambrogenea.familyview.service.impl.selection.DescendentSelectionService;
 import org.ambrogenea.familyview.service.impl.selection.FathersSelectionService;
 import org.ambrogenea.familyview.service.impl.tree.FatherLineageTreeService;
 import org.ambrogenea.familyview.word.WordGenerator;
@@ -211,6 +212,10 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     public ConfigurationService getConfiguration() {
         return configuration;
+    }
+
+    public boolean isInDescendentMode(){
+        return selectionService.getClass().equals(DescendentSelectionService.class);
     }
 
     public void generateDocument() {

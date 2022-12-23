@@ -168,7 +168,7 @@ public class TreePanel extends JPanel {
 
     private void drawPerson(PersonRecord person) {
         PersonPanel personPanel;
-        if (configuration.getAdultDiagram() == Diagrams.HERALDRY) {
+        if (configuration.getDiagram() == Diagrams.HERALDRY) {
             personPanel = new VerticalPersonPanel(person, configuration);
         } else {
             personPanel = new HorizontalPersonPanel(person, configuration);

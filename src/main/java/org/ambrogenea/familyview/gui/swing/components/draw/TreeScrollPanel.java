@@ -35,9 +35,15 @@ public class TreeScrollPanel extends JScrollPane {
         treePanel.validate();
 
         this.setViewportView(treePanel);
+        int viewY;
+        if (window.isInDescendentMode()) {
+            viewY = 0;
+        } else {
+            viewY = setup.pictureHeight();
+        }
         this.getViewport().setViewPosition(new Point(
                 -treeModel.pageMaxCoordinates().getMinX() - this.getWidth() / 2,
-                setup.pictureHeight()
+                viewY
         ));
     }
 

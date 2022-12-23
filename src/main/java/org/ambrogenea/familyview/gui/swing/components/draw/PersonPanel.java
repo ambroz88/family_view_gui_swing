@@ -80,9 +80,9 @@ public abstract class PersonPanel extends JPanel {
         String imagePath;
 
         if (person.getSex().equals(Sex.MALE)) {
-            imagePath = configuration.getAdultManImagePath();
+            imagePath = configuration.getManImagePath();
         } else {
-            imagePath = configuration.getAdultWomanImagePath();
+            imagePath = configuration.getWomanImagePath();
         }
 
         try {

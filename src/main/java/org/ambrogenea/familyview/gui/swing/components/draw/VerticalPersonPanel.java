@@ -80,7 +80,7 @@ public class VerticalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = - configuration.getAdultVerticalShift();
+        c.ipady = - configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 1;
         add(new JLabel(""), c);
@@ -132,7 +132,7 @@ public class VerticalPersonPanel extends PersonPanel {
 
         c.gridy = 12;
         c.weighty = 5;
-        c.ipady = configuration.getAdultVerticalShift();
+        c.ipady = configuration.getVerticalShift();
         add(new JLabel(""), c);
     }
 

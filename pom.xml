@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.ambrogenea.familyview.gui.swing.Window</mainClass>
+                            <mainClass>cz.ambrogenea.familyvision.gui.swing.Window</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

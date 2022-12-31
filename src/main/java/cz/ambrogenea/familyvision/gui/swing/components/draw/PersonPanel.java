@@ -1,23 +1,20 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
+import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
+import cz.ambrogenea.familyvision.enums.Sex;
+import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
+import cz.ambrogenea.familyvision.gui.swing.tools.PersonPanelMouseController;
+import cz.ambrogenea.familyvision.service.VisualConfigurationService;
+import cz.ambrogenea.familyvision.service.util.Config;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
-import cz.ambrogenea.familyvision.enums.Sex;
-import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.gui.swing.tools.PersonPanelMouseController;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
-
 /**
- *
  * @author Jiri Ambroz
  */
 public abstract class PersonPanel extends JPanel {
@@ -25,7 +22,7 @@ public abstract class PersonPanel extends JPanel {
     protected static final String SPACE = " ";
 
     protected final PersonRecord person;
-    protected final ConfigurationService configuration;
+    protected final VisualConfigurationService configuration;
     protected BufferedImage personDiagram;
     protected int fontSize;
 
@@ -37,11 +34,11 @@ public abstract class PersonPanel extends JPanel {
     protected JLabel death;
     protected JLabel deathPlace;
 
-    public PersonPanel(PersonRecord person, ConfigurationService config) {
+    public PersonPanel(PersonRecord person) {
         super(new GridBagLayout());
 
         this.person = person;
-        this.configuration = config;
+        this.configuration = Config.visual();
 
         initElements();
     }
@@ -78,11 +75,10 @@ public abstract class PersonPanel extends JPanel {
 
     private void loadPictures() {
         String imagePath;
-
         if (person.getSex().equals(Sex.MALE)) {
-            imagePath = configuration.getManImagePath();
+            imagePath = "diagrams/" + configuration.getDiagram() + "_man.png";
         } else {
-            imagePath = configuration.getWomanImagePath();
+            imagePath = "diagrams/" + configuration.getDiagram() + "_woman.png";
         }
 
         try {
@@ -153,7 +149,7 @@ public abstract class PersonPanel extends JPanel {
             imageWidth = configuration.getSiblingImageWidth();
             imageHeight = configuration.getSiblingImageHeight();
         }
-        if (person.isChild() && configuration.isShowTemple()) {
+        if (person.isChild() && configuration.isShowOrdinances()) {
             g.drawImage(personDiagram, 0, (imageHeight / 7) / 2, imageWidth, (int) (imageHeight / 7.0 * 6), null);
         } else {
             g.drawImage(personDiagram, 0, 0, imageWidth, imageHeight, null);
@@ -183,7 +179,7 @@ public abstract class PersonPanel extends JPanel {
         return templeBox;
     }
 
-    public boolean setAnonymous() {
+    public void setAnonymous() {
         if (firstName.isVisible()) {
             firstName.setVisible(false);
             surName.setVisible(false);
@@ -192,7 +188,6 @@ public abstract class PersonPanel extends JPanel {
             death.setVisible(false);
             deathPlace.setVisible(false);
             occupation.setVisible(false);
-            return false;
         } else {
             firstName.setVisible(true);
             surName.setVisible(true);
@@ -201,12 +196,11 @@ public abstract class PersonPanel extends JPanel {
             death.setVisible(true);
             deathPlace.setVisible(true);
             occupation.setVisible(true);
-            return true;
         }
     }
 
     public void addMouseAdapter() {
-        MouseAdapter m = new PersonPanelMouseController(this, configuration, person);
+        MouseAdapter m = new PersonPanelMouseController(this);
         this.addMouseListener(m);
     }
 

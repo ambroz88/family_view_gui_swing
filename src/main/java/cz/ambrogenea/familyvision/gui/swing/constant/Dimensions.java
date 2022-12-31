@@ -12,10 +12,10 @@ public class Dimensions {
     public final static int LEFT_PANEL_WIDTH = 320;
     public final static int BUTTON_MENU_PANEL_HEIGHT = 90;
     public final static int BUTTON_MENU_HEIGHT = 60;
-    private final static int PERSON_SETUP_PANEL_HEIGHT = 200;
+    private final static int PERSON_SETUP_PANEL_HEIGHT = 220;
 
     public static Dimension LEFT_PANEL_DIMENSION = new Dimension(LEFT_PANEL_WIDTH + 10, 800);
-    public static Dimension SETUP_PANEL_DIMENSION = new Dimension(LEFT_PANEL_WIDTH, 2 * BUTTON_MENU_PANEL_HEIGHT + BUTTON_MENU_HEIGHT + 220);
+    public static Dimension SETUP_PANEL_DIMENSION = new Dimension(LEFT_PANEL_WIDTH, 400);
     public static Dimension DATA_PANEL_DIMENSION = new Dimension(LEFT_PANEL_WIDTH, BUTTON_MENU_HEIGHT);
     public static Dimension TREE_TYPE_DIMENSION = new Dimension(LEFT_PANEL_WIDTH, BUTTON_MENU_PANEL_HEIGHT);
     public static Dimension PERSON_SETUP_DIMENSION = new Dimension(LEFT_PANEL_WIDTH, PERSON_SETUP_PANEL_HEIGHT + BUTTON_MENU_PANEL_HEIGHT);

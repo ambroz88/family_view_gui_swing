@@ -1,10 +1,8 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import cz.ambrogenea.familyvision.gui.swing.Window;
-import cz.ambrogenea.familyvision.dto.tree.PageSetup;
 import cz.ambrogenea.familyvision.dto.tree.TreeModel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
+import cz.ambrogenea.familyvision.service.util.Config;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,32 +12,25 @@ import java.awt.*;
  */
 public class TreeScrollPanel extends JScrollPane {
 
-    private final cz.ambrogenea.familyvision.gui.swing.Window window;
     private TreePanel treePanel;
 
-    public TreeScrollPanel(Window window) {
-        this.window = window;
-        initComponents();
-    }
-
-    private void initComponents() {
+    public TreeScrollPanel() {
         this.getViewport().setBackground(Colors.COMPONENT_BACKGROUND);
         this.setOpaque(false);
     }
 
     public void generateTreePanel(TreeModel treeModel) {
-        treePanel = new TreePanel(treeModel, getConfiguration());
-        PageSetup setup = treeModel.getPageSetup(getConfiguration());
+        treePanel = new TreePanel(treeModel);
 
         treePanel.addNotify();
         treePanel.validate();
 
         this.setViewportView(treePanel);
         int viewY;
-        if (window.isInDescendentMode()) {
+        if (Config.treeShape().getAncestorGenerations() < 1) {
             viewY = 0;
         } else {
-            viewY = setup.pictureHeight();
+            viewY = treeModel.getPageSetup().pictureHeight();
         }
         this.getViewport().setViewPosition(new Point(
                 -treeModel.pageMaxCoordinates().getMinX() - this.getWidth() / 2,
@@ -57,7 +48,4 @@ public class TreeScrollPanel extends JScrollPane {
         return treePanel;
     }
 
-    private ConfigurationService getConfiguration() {
-        return window.getConfiguration();
-    }
 }

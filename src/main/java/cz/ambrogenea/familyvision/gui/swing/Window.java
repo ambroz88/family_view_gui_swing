@@ -1,6 +1,6 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
-import cz.ambrogenea.familyvision.configuration.Configuration;
+import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
 import cz.ambrogenea.familyvision.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.dto.tree.TreeModel;
 import cz.ambrogenea.familyvision.enums.PropertyName;
@@ -10,12 +10,13 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.*;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
-import cz.ambrogenea.familyvision.service.*;
-import cz.ambrogenea.familyvision.service.impl.DefaultConfigurationService;
+import cz.ambrogenea.familyvision.service.ParsingService;
+import cz.ambrogenea.familyvision.service.SelectionService;
 import cz.ambrogenea.familyvision.service.impl.parsing.GedcomParsingService;
-import cz.ambrogenea.familyvision.service.impl.selection.DescendentSelectionService;
 import cz.ambrogenea.familyvision.service.impl.selection.FathersSelectionService;
 import cz.ambrogenea.familyvision.service.impl.tree.FatherLineageTreeService;
+import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.service.util.Services;
 import cz.ambrogenea.familyvision.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.xml.sax.SAXParseException;
@@ -40,31 +41,18 @@ public class Window extends JFrame implements PropertyChangeListener {
     private static final String TITLE = "Family Viewer";
     private static final int BORDER_SIZE = 70;
 
-    private final ConfigurationService configuration;
-
     private MenuPanel loadingDataPanel;
-    private TreeTypePanel treeTypePanel;
     private PersonSetupPanel personSetupPanel;
-    private PersonBoxSetupPanel personBoxSetupPanel;
     private DataTablePanel dataTablePanel;
 
     private TreeSetupPanel treeSetupPanel;
     private TreeScrollPanel treeScrollPane;
 
-    private SelectionService selectionService;
-    private TreeService treeService;
-
     public Window() {
-        configuration = new DefaultConfigurationService(new Configuration());
-        configuration.addPropertyChangeListener(this);
-
         setWindowSize();
         initComponents();
         addComponents();
         initLogo();
-
-        selectionService = new FathersSelectionService(configuration);
-        treeService = new FatherLineageTreeService();
     }
 
     private void initLogo() {
@@ -84,13 +72,11 @@ public class Window extends JFrame implements PropertyChangeListener {
         this.setForeground(Colors.COMPONENT_BACKGROUND);
 
         loadingDataPanel = new MenuPanel(this);
-        treeTypePanel = new TreeTypePanel(this);
         personSetupPanel = new PersonSetupPanel(this);
-        personBoxSetupPanel = new PersonBoxSetupPanel(this);
         dataTablePanel = new DataTablePanel(this);
 
         treeSetupPanel = new TreeSetupPanel(this);
-        treeScrollPane = new TreeScrollPanel(this);
+        treeScrollPane = new TreeScrollPanel();
     }
 
     private void addComponents() {
@@ -100,9 +86,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         JPanel setupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         setupPanel.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
         setupPanel.add(loadingDataPanel);
-        setupPanel.add(treeTypePanel);
         setupPanel.add(personSetupPanel);
-        setupPanel.add(personBoxSetupPanel);
         setupPanel.setBackground(Colors.SW_BACKGROUND);
 
         leftPanel.add(setupPanel, BorderLayout.NORTH);
@@ -148,7 +132,7 @@ public class Window extends JFrame implements PropertyChangeListener {
 
             try ( InputStream inputStream = new FileInputStream(absolutePath)) {
                 parsingService.saveData(inputStream);
-                dataTablePanel.setModel(new Table(getConfiguration()));
+                dataTablePanel.setModel(new Table());
                 this.setTitle(TITLE + " - " + gedcomFile.getName());
 //            recordsTable.setAutoCreateRowSorter(true);
             }
@@ -160,19 +144,9 @@ public class Window extends JFrame implements PropertyChangeListener {
     public void generateTree() {
         if (dataTablePanel.getSelectedRow() != -1) {
             String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
-            AncestorPerson rootPerson = selectionService.select(personId, getConfiguration().getGenerationCount());
-
-            TreeModel treeModel = treeService.generateTreeModel(rootPerson, getConfiguration());
+            TreeModel treeModel = TreeGeneratorController.generateTree(personId);
             treeScrollPane.generateTreePanel(treeModel);
         }
-    }
-
-    public void setTreeService(TreeService treeService) {
-        this.treeService = treeService;
-    }
-
-    public void setSelectionService(SelectionService selectionService) {
-        this.selectionService = selectionService;
     }
 
     public TreePanel getTreePanel() {
@@ -184,31 +158,7 @@ public class Window extends JFrame implements PropertyChangeListener {
         if (evt.getPropertyName().equals(PropertyName.NEW_TREE.toString())) {
             TreePanel panel = (TreePanel) evt.getNewValue();
             treeScrollPane.setTreePanel(panel);
-        } else  if (evt.getPropertyName().equals(PropertyName.LINEAGE_CONFIG_CHANGE.toString())) {
-//            personImage.update();
-//            personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
-//            personImagePanel.repaint();
-        } else if (evt.getPropertyName().equals(PropertyName.LINEAGE_SIZE_CHANGE.toString())) {
-//            personImage.update();
-//            personImage.setPreferredSize(new Dimension(configuration.getAdultImageWidth(), configuration.getAdultImageHeight()));
-//            adultSize.setText(configuration.getAdultImageWidth() + "x" + configuration.getAdultImageHeight());
-        } else if (evt.getPropertyName().equals(PropertyName.SIBLING_SIZE_CHANGE.toString())) {
-//            siblingImage.update();
-//            siblingImage.setPreferredSize(new Dimension(configuration.getSiblingImageWidth(), configuration.getSiblingImageHeight()));
-//            siblingsSize.setText(configuration.getSiblingImageWidth() + "x" + configuration.getSiblingImageHeight());
-        } else if (evt.getPropertyName().equals(PropertyName.SIBLING_CONFIG_CHANGE.toString())) {
-//            siblingImage.update();
-//            siblingImage.setPreferredSize(new Dimension(configuration.getSiblingImageWidth(), configuration.getSiblingImageHeight()));
-//            siblingsImagePanel.repaint();
         }
-    }
-
-    public ConfigurationService getConfiguration() {
-        return configuration;
-    }
-
-    public boolean isInDescendentMode(){
-        return selectionService.getClass().equals(DescendentSelectionService.class);
     }
 
     public void generateDocument() {
@@ -216,7 +166,8 @@ public class Window extends JFrame implements PropertyChangeListener {
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
             String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
-            AncestorPerson rootPerson = selectionService.select(personId, 10);
+            SelectionService selectionService = new FathersSelectionService();
+            AncestorPerson rootPerson = selectionService.select(personId);
             addFamilyToDoc(rootPerson, doc);
 
             if (rootPerson.getFather() != null) {
@@ -234,7 +185,7 @@ public class Window extends JFrame implements PropertyChangeListener {
             AncestorPerson actualPerson = person;
             int generations = 0;
             while (actualPerson != null) {
-                if (generations < configuration.getGenerationCount()) {
+                if (generations < Config.treeShape().getAncestorGenerations()) {
                     addFamilyToDoc(actualPerson, doc);
                     actualPerson = actualPerson.getFather();
                     generations++;
@@ -254,9 +205,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     }
 
     private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
-        DefaultConfigurationService config = new DefaultConfigurationService(new Configuration());
-        config.setGenerationCount(10);
-        TreeModel treeModel = treeService.generateTreeModel(personWithAncestors, config);
+        TreeModel treeModel = new FatherLineageTreeService().generateTreeModel(personWithAncestors);
         return generateTreePanel(treeModel);
     }
 
@@ -270,7 +219,7 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private int calculateGenerations(AncestorPerson actualPerson) {
         int generations = 1;
-        if (getConfiguration().isShowChildren() && actualPerson.getChildrenCount(0) > 0) {
+        if (Config.treeShape().getDescendentGenerations() > 0 && actualPerson.getChildrenCount(0) > 0) {
             generations++;
 //        } else if (getConfiguration().getGenerationCount() > 1 && !actualPerson.hasNoParents()) {
 //            generations++;
@@ -279,7 +228,7 @@ public class Window extends JFrame implements PropertyChangeListener {
     }
 
     private TreePanel generateTreePanel(TreeModel treeModel) {
-        TreePanel treePanel = new TreePanel(treeModel, getConfiguration());
+        TreePanel treePanel = new TreePanel(treeModel);
         treePanel.addNotify();
         treePanel.validate();
         return treePanel;

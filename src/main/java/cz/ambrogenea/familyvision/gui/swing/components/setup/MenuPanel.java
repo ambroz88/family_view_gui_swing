@@ -16,6 +16,7 @@ import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.description.Menu;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
+import cz.ambrogenea.familyvision.service.util.Config;
 
 /**
  *
@@ -48,7 +49,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/menu", window.getConfiguration().getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.visual().getLocale());
         loadInputButton = new JButton(new ImageIcon("src/main/resources/icons/Import 40x40.jpg"));
         loadInputButton.setToolTipText(description.getString(Menu.LOAD));
         loadInputButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);

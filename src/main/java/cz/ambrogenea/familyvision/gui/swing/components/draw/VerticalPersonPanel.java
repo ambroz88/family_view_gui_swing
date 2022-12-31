@@ -1,17 +1,12 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import cz.ambrogenea.familyvision.domain.DatePlace;
 import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
 import cz.ambrogenea.familyvision.utils.Tools;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -19,8 +14,8 @@ import cz.ambrogenea.familyvision.utils.Tools;
  */
 public class VerticalPersonPanel extends PersonPanel {
 
-    public VerticalPersonPanel(PersonRecord person, ConfigurationService config) {
-        super(person, config);
+    public VerticalPersonPanel(PersonRecord person) {
+        super(person);
     }
 
     @Override
@@ -122,7 +117,7 @@ public class VerticalPersonPanel extends PersonPanel {
             }
         }
 
-        if (configuration.isShowTemple() && !person.isChild() && !person.living()) {
+        if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
             addEmptyLabel(10, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;

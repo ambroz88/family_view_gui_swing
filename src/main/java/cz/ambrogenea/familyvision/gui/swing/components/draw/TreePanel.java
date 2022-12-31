@@ -1,5 +1,18 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
+import cz.ambrogenea.familyvision.constant.Spaces;
+import cz.ambrogenea.familyvision.dto.tree.*;
+import cz.ambrogenea.familyvision.enums.Background;
+import cz.ambrogenea.familyvision.enums.Diagram;
+import cz.ambrogenea.familyvision.enums.LabelShape;
+import cz.ambrogenea.familyvision.enums.LabelType;
+import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
+import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
+import cz.ambrogenea.familyvision.service.VisualConfigurationService;
+import cz.ambrogenea.familyvision.service.util.Config;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -8,18 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import cz.ambrogenea.familyvision.constant.Spaces;
-import cz.ambrogenea.familyvision.dto.tree.*;
-import cz.ambrogenea.familyvision.enums.Diagram;
-import cz.ambrogenea.familyvision.enums.LabelShape;
-import cz.ambrogenea.familyvision.enums.LabelType;
-import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
-import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -31,20 +32,23 @@ public class TreePanel extends JPanel {
     private static final int LABEL_GAP = 4;
 
     private final TreeModel treeModel;
-    private final ConfigurationService configuration;
+    private final VisualConfigurationService configuration;
     private final PageSetup page;
     private JTextField title;
 
-    public TreePanel(TreeModel treeModel, ConfigurationService configuration) {
-        this.page = treeModel.getPageSetup(configuration);
+    public TreePanel(TreeModel treeModel) {
+        this.page = treeModel.getPageSetup();
         this.treeModel = treeModel;
-        this.configuration = configuration;
+        this.configuration = Config.visual();
         initPanel();
     }
 
     private void initPanel() {
-//        setBackground(Color.WHITE);
-        setOpaque(false);
+        if (configuration.getBackground() == Background.WHITE) {
+            setBackground(Color.WHITE);
+        } else if (configuration.getBackground() == Background.TRANSPARENT) {
+            setOpaque(false);
+        }
         this.setLayout(null);
         setPreferredSize(new Dimension(page.pictureWidth(), page.pictureHeight()));
         title = new JTextField(treeModel.treeName());
@@ -58,14 +62,12 @@ public class TreePanel extends JPanel {
 
         treeModel.persons().forEach(this::drawPerson);
 
-        if (configuration.isShowMarriage()) {
-            treeModel.marriages().forEach(marriage -> {
-                JComponent dateComponent = createDateComponent(marriage);
-                dateComponent.setOpaque(false);
-                this.add(dateComponent);
-                dateComponent.setBounds(getMarriageDateRect(marriage));
-            });
-        }
+        treeModel.marriages().forEach(marriage -> {
+            JComponent dateComponent = createDateComponent(marriage);
+            dateComponent.setOpaque(false);
+            this.add(dateComponent);
+            dateComponent.setBounds(getMarriageDateRect(marriage));
+        });
 
         treeModel.residences().forEach(this::drawResidence);
     }
@@ -74,7 +76,9 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-//        addImageBackground(g2);
+        if (configuration.getBackground() == Background.PAPER) {
+            addImageBackground(g2);
+        }
         g2.setColor(Colors.LINE_COLOR);
         title.setBounds(
                 0, Spaces.HORIZONTAL_GAP,
@@ -105,11 +109,11 @@ public class TreePanel extends JPanel {
                     g2.setColor(Colors.LABEL_BACKGROUND);
                     g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
 
-                    if (configuration.getLabelShape().equals(LabelShape.OVAL)) {
+                    if (configuration.getMarriageLabelShape().equals(LabelShape.OVAL)) {
                         g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
                         g2.setColor(Colors.LINE_COLOR);
                         g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                    } else if (configuration.getLabelShape().equals(LabelShape.RECTANGLE)) {
+                    } else if (configuration.getMarriageLabelShape().equals(LabelShape.RECTANGLE)) {
                         g2.fillRect(rect.x, rect.y, rect.width, rect.height);
                         g2.setColor(Colors.LINE_COLOR);
                         g2.drawRect(rect.x, rect.y, rect.width, rect.height);
@@ -169,9 +173,9 @@ public class TreePanel extends JPanel {
     private void drawPerson(PersonRecord person) {
         PersonPanel personPanel;
         if (configuration.getDiagram() == Diagram.HERALDRY) {
-            personPanel = new VerticalPersonPanel(person, configuration);
+            personPanel = new VerticalPersonPanel(person);
         } else {
-            personPanel = new HorizontalPersonPanel(person, configuration);
+            personPanel = new HorizontalPersonPanel(person);
         }
 
         personPanel.addMouseAdapter();
@@ -233,7 +237,7 @@ public class TreePanel extends JPanel {
             return getLongRectangle(marriage);
         } else {
             int width;
-            if (configuration.getLabelShape() == LabelShape.OVAL) {
+            if (configuration.getMarriageLabelShape() == LabelShape.OVAL) {
                 width = Spaces.HORIZ_MARRIAGE_LABEL_WIDTH - LABEL_GAP;
             } else {
                 width = configuration.getAdultImageWidth() + Spaces.HORIZ_MARRIAGE_LABEL_WIDTH;

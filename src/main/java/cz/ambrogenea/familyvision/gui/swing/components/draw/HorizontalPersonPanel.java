@@ -5,7 +5,6 @@ import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
 import cz.ambrogenea.familyvision.enums.Diagram;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
 import cz.ambrogenea.familyvision.utils.Tools;
 
 import javax.swing.*;
@@ -17,8 +16,8 @@ import java.awt.*;
  */
 public class HorizontalPersonPanel extends PersonPanel {
 
-    public HorizontalPersonPanel(PersonRecord person, ConfigurationService config) {
-        super(person, config);
+    public HorizontalPersonPanel(PersonRecord person) {
+        super(person);
     }
 
     @Override
@@ -140,7 +139,7 @@ public class HorizontalPersonPanel extends PersonPanel {
             c.gridwidth = 2;
         }
 
-        if (configuration.isShowTemple() && !person.isChild() && !person.living()) {
+        if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
             addEmptyLabel(9, c);
             JPanel templeBox = creteTempleBox();
             c.ipady = 5;

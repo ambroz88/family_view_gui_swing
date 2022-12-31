@@ -21,7 +21,7 @@ public class DataTablePanel extends JScrollPane {
 
     public DataTablePanel(Window window) {
         this.window = window;
-        this.setPreferredSize(Dimensions.TABLE_SCROLL_DIMENSION);
+//        this.setPreferredSize(Dimensions.TABLE_SCROLL_DIMENSION);
         this.getViewport().setBackground(Colors.COMPONENT_BACKGROUND);
 
         recordsTable = new JTable();
@@ -31,7 +31,7 @@ public class DataTablePanel extends JScrollPane {
                 new Object[][]{{}},
                 new String[]{})
         );
-        recordsTable.setModel(new Table(window.getConfiguration()));
+        recordsTable.setModel(new Table());
         this.setViewportView(recordsTable);
     }
 

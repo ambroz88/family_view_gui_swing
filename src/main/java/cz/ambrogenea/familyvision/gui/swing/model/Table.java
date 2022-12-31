@@ -2,10 +2,11 @@ package cz.ambrogenea.familyvision.gui.swing.model;
 
 import cz.ambrogenea.familyvision.domain.Person;
 import cz.ambrogenea.familyvision.gui.swing.description.TableHeader;
-import cz.ambrogenea.familyvision.service.ConfigurationService;
-import cz.ambrogenea.familyvision.service.Services;
+import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.service.util.Services;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -15,11 +16,11 @@ public class Table extends DefaultTableModel {
 
     public static final int TABLE_COLUMN = 4;
 
-    private final ConfigurationService configuration;
+    private final Locale locale;
 
-    public Table(ConfigurationService configuration) {
+    public Table() {
         super();
-        this.configuration = configuration;
+        this.locale = Config.visual().getLocale();
         setColumnIdentifiers(getHeaderNames());
     }
 
@@ -43,7 +44,7 @@ public class Table extends DefaultTableModel {
             } else if (columnIndex == 1) {
                 result = chosen.getSurname();
             } else if (columnIndex == 2) {
-                result = chosen.getBirthDatePlace().getLocalizedDate(configuration.getLocale());
+                result = chosen.getBirthDatePlace().getLocalizedDate(locale);
             } else if (columnIndex == 3) {
                 result = chosen.getBirthDatePlace().getSimplePlace();
             }
@@ -52,7 +53,7 @@ public class Table extends DefaultTableModel {
     }
 
     private Object[] getHeaderNames() {
-        ResourceBundle description = ResourceBundle.getBundle("language/tableHeader", this.configuration.getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/tableHeader", locale);
         return new Object[]{
             description.getString(TableHeader.FIRST_NAME),
             description.getString(TableHeader.SURNAME),

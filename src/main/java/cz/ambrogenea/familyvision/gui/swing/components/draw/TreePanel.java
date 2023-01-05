@@ -51,15 +51,16 @@ public class TreePanel extends JPanel {
         }
         this.setLayout(null);
         setPreferredSize(new Dimension(page.pictureWidth(), page.pictureHeight()));
-        title = new JTextField(treeModel.treeName());
-        title.setHorizontalAlignment(JTextField.CENTER);
-        title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
-        title.setBorder(null);
-        title.setPreferredSize(new Dimension(page.pictureWidth(), Spaces.TITLE_HEIGHT));
-        title.setOpaque(false);
+        if (Config.visual().isShowTitle()) {
+            title = new JTextField(treeModel.treeName());
+            title.setHorizontalAlignment(JTextField.CENTER);
+            title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
+            title.setBorder(null);
+            title.setPreferredSize(new Dimension(page.pictureWidth(), Spaces.TITLE_HEIGHT));
+            title.setOpaque(false);
 
-        this.add(title);
-
+            this.add(title);
+        }
         treeModel.persons().forEach(this::drawPerson);
 
         treeModel.marriages().forEach(marriage -> {
@@ -80,10 +81,12 @@ public class TreePanel extends JPanel {
             addImageBackground(g2);
         }
         g2.setColor(Colors.LINE_COLOR);
-        title.setBounds(
-                0, Spaces.HORIZONTAL_GAP,
-                page.pictureWidth(), Spaces.TITLE_HEIGHT
-        );
+        if (Config.visual().isShowTitle()) {
+            title.setBounds(
+                    0, Spaces.HORIZONTAL_GAP,
+                    page.pictureWidth(), Spaces.TITLE_HEIGHT
+            );
+        }
 
         final int lineStrokeExtra;
         if (configuration.getAdultFontSize() >= 18) {
@@ -351,7 +354,11 @@ public class TreePanel extends JPanel {
     }
 
     private int recalculateY(int y) {
-        return y - treeModel.pageMaxCoordinates().getMinY() + Spaces.TITLE_HEIGHT;
+        int titleHeight = 0;
+        if (Config.visual().isShowTitle()) {
+            titleHeight = Spaces.TITLE_HEIGHT;
+        }
+        return y - treeModel.pageMaxCoordinates().getMinY() + titleHeight;
     }
 
 

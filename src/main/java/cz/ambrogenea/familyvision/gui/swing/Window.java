@@ -6,14 +6,17 @@ import cz.ambrogenea.familyvision.dto.tree.TreeModel;
 import cz.ambrogenea.familyvision.enums.PropertyName;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
-import cz.ambrogenea.familyvision.gui.swing.components.setup.*;
+import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
+import cz.ambrogenea.familyvision.gui.swing.components.setup.MenuPanel;
+import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
+import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
 import cz.ambrogenea.familyvision.service.ParsingService;
 import cz.ambrogenea.familyvision.service.SelectionService;
 import cz.ambrogenea.familyvision.service.impl.parsing.GedcomParsingService;
-import cz.ambrogenea.familyvision.service.impl.selection.FathersSelectionService;
+import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
 import cz.ambrogenea.familyvision.service.impl.tree.FatherLineageTreeService;
 import cz.ambrogenea.familyvision.service.util.Config;
 import cz.ambrogenea.familyvision.service.util.Services;
@@ -166,7 +169,7 @@ public class Window extends JFrame implements PropertyChangeListener {
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
             String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
-            SelectionService selectionService = new FathersSelectionService();
+            SelectionService selectionService = new LineageSelectionService();
             AncestorPerson rootPerson = selectionService.select(personId);
             addFamilyToDoc(rootPerson, doc);
 

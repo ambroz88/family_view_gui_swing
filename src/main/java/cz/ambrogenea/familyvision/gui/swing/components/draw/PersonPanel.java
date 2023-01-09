@@ -1,11 +1,11 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
-import cz.ambrogenea.familyvision.enums.Sex;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.gui.swing.tools.PersonPanelMouseController;
-import cz.ambrogenea.familyvision.service.VisualConfigurationService;
-import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.gui.swing.dto.PersonRecord;
+import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.enums.Sex;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
+import cz.ambrogenea.familyvision.gui.swing.utils.PersonPanelMouseController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,7 +22,7 @@ public abstract class PersonPanel extends JPanel {
     protected static final String SPACE = " ";
 
     protected final PersonRecord person;
-    protected final VisualConfigurationService configuration;
+    protected final VisualConfiguration configuration;
     protected BufferedImage personDiagram;
     protected int fontSize;
 
@@ -75,7 +75,7 @@ public abstract class PersonPanel extends JPanel {
 
     private void loadPictures() {
         String imagePath;
-        if (person.getSex().equals(Sex.MALE)) {
+        if (person.sex().equals(Sex.MALE)) {
             imagePath = "diagrams/" + configuration.getDiagram() + "_man.png";
         } else {
             imagePath = "diagrams/" + configuration.getDiagram() + "_woman.png";
@@ -105,15 +105,15 @@ public abstract class PersonPanel extends JPanel {
         firstName = new JLabel(" ", JLabel.CENTER);
         surName = new JLabel(" ", JLabel.CENTER);
 
-        if (!person.getFirstName().isEmpty()) {
-            firstName.setText(person.getFirstName());
+        if (!person.firstName().isEmpty()) {
+            firstName.setText(person.firstName());
         }
 
-        if (!person.getSurname().isEmpty()) {
+        if (!person.surname().isEmpty()) {
             if (configuration.isShowAge() && person.getAge() > -1) {
-                surName.setText(person.getSurname().toUpperCase() + " (" + person.getAge() + ")");
+                surName.setText(person.surname().toUpperCase() + " (" + person.getAge() + ")");
             } else {
-                surName.setText(person.getSurname().toUpperCase());
+                surName.setText(person.surname().toUpperCase());
             }
         }
 

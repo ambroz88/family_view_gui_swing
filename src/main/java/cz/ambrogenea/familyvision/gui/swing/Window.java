@@ -1,9 +1,11 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import cz.ambrogenea.familyvision.controller.DataController;
 import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
+import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
+import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
 import cz.ambrogenea.familyvision.dto.AncestorPerson;
-import cz.ambrogenea.familyvision.dto.tree.TreeModel;
-import cz.ambrogenea.familyvision.enums.PropertyName;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
@@ -12,13 +14,14 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
+import cz.ambrogenea.familyvision.gui.swing.dto.TreeModel;
+import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
-import cz.ambrogenea.familyvision.service.ParsingService;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
+import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
 import cz.ambrogenea.familyvision.service.SelectionService;
-import cz.ambrogenea.familyvision.service.impl.parsing.GedcomParsingService;
 import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
-import cz.ambrogenea.familyvision.service.impl.tree.FatherLineageTreeService;
-import cz.ambrogenea.familyvision.service.util.Config;
 import cz.ambrogenea.familyvision.service.util.Services;
 import cz.ambrogenea.familyvision.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -26,20 +29,15 @@ import org.xml.sax.SAXParseException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class Window extends JFrame implements PropertyChangeListener {
+public class Window extends JFrame {
 
     private static final String TITLE = "Family Viewer";
     private static final int BORDER_SIZE = 70;
@@ -50,8 +48,14 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private TreeSetupPanel treeSetupPanel;
     private TreeScrollPanel treeScrollPane;
+    private final TreeGeneratorController generatorController;
+    private final TreeShapeConfigurationController treeShapeConfigController;
+    private final VisualConfigurationController visualConfigController;
 
     public Window() {
+        generatorController = new TreeGeneratorController();
+        treeShapeConfigController = new TreeShapeConfigurationController();
+        visualConfigController = new VisualConfigurationController();
         setWindowSize();
         initComponents();
         addComponents();
@@ -131,37 +135,57 @@ public class Window extends JFrame implements PropertyChangeListener {
     public void loadTable(File gedcomFile) {
         String absolutePath = gedcomFile.getAbsolutePath();
         try {
-            ParsingService parsingService = new GedcomParsingService();
-
-            try ( InputStream inputStream = new FileInputStream(absolutePath)) {
-                parsingService.saveData(inputStream);
-                dataTablePanel.setModel(new Table());
-                this.setTitle(TITLE + " - " + gedcomFile.getName());
+            DataController dataController = new DataController();
+            dataController.parseData(new File(absolutePath));
+            dataTablePanel.setModel(new Table());
+            this.setTitle(TITLE + " - " + gedcomFile.getName());
 //            recordsTable.setAutoCreateRowSorter(true);
-            }
         } catch (IOException | SAXParseException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateConfiguration(VisualConfiguration configuration) {
+        try {
+            visualConfigController.update(JsonParser.get().writeValueAsString(configuration));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateConfiguration(TreeShapeConfiguration configuration) {
+        try {
+            treeShapeConfigController.update(JsonParser.get().writeValueAsString(configuration));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
     }
 
     public void generateTree() {
         if (dataTablePanel.getSelectedRow() != -1) {
             String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
-            TreeModel treeModel = TreeGeneratorController.generateTree(personId);
-            treeScrollPane.generateTreePanel(treeModel);
+            try {
+                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
+                treeScrollPane.generateTreePanel(treeModel);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void updateTree() {
+        if (dataTablePanel.getSelectedRow() != -1) {
+            try {
+                TreeModel treeModel = JsonParser.get().readValue(generatorController.updateTree(), TreeModel.class);
+                treeScrollPane.generateTreePanel(treeModel);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public TreePanel getTreePanel() {
         return treeScrollPane.getTreePanel();
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(PropertyName.NEW_TREE.toString())) {
-            TreePanel panel = (TreePanel) evt.getNewValue();
-            treeScrollPane.setTreePanel(panel);
-        }
     }
 
     public void generateDocument() {
@@ -208,8 +232,9 @@ public class Window extends JFrame implements PropertyChangeListener {
     }
 
     private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
-        TreeModel treeModel = new FatherLineageTreeService().generateTreeModel(personWithAncestors);
-        return generateTreePanel(treeModel);
+//        TreeModel treeModel = new FatherLineageTreeService().generateTreeModel(personWithAncestors);
+//        return generateTreePanel(treeModel);
+        return null;
     }
 
     private void saveFamilyDocument(AncestorPerson personWithAncestors, XWPFDocument doc) {
@@ -222,7 +247,7 @@ public class Window extends JFrame implements PropertyChangeListener {
 
     private int calculateGenerations(AncestorPerson actualPerson) {
         int generations = 1;
-        if (Config.treeShape().getDescendentGenerations() > 0 && actualPerson.getChildrenCount(0) > 0) {
+        if (Config.treeShape().getDescendentGenerations() > 0 && actualPerson.getSpouseCouple().getChildren().size() > 0) {
             generations++;
 //        } else if (getConfiguration().getGenerationCount() > 1 && !actualPerson.hasNoParents()) {
 //            generations++;

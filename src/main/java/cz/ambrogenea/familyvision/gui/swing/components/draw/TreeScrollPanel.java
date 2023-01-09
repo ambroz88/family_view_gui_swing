@@ -1,8 +1,8 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import cz.ambrogenea.familyvision.dto.tree.TreeModel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
-import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.gui.swing.dto.TreeModel;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,18 +30,12 @@ public class TreeScrollPanel extends JScrollPane {
         if (Config.treeShape().getAncestorGenerations() < 1) {
             viewY = 0;
         } else {
-            viewY = treeModel.getPageSetup().pictureHeight();
+            viewY = treeModel.pageSetup().pictureHeight();
         }
         this.getViewport().setViewPosition(new Point(
-                -treeModel.pageMaxCoordinates().getMinX() - this.getWidth() / 2,
+                -treeModel.pageSetup().startPosition().x() - this.getWidth() / 2,
                 viewY
         ));
-    }
-
-    public void setTreePanel(TreePanel treePanel) {
-        this.treePanel = treePanel;
-        this.treePanel.validate();
-        this.setViewportView(this.treePanel);
     }
 
     public TreePanel getTreePanel() {

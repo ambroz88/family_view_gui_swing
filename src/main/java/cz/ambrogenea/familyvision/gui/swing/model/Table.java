@@ -2,7 +2,7 @@ package cz.ambrogenea.familyvision.gui.swing.model;
 
 import cz.ambrogenea.familyvision.domain.Person;
 import cz.ambrogenea.familyvision.gui.swing.description.TableHeader;
-import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.service.util.Services;
 
 import javax.swing.table.DefaultTableModel;

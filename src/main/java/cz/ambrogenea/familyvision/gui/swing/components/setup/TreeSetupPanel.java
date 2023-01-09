@@ -1,13 +1,13 @@
 package cz.ambrogenea.familyvision.gui.swing.components.setup;
 
-import cz.ambrogenea.familyvision.enums.CoupleType;
-import cz.ambrogenea.familyvision.enums.LineageType;
 import cz.ambrogenea.familyvision.gui.swing.Window;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.description.TreeSetup;
-import cz.ambrogenea.familyvision.service.TreeShapeConfigurationService;
-import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.enums.CoupleType;
+import cz.ambrogenea.familyvision.gui.swing.enums.LineageType;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 public class TreeSetupPanel extends JPanel {
 
     private final Window window;
-    private final TreeShapeConfigurationService configuration;
+    private final TreeShapeConfiguration configuration;
 
     private JLabel lineageTypeLabel;
     private JComboBox<String> lineageTypeComboBox;
@@ -134,16 +134,19 @@ public class TreeSetupPanel extends JPanel {
 
     private void lineageTypeComboBoxActionPerformed(ActionEvent actionEvent) {
         configuration.setLineageType(LineageType.valueOf(lineageTypeComboBox.getSelectedItem().toString()));
-        window.generateTree();
+        window.updateConfiguration(configuration);
+        window.updateTree();
     }
 
     private void coupleTypeComboBoxActionPerformed(ActionEvent evt) {
         configuration.setCoupleType(CoupleType.valueOf(coupleTypeComboBox.getSelectedItem().toString()));
-        window.generateTree();
+        window.updateConfiguration(configuration);
+        window.updateTree();
     }
 
     private void ancestorGenerationSpinnerStateChanged(ChangeEvent evt) {
         configuration.setAncestorGenerations((int) ancestorGenerationSpinner.getValue());
+        window.updateConfiguration(configuration);
         window.generateTree();
     }
 
@@ -154,6 +157,7 @@ public class TreeSetupPanel extends JPanel {
             showSpousesCheckbox.setSelected(true);
             configuration.setShowSpouses(true);
         }
+        window.updateConfiguration(configuration);
         window.generateTree();
     }
 
@@ -164,6 +168,7 @@ public class TreeSetupPanel extends JPanel {
             showSiblingSpouseCheckbox.setSelected(false);
             configuration.setShowSiblingSpouses(false);
         }
+        window.updateConfiguration(configuration);
         window.generateTree();
     }
 
@@ -174,6 +179,7 @@ public class TreeSetupPanel extends JPanel {
             showSiblingsCheckbox.setSelected(true);
             configuration.setShowSiblings(true);
         }
+        window.updateConfiguration(configuration);
         window.generateTree();
     }
 
@@ -184,17 +190,20 @@ public class TreeSetupPanel extends JPanel {
             descendentGenerationSpinner.setValue(0);
             configuration.setDescendentGenerations(0);
         }
+        window.updateConfiguration(configuration);
         window.generateTree();
     }
 
     private void heraldryCheckBoxActionPerformed(ActionEvent evt) {
         configuration.setShowHeraldry(heraldryCheckBox.isSelected());
-        window.generateTree();
+        window.updateConfiguration(configuration);
+        window.updateTree();
     }
 
     private void residenceCheckBoxActionPerformed(ActionEvent evt) {
         configuration.setShowResidence(residenceCheckBox.isSelected());
-        window.generateTree();
+        window.updateConfiguration(configuration);
+        window.updateTree();
     }
 
 }

@@ -1,9 +1,9 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import cz.ambrogenea.familyvision.domain.DatePlace;
-import cz.ambrogenea.familyvision.dto.tree.PersonRecord;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.utils.Tools;
+import cz.ambrogenea.familyvision.gui.swing.dto.DatePlace;
+import cz.ambrogenea.familyvision.gui.swing.dto.PersonRecord;
+import cz.ambrogenea.familyvision.gui.swing.utils.Tools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +28,9 @@ public class VerticalPersonPanel extends PersonPanel {
         String birthPlaceString = "";
         String birthDateString = "";
         DatePlace birthDatePlace = person.birthDatePlace();
-        if (birthDatePlace.getDate() != null) {
+        if (birthDatePlace.date() != null) {
             birthDateString = "\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale());
-            if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
+            if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlaceString = Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {
@@ -38,7 +38,7 @@ public class VerticalPersonPanel extends PersonPanel {
                 }
             }
         } else {
-            if (configuration.isShowPlaces() && !birthDatePlace.getPlace().isEmpty()) {
+            if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlaceString = "\u002A " + Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {
@@ -51,9 +51,9 @@ public class VerticalPersonPanel extends PersonPanel {
         birthPlace.setText(birthPlaceString);
 
         DatePlace deathDatePlace = person.deathDatePlace();
-        if (configuration.isShowAge() && deathDatePlace.getDate() != null) {
+        if (configuration.isShowAge() && deathDatePlace.date() != null) {
             death.setText("\u2020 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
-            if (configuration.isShowPlaces() && !deathDatePlace.getPlace().isEmpty()) {
+            if (configuration.isShowPlaces() && !deathDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText(Tools.cityShortVersion(deathDatePlace.getSimplePlace()));
                 } else {
@@ -101,7 +101,7 @@ public class VerticalPersonPanel extends PersonPanel {
         c.ipady = 0;
         add(birth, c);
 
-        if (configuration.isShowPlaces() && person.birthDatePlace().getPlace() != null) {
+        if (configuration.isShowPlaces() && person.birthDatePlace().place() != null) {
             c.gridy = 6;
             add(birthPlace, c);
         }

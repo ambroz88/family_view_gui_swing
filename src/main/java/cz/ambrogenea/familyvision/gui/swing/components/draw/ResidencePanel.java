@@ -1,18 +1,10 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.TreeMap;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import cz.ambrogenea.familyvision.constant.Spaces;
 
 /**
  *

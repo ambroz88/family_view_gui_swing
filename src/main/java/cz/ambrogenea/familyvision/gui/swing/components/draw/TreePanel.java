@@ -1,15 +1,14 @@
 package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
-import cz.ambrogenea.familyvision.constant.Spaces;
-import cz.ambrogenea.familyvision.dto.tree.*;
-import cz.ambrogenea.familyvision.enums.Background;
-import cz.ambrogenea.familyvision.enums.Diagram;
-import cz.ambrogenea.familyvision.enums.LabelShape;
-import cz.ambrogenea.familyvision.enums.LabelType;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
-import cz.ambrogenea.familyvision.service.VisualConfigurationService;
-import cz.ambrogenea.familyvision.service.util.Config;
+import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
+import cz.ambrogenea.familyvision.gui.swing.dto.*;
+import cz.ambrogenea.familyvision.gui.swing.enums.Background;
+import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
+import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;
+import cz.ambrogenea.familyvision.gui.swing.enums.LabelType;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,14 +29,13 @@ public class TreePanel extends JPanel {
     private static final String TITLE_FONT = "Monotype Corsiva";
     private static final int TITLE_SIZE = 50;
     private static final int LABEL_GAP = 4;
+    private static final int BASE_LINE_WIDTH = 2;
 
     private final TreeModel treeModel;
-    private final VisualConfigurationService configuration;
-    private final PageSetup page;
+    private final VisualConfiguration configuration;
     private JTextField title;
 
     public TreePanel(TreeModel treeModel) {
-        this.page = treeModel.getPageSetup();
         this.treeModel = treeModel;
         this.configuration = Config.visual();
         initPanel();
@@ -50,13 +48,13 @@ public class TreePanel extends JPanel {
             setOpaque(false);
         }
         this.setLayout(null);
-        setPreferredSize(new Dimension(page.pictureWidth(), page.pictureHeight()));
+        setPreferredSize(new Dimension(treeModel.pageSetup().pictureWidth(), treeModel.pageSetup().pictureHeight()));
         if (Config.visual().isShowTitle()) {
             title = new JTextField(treeModel.treeName());
             title.setHorizontalAlignment(JTextField.CENTER);
             title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
             title.setBorder(null);
-            title.setPreferredSize(new Dimension(page.pictureWidth(), Spaces.TITLE_HEIGHT));
+            title.setPreferredSize(new Dimension(treeModel.pageSetup().pictureWidth(), Spaces.TITLE_HEIGHT));
             title.setOpaque(false);
 
             this.add(title);
@@ -84,7 +82,7 @@ public class TreePanel extends JPanel {
         if (Config.visual().isShowTitle()) {
             title.setBounds(
                     0, Spaces.HORIZONTAL_GAP,
-                    page.pictureWidth(), Spaces.TITLE_HEIGHT
+                    treeModel.pageSetup().pictureWidth(), Spaces.TITLE_HEIGHT
             );
         }
 
@@ -97,7 +95,7 @@ public class TreePanel extends JPanel {
 
         int cornerSize = 20;
         treeModel.lines().forEach(line -> {
-            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+            g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
             g2.drawLine(
                     recalculateX(line.startX()),
                     recalculateY(line.startY()),
@@ -110,7 +108,7 @@ public class TreePanel extends JPanel {
                     Rectangle rect = getMarriageLabelRect(marriage);
 
                     g2.setColor(Colors.LABEL_BACKGROUND);
-                    g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+                    g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
 
                     if (configuration.getMarriageLabelShape().equals(LabelShape.OVAL)) {
                         g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
@@ -127,7 +125,7 @@ public class TreePanel extends JPanel {
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
         treeModel.arcs().forEach(arc -> {
-            g2.setStroke(new BasicStroke(lineStrokeExtra + 2));
+            g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
             g2.drawArc(
                     recalculateX(arc.leftUpperCorner().x()),
                     recalculateY(arc.leftUpperCorner().y()),
@@ -276,7 +274,7 @@ public class TreePanel extends JPanel {
             } else {
                 image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-landscape.jpg"));
             }
-            g2.drawImage(image, 0, 0, page.pictureWidth(), page.pictureHeight(), null);
+            g2.drawImage(image, 0, 0, treeModel.pageSetup().pictureWidth(), treeModel.pageSetup().pictureHeight(), null);
         } catch (IOException ex) {
             Logger.getLogger(TreeScrollPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -350,7 +348,7 @@ public class TreePanel extends JPanel {
     }
 
     private int recalculateX(int x) {
-        return x - treeModel.pageMaxCoordinates().getMinX();
+        return x - treeModel.pageSetup().startPosition().x();
     }
 
     private int recalculateY(int y) {
@@ -358,7 +356,7 @@ public class TreePanel extends JPanel {
         if (Config.visual().isShowTitle()) {
             titleHeight = Spaces.TITLE_HEIGHT;
         }
-        return y - treeModel.pageMaxCoordinates().getMinY() + titleHeight;
+        return y - treeModel.pageSetup().startPosition().y() + titleHeight;
     }
 
 

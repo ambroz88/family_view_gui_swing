@@ -1,22 +1,20 @@
 package cz.ambrogenea.familyvision.gui.swing.components.setup;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.ResourceBundle;
+import cz.ambrogenea.familyvision.gui.swing.Window;
+import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
+import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
+import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
+import cz.ambrogenea.familyvision.gui.swing.description.Menu;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import cz.ambrogenea.familyvision.gui.swing.Window;
-import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
-import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
-import cz.ambrogenea.familyvision.gui.swing.description.Menu;
-import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
-import cz.ambrogenea.familyvision.service.util.Config;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ResourceBundle;
 
 /**
  *

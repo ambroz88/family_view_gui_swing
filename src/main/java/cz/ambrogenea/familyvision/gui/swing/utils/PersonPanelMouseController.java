@@ -1,4 +1,4 @@
-package cz.ambrogenea.familyvision.gui.swing.tools;
+package cz.ambrogenea.familyvision.gui.swing.utils;
 
 import cz.ambrogenea.familyvision.gui.swing.components.draw.PersonPanel;
 

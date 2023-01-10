@@ -26,17 +26,17 @@ public abstract class PersonPanel extends JPanel {
     protected BufferedImage personDiagram;
     protected int fontSize;
 
-    protected JLabel firstName;
-    protected JLabel surName;
-    protected JLabel occupation;
+    protected JTextField firstName;
+    protected JTextField surName;
+    protected JTextField occupation;
     protected JLabel birth;
     protected JLabel birthPlace;
     protected JLabel death;
     protected JLabel deathPlace;
 
-    public PersonPanel(PersonRecord person) {
+    public PersonPanel(PersonRecord person, Dimension dimension) {
         super(new GridBagLayout());
-
+        this.setPreferredSize(dimension);
         this.person = person;
         this.configuration = Config.visual();
 
@@ -89,9 +89,11 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initLabels() {
-        occupation = new JLabel("", JLabel.CENTER);
-        occupation.setText(person.occupation().split(";")[0]);
+        occupation = new JTextField(person.occupation().split(";")[0]);
+        occupation.setHorizontalAlignment(JTextField.CENTER);
         occupation.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
+        occupation.setOpaque(false);
+        occupation.setBorder(null);
 
         initNameLabels();
         initDateLabels();
@@ -102,12 +104,14 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initNameLabels() {
-        firstName = new JLabel(" ", JLabel.CENTER);
-        surName = new JLabel(" ", JLabel.CENTER);
-
-        if (!person.firstName().isEmpty()) {
-            firstName.setText(person.firstName());
-        }
+        firstName = new JTextField(person.firstName());
+        firstName.setOpaque(false);
+        firstName.setHorizontalAlignment(JTextField.CENTER);
+        firstName.setBorder(null);
+        surName = new JTextField(" ");
+        surName.setOpaque(false);
+        surName.setBorder(null);
+        surName.setHorizontalAlignment(JTextField.CENTER);
 
         if (!person.surname().isEmpty()) {
             if (configuration.isShowAge() && person.getAge() > -1) {

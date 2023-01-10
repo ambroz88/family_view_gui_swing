@@ -6,6 +6,8 @@ import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.service.util.Services;
 
 import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -14,7 +16,7 @@ import java.util.ResourceBundle;
  */
 public class Table extends DefaultTableModel {
 
-    public static final int TABLE_COLUMN = 4;
+    public static final int TABLE_COLUMN = 5;
 
     private final Locale locale;
 
@@ -40,12 +42,20 @@ public class Table extends DefaultTableModel {
         if (rowIndex < getRowCount()) {
             Person chosen = Services.person().getPeopleInTree().get(rowIndex);
             if (columnIndex == 0) {
-                result = chosen.getFirstName();
+                result = chosen.getGedcomId();
             } else if (columnIndex == 1) {
-                result = chosen.getSurname();
+                result = chosen.getFirstName();
             } else if (columnIndex == 2) {
-                result = chosen.getBirthDatePlace().getLocalizedDate(locale);
+                result = chosen.getSurname();
             } else if (columnIndex == 3) {
+                SimpleDateFormat dtf = new SimpleDateFormat("yyyy");
+                Date date = chosen.getBirthDatePlace().getDate();
+                if (date == null) {
+                    result = "";
+                } else {
+                    result = dtf.format(date);
+                }
+            } else if (columnIndex == 4) {
                 result = chosen.getBirthDatePlace().getSimplePlace();
             }
         }
@@ -55,10 +65,11 @@ public class Table extends DefaultTableModel {
     private Object[] getHeaderNames() {
         ResourceBundle description = ResourceBundle.getBundle("language/tableHeader", locale);
         return new Object[]{
-            description.getString(TableHeader.FIRST_NAME),
-            description.getString(TableHeader.SURNAME),
-            description.getString(TableHeader.BIRTH_DATE),
-            description.getString(TableHeader.BIRTH_PLACE)
+                description.getString(TableHeader.ID),
+                description.getString(TableHeader.FIRST_NAME),
+                description.getString(TableHeader.SURNAME),
+                description.getString(TableHeader.BIRTH_DATE),
+                description.getString(TableHeader.BIRTH_PLACE)
         };
     }
 }

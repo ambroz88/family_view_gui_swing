@@ -11,13 +11,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
  * @author Jiri Ambroz
  */
 public class HorizontalPersonPanel extends PersonPanel {
 
-    public HorizontalPersonPanel(PersonRecord person) {
-        super(person);
+    public HorizontalPersonPanel(PersonRecord person, Dimension dimension) {
+        super(person, dimension);
     }
 
     @Override
@@ -74,15 +73,15 @@ public class HorizontalPersonPanel extends PersonPanel {
 
     private void initDateLabelsFont() {
         birth.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
-        birthPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize - 1));
+        birthPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
         death.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
-        deathPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize - 1));
+        deathPlace.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, fontSize));
     }
 
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = configuration.getVerticalShift();
+        c.ipady = -configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
@@ -90,6 +89,8 @@ public class HorizontalPersonPanel extends PersonPanel {
         c.gridy = 1;
         c.ipady = 0;
         c.weighty = 0;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
         add(firstName, c);
         c.gridy = 2;
         c.ipady = 4;
@@ -113,11 +114,17 @@ public class HorizontalPersonPanel extends PersonPanel {
             if (!configuration.isShowAge()) {
                 c.gridwidth = 2;
             }
+            if (!configuration.isShowAge() || !configuration.isShowPlaces()) {
+                birth.setHorizontalAlignment(JLabel.CENTER);
+            }
             add(birth, c);
         }
 
         if (configuration.isShowAge()) {
             c.gridy = 7;
+            if (!configuration.isShowPlaces()) {
+                death.setHorizontalAlignment(JLabel.CENTER);
+            }
             add(death, c);
         }
 

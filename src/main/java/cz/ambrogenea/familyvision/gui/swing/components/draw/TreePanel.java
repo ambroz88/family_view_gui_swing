@@ -172,14 +172,6 @@ public class TreePanel extends JPanel {
     }
 
     private void drawPerson(PersonRecord person) {
-        PersonPanel personPanel;
-        if (configuration.getDiagram() == Diagram.HERALDRY) {
-            personPanel = new VerticalPersonPanel(person);
-        } else {
-            personPanel = new HorizontalPersonPanel(person);
-        }
-
-        personPanel.addMouseAdapter();
         int imageWidth;
         int imageHeight;
         if (person.directLineage()) {
@@ -189,7 +181,16 @@ public class TreePanel extends JPanel {
             imageWidth = configuration.getSiblingImageWidth();
             imageHeight = configuration.getSiblingImageHeight();
         }
-        personPanel.setPreferredSize(new Dimension(imageWidth, imageHeight));
+
+        final Dimension dimension = new Dimension(imageWidth, imageHeight);
+        PersonPanel personPanel;
+        if (configuration.getDiagram() == Diagram.HERALDRY) {
+            personPanel = new VerticalPersonPanel(person, dimension);
+        } else {
+            personPanel = new HorizontalPersonPanel(person, dimension);
+        }
+        personPanel.addMouseAdapter();
+
         this.add(personPanel);
         personPanel.setBounds(recalculation(
                 person.position().x() - imageWidth / 2,

@@ -10,7 +10,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class DataTablePanel extends JScrollPane {
@@ -30,6 +29,7 @@ public class DataTablePanel extends JScrollPane {
                 new String[]{})
         );
         recordsTable.setModel(new Table());
+        recordsTable.setAutoCreateRowSorter(true);
         this.setViewportView(recordsTable);
     }
 
@@ -38,8 +38,13 @@ public class DataTablePanel extends JScrollPane {
         this.recordsTable.getSelectionModel().addListSelectionListener(this::tableSelectionChangeAction);
     }
 
-    public int getSelectedRow() {
-        return this.recordsTable.getSelectedRow();
+    public String getSelectedPersonId() {
+        int rowIndex = this.recordsTable.getSelectedRow();
+        if (rowIndex >= 0) {
+            return recordsTable.getValueAt(rowIndex, 0).toString();
+        } else {
+            return null;
+        }
     }
 
     private void tableSelectionChangeAction(ListSelectionEvent e) {

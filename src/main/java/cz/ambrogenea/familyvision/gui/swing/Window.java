@@ -22,7 +22,6 @@ import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
 import cz.ambrogenea.familyvision.service.SelectionService;
 import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
-import cz.ambrogenea.familyvision.service.util.Services;
 import cz.ambrogenea.familyvision.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.xml.sax.SAXParseException;
@@ -162,8 +161,8 @@ public class Window extends JFrame {
     }
 
     public void generateTree() {
-        if (dataTablePanel.getSelectedRow() != -1) {
-            String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
+        if (dataTablePanel.getSelectedPersonId() != null) {
+            String personId = dataTablePanel.getSelectedPersonId();
             try {
                 TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
                 treeScrollPane.generateTreePanel(treeModel);
@@ -174,7 +173,7 @@ public class Window extends JFrame {
     }
 
     public void updateTree() {
-        if (dataTablePanel.getSelectedRow() != -1) {
+        if (dataTablePanel.getSelectedPersonId() != null) {
             try {
                 TreeModel treeModel = JsonParser.get().readValue(generatorController.updateTree(), TreeModel.class);
                 treeScrollPane.generateTreePanel(treeModel);
@@ -189,10 +188,10 @@ public class Window extends JFrame {
     }
 
     public void generateDocument() {
-        if (dataTablePanel.getSelectedRow() != -1) {
+        if (dataTablePanel.getSelectedPersonId() != null) {
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
-            String personId = Services.person().getPeopleInTree().get(dataTablePanel.getSelectedRow()).getGedcomId();
+            String personId = dataTablePanel.getSelectedPersonId();
             SelectionService selectionService = new LineageSelectionService();
             AncestorPerson rootPerson = selectionService.select(personId);
             addFamilyToDoc(rootPerson, doc);

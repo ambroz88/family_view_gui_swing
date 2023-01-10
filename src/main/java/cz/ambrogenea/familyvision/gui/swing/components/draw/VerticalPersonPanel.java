@@ -14,8 +14,8 @@ import java.awt.*;
  */
 public class VerticalPersonPanel extends PersonPanel {
 
-    public VerticalPersonPanel(PersonRecord person) {
-        super(person);
+    public VerticalPersonPanel(PersonRecord person, Dimension dimension) {
+        super(person, dimension);
     }
 
     @Override
@@ -83,6 +83,8 @@ public class VerticalPersonPanel extends PersonPanel {
         c.gridy = 1;
         c.ipady = 0;
         c.weighty = 0;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
         add(firstName, c);
 
         c.gridy = 2;

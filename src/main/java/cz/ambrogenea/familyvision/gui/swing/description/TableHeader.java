@@ -5,6 +5,7 @@ package cz.ambrogenea.familyvision.gui.swing.description;
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public abstract class TableHeader {
+    public static String ID = "id";
     public static String FIRST_NAME = "firstName";
     public static String SURNAME = "surname";
     public static String BIRTH_DATE = "birthDate";

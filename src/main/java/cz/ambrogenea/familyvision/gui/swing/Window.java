@@ -1,10 +1,7 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.DataController;
-import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
-import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
-import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
+import cz.ambrogenea.familyvision.controller.*;
 import cz.ambrogenea.familyvision.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
@@ -14,6 +11,7 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
+import cz.ambrogenea.familyvision.gui.swing.dto.Person;
 import cz.ambrogenea.familyvision.gui.swing.dto.TreeModel;
 import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
@@ -30,8 +28,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -136,9 +137,19 @@ public class Window extends JFrame {
         try {
             DataController dataController = new DataController();
             dataController.parseData(new File(absolutePath));
-            dataTablePanel.setModel(new Table());
+            List<Person> persons = new PersonController().getAll().stream().map(s -> {
+                                try {
+                                    return JsonParser.get().readValue(s, Person.class);
+                                } catch (JsonProcessingException e) {
+                                    return null;
+                                }
+                            }
+                    )
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            dataTablePanel.setModel(new Table(persons));
             this.setTitle(TITLE + " - " + gedcomFile.getName());
-//            recordsTable.setAutoCreateRowSorter(true);
         } catch (IOException | SAXParseException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }

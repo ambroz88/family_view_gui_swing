@@ -8,6 +8,7 @@ import cz.ambrogenea.familyvision.gui.swing.model.Table;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -24,11 +25,7 @@ public class DataTablePanel extends JScrollPane {
         recordsTable = new JTable();
         recordsTable.setPreferredScrollableViewportSize(Dimensions.TABLE_DIMENSION);
         recordsTable.setBackground(Colors.TABLE_BACKGROUND);
-        recordsTable.setModel(new DefaultTableModel(
-                new Object[][]{{}},
-                new String[]{})
-        );
-        recordsTable.setModel(new Table());
+        recordsTable.setModel(new Table(new ArrayList<>()));
         recordsTable.setAutoCreateRowSorter(true);
         this.setViewportView(recordsTable);
     }

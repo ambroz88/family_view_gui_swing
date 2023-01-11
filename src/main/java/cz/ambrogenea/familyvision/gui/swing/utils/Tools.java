@@ -7,7 +7,7 @@ public class Tools {
 
     public static String cityShortVersion(String placeName) {
         String filePath;
-        URL fileURL = cz.ambrogenea.familyvision.utils.Tools.class.getResource("/text/CityShortcuts.properties");
+        URL fileURL = Tools.class.getResource("/text/CityShortcuts.properties");
 
         if (fileURL != null) {
             filePath = fileURL.getPath();

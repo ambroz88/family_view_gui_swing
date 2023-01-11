@@ -1,13 +1,11 @@
 package cz.ambrogenea.familyvision.gui.swing.model;
 
-import cz.ambrogenea.familyvision.domain.Person;
 import cz.ambrogenea.familyvision.gui.swing.description.TableHeader;
+import cz.ambrogenea.familyvision.gui.swing.dto.Person;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
-import cz.ambrogenea.familyvision.service.util.Services;
 
 import javax.swing.table.DefaultTableModel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -19,16 +17,20 @@ public class Table extends DefaultTableModel {
     public static final int TABLE_COLUMN = 5;
 
     private final Locale locale;
+    private final List<Person> persons;
 
-    public Table() {
-        super();
+    public Table(List<Person> persons) {
+        this.persons = persons;
         this.locale = Config.visual().getLocale();
         setColumnIdentifiers(getHeaderNames());
     }
 
     @Override
     public int getRowCount() {
-        return Services.person().getPeopleInTree().size();
+        if (persons == null) {
+            return 0;
+        }
+        return persons.size();
     }
 
     @Override
@@ -40,23 +42,17 @@ public class Table extends DefaultTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         String result = "";
         if (rowIndex < getRowCount()) {
-            Person chosen = Services.person().getPeopleInTree().get(rowIndex);
+            Person chosen = persons.get(rowIndex);
             if (columnIndex == 0) {
-                result = chosen.getGedcomId();
+                result = chosen.gedcomId();
             } else if (columnIndex == 1) {
-                result = chosen.getFirstName();
+                result = chosen.firstName();
             } else if (columnIndex == 2) {
-                result = chosen.getSurname();
+                result = chosen.surname();
             } else if (columnIndex == 3) {
-                SimpleDateFormat dtf = new SimpleDateFormat("yyyy");
-                Date date = chosen.getBirthDatePlace().getDate();
-                if (date == null) {
-                    result = "";
-                } else {
-                    result = dtf.format(date);
-                }
+                result = chosen.birthDatePlace().year();
             } else if (columnIndex == 4) {
-                result = chosen.getBirthDatePlace().getSimplePlace();
+                result = chosen.birthDatePlace().city();
             }
         }
         return result;

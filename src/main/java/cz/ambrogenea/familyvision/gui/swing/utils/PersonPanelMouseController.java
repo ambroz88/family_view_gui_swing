@@ -1,6 +1,7 @@
 package cz.ambrogenea.familyvision.gui.swing.utils;
 
 import cz.ambrogenea.familyvision.gui.swing.components.draw.PersonPanel;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -35,8 +36,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent evt) {
-        boolean resetMode = false;
-        if (resetMode) {
+        if (Config.visual().isResetMode()) {
             personPanel.setAnonymous();
         }
     }

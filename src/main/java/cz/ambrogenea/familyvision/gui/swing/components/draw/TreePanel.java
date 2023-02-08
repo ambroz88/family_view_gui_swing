@@ -30,6 +30,8 @@ public class TreePanel extends JPanel {
     private static final int TITLE_SIZE = 50;
     private static final int LABEL_GAP = 4;
     private static final int BASE_LINE_WIDTH = 2;
+    private static final String MALE_SIGN = "\u2642";
+    private static final String FEMALE_SIGN = "\u2640";
 
     private final TreeModel treeModel;
     private final VisualConfiguration configuration;
@@ -62,11 +64,12 @@ public class TreePanel extends JPanel {
         treeModel.persons().forEach(this::drawPerson);
 
         treeModel.marriages().forEach(marriage -> {
-            JComponent dateComponent = createDateComponent(marriage);
-            dateComponent.setOpaque(false);
-            this.add(dateComponent);
-            dateComponent.setBounds(getMarriageDateRect(marriage));
-        });
+                    drawMarriageLabel(marriage);
+                    if (marriage.boysCount() + marriage.girlsCount() > 1) {
+                        drawChildrenPanel(marriage);
+                    }
+                }
+        );
 
         treeModel.residences().forEach(this::drawResidence);
     }
@@ -93,7 +96,6 @@ public class TreePanel extends JPanel {
             lineStrokeExtra = 0;
         }
 
-        int cornerSize = 20;
         treeModel.lines().forEach(line -> {
             g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
             g2.drawLine(
@@ -104,23 +106,7 @@ public class TreePanel extends JPanel {
             );
         });
 
-        treeModel.marriages().forEach(marriage -> {
-                    Rectangle rect = getMarriageLabelRect(marriage);
-
-                    g2.setColor(Colors.LABEL_BACKGROUND);
-                    g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
-
-                    if (configuration.getMarriageLabelShape().equals(LabelShape.OVAL)) {
-                        g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                        g2.setColor(Colors.LINE_COLOR);
-                        g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                    } else if (configuration.getMarriageLabelShape().equals(LabelShape.RECTANGLE)) {
-                        g2.fillRect(rect.x, rect.y, rect.width, rect.height);
-                        g2.setColor(Colors.LINE_COLOR);
-                        g2.drawRect(rect.x, rect.y, rect.width, rect.height);
-                    }
-                }
-        );
+        drawMarriages(g2, lineStrokeExtra);
 
         g2.setStroke(new BasicStroke(lineStrokeExtra + 1));
         g2.setColor(Colors.LINE_COLOR);
@@ -171,6 +157,27 @@ public class TreePanel extends JPanel {
 
     }
 
+    private void drawMarriages(Graphics2D g2, int lineStrokeExtra) {
+        int cornerSize = 20;
+        treeModel.marriages().forEach(marriage -> {
+                    Rectangle rect = getMarriageLabelRect(marriage);
+
+                    g2.setColor(Colors.LABEL_BACKGROUND);
+                    g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
+
+                    if (configuration.getMarriageLabelShape().equals(LabelShape.OVAL)) {
+                        g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                        g2.setColor(Colors.LINE_COLOR);
+                        g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
+                    } else if (configuration.getMarriageLabelShape().equals(LabelShape.RECTANGLE)) {
+                        g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+                        g2.setColor(Colors.LINE_COLOR);
+                        g2.drawRect(rect.x, rect.y, rect.width, rect.height);
+                    }
+                }
+        );
+    }
+
     private void drawPerson(PersonRecord person) {
         int imageWidth;
         int imageHeight;
@@ -196,6 +203,42 @@ public class TreePanel extends JPanel {
                 person.position().x() - imageWidth / 2,
                 person.position().y() - imageHeight / 2,
                 imageWidth, imageHeight));
+    }
+
+    private void drawMarriageLabel(Marriage marriage) {
+        JComponent dateComponent = createDateComponent(marriage);
+        dateComponent.setOpaque(false);
+        this.add(dateComponent);
+        dateComponent.setBounds(getMarriageDateRect(marriage));
+    }
+
+    private void drawChildrenPanel(Marriage marriage) {
+        JPanel childrenPanel = new JPanel(new GridLayout(2, 2));
+        childrenPanel.setOpaque(false);
+
+        JLabel maleChildrenLabel = new JLabel(String.valueOf(marriage.boysCount()), JLabel.CENTER);
+        maleChildrenLabel.setFont(new Font(Fonts.GENERAL_FONT, Font.BOLD, configuration.getAdultFontSize()));
+        maleChildrenLabel.setOpaque(false);
+        maleChildrenLabel.setForeground(Color.BLUE);
+        JLabel femaleChildrenLabel = new JLabel(String.valueOf(marriage.girlsCount()), JLabel.CENTER);
+        femaleChildrenLabel.setFont(new Font(Fonts.GENERAL_FONT, Font.BOLD, configuration.getAdultFontSize()));
+        femaleChildrenLabel.setOpaque(false);
+        femaleChildrenLabel.setForeground(Color.RED);
+        JLabel maleSignLabel = new JLabel(MALE_SIGN, JLabel.CENTER);
+        maleSignLabel.setFont(new Font(Fonts.GENERAL_FONT, Font.BOLD, 30));
+        maleSignLabel.setForeground(Color.BLUE);
+        maleSignLabel.setOpaque(false);
+        JLabel femaleSignLabel = new JLabel(FEMALE_SIGN, JLabel.CENTER);
+        femaleSignLabel.setForeground(Color.RED);
+        femaleSignLabel.setFont(new Font(Fonts.GENERAL_FONT, Font.BOLD, 30));
+        femaleSignLabel.setOpaque(false);
+
+        childrenPanel.add(maleChildrenLabel);
+        childrenPanel.add(femaleChildrenLabel);
+        childrenPanel.add(maleSignLabel);
+        childrenPanel.add(femaleSignLabel);
+        this.add(childrenPanel);
+        childrenPanel.setBounds(getChildrenCountRectangle(marriage));
     }
 
     private JComponent createDateComponent(Marriage marriage) {
@@ -265,6 +308,22 @@ public class TreePanel extends JPanel {
                 Math.max(Spaces.MIN_VERT_MARRIAGE_LABEL_WIDTH, (int) (configuration.getAdultImageWidth() / 3.0 * 2)),
                 height
         );
+    }
+
+    private Rectangle getChildrenCountRectangle(Marriage marriage) {
+        if (marriage.labelType() == LabelType.LONG) {
+            return recalculation(
+                    marriage.position().x() - Spaces.RESIDENCE_SIZE,
+                    marriage.position().y() + Spaces.VERT_MARRIAGE_LABEL_HEIGHT / 2 + 5,
+                    2 * Spaces.RESIDENCE_SIZE, Spaces.CHILDREN_PANEL_HEIGHT
+            );
+        } else {
+            return recalculation(
+                    marriage.position().x() - Spaces.RESIDENCE_SIZE,
+                    marriage.position().y() + Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT / 2 + 5,
+                    2 * Spaces.RESIDENCE_SIZE, Spaces.CHILDREN_PANEL_HEIGHT
+            );
+        }
     }
 
     private void addImageBackground(Graphics2D g2) {

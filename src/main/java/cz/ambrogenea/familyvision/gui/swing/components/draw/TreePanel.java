@@ -65,7 +65,7 @@ public class TreePanel extends JPanel {
 
         treeModel.marriages().forEach(marriage -> {
                     drawMarriageLabel(marriage);
-                    if (marriage.boysCount() + marriage.girlsCount() > 1) {
+                    if (configuration.isShowChildrenCount() && marriage.boysCount() + marriage.girlsCount() > 1) {
                         drawChildrenPanel(marriage);
                     }
                 }

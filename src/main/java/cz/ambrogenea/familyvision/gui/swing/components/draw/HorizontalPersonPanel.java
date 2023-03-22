@@ -81,6 +81,14 @@ public class HorizontalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
+        int defaultColumn = 0;
+        if (configuration.getDiagram().equals(Diagram.SCROLL)) {
+            c.ipadx = Dimensions.SCROLL_SHIFT;
+            add(new JLabel(""), c);
+            defaultColumn = 1;
+            c.ipadx = 0;
+        }
+        c.gridx = defaultColumn;
         c.ipady = -configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 2;
@@ -132,17 +140,17 @@ public class HorizontalPersonPanel extends PersonPanel {
             if (configuration.isShowAge()) {
                 c.gridy = 5;
                 if (person.birthDatePlace().date() != null) {
-                    c.gridx = 1;
+                    c.gridx = defaultColumn + 1;
                 } else {
-                    c.gridx = 0;
+                    c.gridx = defaultColumn;
                 }
                 add(birthPlace, c);
-                c.gridx = 1;
+                c.gridx = defaultColumn + 1;
                 c.gridy = 7;
                 add(deathPlace, c);
             }
 
-            c.gridx = 0;
+            c.gridx = defaultColumn;
             c.gridwidth = 2;
         }
 
@@ -168,7 +176,9 @@ public class HorizontalPersonPanel extends PersonPanel {
         if (configuration.getDiagram().equals(Diagram.SCROLL)) {
             shift = Dimensions.SCROLL_SHIFT;
         }
-
+        firstName.setPreferredSize(new Dimension(configuration.getAdultImageWidth() - shift, firstName.getPreferredSize().height));
+        surName.setPreferredSize(new Dimension(configuration.getAdultImageWidth() - shift, surName.getPreferredSize().height));
+        occupation.setPreferredSize(new Dimension(configuration.getAdultImageWidth() - shift, occupation.getPreferredSize().height));
         birth.setPreferredSize(new Dimension(imageWidth + shift, birth.getPreferredSize().height));
         birthPlace.setPreferredSize(new Dimension(imageWidth - shift, birthPlace.getPreferredSize().height));
         death.setPreferredSize(new Dimension(imageWidth + shift, death.getPreferredSize().height));

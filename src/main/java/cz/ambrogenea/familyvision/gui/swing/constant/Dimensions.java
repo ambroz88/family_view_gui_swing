@@ -17,7 +17,6 @@ public class Dimensions {
     public static int DEFAULT_IMAGE_HEIGHT = 120;
     public static int DEFAULT_IMAGE_WIDTH = 160;
 
-    public final static int SCROLL_SHIFT = 25;
     public final static int LEFT_PANEL_WIDTH = 320;
     public final static int BUTTON_MENU_PANEL_HEIGHT = 90;
     public final static int BUTTON_MENU_HEIGHT = 60;

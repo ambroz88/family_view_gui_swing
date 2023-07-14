@@ -1,7 +1,10 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.*;
+import cz.ambrogenea.familyvision.controller.PersonController;
+import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
+import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
+import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
 import cz.ambrogenea.familyvision.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
@@ -11,10 +14,7 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
-import cz.ambrogenea.familyvision.gui.swing.dto.Person;
-import cz.ambrogenea.familyvision.gui.swing.dto.TreeModel;
-import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
-import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
@@ -22,11 +22,9 @@ import cz.ambrogenea.familyvision.service.SelectionService;
 import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
 import cz.ambrogenea.familyvision.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.xml.sax.SAXParseException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -96,8 +94,8 @@ public class Window extends JFrame {
         setupPanel.add(personSetupPanel);
         setupPanel.setBackground(Colors.SW_BACKGROUND);
 
-        leftPanel.add(setupPanel, BorderLayout.NORTH);
-        leftPanel.add(dataTablePanel, BorderLayout.CENTER);
+        leftPanel.add(setupPanel, BorderLayout.CENTER);
+        leftPanel.add(dataTablePanel, BorderLayout.SOUTH);
         leftPanel.setBackground(Colors.SW_BACKGROUND);
 
         JPanel rightPanel = new JPanel(new BorderLayout(0, 5));
@@ -132,27 +130,21 @@ public class Window extends JFrame {
         EventQueue.invokeLater(() -> new Window().setVisible(true));
     }
 
-    public void loadTable(File gedcomFile) {
-        String absolutePath = gedcomFile.getAbsolutePath();
-        try {
-            DataController dataController = new DataController();
-            dataController.parseData(new File(absolutePath));
-            List<Person> persons = new PersonController().getAll().stream().map(s -> {
-                                try {
-                                    return JsonParser.get().readValue(s, Person.class);
-                                } catch (JsonProcessingException e) {
-                                    return null;
-                                }
+    public void loadTable(FamilyTree familyTree) {
+        List<Person> persons = new PersonController().getAll(getTreeId()).stream()
+                .map(s -> {
+                            try {
+                                return JsonParser.get().readValue(s, Person.class);
+                            } catch (JsonProcessingException e) {
+                                return null;
                             }
-                    )
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                        }
+                )
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-            dataTablePanel.setModel(new Table(persons));
-            this.setTitle(TITLE + " - " + gedcomFile.getName());
-        } catch (IOException | SAXParseException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dataTablePanel.setModel(new Table(persons));
+        this.setTitle(TITLE + " - " + familyTree.treeName());
     }
 
     public void updateConfiguration(VisualConfiguration configuration) {
@@ -175,7 +167,7 @@ public class Window extends JFrame {
         if (dataTablePanel.getSelectedPersonId() != null) {
             String personId = dataTablePanel.getSelectedPersonId();
             try {
-                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
+                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId, getTreeId()), TreeModel.class);
                 treeScrollPane.generateTreePanel(treeModel);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -203,7 +195,7 @@ public class Window extends JFrame {
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
             String personId = dataTablePanel.getSelectedPersonId();
-            SelectionService selectionService = new LineageSelectionService();
+            SelectionService selectionService = new LineageSelectionService(getTreeId());
             AncestorPerson rootPerson = selectionService.select(personId);
             addFamilyToDoc(rootPerson, doc);
 
@@ -263,6 +255,10 @@ public class Window extends JFrame {
 //            generations++;
         }
         return generations;
+    }
+
+    private Long getTreeId() {
+        return loadingDataPanel.getSelectedTree().id();
     }
 
     private TreePanel generateTreePanel(TreeModel treeModel) {

@@ -170,12 +170,12 @@ public class PersonSetupPanel extends JPanel {
 
         JPanel top = new JPanel(new BorderLayout(0, 5));
         top.add(comboBoxes, BorderLayout.NORTH);
-        top.add(checkboxes, BorderLayout.SOUTH);
+        top.add(checkboxes, BorderLayout.CENTER);
+        top.add(sep, BorderLayout.SOUTH);
         top.setBackground(Colors.SW_BACKGROUND);
 
         this.add(top, BorderLayout.NORTH);
-        this.add(sep, BorderLayout.CENTER);
-        this.add(personBoxSetupPanel, BorderLayout.SOUTH);
+        this.add(personBoxSetupPanel, BorderLayout.CENTER);
     }
 
     private void ageCheckBoxActionPerformed(ActionEvent evt) {
@@ -291,11 +291,11 @@ public class PersonSetupPanel extends JPanel {
         directLabel = new JLabel(description.getString(PersonBoxSetup.DIRECT), JLabel.CENTER);
         sideLabel = new JLabel(description.getString(PersonBoxSetup.SIDE), JLabel.CENTER);
         heightLabel = new JLabel(description.getString(PersonBoxSetup.HEIGHT), JLabel.CENTER);
-        heightLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_MENU_HEIGHT / 2));
+        heightLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
         widthLabel = new JLabel(description.getString(PersonBoxSetup.WIDTH), JLabel.CENTER);
-        widthLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_MENU_HEIGHT / 2));
+        widthLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
         fontSizeLabel = new JLabel(description.getString(PersonBoxSetup.FONT_SIZE), JLabel.CENTER);
-        fontSizeLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_MENU_HEIGHT / 2));
+        fontSizeLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
 
         adultWidthSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageWidth(), 100, 300, 10));
         adultHeightSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageHeight(), 100, 300, 10));

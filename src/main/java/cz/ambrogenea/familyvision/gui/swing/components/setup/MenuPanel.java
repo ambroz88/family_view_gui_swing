@@ -1,28 +1,38 @@
 package cz.ambrogenea.familyvision.gui.swing.components.setup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import cz.ambrogenea.familyvision.controller.DataController;
+import cz.ambrogenea.familyvision.controller.FamilyTreeController;
 import cz.ambrogenea.familyvision.gui.swing.Window;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.description.Menu;
+import cz.ambrogenea.familyvision.gui.swing.dto.FamilyTree;
+import cz.ambrogenea.familyvision.gui.swing.dto.FamilyTreeRequest;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
+import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
+import org.xml.sax.SAXParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class MenuPanel extends JPanel {
 
-//    public static final String FILE_CHOOSER_PATH = "/Documents/AmbroGENEA/zákazníci";
+    //    public static final String FILE_CHOOSER_PATH = "/Documents/AmbroGENEA/zákazníci";
     public static final String FILE_CHOOSER_PATH = "/Documents/Genealogie/Data-vstupy";
     private final Window window;
 
@@ -33,6 +43,8 @@ public class MenuPanel extends JPanel {
     private JButton saveButton;
     private JButton docButton;
     private JLabel logoLabel;
+    private JComboBox<FamilyTree> treeSelection;
+    private DefaultComboBoxModel<FamilyTree> treeSelectionModel;
 
     public MenuPanel(Window window) {
         super(new BorderLayout());
@@ -61,6 +73,9 @@ public class MenuPanel extends JPanel {
         docButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
         logoLabel = new JLabel(new ImageIcon("src/main/resources/Logo 120x65.png"));
+        treeSelectionModel = new DefaultComboBoxModel<>();
+        treeSelection = new JComboBox<>(treeSelectionModel);
+        treeSelection.setPreferredSize(new Dimension(3 * Dimensions.TREE_BUTTON_DIMENSION.width, 20));
     }
 
     private void initFileChoosers() {
@@ -77,6 +92,7 @@ public class MenuPanel extends JPanel {
         loadInputButton.addActionListener(this::loadInputButtonActionPerformed);
         saveButton.addActionListener(this::saveButtonActionPerformed);
         docButton.addActionListener(this::docButtonActionPerformed);
+        treeSelection.addItemListener(this::treeSelectionPropertyChanged);
     }
 
     private void addComponents() {
@@ -88,6 +104,7 @@ public class MenuPanel extends JPanel {
 
         this.add(leftMenu, BorderLayout.WEST);
         this.add(logoLabel, BorderLayout.EAST);
+        this.add(treeSelection, BorderLayout.SOUTH);
     }
 
     private void loadInputButtonActionPerformed(ActionEvent evt) {
@@ -95,11 +112,37 @@ public class MenuPanel extends JPanel {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = openFC.getSelectedFile();
-            window.loadTable(file);
-            System.out.println("Opening: " + file.getName() + ".");
+            FamilyTreeController familyTreeController = new FamilyTreeController();
+            try {
+                String request = JsonParser.get().writeValueAsString(new FamilyTreeRequest(file.getName()));
+                String response = familyTreeController.create(request);
+                FamilyTree tree = JsonParser.get().readValue(response, FamilyTree.class);
+
+                DataController dataController = new DataController();
+                dataController.parseData(file, tree.id());
+
+                treeSelectionModel.addElement(tree);
+                treeSelectionModel.setSelectedItem(tree);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException | SAXParseException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Opening file: " + file.getName() + ".");
         } else {
-            System.out.println("Open command cancelled by user.");
+            System.out.println("Opening file request cancelled by user.");
         }
+    }
+
+    private void treeSelectionPropertyChanged(ItemEvent propertyChangeEvent) {
+        FamilyTree tree = (FamilyTree) propertyChangeEvent.getItem();
+        if (Objects.equals(tree.treeName(), getSelectedTree().treeName())) {
+            window.loadTable(tree);
+        }
+    }
+
+    public FamilyTree getSelectedTree() {
+        return ((FamilyTree) treeSelectionModel.getSelectedItem());
     }
 
     private void saveButtonActionPerformed(ActionEvent evt) {

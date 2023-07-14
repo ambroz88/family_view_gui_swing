@@ -35,6 +35,7 @@ public class PersonSetupPanel extends JPanel {
     private JCheckBox shortenPlacesCheckBox;
     private JCheckBox templeCheckBox;
     private JCheckBox titleCheckBox;
+    private JCheckBox childrenCountCheckBox;
 
     private JLabel diagramLabel;
     private JComboBox<String> diagramComboBox;
@@ -94,6 +95,9 @@ public class PersonSetupPanel extends JPanel {
         titleCheckBox = new JCheckBox(description.getString(PersonSetup.SHOW_TITLE));
         titleCheckBox.setSelected(configuration.isShowTitle());
         titleCheckBox.setOpaque(false);
+        childrenCountCheckBox = new JCheckBox(description.getString(PersonSetup.SHOW_CHILDREN_COUNT));
+        childrenCountCheckBox.setSelected(configuration.isShowChildrenCount());
+        childrenCountCheckBox.setOpaque(false);
 
         diagramLabel = new JLabel(description.getString(PersonSetup.DIAGRAM), JLabel.LEFT);
         String[] names = new String[Diagram.values().length];
@@ -123,19 +127,21 @@ public class PersonSetupPanel extends JPanel {
         shortenPlacesCheckBox.addActionListener(this::shortenPlacesCheckBoxActionPerformed);
         templeCheckBox.addActionListener(this::templeCheckBoxActionPerformed);
         titleCheckBox.addActionListener(this::titleCheckBoxActionPerformed);
+        childrenCountCheckBox.addActionListener(this::childrenCountCheckBoxActionPerformed);
         diagramComboBox.addActionListener(this::diagramComboBoxActionPerformed);
         backgroundComboBox.addActionListener(this::backgroundComboBoxActionPerformed);
         marriageShapeComboBox.addActionListener(this::shapeLabelBoxActionPerformed);
     }
 
     private void addComponents() {
-        JPanel checkboxes = new JPanel(new GridLayout(2, 3, 0, 5));
+        JPanel checkboxes = new JPanel(new GridLayout(3, 3, 0, 5));
         checkboxes.add(ageCheckBox);
         checkboxes.add(occupationCheckBox);
         checkboxes.add(titleCheckBox);
         checkboxes.add(placesCheckBox);
         checkboxes.add(shortenPlacesCheckBox);
         checkboxes.add(templeCheckBox);
+        checkboxes.add(childrenCountCheckBox);
         checkboxes.setBackground(Colors.SW_BACKGROUND);
 
         JPanel diagramPanel = new JPanel(new BorderLayout());
@@ -212,6 +218,12 @@ public class PersonSetupPanel extends JPanel {
 
     private void titleCheckBoxActionPerformed(ActionEvent actionEvent) {
         configuration.setShowTitle(titleCheckBox.isSelected());
+        window.updateConfiguration(configuration);
+        window.updateTree();
+    }
+
+    private void childrenCountCheckBoxActionPerformed(ActionEvent actionEvent) {
+        configuration.setShowChildrenCount(childrenCountCheckBox.isSelected());
         window.updateConfiguration(configuration);
         window.updateTree();
     }

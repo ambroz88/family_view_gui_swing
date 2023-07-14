@@ -12,6 +12,7 @@ public abstract class PersonSetup {
     public static String SHORT_PLACES = "shortPlaces";
     public static String TEMPLE = "temple";
     public static String SHOW_TITLE = "show_title";
+    public static String SHOW_CHILDREN_COUNT = "show_children_count";
     public static String MARRIAGE_SHAPE = "marriage_shape";
     public static String BACKGROUND = "background";
     public static String DIAGRAM = "diagram";

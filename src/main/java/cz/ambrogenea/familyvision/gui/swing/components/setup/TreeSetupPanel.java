@@ -135,7 +135,7 @@ public class TreeSetupPanel extends JPanel {
     private void lineageTypeComboBoxActionPerformed(ActionEvent actionEvent) {
         configuration.setLineageType(LineageType.valueOf(lineageTypeComboBox.getSelectedItem().toString()));
         window.updateConfiguration(configuration);
-        window.updateTree();
+        window.generateTree();
     }
 
     private void coupleTypeComboBoxActionPerformed(ActionEvent evt) {

@@ -44,7 +44,7 @@ public class Table extends DefaultTableModel {
         if (rowIndex < getRowCount()) {
             Person chosen = persons.get(rowIndex);
             if (columnIndex == 0) {
-                result = chosen.gedcomId();
+                result = chosen.id().toString();
             } else if (columnIndex == 1) {
                 result = chosen.firstName();
             } else if (columnIndex == 2) {

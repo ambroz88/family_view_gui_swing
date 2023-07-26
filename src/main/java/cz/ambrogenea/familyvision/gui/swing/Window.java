@@ -165,9 +165,9 @@ public class Window extends JFrame {
 
     public void generateTree() {
         if (dataTablePanel.getSelectedPersonId() != null) {
-            String personId = dataTablePanel.getSelectedPersonId();
+            Long personId = dataTablePanel.getSelectedPersonId();
             try {
-                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId, getTreeId()), TreeModel.class);
+                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
                 treeScrollPane.generateTreePanel(treeModel);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -194,8 +194,8 @@ public class Window extends JFrame {
         if (dataTablePanel.getSelectedPersonId() != null) {
             XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
 
-            String personId = dataTablePanel.getSelectedPersonId();
-            SelectionService selectionService = new LineageSelectionService(getTreeId());
+            Long personId = dataTablePanel.getSelectedPersonId();
+            SelectionService selectionService = new LineageSelectionService();
             AncestorPerson rootPerson = selectionService.select(personId);
             addFamilyToDoc(rootPerson, doc);
 

@@ -180,7 +180,10 @@ public abstract class PersonPanel extends JPanel {
         templeBox.add(initiatory);
         templeBox.add(endowment);
 
-        return templeBox;
+        JPanel templeOuterBox = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        templeOuterBox.setOpaque(false);
+        templeOuterBox.add(templeBox);
+        return templeOuterBox;
     }
 
     public void setAnonymous() {

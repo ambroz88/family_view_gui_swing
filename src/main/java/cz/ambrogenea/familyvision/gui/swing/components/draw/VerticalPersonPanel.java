@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
  * @author Jiri Ambroz
  */
 public class VerticalPersonPanel extends PersonPanel {
@@ -75,59 +74,75 @@ public class VerticalPersonPanel extends PersonPanel {
     @Override
     protected void addLabels() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipady = - configuration.getVerticalShift();
+        c.ipady = -configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 1;
         add(new JLabel(""), c);
 
-        c.gridy = 1;
+        int row = 1;
+        c.gridy = row;
         c.ipady = 0;
         c.weighty = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         add(firstName, c);
 
-        c.gridy = 2;
+        row++;
+        c.gridy = row;
         c.ipady = 4;
         add(surName, c);
 
         if (configuration.isShowOccupation() && !person.occupation().isEmpty()) {
-            c.gridy = 3;
+            row++;
+            c.gridy = row;
             c.ipady = 0;
             add(occupation, c);
         }
 
-        addEmptyLabel(4, c);
+        row++;
+        addEmptyLabel(row, c);
 
-        c.gridy = 5;
+        row++;
+        c.gridy = row;
         c.ipady = 0;
         add(birth, c);
 
         if (configuration.isShowPlaces() && person.birthDatePlace().place() != null) {
-            c.gridy = 6;
+            row++;
+            c.gridy = row;
             add(birthPlace, c);
         }
 
         if (configuration.isShowAge()) {
-            addEmptyLabel(7, c);
-            c.gridy = 8;
-            c.ipady = 0;
-            add(death, c);
-            if (configuration.isShowPlaces()) {
-                c.gridy = 9;
+            row++;
+            addEmptyLabel(row, c);
+            if (person.deathDatePlace().date() != null) {
+                row++;
+                c.gridy = row;
+                c.ipady = 0;
+                add(death, c);
+            }
+
+            if (configuration.isShowPlaces() && person.deathDatePlace().place() != null) {
+                row++;
+                c.gridy = row;
                 add(deathPlace, c);
             }
         }
 
         if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
-            addEmptyLabel(10, c);
+            row++;
+            addEmptyLabel(row, c);
+
+            row++;
+            c.ipady = 0;
+            c.gridy = row;
             JPanel templeBox = creteTempleBox();
-            c.ipady = 5;
-            c.gridy = 11;
             add(templeBox, c);
         }
 
-        c.gridy = 12;
+        row++;
+        c.gridy = row;
         c.weighty = 5;
         c.ipady = configuration.getVerticalShift();
         add(new JLabel(""), c);

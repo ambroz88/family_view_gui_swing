@@ -114,8 +114,6 @@ public class VerticalPersonPanel extends PersonPanel {
         }
 
         if (configuration.isShowAge()) {
-            row++;
-            addEmptyLabel(row, c);
             if (person.deathDatePlace().date() != null) {
                 row++;
                 c.gridy = row;
@@ -123,7 +121,7 @@ public class VerticalPersonPanel extends PersonPanel {
                 add(death, c);
             }
 
-            if (configuration.isShowPlaces() && person.deathDatePlace().place() != null) {
+            if (configuration.isShowPlaces() && !person.deathDatePlace().place().isEmpty()) {
                 row++;
                 c.gridy = row;
                 add(deathPlace, c);
@@ -131,9 +129,6 @@ public class VerticalPersonPanel extends PersonPanel {
         }
 
         if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
-            row++;
-            addEmptyLabel(row, c);
-
             row++;
             c.ipady = 0;
             c.gridy = row;

@@ -76,13 +76,13 @@ public abstract class PersonPanel extends JPanel {
     private void loadPictures() {
         String imagePath;
         if (person.sex().equals(Sex.MALE)) {
-            imagePath = "diagrams/" + configuration.getDiagram() + "_man.png";
+            imagePath = "/diagrams/" + configuration.getDiagram() + "_man.png";
         } else {
-            imagePath = "diagrams/" + configuration.getDiagram() + "_woman.png";
+            imagePath = "/diagrams/" + configuration.getDiagram() + "_woman.png";
         }
 
         try {
-            personDiagram = ImageIO.read(ClassLoader.getSystemResourceAsStream(imagePath));
+            personDiagram = ImageIO.read(getClass().getResourceAsStream(imagePath));
         } catch (IOException e) {
             System.out.println("Image " + imagePath + " can't be open.");
         }

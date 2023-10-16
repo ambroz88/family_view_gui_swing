@@ -5,7 +5,6 @@ import cz.ambrogenea.familyvision.controller.PersonController;
 import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
 import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
 import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
-import cz.ambrogenea.familyvision.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
@@ -18,11 +17,13 @@ import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
+import cz.ambrogenea.familyvision.model.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.service.SelectionService;
 import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
 import cz.ambrogenea.familyvision.word.WordGenerator;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -61,8 +62,11 @@ public class Window extends JFrame {
     }
 
     private void initLogo() {
-        ImageIcon img = new ImageIcon("src/main/resources/SW Icon.png");
-        this.setIconImage(img.getImage());
+        try {
+            this.setIconImage(ImageIO.read(getClass().getResourceAsStream("/SW Icon.png")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setWindowSize() throws HeadlessException {

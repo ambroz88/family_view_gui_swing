@@ -152,23 +152,19 @@ public class HorizontalPersonPanel extends PersonPanel {
             }
             add(death, c);
 
-            if (configuration.isShowPlaces() && person.deathDatePlace().place() != null) {
+            if (configuration.isShowPlaces() && person.deathDatePlace().place() != null && !person.deathDatePlace().place().isEmpty()) {
                 if (person.deathDatePlace().date() != null) {
                     c.gridx = defaultColumn + 1;
                 } else {
                     c.gridx = defaultColumn;
                 }
                 add(deathPlace, c);
-
                 c.gridx = defaultColumn;
-                c.gridwidth = 2;
             }
         }
+        c.gridwidth = 2;
 
         if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
-            row++;
-            addEmptyLabel(row, c);
-
             row++;
             JPanel templeBox = creteTempleBox();
             c.ipady = 0;

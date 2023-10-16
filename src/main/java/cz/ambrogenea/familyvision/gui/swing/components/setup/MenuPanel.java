@@ -20,8 +20,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -60,11 +60,22 @@ public class MenuPanel extends JPanel {
 
     private void initComponents() {
         ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.visual().getLocale());
-        loadInputButton = new JButton(new ImageIcon("src/main/resources/icons/Import 40x40.jpg"));
+        BufferedImage loadInputImage;
+        BufferedImage saveButtonImage;
+        BufferedImage logoImage;
+        try {
+            loadInputImage = ImageIO.read(getClass().getResourceAsStream("/icons/Import 40x40.jpg"));
+            saveButtonImage = ImageIO.read(getClass().getResourceAsStream("/icons/Save 40x40.jpg"));
+            logoImage = ImageIO.read(getClass().getResourceAsStream("/Logo 120x65.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        loadInputButton = new JButton(new ImageIcon(loadInputImage));
         loadInputButton.setToolTipText(description.getString(Menu.LOAD));
         loadInputButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
-        saveButton = new JButton(new ImageIcon("src/main/resources/icons/Save 40x40.jpg"));
+        saveButton = new JButton(new ImageIcon(saveButtonImage));
         saveButton.setToolTipText(description.getString(Menu.SAVE));
         saveButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
@@ -72,7 +83,7 @@ public class MenuPanel extends JPanel {
         docButton.setToolTipText(description.getString(Menu.DOCUMENT));
         docButton.setPreferredSize(Dimensions.TREE_BUTTON_DIMENSION);
 
-        logoLabel = new JLabel(new ImageIcon("src/main/resources/Logo 120x65.png"));
+        logoLabel = new JLabel(new ImageIcon(logoImage));
         treeSelectionModel = new DefaultComboBoxModel<>();
         treeSelection = new JComboBox<>(treeSelectionModel);
         treeSelection.setPreferredSize(new Dimension(3 * Dimensions.TREE_BUTTON_DIMENSION.width, 20));

@@ -1,17 +1,15 @@
 package cz.ambrogenea.familyvision.gui.swing.utils;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Tools {
 
     public static String cityShortVersion(String placeName) {
-        String filePath;
-        URL fileURL = Tools.class.getResource("/text/CityShortcuts.properties");
+        InputStream propertiesInputStream = Tools.class.getResourceAsStream("/text/CityShortcuts.properties");
 
-        if (fileURL != null) {
-            filePath = fileURL.getPath();
-            Properties prop = FileIO.loadProperties(filePath);
+        if (propertiesInputStream != null) {
+            Properties prop = FileIO.loadProperties(propertiesInputStream);
 
             String normalizeName = placeName.toLowerCase().replace(" ", "");
             if (prop.containsKey(normalizeName)) {

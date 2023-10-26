@@ -2,7 +2,6 @@ package cz.ambrogenea.familyvision.gui.swing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import cz.ambrogenea.familyvision.controller.*;
-import cz.ambrogenea.familyvision.dto.AncestorPerson;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
@@ -11,22 +10,14 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
-import cz.ambrogenea.familyvision.gui.swing.dto.Person;
-import cz.ambrogenea.familyvision.gui.swing.dto.TreeModel;
-import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
-import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
-import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
-import cz.ambrogenea.familyvision.service.SelectionService;
-import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
 import cz.ambrogenea.familyvision.word.WordGenerator;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.xml.sax.SAXParseException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -63,8 +54,11 @@ public class Window extends JFrame {
     }
 
     private void initLogo() {
-        ImageIcon img = new ImageIcon("src/main/resources/SW Icon.png");
-        this.setIconImage(img.getImage());
+        try {
+            this.setIconImage(ImageIO.read(getClass().getResourceAsStream("/SW Icon.png")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setWindowSize() throws HeadlessException {
@@ -96,8 +90,8 @@ public class Window extends JFrame {
         setupPanel.add(personSetupPanel);
         setupPanel.setBackground(Colors.SW_BACKGROUND);
 
-        leftPanel.add(setupPanel, BorderLayout.NORTH);
-        leftPanel.add(dataTablePanel, BorderLayout.CENTER);
+        leftPanel.add(setupPanel, BorderLayout.CENTER);
+        leftPanel.add(dataTablePanel, BorderLayout.SOUTH);
         leftPanel.setBackground(Colors.SW_BACKGROUND);
 
         JPanel rightPanel = new JPanel(new BorderLayout(0, 5));
@@ -123,7 +117,8 @@ public class Window extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -132,27 +127,25 @@ public class Window extends JFrame {
         EventQueue.invokeLater(() -> new Window().setVisible(true));
     }
 
-    public void loadTable(File gedcomFile) {
-        String absolutePath = gedcomFile.getAbsolutePath();
-        try {
-            DataController dataController = new DataController();
-            dataController.parseData(new File(absolutePath));
-            List<Person> persons = new PersonController().getAll().stream().map(s -> {
-                                try {
-                                    return JsonParser.get().readValue(s, Person.class);
-                                } catch (JsonProcessingException e) {
-                                    return null;
-                                }
+    public void loadTable(FamilyTree familyTree) {
+        List<Person> persons = new PersonController().getAll(getTreeId()).stream()
+                .map(s -> {
+                            try {
+                                return JsonParser.get().readValue(s, Person.class);
+                            } catch (JsonProcessingException e) {
+                                return null;
                             }
-                    )
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                        }
+                )
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-            dataTablePanel.setModel(new Table(persons));
-            this.setTitle(TITLE + " - " + gedcomFile.getName());
-        } catch (IOException | SAXParseException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dataTablePanel.setModel(new Table(persons));
+        this.setTitle(TITLE + " - " + familyTree.treeName());
+    }
+
+    private Long getTreeId() {
+        return loadingDataPanel.getSelectedTree().id();
     }
 
     public void updateConfiguration(VisualConfiguration configuration) {
@@ -173,7 +166,7 @@ public class Window extends JFrame {
 
     public void generateTree() {
         if (dataTablePanel.getSelectedPersonId() != null) {
-            String personId = dataTablePanel.getSelectedPersonId();
+            Long personId = dataTablePanel.getSelectedPersonId();
             try {
                 TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
                 treeScrollPane.generateTreePanel(treeModel);
@@ -200,69 +193,30 @@ public class Window extends JFrame {
 
     public void generateDocument() {
         if (dataTablePanel.getSelectedPersonId() != null) {
-            XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
+            Long personId = dataTablePanel.getSelectedPersonId();
+            final DocumentController documentController = new DocumentController();
+            documentController.generateTreeModels(personId, WordGenerator.FORMAT_A4)
+                    .stream().map(treeNodelString -> {
+                                try {
+                                    return JsonParser.get().readValue(treeNodelString, TreeModel.class);
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                    )
+                    .forEach(treeModel -> {
+                                TreePanel familyPanel = generateTreePanel(treeModel);
+                                documentController.loadImage(familyPanel.getStream(), treeModel.treeName(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
+                            }
+                    );
 
-            String personId = dataTablePanel.getSelectedPersonId();
-            SelectionService selectionService = new LineageSelectionService();
-            AncestorPerson rootPerson = selectionService.select(personId);
-            addFamilyToDoc(rootPerson, doc);
-
-            if (rootPerson.getFather() != null) {
-                createFamilyDocument(rootPerson.getFather(), doc);
-            } else {
-                createFamilyDocument(rootPerson.getMother(), doc);
-            }
-
-            saveFamilyDocument(rootPerson, doc);
-        }
-    }
-
-    private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
-        if (person != null) {
-            AncestorPerson actualPerson = person;
-            int generations = 0;
-            while (actualPerson != null) {
-                if (generations < Config.treeShape().getAncestorGenerations()) {
-                    addFamilyToDoc(actualPerson, doc);
-                    actualPerson = actualPerson.getFather();
-                    generations++;
-                } else {
-                    actualPerson = null;
-                }
+            String personName = dataTablePanel.getSelectedPersonName();
+            try {
+                documentController.saveDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personName + ".docx");
+            } catch (IOException ex) {
+                System.out.println("It is not possible to save document: " + ex.getMessage());
             }
         }
-    }
-
-    private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
-        TreePanel familyPanel = createOneFamily(actualPerson);
-        int generations = calculateGenerations(actualPerson);
-        WordGenerator.setMaxHeight(generations);
-        WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
-        WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
-    }
-
-    private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
-//        TreeModel treeModel = new FatherLineageTreeService().generateTreeModel(personWithAncestors);
-//        return generateTreePanel(treeModel);
-        return null;
-    }
-
-    private void saveFamilyDocument(AncestorPerson personWithAncestors, XWPFDocument doc) {
-        try {
-            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personWithAncestors.getName() + ".docx", doc);
-        } catch (IOException ex) {
-            System.out.println("It is not possible to save document: " + ex.getMessage());
-        }
-    }
-
-    private int calculateGenerations(AncestorPerson actualPerson) {
-        int generations = 1;
-        if (Config.treeShape().getDescendentGenerations() > 0 && actualPerson.getSpouseCouple().getChildren().size() > 0) {
-            generations++;
-//        } else if (getConfiguration().getGenerationCount() > 1 && !actualPerson.hasNoParents()) {
-//            generations++;
-        }
-        return generations;
     }
 
     private TreePanel generateTreePanel(TreeModel treeModel) {
@@ -271,4 +225,5 @@ public class Window extends JFrame {
         treePanel.validate();
         return treePanel;
     }
+
 }

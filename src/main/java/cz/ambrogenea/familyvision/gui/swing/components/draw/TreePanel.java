@@ -121,7 +121,7 @@ public class TreePanel extends JPanel {
 
         treeModel.images().forEach(image -> {
                     try {
-                        InputStream heraldry = ClassLoader.getSystemResourceAsStream("heraldry/" + image.imageName() + ".png");
+                        InputStream heraldry = getClass().getResourceAsStream("/heraldry/" + image.imageName() + ".png");
 
                         if (heraldry != null) {
                             BufferedImage heraldryImage = ImageIO.read(heraldry);
@@ -330,9 +330,9 @@ public class TreePanel extends JPanel {
         try {
             BufferedImage image;
             if (this.getWidth() / (double) this.getHeight() > 2) {
-                image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-wide.jpg"));
+                image = ImageIO.read(getClass().getResourceAsStream("/images/pergamen-wide.jpg"));
             } else {
-                image = ImageIO.read(ClassLoader.getSystemResourceAsStream("images/pergamen-landscape.jpg"));
+                image = ImageIO.read(getClass().getResourceAsStream("/images/pergamen-landscape.jpg"));
             }
             g2.drawImage(image, 0, 0, treeModel.pageSetup().pictureWidth(), treeModel.pageSetup().pictureHeight(), null);
         } catch (IOException ex) {

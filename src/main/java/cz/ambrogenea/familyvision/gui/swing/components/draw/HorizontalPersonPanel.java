@@ -87,34 +87,41 @@ public class HorizontalPersonPanel extends PersonPanel {
             defaultColumn = 1;
             c.ipadx = 0;
         }
+        int row = 1;
         c.gridx = defaultColumn;
         c.ipady = -configuration.getVerticalShift();
         c.weighty = 5;
         c.gridwidth = 2;
         add(new JLabel(""), c);
 
-        c.gridy = 1;
+        row++;
+        c.gridy = row;
         c.ipady = 0;
         c.weighty = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         add(firstName, c);
-        c.gridy = 2;
+
+        row++;
+        c.gridy = row;
         c.ipady = 4;
         add(surName, c);
 
         if (configuration.isShowOccupation() && !person.occupation().isEmpty()) {
-            c.gridy = 3;
+            row++;
+            c.gridy = row;
             c.ipady = 0;
             add(occupation, c);
         }
 
-        addEmptyLabel(4, c);
+        row++;
+        addEmptyLabel(row, c);
 
         if (configuration.isShowPlaces()) {
             c.gridwidth = 1;
         }
-        c.gridy = 5;
+        row++;
+        c.gridy = row;
         c.ipady = 0;
         c.weighty = 0;
         if (person.birthDatePlace().date() != null) {
@@ -127,41 +134,46 @@ public class HorizontalPersonPanel extends PersonPanel {
             add(birth, c);
         }
 
+        if (configuration.isShowPlaces()) {
+            if (person.birthDatePlace().date() != null) {
+                c.gridx = defaultColumn + 1;
+            } else {
+                c.gridx = defaultColumn;
+            }
+            add(birthPlace, c);
+        }
+
         if (configuration.isShowAge()) {
-            c.gridy = 7;
+            row++;
+            c.gridy = row;
+            c.gridx = defaultColumn;
             if (!configuration.isShowPlaces()) {
                 death.setHorizontalAlignment(JLabel.CENTER);
             }
             add(death, c);
-        }
 
-        if (configuration.isShowPlaces()) {
-            if (configuration.isShowAge()) {
-                c.gridy = 5;
-                if (person.birthDatePlace().date() != null) {
+            if (configuration.isShowPlaces() && person.deathDatePlace().place() != null && !person.deathDatePlace().place().isEmpty()) {
+                if (person.deathDatePlace().date() != null) {
                     c.gridx = defaultColumn + 1;
                 } else {
                     c.gridx = defaultColumn;
                 }
-                add(birthPlace, c);
-                c.gridx = defaultColumn + 1;
-                c.gridy = 7;
                 add(deathPlace, c);
+                c.gridx = defaultColumn;
             }
-
-            c.gridx = defaultColumn;
-            c.gridwidth = 2;
         }
+        c.gridwidth = 2;
 
         if (configuration.isShowOrdinances() && !person.isChild() && !person.living()) {
-            addEmptyLabel(9, c);
+            row++;
             JPanel templeBox = creteTempleBox();
-            c.ipady = 5;
-            c.gridy = 10;
+            c.ipady = 0;
+            c.gridy = row;
             add(templeBox, c);
         }
 
-        c.gridy = 11;
+        row++;
+        c.gridy = row;
         c.weighty = 5;
         c.ipady = configuration.getVerticalShift();
         add(new JLabel(""), c);

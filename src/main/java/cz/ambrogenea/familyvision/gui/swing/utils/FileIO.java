@@ -24,11 +24,11 @@ public class FileIO {
         return null;
     }
 
-    public static Properties loadProperties(String absolutePath) {
+    public static Properties loadProperties(InputStream inputStream) {
         Properties propertyFile = new Properties();
 
-        try (FileInputStream fis = new FileInputStream(absolutePath)) {
-            propertyFile.load(fis);
+        try {
+            propertyFile.load(inputStream);
         } catch (IOException ex) {
             Logger.getLogger(FileIO.class.getName()).log(Level.SEVERE, null, ex);
         }

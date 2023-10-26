@@ -35,10 +35,19 @@ public class DataTablePanel extends JScrollPane {
         this.recordsTable.getSelectionModel().addListSelectionListener(this::tableSelectionChangeAction);
     }
 
-    public String getSelectedPersonId() {
+    public Long getSelectedPersonId() {
         int rowIndex = this.recordsTable.getSelectedRow();
         if (rowIndex >= 0) {
-            return recordsTable.getValueAt(rowIndex, 0).toString();
+            return Long.parseLong(recordsTable.getValueAt(rowIndex, 0).toString());
+        } else {
+            return null;
+        }
+    }
+
+    public String  getSelectedPersonName() {
+        int rowIndex = this.recordsTable.getSelectedRow();
+        if (rowIndex >= 0) {
+            return recordsTable.getValueAt(rowIndex, 1).toString() + " " + recordsTable.getValueAt(rowIndex, 2).toString();
         } else {
             return null;
         }

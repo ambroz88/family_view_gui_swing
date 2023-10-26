@@ -1,10 +1,7 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.PersonController;
-import cz.ambrogenea.familyvision.controller.TreeGeneratorController;
-import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
-import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
+import cz.ambrogenea.familyvision.controller.*;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
@@ -15,13 +12,8 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
-import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
-import cz.ambrogenea.familyvision.model.dto.AncestorPerson;
-import cz.ambrogenea.familyvision.service.SelectionService;
-import cz.ambrogenea.familyvision.service.impl.selection.LineageSelectionService;
 import cz.ambrogenea.familyvision.word.WordGenerator;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -125,7 +117,8 @@ public class Window extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -149,6 +142,10 @@ public class Window extends JFrame {
 
         dataTablePanel.setModel(new Table(persons));
         this.setTitle(TITLE + " - " + familyTree.treeName());
+    }
+
+    private Long getTreeId() {
+        return loadingDataPanel.getSelectedTree().id();
     }
 
     public void updateConfiguration(VisualConfiguration configuration) {
@@ -196,73 +193,30 @@ public class Window extends JFrame {
 
     public void generateDocument() {
         if (dataTablePanel.getSelectedPersonId() != null) {
-            XWPFDocument doc = WordGenerator.createWordDocument(WordGenerator.FORMAT_A4);
-
             Long personId = dataTablePanel.getSelectedPersonId();
-            SelectionService selectionService = new LineageSelectionService();
-            AncestorPerson rootPerson = selectionService.select(personId);
-            addFamilyToDoc(rootPerson, doc);
+            final DocumentController documentController = new DocumentController();
+            documentController.generateTreeModels(personId, WordGenerator.FORMAT_A4)
+                    .stream().map(treeNodelString -> {
+                                try {
+                                    return JsonParser.get().readValue(treeNodelString, TreeModel.class);
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                    )
+                    .forEach(treeModel -> {
+                                TreePanel familyPanel = generateTreePanel(treeModel);
+                                documentController.loadImage(familyPanel.getStream(), treeModel.treeName(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
+                            }
+                    );
 
-            if (rootPerson.getFather() != null) {
-                createFamilyDocument(rootPerson.getFather(), doc);
-            } else {
-                createFamilyDocument(rootPerson.getMother(), doc);
-            }
-
-            saveFamilyDocument(rootPerson, doc);
-        }
-    }
-
-    private void createFamilyDocument(AncestorPerson person, XWPFDocument doc) {
-        if (person != null) {
-            AncestorPerson actualPerson = person;
-            int generations = 0;
-            while (actualPerson != null) {
-                if (generations < Config.treeShape().getAncestorGenerations()) {
-                    addFamilyToDoc(actualPerson, doc);
-                    actualPerson = actualPerson.getFather();
-                    generations++;
-                } else {
-                    actualPerson = null;
-                }
+            String personName = dataTablePanel.getSelectedPersonName();
+            try {
+                documentController.saveDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personName + ".docx");
+            } catch (IOException ex) {
+                System.out.println("It is not possible to save document: " + ex.getMessage());
             }
         }
-    }
-
-    private void addFamilyToDoc(AncestorPerson actualPerson, XWPFDocument doc) {
-        TreePanel familyPanel = createOneFamily(actualPerson);
-        int generations = calculateGenerations(actualPerson);
-        WordGenerator.setMaxHeight(generations);
-        WordGenerator.createFamilyPage(doc, "Rodina " + actualPerson.getName());
-        WordGenerator.addImageToPage(doc, familyPanel.getStream(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
-    }
-
-    private TreePanel createOneFamily(AncestorPerson personWithAncestors) {
-//        TreeModel treeModel = new FatherLineageTreeService().generateTreeModel(personWithAncestors);
-//        return generateTreePanel(treeModel);
-        return null;
-    }
-
-    private void saveFamilyDocument(AncestorPerson personWithAncestors, XWPFDocument doc) {
-        try {
-            WordGenerator.writeDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personWithAncestors.getName() + ".docx", doc);
-        } catch (IOException ex) {
-            System.out.println("It is not possible to save document: " + ex.getMessage());
-        }
-    }
-
-    private int calculateGenerations(AncestorPerson actualPerson) {
-        int generations = 1;
-        if (Config.treeShape().getDescendentGenerations() > 0 && actualPerson.getSpouseCouple().getChildren().size() > 0) {
-            generations++;
-//        } else if (getConfiguration().getGenerationCount() > 1 && !actualPerson.hasNoParents()) {
-//            generations++;
-        }
-        return generations;
-    }
-
-    private Long getTreeId() {
-        return loadingDataPanel.getSelectedTree().id();
     }
 
     private TreePanel generateTreePanel(TreeModel treeModel) {
@@ -271,4 +225,5 @@ public class Window extends JFrame {
         treePanel.validate();
         return treePanel;
     }
+
 }

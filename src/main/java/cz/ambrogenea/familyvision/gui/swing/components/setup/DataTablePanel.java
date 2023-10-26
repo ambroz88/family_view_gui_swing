@@ -44,6 +44,15 @@ public class DataTablePanel extends JScrollPane {
         }
     }
 
+    public String  getSelectedPersonName() {
+        int rowIndex = this.recordsTable.getSelectedRow();
+        if (rowIndex >= 0) {
+            return recordsTable.getValueAt(rowIndex, 1).toString() + " " + recordsTable.getValueAt(rowIndex, 2).toString();
+        } else {
+            return null;
+        }
+    }
+
     private void tableSelectionChangeAction(ListSelectionEvent e) {
         window.generateTree();
     }

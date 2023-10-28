@@ -1,28 +1,17 @@
 package cz.ambrogenea.familyvision.gui.swing.utils;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public class FileIO {
-
-    public static File loadFileFromResources(String fileName) {
-        String filePath;
-        URL fileURL = ClassLoader.getSystemResource(fileName);
-
-        if (fileURL != null) {
-            filePath = fileURL.getPath();
-            return new File(filePath);
-        }
-        System.out.println("File " + fileName + " cannot be open or does not exist in resources.");
-        return null;
-    }
 
     public static Properties loadProperties(InputStream inputStream) {
         Properties propertyFile = new Properties();
@@ -35,4 +24,17 @@ public class FileIO {
 
         return propertyFile;
     }
+
+    public static File copyInputStreamToFile(InputStream inputStream, String fileName) throws IOException {
+        File file = new File(fileName);
+        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+            int read;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        }
+        return file;
+    }
+
 }

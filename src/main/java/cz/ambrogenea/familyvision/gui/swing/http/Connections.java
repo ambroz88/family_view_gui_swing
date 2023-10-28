@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import cz.ambrogenea.familyvision.gui.swing.constant.Endpoints;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
+import cz.ambrogenea.familyvision.gui.swing.utils.FileIO;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -51,10 +52,11 @@ public class Connections {
                 .addBinaryBody("gedcomFile", file, ContentType.DEFAULT_BINARY, file.getName())
                 .addTextBody("familyTreeId", treeId.toString(), ContentType.DEFAULT_TEXT)
                 .build();
-        HttpPost request = new HttpPost(Endpoints.DATA);
-        request.setEntity(entity);
+        HttpPost httpPost = new HttpPost(Endpoints.DATA);
+//        httpPost.setHeader("Content-type", "multipart/form-data");
+        httpPost.setEntity(entity);
 
-        sendRequest(request);
+        sendRequest(httpPost);
     }
 
     public static List<Person> getPersonsInTree(Long treeId) throws URISyntaxException, IOException {
@@ -92,15 +94,15 @@ public class Connections {
 
     public static void uploadImageToDoc(InputStream imageStream, String familyName, Dimension size) throws IOException {
         HttpEntity entity = MultipartEntityBuilder.create()
-                .addBinaryBody("gedcomFile", imageStream.readAllBytes())
-                .addTextBody("uploadRequest", JsonParser.get().writeValueAsString(
-                        new UploadImageRequest(familyName, size.width, size.height)
-                ))
+                .addBinaryBody("image", FileIO.copyInputStreamToFile(imageStream, familyName), ContentType.DEFAULT_BINARY, familyName)
+                .addTextBody("familyName", familyName, ContentType.DEFAULT_TEXT)
+                .addTextBody("imageWidth", String.valueOf(size.width), ContentType.DEFAULT_TEXT)
+                .addTextBody("imageHeight", String.valueOf(size.height), ContentType.DEFAULT_TEXT)
                 .build();
-        HttpPut httpPost = new HttpPut(Endpoints.DOC_GEN);
-        httpPost.setEntity(entity);
+        HttpPut httpPut = new HttpPut(Endpoints.DOC_GEN);
+        httpPut.setEntity(entity);
 
-        sendRequest(httpPost);
+        sendRequest(httpPut);
     }
 
     public static void saveDocument(String fileName) throws IOException, URISyntaxException {

@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -85,9 +86,7 @@ public class MenuPanel extends JPanel {
         treeSelectionModel = new DefaultComboBoxModel<>();
         try {
             FamilyTree[] trees = Connections.getTrees();
-            for (FamilyTree tree: trees) {
-                treeSelectionModel.addElement(tree);
-            }
+            treeSelectionModel.addAll(Arrays.stream(trees).toList());
             treeSelectionModel.setSelectedItem(null);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -133,8 +132,9 @@ public class MenuPanel extends JPanel {
             try {
                 FamilyTree tree = Connections.createTree(new FamilyTreeRequest(file.getName()));
                 Connections.uploadData(file, tree.id());
-
-                treeSelectionModel.addElement(tree);
+                FamilyTree[] trees = Connections.getTrees();
+                treeSelectionModel.removeAllElements();
+                treeSelectionModel.addAll(Arrays.stream(trees).toList());
                 treeSelectionModel.setSelectedItem(tree);
             } catch (IOException ex) {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,7 +147,7 @@ public class MenuPanel extends JPanel {
 
     private void treeSelectionPropertyChanged(ItemEvent propertyChangeEvent) {
         FamilyTree tree = (FamilyTree) propertyChangeEvent.getItem();
-        if (Objects.equals(tree.treeName(), getSelectedTree().treeName())) {
+        if (getSelectedTree() != null && Objects.equals(tree.treeName(), getSelectedTree().treeName())) {
             window.loadTable(tree);
         }
     }

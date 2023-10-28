@@ -108,10 +108,10 @@ public class PersonSetupPanel extends JPanel {
         diagramComboBox.setSelectedItem(description.getString(configuration.getDiagram().toString()));
         backgroundLabel = new JLabel(description.getString(PersonSetup.BACKGROUND), JLabel.LEFT);
         backgroundComboBox = new JComboBox<>(new DefaultComboBoxModel<>(Background.getStrings()));
-        backgroundComboBox.setSelectedItem(configuration.getBackground());
+        backgroundComboBox.setSelectedItem(configuration.getBackground().toString());
         marriageShapeLabel = new JLabel(description.getString(PersonSetup.MARRIAGE_SHAPE), JLabel.LEFT);
         marriageShapeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(LabelShape.getStrings()));
-        marriageShapeComboBox.setSelectedItem(configuration.getMarriageLabelShape());
+        marriageShapeComboBox.setSelectedItem(configuration.getMarriageLabelShape().toString());
 
         personBoxSetupPanel = new JPanel(new GridLayout(5, 3, 10, 5));
         personBoxSetupPanel.setBackground(Colors.SW_BACKGROUND);

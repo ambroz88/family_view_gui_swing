@@ -4,6 +4,7 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
+import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.enums.Background;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
 import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;

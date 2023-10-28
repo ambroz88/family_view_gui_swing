@@ -57,11 +57,11 @@ public class TreeSetupPanel extends JPanel {
         lineageTypeLabel = new JLabel(description.getString(TreeSetup.LINEAGE_TYPE));
         lineageTypeLabel.setOpaque(false);
         lineageTypeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(LineageType.getStrings()));
-        lineageTypeComboBox.setSelectedItem(configuration.getLineageType());
+        lineageTypeComboBox.setSelectedItem(configuration.getLineageType().toString());
         coupleTypeLabel = new JLabel(description.getString(TreeSetup.COUPLE_TYPE));
         coupleTypeLabel.setOpaque(false);
         coupleTypeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(CoupleType.getStrings()));
-        coupleTypeComboBox.setSelectedItem(configuration.getCoupleType());
+        coupleTypeComboBox.setSelectedItem(configuration.getCoupleType().toString());
 
         ancestorGenerationLabel = new JLabel(description.getString(TreeSetup.ANCESTORS));
         ancestorGenerationLabel.setOpaque(false);

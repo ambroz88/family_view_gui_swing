@@ -1,7 +1,5 @@
 package cz.ambrogenea.familyvision.gui.swing;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.*;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
@@ -10,20 +8,19 @@ import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
+import cz.ambrogenea.familyvision.gui.swing.constant.PageFormat;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
+import cz.ambrogenea.familyvision.gui.swing.http.Connections;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
-import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
-import cz.ambrogenea.familyvision.word.WordGenerator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
@@ -39,14 +36,8 @@ public class Window extends JFrame {
 
     private TreeSetupPanel treeSetupPanel;
     private TreeScrollPanel treeScrollPane;
-    private final TreeGeneratorController generatorController;
-    private final TreeShapeConfigurationController treeShapeConfigController;
-    private final VisualConfigurationController visualConfigController;
 
     public Window() {
-        generatorController = new TreeGeneratorController();
-        treeShapeConfigController = new TreeShapeConfigurationController();
-        visualConfigController = new VisualConfigurationController();
         setWindowSize();
         initComponents();
         addComponents();
@@ -128,20 +119,13 @@ public class Window extends JFrame {
     }
 
     public void loadTable(FamilyTree familyTree) {
-        List<Person> persons = new PersonController().getAll(getTreeId()).stream()
-                .map(s -> {
-                            try {
-                                return JsonParser.get().readValue(s, Person.class);
-                            } catch (JsonProcessingException e) {
-                                return null;
-                            }
-                        }
-                )
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        dataTablePanel.setModel(new Table(persons));
-        this.setTitle(TITLE + " - " + familyTree.treeName());
+        try {
+            List<Person> persons = Connections.getPersonsInTree(getTreeId());
+            dataTablePanel.setModel(new Table(persons));
+            this.setTitle(TITLE + " - " + familyTree.treeName());
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Long getTreeId() {
@@ -150,17 +134,17 @@ public class Window extends JFrame {
 
     public void updateConfiguration(VisualConfiguration configuration) {
         try {
-            visualConfigController.update(JsonParser.get().writeValueAsString(configuration));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Connections.updateVisualConfiguration(configuration);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void updateConfiguration(TreeShapeConfiguration configuration) {
         try {
-            treeShapeConfigController.update(JsonParser.get().writeValueAsString(configuration));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Connections.updateTreeShapeConfiguration(configuration);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -168,10 +152,9 @@ public class Window extends JFrame {
         if (dataTablePanel.getSelectedPersonId() != null) {
             Long personId = dataTablePanel.getSelectedPersonId();
             try {
-                TreeModel treeModel = JsonParser.get().readValue(generatorController.generateTree(personId), TreeModel.class);
-                treeScrollPane.generateTreePanel(treeModel);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                treeScrollPane.generateTreePanel(Connections.generateTree(personId));
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -179,10 +162,9 @@ public class Window extends JFrame {
     public void updateTree() {
         if (dataTablePanel.getSelectedPersonId() != null) {
             try {
-                TreeModel treeModel = JsonParser.get().readValue(generatorController.updateTree(), TreeModel.class);
-                treeScrollPane.generateTreePanel(treeModel);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                treeScrollPane.generateTreePanel(Connections.updateTree());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -191,28 +173,19 @@ public class Window extends JFrame {
         return treeScrollPane.getTreePanel();
     }
 
-    public void generateDocument() {
+    public void generateDocument() throws URISyntaxException, IOException {
         if (dataTablePanel.getSelectedPersonId() != null) {
             Long personId = dataTablePanel.getSelectedPersonId();
-            final DocumentController documentController = new DocumentController();
-            documentController.generateTreeModels(personId, WordGenerator.FORMAT_A4)
-                    .stream().map(treeNodelString -> {
-                                try {
-                                    return JsonParser.get().readValue(treeNodelString, TreeModel.class);
-                                } catch (JsonProcessingException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                    )
-                    .forEach(treeModel -> {
-                                TreePanel familyPanel = generateTreePanel(treeModel);
-                                documentController.loadImage(familyPanel.getStream(), treeModel.treeName(), familyPanel.getPreferredSize().width, familyPanel.getPreferredSize().height);
-                            }
-                    );
+
+            TreeModel[] models = Connections.generateTreeModels(personId, PageFormat.FORMAT_A4);
+            for (TreeModel treeModel : models) {
+                TreePanel familyPanel = generateTreePanel(treeModel);
+                Connections.uploadImageToDoc(familyPanel.getStream(), treeModel.treeName(), familyPanel.getPreferredSize());
+            }
 
             String personName = dataTablePanel.getSelectedPersonName();
             try {
-                documentController.saveDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personName + ".docx");
+                Connections.saveDocument(System.getProperty("user.home") + "/Documents/Genealogie/" + personName + ".docx");
             } catch (IOException ex) {
                 System.out.println("It is not possible to save document: " + ex.getMessage());
             }

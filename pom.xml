@@ -28,14 +28,6 @@
             <artifactId>httpmime</artifactId>
             <version>${appache.version}</version>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-swing -->
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-swing</artifactId>
-            <version>1.16</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -29,7 +29,7 @@ public class VerticalPersonPanel extends PersonPanel {
         DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.date() != null) {
             birthDateString = "\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale());
-            if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
+            if (configuration.isShowPlaces() && birthDatePlace.place() != null && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlaceString = Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {

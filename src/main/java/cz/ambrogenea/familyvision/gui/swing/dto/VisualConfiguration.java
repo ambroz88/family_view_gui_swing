@@ -172,7 +172,7 @@ public class VisualConfiguration {
     }
 
     public Locale getLocale() {
-        return locale;
+        return new Locale("cs", "CZ");
     }
 
     public void setLocale(Locale locale) {

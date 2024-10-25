@@ -18,10 +18,13 @@ import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
 public class Connections {
+
+    public static final ContentType TEXT_CONTENT_TYPE = ContentType.create(ContentType.DEFAULT_TEXT.getMimeType(), StandardCharsets.UTF_8.name());
 
     public static FamilyTree[] getTrees() throws IOException {
         return getResponse(new HttpGet(Endpoints.FAMILY_TREES), FamilyTree[].class);
@@ -95,7 +98,7 @@ public class Connections {
     public static void uploadImageToDoc(InputStream imageStream, String familyName, Dimension size) throws IOException {
         HttpEntity entity = MultipartEntityBuilder.create()
                 .addBinaryBody("image", FileIO.copyInputStreamToFile(imageStream, familyName), ContentType.DEFAULT_BINARY, familyName)
-                .addTextBody("familyName", familyName, ContentType.DEFAULT_TEXT)
+                .addTextBody("familyName", familyName, TEXT_CONTENT_TYPE)
                 .addTextBody("imageWidth", String.valueOf(size.width), ContentType.DEFAULT_TEXT)
                 .addTextBody("imageHeight", String.valueOf(size.height), ContentType.DEFAULT_TEXT)
                 .build();

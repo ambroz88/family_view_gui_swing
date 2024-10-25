@@ -194,8 +194,9 @@ public class Window extends JFrame {
 
     private TreePanel generateTreePanel(TreeModel treeModel) {
         TreePanel treePanel = new TreePanel(treeModel);
-        treePanel.addNotify();
-        treePanel.validate();
+//        treePanel.addNotify();
+//        treePanel.validate();
+        treePanel.repaint();
         return treePanel;
     }
 

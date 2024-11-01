@@ -21,7 +21,7 @@ public class Table extends DefaultTableModel {
 
     public Table(List<Person> persons) {
         this.persons = persons;
-        this.locale = Config.visual().getLocale();
+        this.locale = Config.tree().getLocale();
         setColumnIdentifiers(getHeaderNames());
     }
 

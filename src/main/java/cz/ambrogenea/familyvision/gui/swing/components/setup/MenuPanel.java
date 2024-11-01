@@ -1,18 +1,14 @@
 package cz.ambrogenea.familyvision.gui.swing.components.setup;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.DataController;
-import cz.ambrogenea.familyvision.controller.FamilyTreeController;
 import cz.ambrogenea.familyvision.gui.swing.Window;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.description.Menu;
-import cz.ambrogenea.familyvision.gui.swing.dto.FamilyTree;
 import cz.ambrogenea.familyvision.gui.swing.dto.FamilyTreeRequest;
+import cz.ambrogenea.familyvision.gui.swing.dto.FamilyTree;
+import cz.ambrogenea.familyvision.gui.swing.http.Connections;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
-import cz.ambrogenea.familyvision.gui.swing.service.JsonParser;
-import org.xml.sax.SAXParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +17,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -59,7 +58,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.visual().getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.tree().getLocale());
         BufferedImage loadInputImage;
         BufferedImage saveButtonImage;
         BufferedImage logoImage;
@@ -85,6 +84,13 @@ public class MenuPanel extends JPanel {
 
         logoLabel = new JLabel(new ImageIcon(logoImage));
         treeSelectionModel = new DefaultComboBoxModel<>();
+        try {
+            FamilyTree[] trees = Connections.getTrees();
+            treeSelectionModel.addAll(Arrays.stream(trees).toList());
+            treeSelectionModel.setSelectedItem(null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         treeSelection = new JComboBox<>(treeSelectionModel);
         treeSelection.setPreferredSize(new Dimension(3 * Dimensions.TREE_BUTTON_DIMENSION.width, 20));
     }
@@ -123,20 +129,14 @@ public class MenuPanel extends JPanel {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = openFC.getSelectedFile();
-            FamilyTreeController familyTreeController = new FamilyTreeController();
             try {
-                String request = JsonParser.get().writeValueAsString(new FamilyTreeRequest(file.getName()));
-                String response = familyTreeController.create(request);
-                FamilyTree tree = JsonParser.get().readValue(response, FamilyTree.class);
-
-                DataController dataController = new DataController();
-                dataController.parseData(file, tree.id());
-
-                treeSelectionModel.addElement(tree);
+                FamilyTree tree = Connections.createTree(new FamilyTreeRequest(file.getName()));
+                Connections.uploadData(file, tree.id());
+                FamilyTree[] trees = Connections.getTrees();
+                treeSelectionModel.removeAllElements();
+                treeSelectionModel.addAll(Arrays.stream(trees).toList());
                 treeSelectionModel.setSelectedItem(tree);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException | SAXParseException ex) {
+            } catch (IOException ex) {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("Opening file: " + file.getName() + ".");
@@ -147,7 +147,7 @@ public class MenuPanel extends JPanel {
 
     private void treeSelectionPropertyChanged(ItemEvent propertyChangeEvent) {
         FamilyTree tree = (FamilyTree) propertyChangeEvent.getItem();
-        if (Objects.equals(tree.treeName(), getSelectedTree().treeName())) {
+        if (getSelectedTree() != null && Objects.equals(tree.treeName(), getSelectedTree().treeName())) {
             window.loadTable(tree);
         }
     }
@@ -178,7 +178,11 @@ public class MenuPanel extends JPanel {
     }
 
     private void docButtonActionPerformed(ActionEvent evt) {
-        window.generateDocument();
+        try {
+            window.generateDocument();
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

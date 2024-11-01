@@ -28,8 +28,8 @@ public class VerticalPersonPanel extends PersonPanel {
         String birthDateString = "";
         DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.date() != null) {
-            birthDateString = "\u002A " + birthDatePlace.getLocalizedDate(configuration.getLocale());
-            if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
+            birthDateString = "\u002A " + birthDatePlace.textDate();
+            if (configuration.isShowPlaces() && birthDatePlace.place() != null && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlaceString = Tools.cityShortVersion(birthDatePlace.getSimplePlace());
                 } else {
@@ -51,7 +51,7 @@ public class VerticalPersonPanel extends PersonPanel {
 
         DatePlace deathDatePlace = person.deathDatePlace();
         if (configuration.isShowAge() && deathDatePlace.date() != null) {
-            death.setText("\u2020 " + deathDatePlace.getLocalizedDate(configuration.getLocale()));
+            death.setText("\u2020 " + deathDatePlace.textDate());
             if (configuration.isShowPlaces() && !deathDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText(Tools.cityShortVersion(deathDatePlace.getSimplePlace()));

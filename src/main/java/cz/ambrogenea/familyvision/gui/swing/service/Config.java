@@ -1,34 +1,46 @@
 package cz.ambrogenea.familyvision.gui.swing.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.ambrogenea.familyvision.controller.TreeShapeConfigurationController;
-import cz.ambrogenea.familyvision.controller.VisualConfigurationController;
+import cz.ambrogenea.familyvision.gui.swing.dto.PersonVisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
-import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.dto.TreeVisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.http.Connections;
+
+import java.io.IOException;
 
 public class Config {
 
-    private static VisualConfiguration visualConfiguration;
+    private static TreeVisualConfiguration treeVisualConfiguration;
+    private static PersonVisualConfiguration personVisualConfiguration;
     private static TreeShapeConfiguration treeShapeConfiguration;
 
-    public static VisualConfiguration visual() {
-        if (visualConfiguration == null) {
+    public static TreeVisualConfiguration tree() {
+        if (treeVisualConfiguration == null) {
             try {
-                visualConfiguration = JsonParser.get().readValue(new VisualConfigurationController().get(), VisualConfiguration.class);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                return null;
+                treeVisualConfiguration = Connections.getTreeVisualConfiguration();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
-        return visualConfiguration;
+        return treeVisualConfiguration;
+    }
+
+    public static PersonVisualConfiguration person() {
+        if (personVisualConfiguration == null) {
+            try {
+                personVisualConfiguration = Connections.getPersonVisualConfiguration();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return personVisualConfiguration;
     }
 
     public static TreeShapeConfiguration treeShape() {
         if (treeShapeConfiguration == null) {
             try {
-                treeShapeConfiguration = JsonParser.get().readValue(new TreeShapeConfigurationController().get(), TreeShapeConfiguration.class);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                treeShapeConfiguration = Connections.getThreeShapeConfiguration();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         return treeShapeConfiguration;

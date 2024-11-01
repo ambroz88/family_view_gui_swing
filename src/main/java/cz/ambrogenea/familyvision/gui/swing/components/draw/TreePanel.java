@@ -5,9 +5,9 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.enums.Background;
+import cz.ambrogenea.familyvision.gui.swing.enums.CoupleType;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
 import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;
-import cz.ambrogenea.familyvision.gui.swing.enums.LabelType;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.imageio.ImageIO;
@@ -28,30 +28,29 @@ public class TreePanel extends JPanel {
 
     private static final String TITLE_FONT = "Monotype Corsiva";
     private static final int TITLE_SIZE = 50;
-    private static final int LABEL_GAP = 4;
     private static final int BASE_LINE_WIDTH = 2;
     private static final String MALE_SIGN = "\u2642";
     private static final String FEMALE_SIGN = "\u2640";
 
     private final TreeModel treeModel;
-    private final VisualConfiguration configuration;
+    private final PersonVisualConfiguration configuration;
     private JTextField title;
 
     public TreePanel(TreeModel treeModel) {
         this.treeModel = treeModel;
-        this.configuration = Config.visual();
+        this.configuration = Config.person();
         initPanel();
     }
 
     private void initPanel() {
-        if (configuration.getBackground() == Background.WHITE) {
+        if (Config.tree().getBackground() == Background.WHITE) {
             setBackground(Color.WHITE);
-        } else if (configuration.getBackground() == Background.TRANSPARENT) {
+        } else if (Config.tree().getBackground() == Background.TRANSPARENT) {
             setOpaque(false);
         }
         this.setLayout(null);
         setPreferredSize(new Dimension(treeModel.pageSetup().pictureWidth(), treeModel.pageSetup().pictureHeight()));
-        if (Config.visual().isShowTitle()) {
+        if (Config.tree().isShowTitle()) {
             title = new JTextField(treeModel.treeName());
             title.setHorizontalAlignment(JTextField.CENTER);
             title.setFont(new Font(TITLE_FONT, Font.BOLD, TITLE_SIZE));
@@ -65,7 +64,7 @@ public class TreePanel extends JPanel {
 
         treeModel.marriages().forEach(marriage -> {
                     drawMarriageLabel(marriage);
-                    if (configuration.isShowChildrenCount() && marriage.boysCount() + marriage.girlsCount() > 1) {
+                    if (Config.tree().isShowChildrenCount() && marriage.boysCount() + marriage.girlsCount() > 1) {
                         drawChildrenPanel(marriage);
                     }
                 }
@@ -78,11 +77,11 @@ public class TreePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        if (configuration.getBackground() == Background.PAPER) {
+        if (Config.tree().getBackground() == Background.PAPER) {
             addImageBackground(g2);
         }
         g2.setColor(Colors.LINE_COLOR);
-        if (Config.visual().isShowTitle()) {
+        if (Config.tree().isShowTitle()) {
             title.setBounds(
                     0, Spaces.HORIZONTAL_GAP,
                     treeModel.pageSetup().pictureWidth(), Spaces.TITLE_HEIGHT
@@ -112,10 +111,18 @@ public class TreePanel extends JPanel {
         g2.setColor(Colors.LINE_COLOR);
         treeModel.arcs().forEach(arc -> {
             g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
+            int startAngle;
+            if (arc.startAngle() == 90) {
+                startAngle = 270;
+            } else if (arc.startAngle() == 270) {
+                startAngle = 90;
+            } else {
+                startAngle = arc.startAngle();
+            }
             g2.drawArc(
-                    recalculateX(arc.leftUpperCorner().x()),
-                    recalculateY(arc.leftUpperCorner().y()),
-                    2 * Arc.RADIUS, 2 * Arc.RADIUS, arc.startAngle(), Arc.ANGLE_SIZE
+                    recalculateX(arc.centerX()) - Arc.RADIUS,
+                    recalculateY(arc.centerY()) - Arc.RADIUS,
+                    2 * Arc.RADIUS, 2 * Arc.RADIUS, startAngle, -Arc.ANGLE_SIZE
             );
         });
 
@@ -165,11 +172,11 @@ public class TreePanel extends JPanel {
                     g2.setColor(Colors.LABEL_BACKGROUND);
                     g2.setStroke(new BasicStroke(lineStrokeExtra + BASE_LINE_WIDTH));
 
-                    if (configuration.getMarriageLabelShape().equals(LabelShape.OVAL)) {
+                    if (Config.tree().getMarriageLabelShape().equals(LabelShape.OVAL)) {
                         g2.fillRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
                         g2.setColor(Colors.LINE_COLOR);
                         g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, cornerSize, cornerSize);
-                    } else if (configuration.getMarriageLabelShape().equals(LabelShape.RECTANGLE)) {
+                    } else if (Config.tree().getMarriageLabelShape().equals(LabelShape.RECTANGLE)) {
                         g2.fillRect(rect.x, rect.y, rect.width, rect.height);
                         g2.setColor(Colors.LINE_COLOR);
                         g2.drawRect(rect.x, rect.y, rect.width, rect.height);
@@ -243,7 +250,7 @@ public class TreePanel extends JPanel {
 
     private JComponent createDateComponent(Marriage marriage) {
         JComponent dateComponent;
-        if (marriage.labelType() == LabelType.TALL) {
+        if (marriage.rectangle().height() > Spaces.VERT_MARRIAGE_LABEL_HEIGHT) {
             int index = marriage.date().lastIndexOf(" ");
             if (index != -1) {
                 String date = marriage.date().substring(0, index);
@@ -270,57 +277,37 @@ public class TreePanel extends JPanel {
     }
 
     private Rectangle getMarriageDateRect(Marriage marriage) {
-        if (marriage.labelType() == LabelType.LONG) {
-            return getLongRectangle(marriage);
-        } else {
-            return getTallRectangle(marriage, Spaces.HORIZ_MARRIAGE_LABEL_WIDTH);
-        }
-    }
-
-    private Rectangle getMarriageLabelRect(Marriage marriage) {
-        if (marriage.labelType() == LabelType.LONG) {
-            return getLongRectangle(marriage);
-        } else {
-            int width;
-            if (configuration.getMarriageLabelShape() == LabelShape.OVAL) {
-                width = Spaces.HORIZ_MARRIAGE_LABEL_WIDTH - LABEL_GAP;
-            } else {
-                width = configuration.getAdultImageWidth() + Spaces.HORIZ_MARRIAGE_LABEL_WIDTH;
-            }
-            return getTallRectangle(marriage, width);
-        }
-    }
-
-    private Rectangle getTallRectangle(Marriage marriage, int width) {
-        return recalculation(
-                marriage.position().x() - width / 2,
-                marriage.position().y() - Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT / 2,
-                width,
-                Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT
+        return new Rectangle(
+                recalculateX(marriage.rectangle().x()),
+                recalculateY(marriage.rectangle().y()),
+                marriage.rectangle().width(),
+                marriage.rectangle().height()
         );
     }
 
-    private Rectangle getLongRectangle(Marriage marriage) {
-        int height = Spaces.VERT_MARRIAGE_LABEL_HEIGHT - LABEL_GAP;
-        return recalculation(
-                marriage.position().x(),
-                marriage.position().y() - height / 2,
-                Math.max(Spaces.MIN_VERT_MARRIAGE_LABEL_WIDTH, (int) (configuration.getAdultImageWidth() / 3.0 * 2)),
-                height
+    private Rectangle getMarriageLabelRect(Marriage marriage) {
+        if (Config.tree().getCoupleType() == CoupleType.VERTICAL) {
+            return getMarriageDateRect(marriage);
+        }
+        return new Rectangle(
+                recalculateX(marriage.rectangle().x() + 2),
+                recalculateY(marriage.rectangle().y()),
+                marriage.rectangle().width() - 4,
+                marriage.rectangle().height()
         );
     }
 
     private Rectangle getChildrenCountRectangle(Marriage marriage) {
-        if (marriage.labelType() == LabelType.LONG) {
+        if (marriage.rectangle().width() > Spaces.HORIZ_MARRIAGE_LABEL_WIDTH) {
             return recalculation(
-                    marriage.position().x() - Spaces.RESIDENCE_SIZE,
-                    marriage.position().y() + Spaces.VERT_MARRIAGE_LABEL_HEIGHT / 2 + 5,
+                    marriage.rectangle().x() - Spaces.RESIDENCE_SIZE,
+                    marriage.rectangle().y() + marriage.rectangle().height() / 2 + Spaces.VERT_MARRIAGE_LABEL_HEIGHT / 2 + 5,
                     2 * Spaces.RESIDENCE_SIZE, Spaces.CHILDREN_PANEL_HEIGHT
             );
         } else {
             return recalculation(
-                    marriage.position().x() - Spaces.RESIDENCE_SIZE,
-                    marriage.position().y() + Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT / 2 + 5,
+                    marriage.rectangle().x() + marriage.rectangle().width() / 2 - Spaces.RESIDENCE_SIZE,
+                    marriage.rectangle().y() + marriage.rectangle().height() / 2 + Spaces.HORIZ_MARRIAGE_LABEL_HEIGHT / 2 + 5,
                     2 * Spaces.RESIDENCE_SIZE, Spaces.CHILDREN_PANEL_HEIGHT
             );
         }
@@ -371,7 +358,14 @@ public class TreePanel extends JPanel {
             number.setSize(Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE);
             number.setFont(new Font(Font.SANS_SERIF, Font.BOLD, configuration.getAdultFontSize() - 2));
             this.add(number);
-            number.setBounds(recalculation(residence.position(), Spaces.RESIDENCE_SIZE, Spaces.RESIDENCE_SIZE));
+            Position position = residence.position();
+            number.setBounds(
+                    new Rectangle(
+                            recalculateX(position.x()),
+                            recalculateY(position.y()),
+                            Spaces.RESIDENCE_SIZE,
+                            Spaces.RESIDENCE_SIZE
+                    ));
         }
     }
 
@@ -389,15 +383,6 @@ public class TreePanel extends JPanel {
         }
     }
 
-    private Rectangle recalculation(Position position, int width, int height) {
-        return new Rectangle(
-                recalculateX(position.x()),
-                recalculateY(position.y()),
-                width,
-                height
-        );
-    }
-
     private Rectangle recalculation(int x, int y, int width, int height) {
         return new Rectangle(
                 recalculateX(x),
@@ -413,7 +398,7 @@ public class TreePanel extends JPanel {
 
     private int recalculateY(int y) {
         int titleHeight = 0;
-        if (Config.visual().isShowTitle()) {
+        if (Config.tree().isShowTitle()) {
             titleHeight = Spaces.TITLE_HEIGHT;
         }
         return y - treeModel.pageSetup().startPosition().y() + titleHeight;

@@ -5,12 +5,10 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.description.TreeSetup;
 import cz.ambrogenea.familyvision.gui.swing.dto.TreeShapeConfiguration;
-import cz.ambrogenea.familyvision.gui.swing.enums.CoupleType;
 import cz.ambrogenea.familyvision.gui.swing.enums.LineageType;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,30 +17,30 @@ import java.util.ResourceBundle;
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class TreeSetupPanel extends JPanel {
+public class TreeShapeSetupPanel extends JPanel {
 
     private final Window window;
     private final TreeShapeConfiguration configuration;
 
     private JLabel lineageTypeLabel;
     private JComboBox<String> lineageTypeComboBox;
-    private JLabel coupleTypeLabel;
-    private JComboBox<String> coupleTypeComboBox;
+
     private JLabel ancestorGenerationLabel;
     private JSpinner ancestorGenerationSpinner;
     private JLabel descendentGenerationLabel;
     private JSpinner descendentGenerationSpinner;
+    private JLabel showSiblingsLabel;
     private JCheckBox showSiblingsCheckbox;
+    private JLabel showSiblingSpouseLabel;
     private JCheckBox showSiblingSpouseCheckbox;
+    private JLabel showSpousesLabel;
     private JCheckBox showSpousesCheckbox;
-    private JCheckBox heraldryCheckBox;
-    private JCheckBox residenceCheckBox;
 
-    public TreeSetupPanel(Window window) {
+    public TreeShapeSetupPanel(Window window) {
+        super(new FlowLayout(FlowLayout.LEFT, 5, 5));
         this.window = window;
         this.configuration = Config.treeShape();
-        this.setPreferredSize(Dimensions.TREE_SETUP_DIMENSION);
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        this.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
         this.setBackground(Colors.SW_BACKGROUND);
 
         initComponents();
@@ -51,97 +49,100 @@ public class TreeSetupPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", Config.visual().getLocale());
-        this.setBorder(new TitledBorder(description.getString(TreeSetup.TITLE)));
+        ResourceBundle description = ResourceBundle.getBundle("language/treeSetup", configuration.getLocale());
 
         lineageTypeLabel = new JLabel(description.getString(TreeSetup.LINEAGE_TYPE));
+        lineageTypeLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
         lineageTypeLabel.setOpaque(false);
         lineageTypeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(LineageType.getStrings()));
-        lineageTypeComboBox.setSelectedItem(configuration.getLineageType());
-        coupleTypeLabel = new JLabel(description.getString(TreeSetup.COUPLE_TYPE));
-        coupleTypeLabel.setOpaque(false);
-        coupleTypeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(CoupleType.getStrings()));
-        coupleTypeComboBox.setSelectedItem(configuration.getCoupleType());
+        lineageTypeComboBox.setSelectedItem(configuration.getLineageType().toString());
 
         ancestorGenerationLabel = new JLabel(description.getString(TreeSetup.ANCESTORS));
         ancestorGenerationLabel.setOpaque(false);
+        ancestorGenerationLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
         ancestorGenerationSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAncestorGenerations(), 0, 20, 1));
         descendentGenerationLabel = new JLabel(description.getString(TreeSetup.DESCENDENTS));
         descendentGenerationLabel.setOpaque(false);
+        descendentGenerationLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
         descendentGenerationSpinner = new JSpinner(new SpinnerNumberModel(configuration.getDescendentGenerations(), 0, 20, 1));
 
-        showSiblingsCheckbox = new JCheckBox(description.getString(TreeSetup.SIBLINGS));
-        showSiblingsCheckbox.setSelected(configuration.isShowSiblings());
+        showSiblingsLabel = new JLabel(description.getString(TreeSetup.SIBLINGS));
+        showSiblingsLabel.setOpaque(false);
+        showSiblingsLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
+        showSiblingsCheckbox = new JCheckBox();
         showSiblingsCheckbox.setOpaque(false);
-        showSiblingSpouseCheckbox = new JCheckBox(description.getString(TreeSetup.SIBLINGS_SPOUSE));
+
+        showSiblingSpouseLabel = new JLabel(description.getString(TreeSetup.SIBLINGS_SPOUSE));
+        showSiblingSpouseLabel.setOpaque(false);
+        showSiblingSpouseLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
+        showSiblingSpouseCheckbox = new JCheckBox();
         showSiblingSpouseCheckbox.setSelected(configuration.isShowSiblingSpouses());
         showSiblingSpouseCheckbox.setOpaque(false);
-        showSpousesCheckbox = new JCheckBox(description.getString(TreeSetup.SPOUSES));
+
+        showSpousesLabel = new JLabel(description.getString(TreeSetup.SPOUSES));
+        showSpousesLabel.setOpaque(false);
+        showSpousesLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
+        showSpousesCheckbox = new JCheckBox();
         showSpousesCheckbox.setSelected(configuration.isShowSpouses());
         showSpousesCheckbox.setOpaque(false);
-        heraldryCheckBox = new JCheckBox(description.getString(TreeSetup.HERALDRY));
-        heraldryCheckBox.setSelected(configuration.isShowHeraldry());
-        heraldryCheckBox.setOpaque(false);
-        residenceCheckBox = new JCheckBox(description.getString(TreeSetup.RESIDENCE));
-        residenceCheckBox.setSelected(configuration.isShowResidence());
-        residenceCheckBox.setOpaque(false);
     }
 
     private void initActions() {
         lineageTypeComboBox.addActionListener(this::lineageTypeComboBoxActionPerformed);
-        coupleTypeComboBox.addActionListener(this::coupleTypeComboBoxActionPerformed);
         ancestorGenerationSpinner.addChangeListener(this::ancestorGenerationSpinnerStateChanged);
         descendentGenerationSpinner.addChangeListener(this::descendentGenerationSpinnerStateChanged);
         showSiblingsCheckbox.addActionListener(this::showSiblingsCheckboxActionPerformed);
         showSiblingSpouseCheckbox.addActionListener(this::showSiblingSpouseActionPerformed);
         showSpousesCheckbox.addActionListener(this::showSpousesCheckboxActionPerformed);
-        heraldryCheckBox.addActionListener(this::heraldryCheckBoxActionPerformed);
-        residenceCheckBox.addActionListener(this::residenceCheckBoxActionPerformed);
     }
 
     private void addComponents() {
-        JPanel lineagePanel = new JPanel(new BorderLayout());
-        lineagePanel.add(lineageTypeLabel, BorderLayout.WEST);
-        lineagePanel.add(lineageTypeComboBox, BorderLayout.EAST);
-        lineagePanel.setBackground(Colors.SW_BACKGROUND);
+        JPanel generationPanel = new JPanel(new GridBagLayout());
+        generationPanel.setBackground(Colors.SW_BACKGROUND);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5,0,0,5);
+        constraints.anchor = GridBagConstraints.WEST;
+        generationPanel.add(lineageTypeLabel, constraints);
+        constraints.gridwidth = 2;
+        generationPanel.add(lineageTypeComboBox, constraints);
 
-        JPanel couplePanel = new JPanel(new BorderLayout());
-        couplePanel.add(coupleTypeLabel, BorderLayout.WEST);
-        couplePanel.add(coupleTypeComboBox, BorderLayout.EAST);
-        couplePanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 1;
+        generationPanel.add(ancestorGenerationLabel, constraints);
+        constraints.gridwidth = 1;
+        generationPanel.add(ancestorGenerationSpinner, constraints);
 
-        JPanel ancestorPanel = new JPanel(new BorderLayout());
-        ancestorPanel.add(ancestorGenerationSpinner, BorderLayout.EAST);
-        ancestorPanel.add(ancestorGenerationLabel, BorderLayout.CENTER);
-        ancestorPanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 2;
+        constraints.gridwidth = 2;
+        generationPanel.add(descendentGenerationLabel, constraints);
+        constraints.gridwidth = 1;
+        generationPanel.add(descendentGenerationSpinner, constraints);
 
-        JPanel descendentPanel = new JPanel(new BorderLayout());
-        descendentPanel.add(descendentGenerationSpinner, BorderLayout.EAST);
-        descendentPanel.add(descendentGenerationLabel, BorderLayout.CENTER);
-        descendentPanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.insets.top = 3;
+        constraints.gridy = 3;
+        constraints.gridwidth = 2;
+        generationPanel.add(showSiblingsLabel, constraints);
+        constraints.gridwidth = 1;
+        generationPanel.add(showSiblingsCheckbox, constraints);
 
-        this.add(lineagePanel);
-        this.add(couplePanel);
-        this.add(ancestorPanel);
-        this.add(descendentPanel);
+        constraints.gridy = 4;
+        constraints.gridwidth = 2;
+        generationPanel.add(showSiblingSpouseLabel, constraints);
+        constraints.gridwidth = 1;
+        generationPanel.add(showSiblingSpouseCheckbox, constraints);
 
-        this.add(showSiblingsCheckbox);
-        this.add(showSiblingSpouseCheckbox);
-        this.add(showSpousesCheckbox);
-        this.add(heraldryCheckBox);
-        this.add(residenceCheckBox);
+        constraints.gridy = 5;
+        constraints.gridwidth = 2;
+        generationPanel.add(showSpousesLabel, constraints);
+        constraints.gridwidth = 1;
+        generationPanel.add(showSpousesCheckbox, constraints);
+
+        this.add(generationPanel);
     }
 
     private void lineageTypeComboBoxActionPerformed(ActionEvent actionEvent) {
         configuration.setLineageType(LineageType.valueOf(lineageTypeComboBox.getSelectedItem().toString()));
         window.updateConfiguration(configuration);
         window.generateTree();
-    }
-
-    private void coupleTypeComboBoxActionPerformed(ActionEvent evt) {
-        configuration.setCoupleType(CoupleType.valueOf(coupleTypeComboBox.getSelectedItem().toString()));
-        window.updateConfiguration(configuration);
-        window.updateTree();
     }
 
     private void ancestorGenerationSpinnerStateChanged(ChangeEvent evt) {
@@ -192,18 +193,6 @@ public class TreeSetupPanel extends JPanel {
         }
         window.updateConfiguration(configuration);
         window.generateTree();
-    }
-
-    private void heraldryCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowHeraldry(heraldryCheckBox.isSelected());
-        window.updateConfiguration(configuration);
-        window.updateTree();
-    }
-
-    private void residenceCheckBoxActionPerformed(ActionEvent evt) {
-        configuration.setShowResidence(residenceCheckBox.isSelected());
-        window.updateConfiguration(configuration);
-        window.updateTree();
     }
 
 }

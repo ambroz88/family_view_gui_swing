@@ -1,39 +1,30 @@
 package cz.ambrogenea.familyvision.gui.swing.dto;
 
-import cz.ambrogenea.familyvision.gui.swing.enums.Background;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
-import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;
 
 import java.util.Locale;
 
 /**
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
-public class VisualConfiguration {
+public class PersonVisualConfiguration {
+
     private int adultImageWidth;
     private int adultImageHeight;
     private int adultFontSize;
     private int siblingImageWidth;
     private int siblingImageHeight;
     private int siblingFontSize;
-
     private Diagram diagram;
-    private LabelShape marriageLabelShape;
-    private Background background;
     private int verticalShift;
-
     private boolean showAge;
     private boolean showOccupation;
-    private boolean showTitle;
     private boolean showPlaces;
     private boolean shortenPlaces;
     private boolean showOrdinances;
-    private boolean showChildrenCount;
 
-    private Locale locale;
-    private boolean resetMode;
-
-    public VisualConfiguration() {}
+    public PersonVisualConfiguration() {
+    }
 
     public int getAdultImageWidth() {
         return adultImageWidth;
@@ -87,24 +78,8 @@ public class VisualConfiguration {
         return diagram;
     }
 
-    public void setDiagram(Diagram adultDiagram) {
-        this.diagram = adultDiagram;
-    }
-
-    public LabelShape getMarriageLabelShape() {
-        return marriageLabelShape;
-    }
-
-    public void setMarriageLabelShape(LabelShape marriageLabelShape) {
-        this.marriageLabelShape = marriageLabelShape;
-    }
-
-    public Background getBackground() {
-        return background;
-    }
-
-    public void setBackground(Background background) {
-        this.background = background;
+    public void setDiagram(Diagram diagram) {
+        this.diagram = diagram;
     }
 
     public int getVerticalShift() {
@@ -131,14 +106,6 @@ public class VisualConfiguration {
         this.showOccupation = showOccupation;
     }
 
-    public boolean isShowTitle() {
-        return showTitle;
-    }
-
-    public void setShowTitle(boolean showTitle) {
-        this.showTitle = showTitle;
-    }
-
     public boolean isShowPlaces() {
         return showPlaces;
     }
@@ -163,27 +130,7 @@ public class VisualConfiguration {
         this.showOrdinances = showOrdinances;
     }
 
-    public boolean isShowChildrenCount() {
-        return showChildrenCount;
-    }
-
-    public void setShowChildrenCount(boolean showChildrenCount) {
-        this.showChildrenCount = showChildrenCount;
-    }
-
     public Locale getLocale() {
         return new Locale("cs", "CZ");
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
-    public boolean isResetMode() {
-        return resetMode;
-    }
-
-    public void setResetMode(boolean resetMode) {
-        this.resetMode = resetMode;
     }
 }

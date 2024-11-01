@@ -36,7 +36,7 @@ public class PersonPanelMouseController extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent evt) {
-        if (Config.visual().isResetMode()) {
+        if (Config.tree().isResetMode()) {
             personPanel.setAnonymous();
         }
     }

@@ -58,7 +58,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void initComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.visual().getLocale());
+        ResourceBundle description = ResourceBundle.getBundle("language/menu", Config.tree().getLocale());
         BufferedImage loadInputImage;
         BufferedImage saveButtonImage;
         BufferedImage logoImage;

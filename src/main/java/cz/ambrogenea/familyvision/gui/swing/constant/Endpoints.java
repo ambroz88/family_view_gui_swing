@@ -12,8 +12,8 @@ public class Endpoints {
     public static final String TREES = HOSTNAME + "/trees";
     public static final String CONFIG = HOSTNAME + "/config";
     public static final String TREE_SHAPE = CONFIG + "/tree-shape";
-    public static final String VISUAL = CONFIG + "/visual";
-
+    public static final String TREE_VISUAL = CONFIG + "/tree-visual";
+    public static final String PERSON_VISUAL = CONFIG + "/person-visual";
     public static final String DOC_GEN = HOSTNAME + "/doc-generator";
 
 }

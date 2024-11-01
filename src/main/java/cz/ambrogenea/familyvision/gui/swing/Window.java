@@ -2,16 +2,15 @@ package cz.ambrogenea.familyvision.gui.swing;
 
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreePanel;
 import cz.ambrogenea.familyvision.gui.swing.components.draw.TreeScrollPanel;
-import cz.ambrogenea.familyvision.gui.swing.components.setup.DataTablePanel;
-import cz.ambrogenea.familyvision.gui.swing.components.setup.MenuPanel;
-import cz.ambrogenea.familyvision.gui.swing.components.setup.PersonSetupPanel;
-import cz.ambrogenea.familyvision.gui.swing.components.setup.TreeSetupPanel;
+import cz.ambrogenea.familyvision.gui.swing.components.setup.*;
 import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.constant.PageFormat;
+import cz.ambrogenea.familyvision.gui.swing.description.TreeSetup;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.http.Connections;
 import cz.ambrogenea.familyvision.gui.swing.model.Table;
+import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,6 +18,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,10 +31,7 @@ public class Window extends JFrame {
     private static final int BORDER_SIZE = 70;
 
     private MenuPanel loadingDataPanel;
-    private PersonSetupPanel personSetupPanel;
     private DataTablePanel dataTablePanel;
-
-    private TreeSetupPanel treeSetupPanel;
     private TreeScrollPanel treeScrollPane;
 
     public Window() {
@@ -64,10 +61,7 @@ public class Window extends JFrame {
         this.setForeground(Colors.COMPONENT_BACKGROUND);
 
         loadingDataPanel = new MenuPanel(this);
-        personSetupPanel = new PersonSetupPanel(this);
         dataTablePanel = new DataTablePanel(this);
-
-        treeSetupPanel = new TreeSetupPanel(this);
         treeScrollPane = new TreeScrollPanel();
     }
 
@@ -75,23 +69,31 @@ public class Window extends JFrame {
         JPanel leftPanel = new JPanel(new BorderLayout(0, 5));
         leftPanel.setPreferredSize(Dimensions.LEFT_PANEL_DIMENSION);
 
-        JPanel setupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
-        setupPanel.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
-        setupPanel.add(loadingDataPanel);
-        setupPanel.add(personSetupPanel);
-        setupPanel.setBackground(Colors.SW_BACKGROUND);
+        JTabbedPane setupPanel = new JTabbedPane(JTabbedPane.TOP);
+        final TreeShapeSetupPanel treeShapeSetupPanel = new TreeShapeSetupPanel(this);
+        ResourceBundle treeSetupDescription = ResourceBundle.getBundle("language/treeSetup", Config.tree().getLocale());
+        setupPanel.addTab(treeSetupDescription.getString(TreeSetup.TITLE), treeShapeSetupPanel);
 
-        leftPanel.add(setupPanel, BorderLayout.CENTER);
-        leftPanel.add(dataTablePanel, BorderLayout.SOUTH);
+        final TreeVisualSetupPanel treeVisualSetupPanel = new TreeVisualSetupPanel(this);
+        ResourceBundle treeVisualDescription = ResourceBundle.getBundle("language/treeVisualSetup", Config.tree().getLocale());
+        setupPanel.addTab(treeVisualDescription.getString(TreeSetup.TITLE), treeVisualSetupPanel);
+
+        final PersonSetupPanel personSetupPanel = new PersonSetupPanel(this);
+        ResourceBundle personDescription = ResourceBundle.getBundle("language/personSetup", Config.tree().getLocale());
+        setupPanel.addTab(personDescription.getString(TreeSetup.TITLE), personSetupPanel);
+
+        JPanel loadAndSetupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        loadAndSetupPanel.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
+        loadAndSetupPanel.add(loadingDataPanel);
+        loadAndSetupPanel.add(setupPanel);
+        loadAndSetupPanel.setBackground(Colors.SW_BACKGROUND);
+
+        leftPanel.add(loadAndSetupPanel, BorderLayout.NORTH);
+        leftPanel.add(dataTablePanel, BorderLayout.CENTER);
         leftPanel.setBackground(Colors.SW_BACKGROUND);
 
-        JPanel rightPanel = new JPanel(new BorderLayout(0, 5));
-        rightPanel.add(treeSetupPanel, BorderLayout.NORTH);
-        rightPanel.add(treeScrollPane, BorderLayout.CENTER);
-        rightPanel.setBackground(Colors.SW_BACKGROUND);
-
         this.add(leftPanel, BorderLayout.WEST);
-        this.add(rightPanel, BorderLayout.CENTER);
+        this.add(treeScrollPane, BorderLayout.CENTER);
     }
 
     public static void main(String[] args) {
@@ -132,9 +134,9 @@ public class Window extends JFrame {
         return loadingDataPanel.getSelectedTree().id();
     }
 
-    public void updateConfiguration(VisualConfiguration configuration) {
+    public void updateConfiguration(TreeVisualConfiguration configuration) {
         try {
-            Connections.updateVisualConfiguration(configuration);
+            Connections.updateTreeVisualConfiguration(configuration);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -143,6 +145,14 @@ public class Window extends JFrame {
     public void updateConfiguration(TreeShapeConfiguration configuration) {
         try {
             Connections.updateTreeShapeConfiguration(configuration);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateConfiguration(PersonVisualConfiguration configuration) {
+        try {
+            Connections.updatePersonVisualConfiguration(configuration);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

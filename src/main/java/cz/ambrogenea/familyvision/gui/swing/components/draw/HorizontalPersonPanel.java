@@ -29,7 +29,7 @@ public class HorizontalPersonPanel extends PersonPanel {
         String birthDateString = "";
         DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.date() != null) {
-            birthDateString = "\u002A" + birthDatePlace.getLocalizedDate(configuration.getLocale()) + "";
+            birthDateString = "\u002A" + birthDatePlace.textDate();
             if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     birthPlaceString = "," + SPACE + Tools.cityShortVersion(birthDatePlace.getSimplePlace());
@@ -57,7 +57,7 @@ public class HorizontalPersonPanel extends PersonPanel {
 
         DatePlace deathDatePlace = person.deathDatePlace();
         if (configuration.isShowAge() && deathDatePlace.date() != null) {
-            death.setText("\u2020" + deathDatePlace.getLocalizedDate(configuration.getLocale()) + "");
+            death.setText("\u2020" + deathDatePlace.textDate());
             if (configuration.isShowPlaces() && !deathDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
                     deathPlace.setText("," + SPACE + Tools.cityShortVersion(deathDatePlace.getSimplePlace()));

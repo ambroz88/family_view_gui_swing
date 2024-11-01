@@ -34,12 +34,20 @@ public class Connections {
         return getResponse(generateJsonPost(Endpoints.FAMILY_TREES, request), FamilyTree.class);
     }
 
-    public static VisualConfiguration getVisualConfiguration() throws IOException {
-        return getResponse(new HttpGet(Endpoints.VISUAL), VisualConfiguration.class);
+    public static TreeVisualConfiguration getTreeVisualConfiguration() throws IOException {
+        return getResponse(new HttpGet(Endpoints.TREE_VISUAL), TreeVisualConfiguration.class);
     }
 
-    public static void updateVisualConfiguration(VisualConfiguration visualConfiguration) throws IOException {
-        sendRequest(generateJsonPost(Endpoints.VISUAL, visualConfiguration));
+    public static void updateTreeVisualConfiguration(TreeVisualConfiguration visualConfiguration) throws IOException {
+        sendRequest(generateJsonPost(Endpoints.TREE_VISUAL, visualConfiguration));
+    }
+
+    public static PersonVisualConfiguration getPersonVisualConfiguration() throws IOException {
+        return getResponse(new HttpGet(Endpoints.PERSON_VISUAL), PersonVisualConfiguration.class);
+    }
+
+    public static void updatePersonVisualConfiguration(PersonVisualConfiguration visualConfiguration) throws IOException {
+        sendRequest(generateJsonPost(Endpoints.PERSON_VISUAL, visualConfiguration));
     }
 
     public static TreeShapeConfiguration getThreeShapeConfiguration() throws IOException {

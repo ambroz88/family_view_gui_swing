@@ -6,7 +6,10 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
  * @author Jiri Ambroz <ambroz88@seznam.cz>
  */
 public record Arc(
-        Position leftUpperCorner,
+        int centerX,
+        int centerY,
+        int startX,
+        int startY,
         int startAngle
 ) {
 

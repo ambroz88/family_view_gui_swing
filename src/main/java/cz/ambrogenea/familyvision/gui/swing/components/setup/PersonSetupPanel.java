@@ -5,19 +5,15 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Colors;
 import cz.ambrogenea.familyvision.gui.swing.constant.Dimensions;
 import cz.ambrogenea.familyvision.gui.swing.description.PersonBoxSetup;
 import cz.ambrogenea.familyvision.gui.swing.description.PersonSetup;
-import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
-import cz.ambrogenea.familyvision.gui.swing.enums.Background;
+import cz.ambrogenea.familyvision.gui.swing.dto.PersonVisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
-import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -27,24 +23,17 @@ import java.util.ResourceBundle;
 public class PersonSetupPanel extends JPanel {
 
     private final Window window;
-    private final VisualConfiguration configuration;
+    private final PersonVisualConfiguration configuration;
 
     private JCheckBox ageCheckBox;
     private JCheckBox occupationCheckBox;
     private JCheckBox placesCheckBox;
     private JCheckBox shortenPlacesCheckBox;
     private JCheckBox templeCheckBox;
-    private JCheckBox titleCheckBox;
-    private JCheckBox childrenCountCheckBox;
 
     private JLabel diagramLabel;
     private JComboBox<String> diagramComboBox;
-    private JLabel backgroundLabel;
-    private JComboBox<String> backgroundComboBox;
-    private JLabel marriageShapeLabel;
-    private JComboBox<String> marriageShapeComboBox;
 
-    private JPanel personBoxSetupPanel;
     private JLabel directLabel;
     private JLabel sideLabel;
     private JSpinner adultWidthSpinner;
@@ -61,11 +50,11 @@ public class PersonSetupPanel extends JPanel {
 
 
     public PersonSetupPanel(Window window) {
-        super(new BorderLayout(0, 5));
+        super(new FlowLayout(FlowLayout.LEFT));
         this.window = window;
-        this.setPreferredSize(Dimensions.PERSON_SETUP_DIMENSION);
+        this.setPreferredSize(Dimensions.SETUP_PANEL_DIMENSION);
         this.setBackground(Colors.SW_BACKGROUND);
-        configuration = Config.visual();
+        configuration = Config.person();
 
         initComponents();
         initActions();
@@ -73,9 +62,18 @@ public class PersonSetupPanel extends JPanel {
     }
 
     private void initComponents() {
-        Locale locale = configuration.getLocale();
-        ResourceBundle description = ResourceBundle.getBundle("language/personSetup", locale);
-        this.setBorder(new TitledBorder(description.getString(PersonSetup.TITLE)));
+        ResourceBundle description = ResourceBundle.getBundle("language/personSetup", configuration.getLocale());
+
+        diagramLabel = new JLabel(description.getString(PersonSetup.DIAGRAM), JLabel.LEFT);
+        String[] names = new String[Diagram.values().length];
+        for (int i = 0; i < names.length; i++) {
+            names[i] = description.getString(Diagram.values()[i].toString());
+        }
+        diagramComboBox = new JComboBox<>(new DefaultComboBoxModel<>(names));
+        diagramComboBox.setSelectedItem(description.getString(configuration.getDiagram().toString()));
+        verticalShiftSpinner = new JSpinner(new SpinnerNumberModel(configuration.getVerticalShift(), -30, 30, 5));
+        verticalShiftLabel = new JLabel(description.getString(PersonBoxSetup.VERTICAL_SHIFT));
+        verticalShiftLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
 
         ageCheckBox = new JCheckBox(description.getString(PersonSetup.AGE));
         ageCheckBox.setSelected(configuration.isShowAge());
@@ -92,32 +90,19 @@ public class PersonSetupPanel extends JPanel {
         templeCheckBox = new JCheckBox(description.getString(PersonSetup.TEMPLE));
         templeCheckBox.setSelected(configuration.isShowOrdinances());
         templeCheckBox.setOpaque(false);
-        titleCheckBox = new JCheckBox(description.getString(PersonSetup.SHOW_TITLE));
-        titleCheckBox.setSelected(configuration.isShowTitle());
-        titleCheckBox.setOpaque(false);
-        childrenCountCheckBox = new JCheckBox(description.getString(PersonSetup.SHOW_CHILDREN_COUNT));
-        childrenCountCheckBox.setSelected(configuration.isShowChildrenCount());
-        childrenCountCheckBox.setOpaque(false);
 
-        diagramLabel = new JLabel(description.getString(PersonSetup.DIAGRAM), JLabel.LEFT);
-        String[] names = new String[Diagram.values().length];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = description.getString(Diagram.values()[i].toString());
-        }
-        diagramComboBox = new JComboBox<>(new DefaultComboBoxModel<>(names));
-        diagramComboBox.setSelectedItem(description.getString(configuration.getDiagram().toString()));
-        backgroundLabel = new JLabel(description.getString(PersonSetup.BACKGROUND), JLabel.LEFT);
-        backgroundComboBox = new JComboBox<>(new DefaultComboBoxModel<>(Background.getStrings()));
-        backgroundComboBox.setSelectedItem(configuration.getBackground().toString());
-        marriageShapeLabel = new JLabel(description.getString(PersonSetup.MARRIAGE_SHAPE), JLabel.LEFT);
-        marriageShapeComboBox = new JComboBox<>(new DefaultComboBoxModel<>(LabelShape.getStrings()));
-        marriageShapeComboBox.setSelectedItem(configuration.getMarriageLabelShape().toString());
+        directLabel = new JLabel(description.getString(PersonBoxSetup.DIRECT), JLabel.CENTER);
+        sideLabel = new JLabel(description.getString(PersonBoxSetup.SIDE), JLabel.CENTER);
+        heightLabel = new JLabel(description.getString(PersonBoxSetup.HEIGHT));
+        widthLabel = new JLabel(description.getString(PersonBoxSetup.WIDTH));
+        fontSizeLabel = new JLabel(description.getString(PersonBoxSetup.FONT_SIZE));
 
-        personBoxSetupPanel = new JPanel(new GridLayout(5, 3, 10, 5));
-        personBoxSetupPanel.setBackground(Colors.SW_BACKGROUND);
-        initPersonBoxComponents();
-        initPersonBoxActions();
-        addPersonBoxComponents();
+        adultWidthSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageWidth(), 100, 300, 10));
+        adultHeightSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageHeight(), 100, 300, 10));
+        adultFontSizeSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultFontSize(), 10, 22, 1));
+        siblingWidthSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingImageWidth(), 100, 300, 10));
+        siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingImageHeight(), 100, 300, 10));
+        siblingFontSizeSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingFontSize(), 10, 22, 1));
     }
 
     private void initActions() {
@@ -126,56 +111,68 @@ public class PersonSetupPanel extends JPanel {
         placesCheckBox.addActionListener(this::placesCheckBoxActionPerformed);
         shortenPlacesCheckBox.addActionListener(this::shortenPlacesCheckBoxActionPerformed);
         templeCheckBox.addActionListener(this::templeCheckBoxActionPerformed);
-        titleCheckBox.addActionListener(this::titleCheckBoxActionPerformed);
-        childrenCountCheckBox.addActionListener(this::childrenCountCheckBoxActionPerformed);
         diagramComboBox.addActionListener(this::diagramComboBoxActionPerformed);
-        backgroundComboBox.addActionListener(this::backgroundComboBoxActionPerformed);
-        marriageShapeComboBox.addActionListener(this::shapeLabelBoxActionPerformed);
+
+        adultWidthSpinner.addChangeListener(this::adultWidthSpinnerStateChanged);
+        adultHeightSpinner.addChangeListener(this::adultHeightSpinnerStateChanged);
+        adultFontSizeSpinner.addChangeListener(this::fontSizeSpinnerStateChanged);
+        siblingWidthSpinner.addChangeListener(this::siblingsWidthSpinnerStateChanged);
+        siblingHeightSpinner.addChangeListener(this::siblingsHeightSpinnerStateChanged);
+        siblingFontSizeSpinner.addChangeListener(this::siblingFontSizeSpinnerStateChanged);
+        verticalShiftSpinner.addChangeListener(this::adultVerticalShiftSpinnerStateChanged);
     }
 
     private void addComponents() {
-        JPanel checkboxes = new JPanel(new GridLayout(3, 3, 0, 5));
-        checkboxes.add(ageCheckBox);
-        checkboxes.add(occupationCheckBox);
-        checkboxes.add(titleCheckBox);
-        checkboxes.add(placesCheckBox);
-        checkboxes.add(shortenPlacesCheckBox);
-        checkboxes.add(templeCheckBox);
-        checkboxes.add(childrenCountCheckBox);
-        checkboxes.setBackground(Colors.SW_BACKGROUND);
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Colors.SW_BACKGROUND);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 0, 0, 5);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridwidth = 2;
+        panel.add(diagramLabel, constraints);
+        constraints.gridwidth = 1;
+        panel.add(diagramComboBox, constraints);
 
-        JPanel diagramPanel = new JPanel(new BorderLayout());
-        diagramPanel.add(diagramLabel, BorderLayout.NORTH);
-        diagramPanel.add(diagramComboBox, BorderLayout.SOUTH);
-        diagramPanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        panel.add(verticalShiftLabel, constraints);
+        constraints.gridwidth = 1;
+        panel.add(verticalShiftSpinner, constraints);
 
-        JPanel backgroundPanel = new JPanel(new BorderLayout());
-        backgroundPanel.add(backgroundLabel, BorderLayout.NORTH);
-        backgroundPanel.add(backgroundComboBox, BorderLayout.SOUTH);
-        backgroundPanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 2;
+        panel.add(occupationCheckBox, constraints);
+        panel.add(ageCheckBox, constraints);
+        panel.add(templeCheckBox, constraints);
 
-        JPanel marriagePanel = new JPanel(new BorderLayout());
-        marriagePanel.add(marriageShapeLabel, BorderLayout.NORTH);
-        marriagePanel.add(marriageShapeComboBox, BorderLayout.SOUTH);
-        marriagePanel.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 3;
+        panel.add(placesCheckBox, constraints);
+        constraints.gridwidth = 2;
+        panel.add(shortenPlacesCheckBox, constraints);
 
-        JPanel comboBoxes = new JPanel(new GridLayout(1, 3, 10, 0));
-        comboBoxes.add(diagramPanel);
-        comboBoxes.add(backgroundPanel);
-        comboBoxes.add(marriagePanel);
-        comboBoxes.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridwidth = 1;
+        constraints.insets.top = 10;
+        constraints.gridy = 4;
+        panel.add(new JLabel(""), constraints);
+        panel.add(directLabel, constraints);
+        panel.add(sideLabel, constraints);
 
-        JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
-        sep.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH, 5));
+        constraints.gridy = 5;
+        constraints.insets.top = 5;
+        panel.add(widthLabel, constraints);
+        panel.add(adultWidthSpinner, constraints);
+        panel.add(siblingWidthSpinner, constraints);
 
-        JPanel top = new JPanel(new BorderLayout(0, 5));
-        top.add(comboBoxes, BorderLayout.NORTH);
-        top.add(checkboxes, BorderLayout.CENTER);
-        top.add(sep, BorderLayout.SOUTH);
-        top.setBackground(Colors.SW_BACKGROUND);
+        constraints.gridy = 6;
+        panel.add(heightLabel, constraints);
+        panel.add(adultHeightSpinner, constraints);
+        panel.add(siblingHeightSpinner, constraints);
 
-        this.add(top, BorderLayout.NORTH);
-        this.add(personBoxSetupPanel, BorderLayout.CENTER);
+        constraints.gridy = 7;
+        panel.add(fontSizeLabel, constraints);
+        panel.add(adultFontSizeSpinner, constraints);
+        panel.add(siblingFontSizeSpinner, constraints);
+
+        this.add(panel);
     }
 
     private void ageCheckBoxActionPerformed(ActionEvent evt) {
@@ -212,24 +209,6 @@ public class PersonSetupPanel extends JPanel {
 
     private void templeCheckBoxActionPerformed(ActionEvent evt) {
         configuration.setShowOrdinances(templeCheckBox.isSelected());
-        window.updateConfiguration(configuration);
-        window.updateTree();
-    }
-
-    private void titleCheckBoxActionPerformed(ActionEvent actionEvent) {
-        configuration.setShowTitle(titleCheckBox.isSelected());
-        window.updateConfiguration(configuration);
-        window.updateTree();
-    }
-
-    private void childrenCountCheckBoxActionPerformed(ActionEvent actionEvent) {
-        configuration.setShowChildrenCount(childrenCountCheckBox.isSelected());
-        window.updateConfiguration(configuration);
-        window.updateTree();
-    }
-
-    private void shapeLabelBoxActionPerformed(ActionEvent evt) {
-        configuration.setMarriageLabelShape(LabelShape.valueOf(marriageShapeComboBox.getSelectedItem().toString()));
         window.updateConfiguration(configuration);
         window.updateTree();
     }
@@ -278,65 +257,6 @@ public class PersonSetupPanel extends JPanel {
                 break;
             }
         }
-    }
-
-    private void backgroundComboBoxActionPerformed(ActionEvent actionEvent) {
-        configuration.setBackground(Background.valueOf(backgroundComboBox.getSelectedItem().toString()));
-        window.updateConfiguration(configuration);
-        window.updateTree();
-    }
-
-    private void initPersonBoxComponents() {
-        ResourceBundle description = ResourceBundle.getBundle("language/personBoxSetup", configuration.getLocale());
-        directLabel = new JLabel(description.getString(PersonBoxSetup.DIRECT), JLabel.CENTER);
-        sideLabel = new JLabel(description.getString(PersonBoxSetup.SIDE), JLabel.CENTER);
-        heightLabel = new JLabel(description.getString(PersonBoxSetup.HEIGHT), JLabel.CENTER);
-        heightLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
-        widthLabel = new JLabel(description.getString(PersonBoxSetup.WIDTH), JLabel.CENTER);
-        widthLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
-        fontSizeLabel = new JLabel(description.getString(PersonBoxSetup.FONT_SIZE), JLabel.CENTER);
-        fontSizeLabel.setPreferredSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH / 3, Dimensions.BUTTON_HEIGHT));
-
-        adultWidthSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageWidth(), 100, 300, 10));
-        adultHeightSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultImageHeight(), 100, 300, 10));
-        adultFontSizeSpinner = new JSpinner(new SpinnerNumberModel(configuration.getAdultFontSize(), 10, 22, 1));
-        siblingWidthSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingImageWidth(), 100, 300, 10));
-        siblingHeightSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingImageHeight(), 100, 300, 10));
-        siblingFontSizeSpinner = new JSpinner(new SpinnerNumberModel(configuration.getSiblingFontSize(), 10, 22, 1));
-
-        verticalShiftSpinner = new JSpinner(new SpinnerNumberModel(configuration.getVerticalShift(), -30, 30, 5));
-        verticalShiftLabel = new JLabel(description.getString(PersonBoxSetup.VERTICAL_SHIFT), JLabel.CENTER);
-    }
-
-    private void initPersonBoxActions() {
-        adultWidthSpinner.addChangeListener(this::adultWidthSpinnerStateChanged);
-        adultHeightSpinner.addChangeListener(this::adultHeightSpinnerStateChanged);
-        adultFontSizeSpinner.addChangeListener(this::fontSizeSpinnerStateChanged);
-        siblingWidthSpinner.addChangeListener(this::siblingsWidthSpinnerStateChanged);
-        siblingHeightSpinner.addChangeListener(this::siblingsHeightSpinnerStateChanged);
-        siblingFontSizeSpinner.addChangeListener(this::siblingFontSizeSpinnerStateChanged);
-        verticalShiftSpinner.addChangeListener(this::adultVerticalShiftSpinnerStateChanged);
-    }
-
-    private void addPersonBoxComponents() {
-        personBoxSetupPanel.add(directLabel);
-        personBoxSetupPanel.add(new JLabel(""));
-        personBoxSetupPanel.add(sideLabel);
-
-        personBoxSetupPanel.add(adultWidthSpinner);
-        personBoxSetupPanel.add(widthLabel);
-        personBoxSetupPanel.add(siblingWidthSpinner);
-
-        personBoxSetupPanel.add(adultHeightSpinner);
-        personBoxSetupPanel.add(heightLabel);
-        personBoxSetupPanel.add(siblingHeightSpinner);
-
-        personBoxSetupPanel.add(adultFontSizeSpinner);
-        personBoxSetupPanel.add(fontSizeLabel);
-        personBoxSetupPanel.add(siblingFontSizeSpinner);
-
-        personBoxSetupPanel.add(verticalShiftSpinner);
-        personBoxSetupPanel.add(verticalShiftLabel);
     }
 
     private void adultWidthSpinnerStateChanged(ChangeEvent evt) {

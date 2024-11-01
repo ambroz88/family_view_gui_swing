@@ -2,7 +2,7 @@ package cz.ambrogenea.familyvision.gui.swing.components.draw;
 
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.dto.PersonRecord;
-import cz.ambrogenea.familyvision.gui.swing.dto.VisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.dto.PersonVisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.enums.Sex;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.utils.PersonPanelMouseController;
@@ -22,7 +22,7 @@ public abstract class PersonPanel extends JPanel {
     protected static final String SPACE = " ";
 
     protected final PersonRecord person;
-    protected final VisualConfiguration configuration;
+    protected final PersonVisualConfiguration configuration;
     protected BufferedImage personDiagram;
     protected int fontSize;
 
@@ -38,7 +38,7 @@ public abstract class PersonPanel extends JPanel {
         super(new GridBagLayout());
         this.setPreferredSize(dimension);
         this.person = person;
-        this.configuration = Config.visual();
+        this.configuration = Config.person();
 
         initElements();
     }

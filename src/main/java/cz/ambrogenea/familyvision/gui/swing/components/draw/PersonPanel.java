@@ -3,6 +3,7 @@ package cz.ambrogenea.familyvision.gui.swing.components.draw;
 import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.dto.PersonRecord;
 import cz.ambrogenea.familyvision.gui.swing.dto.PersonVisualConfiguration;
+import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
 import cz.ambrogenea.familyvision.gui.swing.enums.Sex;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.utils.PersonPanelMouseController;
@@ -125,17 +126,17 @@ public abstract class PersonPanel extends JPanel {
     }
 
     private void initNamesLabelFont() {
-        if (firstName.getText().length() > 20) {
+        if (Config.person().getDiagram() == Diagram.HERALDRY && firstName.getText().length() > 20) {
             firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize - 1));
-        } else if (firstName.getText().length() > 15) {
+        } else if (Config.person().getDiagram() == Diagram.HERALDRY && firstName.getText().length() > 15) {
             firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
             firstName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 2));
         }
 
-        if (surName.getText().length() > 20) {
+        if (Config.person().getDiagram() == Diagram.HERALDRY && surName.getText().length() > 20) {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize - 1));
-        } else if (surName.getText().length() > 15) {
+        } else if (Config.person().getDiagram() == Diagram.HERALDRY && surName.getText().length() > 15) {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 2));

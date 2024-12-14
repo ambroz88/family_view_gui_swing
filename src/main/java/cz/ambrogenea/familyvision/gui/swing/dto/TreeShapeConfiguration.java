@@ -10,7 +10,7 @@ import java.util.Locale;
 public class TreeShapeConfiguration {
     private LineageType lineageType;
     private int ancestorGenerations;
-    private int descendentGenerations;
+    private int descendantGenerations;
     private boolean showSiblings;
     private boolean showSiblingSpouses;
     private boolean showSpouses;
@@ -34,12 +34,12 @@ public class TreeShapeConfiguration {
         this.ancestorGenerations = ancestorGenerations;
     }
 
-    public int getDescendentGenerations() {
-        return descendentGenerations;
+    public int getDescendantGenerations() {
+        return descendantGenerations;
     }
 
-    public void setDescendentGenerations(int descendentGenerations) {
-        this.descendentGenerations = descendentGenerations;
+    public void setDescendantGenerations(int descendantGenerations) {
+        this.descendantGenerations = descendantGenerations;
     }
 
     public boolean isShowSiblings() {

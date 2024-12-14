@@ -64,7 +64,7 @@ public class TreeShapeSetupPanel extends JPanel {
         descendentGenerationLabel = new JLabel(description.getString(TreeSetup.DESCENDENTS));
         descendentGenerationLabel.setOpaque(false);
         descendentGenerationLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
-        descendentGenerationSpinner = new JSpinner(new SpinnerNumberModel(configuration.getDescendentGenerations(), 0, 20, 1));
+        descendentGenerationSpinner = new JSpinner(new SpinnerNumberModel(configuration.getDescendantGenerations(), 0, 20, 1));
 
         showSiblingsLabel = new JLabel(description.getString(TreeSetup.SIBLINGS));
         showSiblingsLabel.setOpaque(false);
@@ -153,7 +153,7 @@ public class TreeShapeSetupPanel extends JPanel {
 
     private void descendentGenerationSpinnerStateChanged(ChangeEvent evt) {
         int descendentGenerations = (int) descendentGenerationSpinner.getValue();
-        configuration.setDescendentGenerations(descendentGenerations);
+        configuration.setDescendantGenerations(descendentGenerations);
         if (descendentGenerations > 0 && !showSpousesCheckbox.isSelected()) {
             showSpousesCheckbox.setSelected(true);
             configuration.setShowSpouses(true);
@@ -189,7 +189,7 @@ public class TreeShapeSetupPanel extends JPanel {
         configuration.setShowSpouses(showSpouses);
         if (!showSpouses && (int) descendentGenerationSpinner.getValue() > 0) {
             descendentGenerationSpinner.setValue(0);
-            configuration.setDescendentGenerations(0);
+            configuration.setDescendantGenerations(0);
         }
         window.updateConfiguration(configuration);
         window.generateTree();

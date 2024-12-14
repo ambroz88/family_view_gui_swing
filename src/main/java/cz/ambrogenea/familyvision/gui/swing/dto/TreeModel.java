@@ -5,7 +5,6 @@ import java.util.Set;
 
 public record TreeModel(
         String treeName,
-        PersonRecord rootPerson,
         Set<PersonRecord> persons,
         Set<Marriage> marriages,
         Set<Line> lines,

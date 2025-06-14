@@ -70,6 +70,7 @@ public class TreeShapeSetupPanel extends JPanel {
         showSiblingsLabel.setOpaque(false);
         showSiblingsLabel.setPreferredSize(Dimensions.LABEL_DIMENSION);
         showSiblingsCheckbox = new JCheckBox();
+        showSiblingsCheckbox.setSelected(configuration.isShowSiblings());
         showSiblingsCheckbox.setOpaque(false);
 
         showSiblingSpouseLabel = new JLabel(description.getString(TreeSetup.SIBLINGS_SPOUSE));

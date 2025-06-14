@@ -1,6 +1,6 @@
 package cz.ambrogenea.familyvision.gui.swing.dto;
 
-import cz.ambrogenea.familyvision.gui.swing.enums.Sex;
+import cz.ambrogenea.familyvision.gui.swing.enums.Gender;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +9,7 @@ public record PersonRecord(
         String id,
         String firstName,
         String surname,
-        Sex sex,
+        Gender gender,
         DatePlace birthDatePlace,
         DatePlace deathDatePlace,
         String occupation,

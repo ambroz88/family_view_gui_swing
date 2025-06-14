@@ -5,7 +5,6 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.constant.Spaces;
 import cz.ambrogenea.familyvision.gui.swing.dto.*;
 import cz.ambrogenea.familyvision.gui.swing.enums.Background;
-import cz.ambrogenea.familyvision.gui.swing.enums.CoupleType;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
 import cz.ambrogenea.familyvision.gui.swing.enums.LabelShape;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
@@ -251,13 +250,14 @@ public class TreePanel extends JPanel {
     private JComponent createDateComponent(Marriage marriage) {
         JComponent dateComponent;
         if (marriage.rectangle().height() > Spaces.VERT_MARRIAGE_LABEL_HEIGHT) {
-            int index = marriage.date().lastIndexOf(" ");
+            String date = marriage.date() != null ? marriage.date() : "";
+            int index = date.lastIndexOf(" ");
             if (index != -1) {
-                String date = marriage.date().substring(0, index);
-                String dateYear = marriage.date().substring(index + 1);
+                String dayMonth = date.substring(0, index);
+                String dateYear = date.substring(index + 1);
                 dateComponent = new JPanel();
                 dateComponent.setLayout(new GridLayout(2, 1, 0, 2));
-                final JLabel dateLabel = createCenteredLabel(date);
+                final JLabel dateLabel = createCenteredLabel(dayMonth);
                 dateLabel.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
                 dateLabel.setVerticalAlignment(JLabel.BOTTOM);
                 dateComponent.add(dateLabel);
@@ -266,7 +266,7 @@ public class TreePanel extends JPanel {
                 yearLabel.setVerticalAlignment(JLabel.TOP);
                 dateComponent.add(yearLabel);
             } else {
-                dateComponent = createCenteredLabel(marriage.date());
+                dateComponent = createCenteredLabel(date);
                 dateComponent.setFont(new Font(Fonts.GENERAL_FONT, Font.PLAIN, configuration.getAdultFontSize()));
             }
         } else {
@@ -286,7 +286,7 @@ public class TreePanel extends JPanel {
     }
 
     private Rectangle getMarriageLabelRect(Marriage marriage) {
-        if (Config.tree().getCoupleType() == CoupleType.VERTICAL) {
+        if (marriage.rectangle().height() <= Spaces.VERT_MARRIAGE_LABEL_HEIGHT) {
             return getMarriageDateRect(marriage);
         }
         return new Rectangle(

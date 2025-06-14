@@ -7,12 +7,11 @@ import java.util.Date;
  */
 public record DatePlace(
         Date date,
-        String textDate,
-        String place
+        String dateText,
+        String place,
+        String originalPlace,
+        String shortName,
+        String area,
+        String districtAbbrev
 ) {
-
-    public String getSimplePlace() {
-        return place.split(",")[0];
-    }
-
 }

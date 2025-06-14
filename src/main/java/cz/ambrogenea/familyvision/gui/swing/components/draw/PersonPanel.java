@@ -4,7 +4,7 @@ import cz.ambrogenea.familyvision.gui.swing.constant.Fonts;
 import cz.ambrogenea.familyvision.gui.swing.dto.PersonRecord;
 import cz.ambrogenea.familyvision.gui.swing.dto.PersonVisualConfiguration;
 import cz.ambrogenea.familyvision.gui.swing.enums.Diagram;
-import cz.ambrogenea.familyvision.gui.swing.enums.Sex;
+import cz.ambrogenea.familyvision.gui.swing.enums.Gender;
 import cz.ambrogenea.familyvision.gui.swing.service.Config;
 import cz.ambrogenea.familyvision.gui.swing.utils.PersonPanelMouseController;
 
@@ -76,7 +76,7 @@ public abstract class PersonPanel extends JPanel {
 
     private void loadPictures() {
         String imagePath;
-        if (person.sex().equals(Sex.MALE)) {
+        if (person.gender().equals(Gender.MALE)) {
             imagePath = "/diagrams/" + configuration.getDiagram() + "_man.png";
         } else {
             imagePath = "/diagrams/" + configuration.getDiagram() + "_woman.png";
@@ -136,7 +136,7 @@ public abstract class PersonPanel extends JPanel {
 
         if (Config.person().getDiagram() == Diagram.HERALDRY && surName.getText().length() > 20) {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize - 1));
-        } else if (Config.person().getDiagram() == Diagram.HERALDRY && surName.getText().length() > 15) {
+        } else if (Config.person().getDiagram() == Diagram.HERALDRY && surName.getText().length() >= 15) {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize));
         } else {
             surName.setFont(new Font(Fonts.NAMES_FONT, Font.BOLD, fontSize + 2));

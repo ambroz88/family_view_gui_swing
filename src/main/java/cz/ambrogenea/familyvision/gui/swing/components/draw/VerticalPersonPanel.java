@@ -28,22 +28,26 @@ public class VerticalPersonPanel extends PersonPanel {
         String birthDateString = "";
         DatePlace birthDatePlace = person.birthDatePlace();
         if (birthDatePlace.date() != null) {
-            birthDateString = "\u002A " + birthDatePlace.textDate();
+            birthDateString = "\u002A " + birthDatePlace.dateText();
             if (configuration.isShowPlaces() && birthDatePlace.place() != null && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlaceString = Tools.cityShortVersion(birthDatePlace.getSimplePlace());
+                    birthPlaceString = Tools.cityShortVersion(birthDatePlace.place());
                 } else {
-                    birthPlaceString = birthDatePlace.getSimplePlace();
+                    birthPlaceString = birthDatePlace.place();
                 }
             }
         } else {
             if (configuration.isShowPlaces() && !birthDatePlace.place().isEmpty()) {
                 if (configuration.isShortenPlaces()) {
-                    birthPlaceString = "\u002A " + Tools.cityShortVersion(birthDatePlace.getSimplePlace());
+                    birthPlaceString = "\u002A " + Tools.cityShortVersion(birthDatePlace.place());
                 } else {
-                    birthPlaceString = "\u002A " + birthDatePlace.getSimplePlace();
+                    birthPlaceString = "\u002A " + birthDatePlace.place();
                 }
             }
+        }
+
+        if (birthDatePlace.districtAbbrev() != null) {
+            birthPlaceString = birthPlaceString + ", " + birthDatePlace.districtAbbrev();
         }
 
         birth.setText(birthDateString);
@@ -51,13 +55,19 @@ public class VerticalPersonPanel extends PersonPanel {
 
         DatePlace deathDatePlace = person.deathDatePlace();
         if (configuration.isShowAge() && deathDatePlace.date() != null) {
-            death.setText("\u2020 " + deathDatePlace.textDate());
+            death.setText("\u2020 " + deathDatePlace.dateText());
             if (configuration.isShowPlaces() && !deathDatePlace.place().isEmpty()) {
+                String deathPlaceString;
                 if (configuration.isShortenPlaces()) {
-                    deathPlace.setText(Tools.cityShortVersion(deathDatePlace.getSimplePlace()));
+                    deathPlaceString = Tools.cityShortVersion(deathDatePlace.place());
                 } else {
-                    deathPlace.setText(deathDatePlace.getSimplePlace());
+                    deathPlaceString = deathDatePlace.place();
                 }
+
+                if (deathDatePlace.districtAbbrev() != null) {
+                    deathPlaceString = deathPlaceString + ", " + deathDatePlace.districtAbbrev();
+                }
+                deathPlace.setText(deathPlaceString);
             }
         }
 
